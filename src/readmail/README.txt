@@ -1,5 +1,5 @@
 PCSMAIL
 
-This version of the PCSMAIL source code is experimental only.  It
-is neither complete nor working in any fashion.
+This is a version of the PCSMAIL source code that is supposed to
+replace the PCS READMAIL program.
 
