@@ -30,6 +30,7 @@
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
+#include	<unistd.h>		/* |gethostid(3c)| */
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
@@ -53,7 +54,7 @@
 #include	<hasx.h>
 #include	<localmisc.h>
 
-#include	"proginfo.h"
+#include	"proginfo.hh"
 
 
 /* local defines */
@@ -700,5 +701,31 @@ static bool hasourbad(cchar *sp,int sl) noex {
 	return f ;
 }
 /* end subroutine (hadourbad) */
+
+proginfo_vals::proginfo_vals() noex {
+	memclear(this) ;
+}
+
+void proginfo_hwser::operator () (proginfo_head *p) noex {
+	op = p ;
+	val = 0 ;
+}
+
+proginfo_hwser::operator uint () noex {
+	if (val == 0) {
+	    val = (uint) gethostid() ;
+	}
+	return val ;
+}
+
+proginfo_head::proginfo_head() noex {
+	hwserial(this) ;
+}
+
+void proginfo_head::args(int ac,mainv av,mainv ev) noex {
+	argc = ac ;
+	argv = av ;
+	envv = ev ;
+}
 
 
