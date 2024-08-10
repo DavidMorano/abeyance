@@ -720,6 +720,7 @@ proginfo_hwser::operator uint () noex {
 
 proginfo_head::proginfo_head() noex {
 	hwserial(this) ;
+	ncpu(this,proginfomem_ncpu) ;
 }
 
 void proginfo_head::args(int ac,mainv av,mainv ev) noex {
@@ -727,5 +728,27 @@ void proginfo_head::args(int ac,mainv av,mainv ev) noex {
 	argv = av ;
 	envv = ev ;
 }
+
+int proginfo_co::operator () (int) noex {
+	int		rs = SR_BADFMT ;
+	if (op) {
+	    switch (w) {
+	    case proginfomem_ncpu:
+		rs = op->incpu() ;
+		break ;
+	    } /* end switch */
+	}
+	return rs ;
+}
+/* end method (proginfo_co::operator) */
+
+int proginfo_head::incpu() noex {
+	int		rs = ncpus ;
+	if (rs == 0) {
+	    rs = 1 ;
+	}
+	return rs ;
+}
+/* end method (proginfo_head::incpu) */
 
 
