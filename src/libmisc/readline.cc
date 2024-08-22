@@ -1,10 +1,8 @@
-/* readline */
+/* readline SUPPORT */
 /* lang=C++11 */
 
 /* read a line from a file */
-
-
-#define	CF_DEBUGS	0		/* compile-time debugging */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
@@ -18,27 +16,24 @@
 
 /*******************************************************************************
 
-	Synopsis:
+	Name:
+	readline
 
-	int readline(ifstream &is,char *lbuf,int llen)
+	Synopsis:
+	int readline(ifstream &is,char *lbuf,int llen) noex
 
 	Arguments:
-
 	is		reference to stream (file)
 	lbuf		buffer to receive
 	llen		length of supplied buffer
 
 	Returns:
-
 	-		lenght of bytes read
-
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>
-#include	<sys/types.h>
-#include	<limits.h>
+#include	<climits>
 #include	<cinttypes>
 #include	<new>
 #include	<initializer_list>
@@ -52,6 +47,9 @@
 #include	<iomanip>
 #include	<usystem.h>
 #include	<localmisc.h>
+
+
+/* local defines */
 
 
 /* name-spaces */
@@ -72,6 +70,9 @@ using namespace std ;
 
 
 /* local variables */
+
+
+/* exported variables */
 
 
 /* exported subroutines */

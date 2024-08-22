@@ -1,5 +1,5 @@
 /* strshrink SUPPORT */
-/* lang=C20 */
+/* lang=C++20 */
 
 /* remove leading and trailing white space */
 /* version %I% last-modified %G% */
@@ -28,10 +28,13 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
-#include	<string.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstring>
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
 #include	<char.h>
+#include	<localmisc.h>
 
 
 /* local defines */
