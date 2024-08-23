@@ -42,6 +42,7 @@
 #include	<cstdlib>
 #include	<cstring>
 #include	<usystem.h>
+#include	<sysval.hh>
 #include	<strwcpy.h>
 #include	<localmisc.h>
 
@@ -115,6 +116,8 @@ static int	lastlogfile_fileclose(LLF *) noex ;
 
 /* local variables */
 
+static sysval		pagesize(sysval_ps) ;
+
 
 /* exported variables */
 
@@ -123,36 +126,34 @@ static int	lastlogfile_fileclose(LLF *) noex ;
 
 int lastlogfile_open(LLF *op,cchar *fname,int oflags) noex {
 	int		rs ;
-	if ((rs = lastlogfile_ctor(op)) >= 0) {
-	cchar		*cp ;
 	if (fname == nullptr) fname = LASTLOGFILE_FILEPATH ;
 	if (fname[0] == '\0') fname = LASTLOGFILE_FILEPATH ;
-	memclear(op) ;
-	op->oflags = oflags ;
-	op->fd = -1 ;
-	op->pagesize = getpagesize() ;
-
-/* try to store the file name */
-
-	if ((rs = uc_mallocstrw(fname,-1,&cp)) >= 0) {
-	    op->fname = cp ;
-	    if ((rs = lastlogfile_checkopen(op)) >= 0) {
-		USTAT	sb ;
-	        if ((rs = u_fstat(op->fd,&sb)) >= 0) {
-	            op->fsize = size_t(sb.st_size) ;
-	            op->mtime = sb.st_mtime ;
-	            op->magic = LASTLOGFILE_MAGIC ;
-		}
-		if (rs < 0) {
-		    lastlogfile_fileclose(op) ;
-		}
-	    } /* end if (file-open) */
-	    if (rs < 0) {
-	        uc_free(op->fname) ;
-	        op->fname = nullptr ;
-	    }
-	} /* end if (memory-allocation) */
-
+	if ((rs = lastlogfile_ctor(op)) >= 0) {
+	    memclear(op) ;
+	    op->oflags = oflags ;
+	    op->fd = -1 ;
+	    if ((rs = pagesize) >= 0) {
+	        cchar		*cp ;
+	        op->pagesize = rs ;
+	        if ((rs = uc_mallocstrw(fname,-1,&cp)) >= 0) {
+	            op->fname = cp ;
+	            if ((rs = lastlogfile_checkopen(op)) >= 0) {
+		        USTAT	sb ;
+	                if ((rs = u_fstat(op->fd,&sb)) >= 0) {
+	                    op->fsize = size_t(sb.st_size) ;
+	                    op->mtime = sb.st_mtime ;
+	                    op->magic = LASTLOGFILE_MAGIC ;
+		        }
+		        if (rs < 0) {
+		            lastlogfile_fileclose(op) ;
+		        }
+	            } /* end if (file-open) */
+	            if (rs < 0) {
+	                uc_free(op->fname) ;
+	                op->fname = nullptr ;
+	            }
+	        } /* end if (memory-allocation) */
+	    } /* end if (pagesize) */
 	    if (rs < 0) {
 		lastlogfile_dtor(op) ;
 	    }
