@@ -1,0 +1,29 @@
+#!/usr/extra/bin/ksh
+# MKLINKS
+
+CMDS=" hostid "
+
+LOCPROG=machostid.x
+TDIRS=" /usr/extra /usr/local /opt/local "
+
+function linkdir {
+  typeset TDIR=${1}
+  for C in ${CMDS} ; do
+    ln -f ${LOCPROG} ${TDIR}/bin/${C}
+  done
+}
+
+if [[ -x "${LOCPROG}" ]] ; then
+  for D in ${TDIRS} ; do
+    if [[ -d "${D}" ]] ; then
+      linkdir $D
+    else
+      print -u 2 -- "target directory not present"
+      break ;
+    fi
+  done
+else
+  print -u 2 -- "program not made"
+fi
+
+
