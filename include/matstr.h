@@ -22,7 +22,8 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<localmisc.h>
+
+#include	<matxstr.h>
 
 
 EXTERNC_begin

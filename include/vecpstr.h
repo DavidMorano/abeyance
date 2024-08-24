@@ -84,6 +84,7 @@ typedef VECPSTR_CH	vecpstr_ch ;
 EXTERNC_begin
 
 typedef int (*vecpstr_vcmp)(cchar **,cchar **) noex ;
+typedef int (*vecpstr_f)(cchar **,cchar **) noex ;
 
 extern int vecpstr_start(vecpstr *,int,int,int) noex ;
 extern int vecpstr_finish(vecpstr *) noex ;

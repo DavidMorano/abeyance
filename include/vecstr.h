@@ -174,6 +174,7 @@ typedef	VECSTR_FL	vecstr_fl ;
 EXTERNC_begin
 
 typedef int (*vecstr_vcmp)(cchar **,cchar **) noex ;
+typedef int (*vecstr_f)(cchar **,cchar **) noex ;
 
 extern int vecstr_start(vecstr *,int,int) noex ;
 extern int vecstr_add(vecstr *,cchar *,int) noex ;
