@@ -1,0 +1,63 @@
+/* utimeout HEADER */
+/* lang=C20 */
+
+/* manage UNIX® kernal-call (and std-c library) timeouts */
+/* version %I% last-modified %G% */
+
+
+/* revision history:
+
+	= 1998-11-01, David A­D­ Morano
+	This subroutine was written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+
+#ifndef	UTIMEOUT_INCLUDE
+#define	UTIMEOUT_INCLUDE
+
+
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+
+
+enum utos {
+	uto_again,
+	uto_intr,
+	uto_nomem,
+	uto_nosr,
+	uto_nobufs,
+	uto_busy,
+	uto_get,
+	uto_deadlock,
+	uto_io,
+	uto_dquot,
+	uto_nospc,
+	uto_dial,
+	uto_open,
+	uto_read,
+	uto_mfile,
+	uto_nfile,
+	uto_poll,
+	uto_nolck,
+	uto_capture,
+	uto_txtbusy,
+	uto_closewait,
+	uto_overlast
+} ; /* end enum (utos) */
+
+extern int	utimeout[] ;
+
+EXTERNC_begin
+
+extern int u_timeout(int,int) noex ;
+
+EXTERNC_end
+
+
+#endif /* UTIMEOUT_INCLUDE */
+
+
