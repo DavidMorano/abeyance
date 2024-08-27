@@ -42,8 +42,8 @@ EXTERNC_begin
 
 extern int	pmq_open(pmq *,cchar *,int,mode_t,const pmq_attr *) noex ;
 extern int	pmq_close(pmq *) noex ;
-extern int	pmq_send(pmq *,cvoid *,int,uint) noex ;
-extern int	pmq_recv(pmq *,void *,int,uint *) noex ;
+extern int	pmq_send(pmq *,cchar *,int,uint) noex ;
+extern int	pmq_recv(pmq *,char *,int,uint *) noex ;
 extern int	pmq_attrset(pmq *,const pmq_attr *,pmq_attr *) noex ;
 extern int	pmq_attrget(pmq *,pmq_attr *) noex ;
 extern int	pmq_notify(pmq *,SIGEVENT *) noex ;
