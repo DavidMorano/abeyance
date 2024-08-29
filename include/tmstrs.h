@@ -19,9 +19,9 @@
 
 
 #include	<envstandards.h>	/* first to configure */
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
 
 
 EXTERNC_begin
