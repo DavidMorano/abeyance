@@ -24,7 +24,6 @@
 #include	<stdarg.h>
 #include	<usystem.h>
 #include	<stdfnames.h>
-#include	<localmisc.h>
 
 
 #define	BFILE		struct bfile_head
