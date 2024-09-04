@@ -53,7 +53,10 @@ extern int libmalloc_pr(char **) noex ;	/* PR object */
 extern int libmalloc_nw(char **) noex ;	/* NW object */
 extern int libmalloc_ho(char **) noex ;	/* HO object */
 extern int libmalloc_sv(char **) noex ;	/* SV object */
-extern int libmalloc_zn(char **) noex ;	/* TZ object */
+extern int libmalloc_fs(char **) noex ;	/* FS type */
+extern int libmalloc_zn(char **) noex ;	/* TZ name */
+
+extern int libmalloc_ps(char **) noex ;	/* PS pagesize */
 
 EXTERNC_end
 

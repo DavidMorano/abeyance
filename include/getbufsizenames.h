@@ -52,6 +52,7 @@ enum getbufsizes {
 	getbufsize_nw,		/* network-ent */
 	getbufsize_ho,		/* host-ent */
 	getbufsize_sv,		/* service-ent */
+	getbufsize_fs,		/* filesystem-type */
 	getbufsize_zn,		/* zone-name (from Zone-Info) */
 	getbufsize_overlast
 } ; /* end enum (getbufsizes) */

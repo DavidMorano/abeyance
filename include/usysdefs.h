@@ -303,6 +303,23 @@ enum signalmissings {
 #define	SVBUFLEN	256
 #endif
 
+/* filesystem-type buffer length */
+#ifndef	FSBUFLEN
+#ifdef	MFSNAMELEN
+#define	FSBUFLEN	MFSNAMELEN
+#else
+#ifdef	MFSTYPENAMELEN
+#define	FSBUFLEN	(MFSTYPENAMELEN-1) /* Apple-Darwin value */
+#else
+#ifdef	_ST_FSTYPSZ
+#define	FSBUFLEN	_ST_FSTYPSZ	/* Sun-Solaris value */
+#else
+#define	FSBUFLEN	15		/* Apple-Darwin value */
+#endif
+#endif
+#endif
+#endif
+
 /* zone-name (from Zone-Info) */
 #ifndef	ZNBUFLEN
 #ifdef	TZNAME_MAX

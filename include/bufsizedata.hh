@@ -70,6 +70,9 @@
 #ifndef	_SC_GETGR_R_SIZE_MAX
 #define	_SC_GETGR_R_SIZE_MAX	-1
 #endif
+#ifndef	_SC_FSTYPE
+#define	_SC_FSTYPE		-1
+#endif
 #ifndef	_SC_TZNAME_MAX
 #define	_SC_TZNAME_MAX		-1
 #endif
@@ -160,6 +163,10 @@ constexpr bufsizedata::bufsizedata() noex {
 	        break ;
 	    case getbufsize_sv:
 		ip->defval = SVBUFLEN ;		/* service-buf */
+	        break ;
+	    case getbufsize_fs:
+	        ip->name = _SC_FSTYPE ;
+		ip->defval = FSBUFLEN ;		/* service-buf */
 	        break ;
 	    case getbufsize_zn:
 	        ip->name = _SC_TZNAME_MAX ;
