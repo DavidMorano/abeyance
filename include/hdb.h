@@ -19,11 +19,11 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
-#include	<utypedefs.h>
 #include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysrets.h>
 #include	<lookaside.h>
-#include	<localmisc.h>
 
 
 #define HDB_MAGIC	314159261
