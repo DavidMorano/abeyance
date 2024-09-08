@@ -15,7 +15,6 @@
 #include	<usystem.h>
 #include	<vechand.h>
 #include	<strpack.h>
-#include	<localmisc.h>		/* <- |USERNAMELEN| ? */
 
 
 #define	MKPROGENV	struct mkprogenv_head

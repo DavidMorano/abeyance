@@ -14,6 +14,7 @@
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<usystem.h>
 
+
 EXTERNC_begin
 
 extern int	getheour(ucentho *,char *,int,char *,cc *) noex ;
