@@ -9,6 +9,10 @@
 
 /*******************************************************************************
 
+	Name:
+	bufstr
+
+	Description:
 	This module can be used to construct strings or messages
 	in buffers WITHOUT using the |snsprint(3c)| subroutine.  This
 	module is useful when the user does NOT supply a buffer to

@@ -1,7 +1,7 @@
-/* mailalias */
+/* mailalias HEADER */
 /* lang=C20 */
 
-/* indexed PASSWD GECOS DB */
+/* manage local mail-aliases */
 /* version %I% last-modified %G% */
 
 

@@ -45,7 +45,7 @@ struct pcsnsrecs_head {
 	uint		wcount ;	/* write-count */
 	uint		magic ;
 	int		ttl ;		/* time-to-live */
-	int		max ;		/* maximum entries */
+	int		nmax ;		/* maximum entries */
 } ;
 
 typedef PCSNSRECS	pcsnsrecs ;
