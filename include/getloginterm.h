@@ -1,4 +1,4 @@
-/* getloginterm HEADER */
+/* getlogx HEADER */
 /* lang=C20 */
 
 /* get the name of the controlling terminal for the current session */
@@ -7,8 +7,8 @@
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
-#ifndef	GETLOGINTERM_INCLUDE
-#define	GETLOGINTERM_INCLUDE
+#ifndef	GETLOGX_INCLUDE
+#define	GETLOGX_INCLUDE
 
 
 #include	<envstandards.h>	/* ordered first to configure */
@@ -21,11 +21,13 @@
 
 EXTERNC_begin
 
-extern int	getloginterm(char *,int,pid_t) noex ;
+extern int	getlogname(char *,int,pid_t) noex ;
+extern int	getlogterm(char *,int,pid_t) noex ;
+extern int	getloghost(char *,int,pid_t) noex ;
 
 EXTERNC_end
 
 
-#endif /* GETLOGINTERM_INCLUDE */
+#endif /* GETLOGX_INCLUDE */
 
 

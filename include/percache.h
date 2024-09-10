@@ -26,7 +26,7 @@
 
 
 #define	PERCACHE	struct percache_head
-#define	PERCACHE_ITEM	struct percache_i
+#define	PERCACHE_ITEM	struct percache_dataitem
 
 
 enum pertypes {
@@ -41,7 +41,7 @@ enum pertypes {
 	pertype_overlast
 } ;
 
-struct percache_i {
+struct percache_dataitem {
 	uint		t ;
 	uint		v ;
 } ;
@@ -57,6 +57,7 @@ struct percache_head {
 } ;
 
 typedef PERCACHE	percache ;
+typedef	PERCACHE_ITEM	percache_item ;
 
 EXTERNC_begin
 

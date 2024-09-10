@@ -12,12 +12,12 @@
 
 
 #include	<envstandards.h>	/* ordered first to configure */
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
+#include	<usysrets.h>
 #include	<contypevals.h>		/* content-type values */
 #include	<mimetypes.h>
-#include	<localmisc.h>
 
 
 #define	MAILMSGATTENT_MAGIC	0x49827261

@@ -5,7 +5,14 @@
 /* version %I% last-modified %G% */
 
 
-/* Copyright © 2008 David A­D­ Morano.  All rights reserved. */
+/* revision history:
+
+	= 1998-11-01, David A­D­ Morano
+	This program was originally written.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	GETHEOUR_INCLUDE
 #define	GETHEOUR_INCLUDE
