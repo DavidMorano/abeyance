@@ -20,6 +20,10 @@
 
 /*******************************************************************************
 
+	Name:
+	field
+
+	Description:
 	This is a classic, ported forward from the old VAX-11/780
 	days.  This was translated from VAX assembly language.
 
@@ -33,8 +37,8 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysrets.h>
 #include	<vecstr.h>
-#include	<localmisc.h>
 
 
 #define	FIELD		struct field_head

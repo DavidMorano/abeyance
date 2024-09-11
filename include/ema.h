@@ -21,7 +21,6 @@
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<usystem.h>
 #include	<vechand.h>
-#include	<localmisc.h>
 
 
 #define	EMA		struct ema_head

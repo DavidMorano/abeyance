@@ -20,8 +20,10 @@
 
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<stdarg.h>
-#include	<utypedefs.h>
 #include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysrets.h>
 
 
 #define	TERMCONSEQ_ARGS		struct termconseq_args

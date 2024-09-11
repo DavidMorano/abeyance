@@ -45,8 +45,10 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<climits>		/* <- for |UCHAR_MAX| + |CHAR_BIT| */
-#include	<utypedefs.h>
 #include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysrets.h>
 #include	<baops.h>
 #include	<mkchar.h>
 
@@ -67,7 +69,7 @@ struct fieldterm {
 
 #else /* __cplusplus */
 
-static int		fieldterm_termsize = ((UCHAR_MAX+1)/CHAR_BIT) ;
+static cint		fieldterm_termsize = ((UCHAR_MAX+1)/CHAR_BIT) ;
 
 #endif /* __cplusplus */
 
