@@ -19,10 +19,10 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
-#include	<localmisc.h>
+#include	<localmisc.h>		/* |LINEBUFLEN| */
 
 
 #define	COMPARSE_MAGIC		0x77811276
@@ -48,10 +48,10 @@ typedef COMPARSE_STR	comparse_str ;
 
 EXTERNC_begin
 
-extern int comparse_start(COMPARSE *,cchar *,int) noex ;
-extern int comparse_getval(COMPARSE *,cchar **) noex ;
-extern int comparse_getcom(COMPARSE *,cchar **) noex ;
-extern int comparse_finish(COMPARSE *) noex ;
+extern int comparse_start(comparse *,cchar *,int) noex ;
+extern int comparse_getval(comparse *,cchar **) noex ;
+extern int comparse_getcom(comparse *,cchar **) noex ;
+extern int comparse_finish(comparse *) noex ;
 
 EXTERNC_end
 
