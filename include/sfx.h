@@ -38,6 +38,7 @@ extern int sfnamecomp(cchar *,int,cchar **) noex ;
 extern int sfnext(cchar *,int,cchar **) noex ;
 extern int sfnextchr(cchar *,int,int,cchar **) noex ;
 extern int sfnextbrk(cchar *,int,cchar *,cchar **) noex ;
+extern int sfnextterm(cchar *,int,cchar *,cchar **) noex ;
 extern int sfnextqtok(cchar *,int,cchar **) noex ;
 extern int sfprogroot(cchar *,int,cchar **) noex ;
 extern int sfprogname(cchar *,int,cchar **) noex ;

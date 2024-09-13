@@ -21,13 +21,13 @@
 
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<unistd.h>		/* for |off_t| */
-#include	<istream>
 #include	<fstream>
 #include	<string>
 #include	<string_view>
-#include	<utypedefs.h>
 #include	<clanguage.h>
-#include	<localmisc.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysrets.h>
 
 
 enum ccfilemems {
@@ -65,8 +65,8 @@ struct ccfile : std::fstream {
 	ccfile &operator = (const ccfile &) = delete ;
 	int open(cchar *,cchar * = nullptr,mode_t = 0) noex ;
 	int open(const strview,cchar * = nullptr,mode_t = 0) noex ;
-	int readln(char *,int,int = eol) noex ;
-	int readln(std::string &,int = eol) noex ;
+	int readln(char *,int,int = 0) noex ;
+	int readln(std::string &,int = 0) noex ;
 	int seek(off_t = 0z,int = -1) noex ;
 	void dtor() noex ;
 	~ccfile() {
