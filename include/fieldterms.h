@@ -30,6 +30,7 @@
 
 
 #include	<envstandards.h>	/* ordered first to configure */
+#include	<limits.h>		/* |UCHAR_MAX| + |CHAR_BIT| */
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
@@ -43,6 +44,8 @@ extern int	fieldtermsx(char *,int,int,...) noex ;
 EXTERNC_end
 
 #ifdef	__cplusplus
+
+constexpr int	fieldterms_termsize = ((UCHAR_MAX + 1) / CHAR_BIT) ;
 
 template<typename ... Args>
 static inline int fieldterms(char *t,int f,Args ... args) noex {

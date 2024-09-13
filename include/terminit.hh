@@ -32,9 +32,9 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<climits>		/* |UCHAR_MAX| | |CHAR_BIT| */
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
 #include	<baops.h>
 
 
