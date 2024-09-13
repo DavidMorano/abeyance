@@ -41,6 +41,8 @@
 #include	<hdrextnum.h>
 #include	<contypevals.h>
 #include	<headkeymat.h>
+#include	<comparse.h>
+#include	<whitelist.h>
 
 #include	<mailmsgatt.h>
 #include	<mailmsgattent.h>

@@ -1,0 +1,3 @@
+#!/usr/extra/bin/ksh
+# G++
+gxx "${@}"

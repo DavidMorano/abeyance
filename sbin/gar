@@ -1,0 +1,57 @@
+#!/usr/extra/bin/ksh
+# GNU Compiler Collection
+PN=${0##*/}
+RF_OK=true
+: ${INCDIR:=include}
+INCDIRS=
+if [[ ! -d ${INCDIR} ]] ; then
+  if [[ -n "${REPOROOT}" ]] && [[ -d "${REPOROOT}" ]] ; then
+    A=${REPOROOT}/include
+    if [[ -d "${A}" ]] ; then
+      INCDIR=${A}
+    fi
+  fi
+fi
+if [[ -n "${INCDIR}" ]] && [[ -d "${INCDIR}" ]] ; then
+  INCDIRS="-I${INCDIR}"
+fi
+PROG="print -u2 -- ${PN}: no-program"
+if ${RF_OK} ; then
+  POPT="-pthread"
+  OPTS=
+  case ${PN} in
+  gcpp*)
+    PROG=gcpp14
+    OPTS="${INCDIRS}"
+    ;;
+  gcc*)
+    PROG=gcc14
+    OPTS="${POPT} ${INCDIRS}"
+    ;;
+  gpp*|gxx*)
+    PROG=gpp14
+    OPTS="${POPT} ${INCDIRS}"
+    ;;
+  gld*)
+    PROG=gld14
+    OPTS="${POPT}"
+    ;;
+  granlib*)
+    PROG=granlib14
+    ;;
+  gar*)
+    PROG=gar14
+    ;;
+  gnm*)
+    PROG=gnm14
+    ;;
+  gcov*)
+    PROG=gcov14
+    ;;
+  gsize*|gsz*)
+    PROG=size
+    ;;
+  esac
+  ${PROG} ${OPTS} "${@}"
+fi
+

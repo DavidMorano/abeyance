@@ -1,0 +1,10 @@
+#!/usr/extra/bin/ksh
+# GSYMEXP
+
+for N in "${@}" ; do
+  if [[ -r "${N}" ]] ; then
+    gnm --demangle --extern-only ${N} | egrep ' [ST] '
+  fi
+done
+
+
