@@ -1,6 +1,9 @@
 /* stackaddr HEADER */
 /* lang=C20 */
 
+/* stack-address management */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -20,7 +23,6 @@
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<usysrets.h>
-#include	<usyscalls.h>
 
 
 #define	STACKADDR	struct stackaddr_head

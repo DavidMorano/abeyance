@@ -19,22 +19,27 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<utypedefs.h>
 #include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysrets.h>
 
 #include	<mailmsghdrs.h>
-#include	<mailbox.h>
-#include	<msgentry.h>
-
 #include	<mailmsghdrfold.h>
 #include	<mailmsghdrval.h>
 #include	<mailmsgmatenv.h>
 #include	<mailmsgmathdr.h>
-
 #include	<mailmsgstage.h>
+#include	<mailmsgatt.h>
+#include	<mailmsgattent.h>
+#include	<mailmsgfrom.h>
+
+#include	<mailbox.h>
+#include	<msgentry.h>
+
+#include	<mimetypes.h>
 #include	<mbcache.h>
 #include	<emainfo.h>
-
 #include	<mhcom.h>
 #include	<mcmsg.h>
 
@@ -43,12 +48,8 @@
 #include	<headkeymat.h>
 #include	<comparse.h>
 #include	<whitelist.h>
-
-#include	<mailmsgatt.h>
-#include	<mailmsgattent.h>
-#include	<mailmsgfrom.h>
-
-#include	<mimetypes.h>
+#include	<splitaddr.h>
+#include	<stackaddr.h>
 
 
 EXTERNC_begin

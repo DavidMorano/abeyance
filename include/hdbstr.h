@@ -19,12 +19,11 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
+#include	<usysrets.h>
 #include	<hdb.h>
-#include	<localmisc.h>
 
 
 #define	HDBSTR		hdb
@@ -53,6 +52,9 @@ extern int hdbstr_next(hdbstr *,hdbstr_cur *) noex ;
 extern int hdbstr_nextkey(hdbstr *,cchar *,int,hdbstr_cur *) noex ;
 extern int hdbstr_count(hdbstr *) noex ;
 extern int hdbstr_finish(hdbstr *) noex ;
+
+extern int hdbstr_loadkeys(hdbstr *,cchar *) noex ;
+extern int hdbstr_loadpairs(hdbstr *,cchar *) noex ;
 
 EXTERNC_end
 
