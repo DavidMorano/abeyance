@@ -161,15 +161,7 @@ int		(*cmpfunc)() ;
 	char		*sp ;
 	void		**ep ;
 
-#if	CF_DEBUGS
-	debugprintf("sortlistadd: ent\n") ;
-#endif
-
 	if (op == nullptr) return -1 ;
-
-#if	CF_DEBUGS
-	debugprintf("sortlistadd: ent, i=%d\n",op->i) ;
-#endif
 
 /* do we have to grow the sortlist array ? */
 
@@ -210,10 +202,6 @@ int		(*cmpfunc)() ;
 	top = MAX((op->i - 1),0) ;
 	ii = (bot + top) / 2 ;
 
-#if	CF_DEBUGS
-	debugprintf("sortlistadd: bot=%d top=%d ii=%d\n",bot,top,ii) ;
-#endif
-
 	while ((top - bot) > 0) {
 
 	    if ((rs = (*cmpfunc)(p,op->va[ii])) < 0) {
@@ -228,10 +216,6 @@ int		(*cmpfunc)() ;
 	    ii = (bot + top) / 2 ;
 
 	} /* end while */
-
-#if	CF_DEBUGS
-	debugprintf("sortlistadd: found bot=%d top=%d ii=%d\n",bot,top,ii) ;
-#endif
 
 	if (ii < op->i) {
 
@@ -264,34 +248,14 @@ int		i ;
 void		**pp ;
 {
 
-#if	CF_DEBUGS
-	debugprintf("sortlistget: ent\n") ;
-#endif
-
 	if (op == nullptr) return BAD ;
-
-#if	CF_DEBUGS
-	debugprintf("sortlistget: i=%d\n",i) ;
-#endif
 
 	*pp = nullptr ;
 	if ((i < 0) || (i >= op->i)) return BAD ;
 
-#if	CF_DEBUGS
-	debugprintf("sortlistget: 2\n") ;
-#endif
-
 	if (op->va == nullptr) return BAD ;
 
-#if	CF_DEBUGS
-	debugprintf("sortlistget: 3\n") ;
-#endif
-
 	*pp = (op->va)[i] ;
-
-#if	CF_DEBUGS
-	debugprintf("sortlistget: 4\n") ;
-#endif
 
 	return OK ;
 }

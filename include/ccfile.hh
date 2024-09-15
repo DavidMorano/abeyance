@@ -51,12 +51,17 @@ struct ccfile_co {
         } ;
 } ; /* end struct (ccfile_co) */
 
+struct ccfile_fl {
+	uint		fnulling:1 ;
+	uint		freading:1 ;
+} ;
+
 struct ccfile : std::fstream {
 	typedef std::string_view	strview ;
 	friend		ccfile_co ;
 	ccfile_co	rewind ;
 	ccfile_co	close ;
-	bool		freading = false ;
+	ccfile_fl	fl{} ;
 	ccfile() noex {
 	    rewind(this,ccfilemem_rewind) ;
 	    close(this,ccfilemem_close) ;
@@ -68,6 +73,7 @@ struct ccfile : std::fstream {
 	int readln(char *,int,int = 0) noex ;
 	int readln(std::string &,int = 0) noex ;
 	int seek(off_t = 0z,int = -1) noex ;
+	int write(cvoid *,int) noex ;
 	void dtor() noex ;
 	~ccfile() {
 	    dtor() ;
