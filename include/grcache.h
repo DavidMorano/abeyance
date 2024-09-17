@@ -14,12 +14,12 @@
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<sys/types.h>		/* system types */
 #include	<time.h>		/* |time_t| */
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
+#include	<usysrets.h>
 #include	<vechand.h>
 #include	<cq.h>
-#include	<localmisc.h>
 
 
 #define	GRCACHE			struct grcache_head

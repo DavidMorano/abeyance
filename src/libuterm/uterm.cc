@@ -5,7 +5,6 @@
 /* version %I% last-modified %G% */
 
 #define	CF_FIRSTREAD	0	/* perform an initial |read()|? */
-#define	CF_WRITEATOM	1	/* atomic write */
 #define	CF_SUBUNIX	1	/* allow UNIX® to handle Control-Z */
 
 /* revision history:

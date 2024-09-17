@@ -23,8 +23,8 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<usysdefs.h>
 #include	<usysrets.h>
+#include	<usysdefs.h>
 #include	<usyscalls.h>
 #include	<usystem.h>
 #include	<vecobj.h>

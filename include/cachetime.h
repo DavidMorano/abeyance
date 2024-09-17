@@ -19,12 +19,12 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
+#include	<usysrets.h>
 #include	<hdb.h>
 #include	<ptm.h>
-#include	<localmisc.h>
 
 
 #define	CACHETIME_MAGIC		0x79854123

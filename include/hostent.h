@@ -19,9 +19,6 @@
 #include	<netdb.h>
 #include	<string.h>
 #include	<usystem.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<localmisc.h>		/* extra typedefs */
 
 
 #define	HOSTENT		struct hostent

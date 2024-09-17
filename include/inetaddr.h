@@ -15,9 +15,10 @@
 #include	<sys/types.h>
 #include	<netinet/in.h>
 #include	<netdb.h>
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
+#include	<usysrets.h>
 
 
 #define	INETADDR	union inetaddr_head

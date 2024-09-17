@@ -21,7 +21,6 @@
 	run-time but are otherwise expected to remain constant for
 	the life of any process.
 
-
 *******************************************************************************/
 
 #ifndef	GETBUFSIZE_INCLUDE

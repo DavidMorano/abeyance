@@ -20,12 +20,9 @@
 
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<usystem.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
 #include	<fsdir.h>
 #include	<fifostr.h>
 #include	<hdb.h>
-#include	<localmisc.h>
 
 
 #define	FSDIRTREE		struct fsdirtree_head

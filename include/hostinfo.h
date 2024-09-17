@@ -20,7 +20,6 @@
 #include	<usystem.h>
 #include	<vecobj.h>
 #include	<uinet.h>
-#include	<localmisc.h>
 
 
 #define	HOSTINFO_MAGIC		0x73625196

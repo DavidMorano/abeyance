@@ -20,13 +20,13 @@
 
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<sys/types.h>
-#include	<envstandards.h>	/* ordered first to configure */
+#include	<time.h>		/* |time_t| */
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
+#include	<usysrets.h>
 #include	<recarr.h>
 #include	<pq.h>
-#include	<localmisc.h>		/* extra types */
 
 
 #define	GRMEMS_MAGIC		0x98643169

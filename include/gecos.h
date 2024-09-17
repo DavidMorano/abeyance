@@ -22,11 +22,11 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysrets.h>
 
 
 #define	GECOS		struct gecos_head
 #define	GECOS_VAL	struct gecos_value
-
 #define	GECOS_ITEMLEN	256
 
 

@@ -21,8 +21,9 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>		/* |off_t| + |size_t| */
 #include	<stdint.h>		/* |intptr_t| + |uintptr_t| */
-#include	<utypedefs.h>
 #include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
 #include	<stdintx.h>
 
 

@@ -23,8 +23,10 @@
 #include	<pthread.h>
 #include	<ptm.h>
 #include	<ptc.h>
-#include	<utypedefs.h>
 #include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysrets.h>
 
 
 #define	CSEM		struct csem_head

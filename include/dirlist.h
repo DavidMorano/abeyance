@@ -22,7 +22,6 @@
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<usystem.h>
 #include	<vecobj.h>
-#include	<localmisc.h>
 
 
 #define	DIRLIST		struct dirlist_head

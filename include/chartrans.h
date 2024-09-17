@@ -14,7 +14,10 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<stddef.h>
 #include	<uiconv.h>
-#include	<localmisc.h>
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysrets.h>
 
 
 #define	CHARTRANS	struct chartrans_head

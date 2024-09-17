@@ -23,11 +23,11 @@
 #include	<sys/param.h>
 #include	<limits.h>
 #include	<netdb.h>
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
+#include	<usysrets.h>
 #include	<kvsfile.h>
-#include	<localmisc.h>
 
 
 #define	CLUSTERDB	struct clusterdb_head

@@ -25,9 +25,10 @@
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<limits.h>
-#include	<utypedefs.h>
 #include	<clanguage.h>
-#include	<localmisc.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysrets.h>
 
 
 #define	FSDIR_MAGIC	0x31415926

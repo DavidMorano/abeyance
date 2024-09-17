@@ -24,7 +24,6 @@
 #include	<vechand.h>
 #include	<cq.h>
 #include	<bfile.h>
-#include	<localmisc.h>
 
 
 #define	FILEGRP			struct filegrp_head

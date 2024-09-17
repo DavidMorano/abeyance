@@ -14,7 +14,6 @@
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<usystem.h>
 #include	<mapstrint.h>
-#include	<localmisc.h>
 
 
 #define	KEYSYMER_MAGIC		0x24282138

@@ -14,7 +14,6 @@
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<usystem.h>
 #include	<hdb.h>
-#include	<localmisc.h>
 
 
 #define	ENVLIST			struct envlist_head
