@@ -13,7 +13,6 @@
 
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<usystem.h>
-#include	<localmisc.h>		/* |TZABBRLEN| */
 
 
 #define	ZDB_MAGIC	0x26213711

@@ -27,7 +27,7 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
+#include	<sys/types.h>		/* UNIX® system types */
 #include	<usystem.h>
 #include	<ids.h>
 #include	<vecstr.h>

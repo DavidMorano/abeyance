@@ -20,17 +20,18 @@
 
 /******************************************************************************
 
+	Name:
+	char
+
 	This file (the header file) essentially supplies macros
 	that provide the calling interface for this facility.  These
 	macros provide super fast character test and conversion
 	functions.  This level of speed is actually rarely needed
 	since the normal corresponding UNIX®-supplied character
 	subroutes are already very fast, but they are here for
-	speacial needs that may arise.
-
-	Only 8-bit characters are supported (ISO-Latin-1 character
-	set).  For other character sets, use the system-supplied
-	facilities.
+	speacial needs that may arise.  Only 8-bit characters are
+	supported (ISO-Latin-1 character set).  For other character
+	sets, use the system-supplied facilities.
 
 	Extra-note: Note that non-breaking-white-space (NBSP)
 	characters are *not* considered to be white-space!
