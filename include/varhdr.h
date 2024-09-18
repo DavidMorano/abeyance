@@ -9,10 +9,10 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
-#include	<localmisc.h>
+#include	<usysrets.h>
 
 
 #define	VARHDR			struct varhdr_head
@@ -43,7 +43,8 @@ typedef	VARHDR		varhdr ;
 
 EXTERNC_begin
 
-extern int varhdr_msg(varhdr *,int,char *,int) noex ;
+extern int	varhdr_rd(varhdr *,char *,int) noex ;
+extern int	varhdr_wr(varhdr *,cchar *,int) noex ;
 
 EXTERNC_end
 

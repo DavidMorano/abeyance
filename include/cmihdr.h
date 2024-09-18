@@ -9,10 +9,10 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
-#include	<localmisc.h>
+#include	<usysrets.h>
 
 
 #define	CMIHDR			struct cmihdr_head
@@ -40,7 +40,8 @@ typedef	CMIHDR		cmihdr ;
 
 EXTERNC_begin
 
-extern int cmihdr_read(cmihdr *,int,char *,int) noex ;
+extern int	cmihdr_rd(cmihdr *,char *,int) noex ;
+extern int	cmihdr_wr(cmihdr *,cchar *,int) noex ;
 
 EXTERNC_end
 
