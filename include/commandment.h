@@ -29,61 +29,57 @@
 
 #define	COMMANDMENT_MAGIC	0x99447242
 #define	COMMANDMENT		struct commandment_head
-#define	COMMANDMENT_CUR		struct commandment_c
 #define	COMMANDMENT_CA		struct commandment_calls
+#define	COMMANDMENT_CUR		struct commandment_cursor
 
 
-struct commandment_c {
-	uint	magic ;
+struct commandment_cursor {
 	void	*scp ;
+	uint	magic ;
 } ;
+
+EXTERNC_begin
 
 struct commandment_calls {
-	int	(*open)(void *,const char *,const char *) ;
-	int	(*audit)(void *) ;
-	int	(*count)(void *) ;
-	int	(*max)(void *) ;
-	int	(*read)(void *,char *,int,uint) ;
-	int	(*get)(void *,int,char *,int) ;
-	int	(*curbegin)(void *,void *) ;
-	int	(*curend)(void *,void *) ;
-	int	(*enumerate)(void *,void *,void *,char *,int) ;
-	int	(*close)(void *) ;
+	int	(*open)(void *,cchar *,cchar *) noex ;
+	int	(*audit)(void *) noex ;
+	int	(*count)(void *) noex ;
+	int	(*nmax)(void *) noex ;
+	int	(*read)(void *,char *,int,uint) noex ;
+	int	(*get)(void *,int,char *,int) noex ;
+	int	(*curbegin)(void *,void *) noex ;
+	int	(*curend)(void *,void *) noex ;
+	int	(*enumerate)(void *,void *,void *,char *,int) noex ;
+	int	(*close)(void *) noex ;
 } ;
 
+EXTERNC_end
+
 struct commandment_head {
-	uint		magic ;
-	MODLOAD		loader ;
+	modload		loader ;
 	COMMANDMENT_CA	call ;
 	void		*obj ;		/* object pointer */
+	uint		magic ;
 	int		objsize ;
 	int		cursize ;
 } ;
 
+EXTERNC_begin
 
-#if	(! defined(COMMANDMENT_MASTER)) || (COMMANDMENT_MASTER == 0)
+extern int	commandment_open(commandment *,cchar *,cchar *) noex ;
+extern int	commandment_audit(commandment *) noex ;
+extern int	commandment_count(commandment *) noex ;
+extern int	commandment_max(commandment *) noex ;
+extern int	commandment_read(commandment *,char *,int,int) noex ;
+extern int	commandment_get(commandment *,int,char *,int) noex ;
+extern int	commandment_curbegin(commandment *,commandment_cur *) noex ;
+extern int	commandment_curend(commandment *,commandment_cur *) noex ;
+extern int	commandment_enum(commandment *,commandment_cur *,
+			uint *,char *,int) noex ;
+extern int	commandment_close(commandment *) noex ;
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+EXTERNC_end
 
-extern int	commandment_open(COMMANDMENT *,cchar *,cchar *) ;
-extern int	commandment_audit(COMMANDMENT *) ;
-extern int	commandment_count(COMMANDMENT *) ;
-extern int	commandment_max(COMMANDMENT *) ;
-extern int	commandment_read(COMMANDMENT *,char *,int,int) ;
-extern int	commandment_get(COMMANDMENT *,int,char *,int) ;
-extern int	commandment_curbegin(COMMANDMENT *,COMMANDMENT_CUR *) ;
-extern int	commandment_curend(COMMANDMENT *,COMMANDMENT_CUR *) ;
-extern int	commandment_enum(COMMANDMENT *,COMMANDMENT_CUR *,
-			uint *,char *,int) ;
-extern int	commandment_close(COMMANDMENT *) ;
-
-#ifdef	__cplusplus
-}
-#endif
-
-#endif /* COMMANDMENT_MASTER */
 
 #endif /* COMMANDMENT_INCLUDE */
 

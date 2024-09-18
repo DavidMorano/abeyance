@@ -30,8 +30,6 @@
 #define	FSDIRTREE_STAT		USTAT
 #define	FSDIRTREE_MAGIC		0x98653217
 
-#define	FSDIRTREESTAT		FSDIRTREE_STAT
-
 /* options */
 #define	FSDIRTREE_MFOLLOW	(1<<0)	/* follow symbolic links */
 #define	FSDIRTREE_MLINK		(1<<1)
@@ -77,12 +75,20 @@ EXTERNC_begin
 
 extern int fsdirtree_open(fsdirtree *,cchar *,int) noex ;
 extern int fsdirtree_prune(fsdirtree *,cchar **) noex ;
-extern int fsdirtree_read(fsdirtree *,FSDIRTREE_STAT *,char *,int) noex ;
+extern int fsdirtree_read(fsdirtree *,USTAT *,char *,int) noex ;
 extern int fsdirtree_close(fsdirtree *) noex ;
 
-extern int fsdirtreestat(cchar *,int,FSDIRTREESTAT *) noex ;
+EXTERNC_end
+
+
+#ifndef	FSDIRTREESTAT
+#define	FSDIRTREESTAT
+EXTERNC_begin
+
+extern int fsdirtreestat(cchar *,int,FSDIRTREE_STAT *) noex ;
 
 EXTERNC_end
+#endif /* FSDIRTREESTAT */
 
 
 #endif /* FSDIRTREE_INCLUDE */

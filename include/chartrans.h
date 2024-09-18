@@ -21,7 +21,7 @@
 
 
 #define	CHARTRANS	struct chartrans_head
-#define	CHARTRANS_SET	struct chartrans_set
+#define	CHARTRANS_SET	struct chartrans_seter
 #define	CHARTRANS_FL	struct chartrans_flags
 #define	CHARTRANS_MAGIC	0x67298361
 #define	CHARTRANS_NCS	"UCS-4"			/* native character-set */
@@ -31,7 +31,7 @@ struct chartrans_flags {
 	uint		dummy:1 ;
 } ;
 
-struct chartrans_set {
+struct chartrans_seter {
 	cchar		*name ;
 	UICONV		id ;			/* converter */
 	time_t		ti_access ;		/* access time */
