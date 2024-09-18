@@ -85,12 +85,12 @@
 #define	CEILINT(v)	BCEIL((v),sizeof(int))
 #endif
 
-#ifndef	CMSG_SPACE
-#define	CMSG_SPACE(len)	(CEILINT(sizeof(struct cmsghdr)) + CEILINT(len))
+#ifndef	CONMSGHDR_SPACE
+#define	CONMSGHDR_SPACE(len) (CEILINT(sizeof(struct cmsghdr)) + CEILINT(len))
 #endif
 
-#ifndef	CMSG_LEN
-#define	CMSG_LEN(len)	(CEILINT(sizeof(struct cmsghdr)) + (len))
+#ifndef	CONMSGHDR_LEN
+#define	CONMSGHDR_LEN(len)	(CEILINT(sizeof(struct cmsghdr)) + (len))
 #endif
 
 #ifndef	MKCHAR

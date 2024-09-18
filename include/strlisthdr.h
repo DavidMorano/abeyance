@@ -19,7 +19,6 @@
 
 
 #define	STRLISTHDR		struct strlisthdr_head
-
 #define	STRLISTHDR_FSUF		"si"	/* String-Index */
 #define	STRLISTHDR_MAGICSTR	"STRLIST"
 #define	STRLISTHDR_MAGICSIZE	16	/* the standard (pretty much) */

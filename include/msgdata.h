@@ -21,11 +21,11 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/socket.h>
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
+#include	<usysrets.h>
 #include	<sockaddress.h>
-#include	<localmisc.h>
 
 
 #ifndef	MSGBUFLEN

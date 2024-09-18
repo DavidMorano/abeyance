@@ -34,8 +34,8 @@
 
 
 struct commandment_cursor {
-	void	*scp ;
-	uint	magic ;
+	void		*scp ;
+	uint		magic ;
 } ;
 
 EXTERNC_begin
@@ -56,13 +56,17 @@ struct commandment_calls {
 EXTERNC_end
 
 struct commandment_head {
-	modload		loader ;
-	COMMANDMENT_CA	call ;
+	modload		*lop ;		/* loader-object-pointer */
 	void		*obj ;		/* object pointer */
+	COMMANDMENT_CA	call ;
 	uint		magic ;
 	int		objsize ;
 	int		cursize ;
 } ;
+
+typedef	COMMANDMENT		commandment ;
+typedef	COMMANDMENT_CA		commandment_ca ;
+typedef	COMMANDMENT_CUR		commandment_cur ;
 
 EXTERNC_begin
 
@@ -74,7 +78,7 @@ extern int	commandment_read(commandment *,char *,int,int) noex ;
 extern int	commandment_get(commandment *,int,char *,int) noex ;
 extern int	commandment_curbegin(commandment *,commandment_cur *) noex ;
 extern int	commandment_curend(commandment *,commandment_cur *) noex ;
-extern int	commandment_enum(commandment *,commandment_cur *,
+extern int	commandment_curenum(commandment *,commandment_cur *,
 			uint *,char *,int) noex ;
 extern int	commandment_close(commandment *) noex ;
 

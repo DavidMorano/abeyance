@@ -1,4 +1,4 @@
-/* cmsghdr HEADER */
+/* conmsghdr HEADER */
 /* lang=C++20 */
 
 /* control-message-header */
@@ -27,7 +27,7 @@
 
 EXTERNC_begin
 
-extern int	cmsghdr_passed(CONMSGHDR *) noex ;
+extern int	conmsghdr_passed(CONMSGHDR *) noex ;
 
 EXTERNC_end
 

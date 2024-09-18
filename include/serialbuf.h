@@ -19,7 +19,6 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<limits.h>
 #include	<usystem.h>
 
 
