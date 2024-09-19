@@ -22,6 +22,8 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypaliases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 
 #include	<strlist.h>
 #include	<strlisthdr.h>
