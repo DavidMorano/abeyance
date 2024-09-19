@@ -9,14 +9,16 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
-#include	<localmisc.h>
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 
 
-#define	VOTDCHDR		struct votdchdr
-#define	VOTDCHDR_MAGICSTR	"VOTDC"
-#define	VOTDCHDR_MAGICLEN	sizeof(VOTDCHDR_MAGICSTR)
+#define	VOTDCHDR		struct votdchdr_head
 #define	VOTDCHDR_MAGICSIZE	16
+#define	VOTDCHDR_MAGICSTR	"VOTDC"
 #define	VOTDCHDR_VERSION	0
 #define	VOTDCHDR_IDLEN		20	/* front matter */
 
@@ -44,7 +46,7 @@ enum votdchdrhs {
 	votdchdrh_overlast
 } ;
 
-struct votdchdr {
+struct votdchdr_head {
 	uint		shmsize ;
 	uint		wtime ;
 	uint		atime ;

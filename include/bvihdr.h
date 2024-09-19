@@ -1,4 +1,8 @@
-/* bvihdr */
+/* bvihdr HEADER */
+/* lang=C20 */
+
+/* index for bible-verse file */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
@@ -11,25 +15,24 @@
 /* Copyright © 2008 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	BVIHDR_INCLUDE
-#define	BVIHDR_INCLUDE	1
+#define	BVIHDR_INCLUDE
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 
-#include	<sys/types.h>
 
-#include	<localmisc.h>
-
-
-#define	BVIHDR			struct bvihdr
-
+#define	BVIHDR			struct bvihdr_head
 #define	BVIHDR_MAGICSIZE	16
 #define	BVIHDR_MAGICSTR		"BIBLEVERSEINDEX"
-#define	BVIHDR_MAGICLEN		sizeof(BVIHDR_MAGICSTR)
 #define	BVIHDR_VERSION		0
 
 
-struct bvihdr {
+struct bvihdr_head {
 	uint		fsize ;
 	uint		wtime ;
 	uint		vioff ;
@@ -43,16 +46,15 @@ struct bvihdr {
 	uchar		vetu[4] ;
 } ;
 
+typedef	BVIHDR		bvihdr ;
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+EXTERNC_begin
 
-extern int bvihdr(BVIHDR *,int,char *,int) ;
+extern int	bvihdr_rd(bvihdr *,char *,int) noex ;
+extern int	bvihdr_wr(bvihdr *,cchar *,int) noex ;
 
-#ifdef	__cplusplus
-}
-#endif
+EXTERNC_end
+
 
 #endif /* BVIHDR_INCLUDE */
 

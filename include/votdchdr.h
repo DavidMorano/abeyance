@@ -4,18 +4,20 @@
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	VOTDCHDR_INCLUDE
-#define	VOTDCHDR_INCLUDE	1
+#define	VOTDCHDR_INCLUDE
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
-#include	<localmisc.h>
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 
 
-#define	VOTDCHDR		struct votdchdr
-#define	VOTDCHDR_MAGICSTR	"VOTDC"
-#define	VOTDCHDR_MAGICLEN	sizeof(VOTDCHDR_MAGICSTR)
+#define	VOTDCHDR		struct votdchdr_head
 #define	VOTDCHDR_MAGICSIZE	16
+#define	VOTDCHDR_MAGICSTR	"VOTDC"
 #define	VOTDCHDR_VERSION	0
 #define	VOTDCHDR_IDLEN		20	/* front matter */
 
@@ -43,7 +45,7 @@ enum votdchdrhs {
 	votdchdrh_overlast
 } ;
 
-struct votdchdr {
+struct votdchdr_head {
 	uint		shmsize ;
 	uint		wtime ;
 	uint		atime ;
@@ -67,15 +69,14 @@ struct votdchdr {
 } ;
 
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+typedef	VOTDCHDR	votdchdr ;
+
+EXTERNC_begin
 
 extern int votdchdr(VOTDCHDR *,int,char *,int) ;
 
-#ifdef	__cplusplus
-}
-#endif
+EXTERNC_end
+
 
 #endif /* VOTDCHDR_INCLUDE */
 

@@ -1,30 +1,31 @@
-/* bpihdr */
+/* bpihdr HEADER */
+/* lang=C20 */
 
 /* Bible-Paragraph-Index */
+/* version %I% last-modified %G% */
 
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	BPIHDR_INCLUDE
-#define	BPIHDR_INCLUDE	1
+#define	BPIHDR_INCLUDE
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 
-#include	<sys/types.h>
 
-#include	<localmisc.h>
-
-
-#define	BPIHDR			struct bpihdr
-
+#define	BPIHDR			struct bpihdr_head
 #define	BPIHDR_MAGICSIZE	16
 #define	BPIHDR_MAGICSTR		"BIBLEPARAINDEX"
-#define	BPIHDR_MAGICLEN		sizeof(BPIHDR_MAGICSTR)
 #define	BPIHDR_VERSION		0
 
 
-struct bpihdr {
+struct bpihdr_head {
 	uint		fsize ;
 	uint		wtime ;
 	uint		vioff ;
@@ -36,16 +37,15 @@ struct bpihdr {
 	uchar		vetu[4] ;
 } ;
 
+typedef	BPIHDR		bpihdr ;
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+EXTERNC_begin
 
-extern int bpihdr(BPIHDR *,int,char *,int) ;
+extern int	bpihdr_rd(bpihdr *,char *,int) noex ;
+extern int	bpihdr_wr(bpihdr *,cchar *,int) noex ;
 
-#ifdef	__cplusplus
-}
-#endif
+EXTERNC_end
+
 
 #endif /* BPIHDR_INCLUDE */
 

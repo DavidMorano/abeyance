@@ -12,15 +12,16 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<utypedefs.h>
 #include	<clanguage.h>
-#include	<localmisc.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 
 
-#define	PWIHDR			struct pwihdr
+#define	PWIHDR			struct pwihdr_head
 #define	PWIHDR_MAGICSIZE	16
 #define	PWIHDR_MAGICSTR		"IPASSWD"
-#define	PWIHDR_MAGICLEN		sizeof(PWIHDR_MAGICSTR)
 #define	PWIHDR_VERSION		0
 #define	PWIHDR_TYPE		0
 
@@ -45,7 +46,7 @@ enum pwihdrs {
 	pwihdr_overlast
 } ;
 
-struct pwihdr {
+struct pwihdr_head {
 	uint		fsize ;
 	uint		wrtime ;
 	uint		wrcount ;
@@ -64,6 +65,15 @@ struct pwihdr {
 	uint		idxun ;
 	uchar		vetu[4] ;
 } ;
+
+typedef PWIHDR		pwihdr ;
+
+EXTERNC_begin
+
+extern int	pwihdr_rd(pwihdr *,char *,int) noex ;
+extern int	pwihdr_wr(pwihdr *,cchar *,int) noex ;
+
+EXTERNC_end
 
 
 #endif /* PWIHDR_INCLUDE */

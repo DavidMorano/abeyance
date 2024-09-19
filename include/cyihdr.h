@@ -1,28 +1,31 @@
-/* cyihdr */
+/* cyihdr HEADER */
+/* lang=C20 */
+
+/* text-index for CYI-INDEX file */
+/* version %I% last-modified %G% */
 
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	CYIHDR_INCLUDE
-#define	CYIHDR_INCLUDE	1
+#define	CYIHDR_INCLUDE
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 
-#include	<sys/types.h>
 
-#include	<localmisc.h>
-
-
-#define	CYIHDR			struct cyihdr
-
-#define	CYIHDR_MAGICSTR		"CALENDARINDEX"
-#define	CYIHDR_MAGICLEN		sizeof(CYIHDR_MAGICSTR)
+#define	CYIHDR			struct cyihdr_head
 #define	CYIHDR_MAGICSIZE	16
+#define	CYIHDR_MAGICSTR		"CALENDARINDEX"
 #define	CYIHDR_VERSION		0
 
 
-struct cyihdr {
+struct cyihdr_head {
 	uint		fsize ;
 	uint		wtime ;
 	uint		diroff ;
@@ -37,16 +40,15 @@ struct cyihdr {
 	uchar		vetu[4] ;
 } ;
 
+typedef	CYIHDR		cyihdr ;
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+EXTERNC_begin
 
-extern int cyihdr(CYIHDR *,int,char *,int) ;
+extern int cyihdr_rd(cyihdr *,char *,int) noex ;
+extern int cyihdr_wr(cyihdr *,cchar *,int) noex ;
 
-#ifdef	__cplusplus
-}
-#endif
+EXTERNC_end
+
 
 #endif /* CYIHDR_INCLUDE */
 

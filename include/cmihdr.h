@@ -1,6 +1,9 @@
 /* cmihdr HEADER */
 /* lang=C20 */
 
+/* index for Commandment-entry file */
+/* version %I% last-modified %G% */
+
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
@@ -12,13 +15,13 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
 #include	<usysrets.h>
 
 
 #define	CMIHDR			struct cmihdr_head
-#define	CMIHDR_MAGICSTR		"CMDINDEX"
-#define	CMIHDR_MAGICLEN		sizeof(CMIHDR_MAGICSTR)
 #define	CMIHDR_MAGICSIZE	16
+#define	CMIHDR_MAGICSTR		"CMDINDEX"
 #define	CMIHDR_VERSION		0
 
 

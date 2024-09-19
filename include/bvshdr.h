@@ -1,4 +1,8 @@
-/* bvshdr (Bible Verse Structure) */
+/* bvshdr HEADER (Bible Verse Structure) */
+/* lang=C20 */
+
+/* index for Bible-Verse-Structure (BVS) file */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
@@ -11,25 +15,24 @@
 /* Copyright © 2008 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	BVSHDR_INCLUDE
-#define	BVSHDR_INCLUDE	1
+#define	BVSHDR_INCLUDE
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 
-#include	<sys/types.h>
 
-#include	<localmisc.h>
-
-
-#define	BVSHDR			struct bvshdr
-
+#define	BVSHDR			struct bvshdr_head
 #define	BVSHDR_MAGICSIZE	16
 #define	BVSHDR_MAGICSTR		"BVS"
-#define	BVSHDR_MAGICLEN		sizeof(BVSHDR_MAGICSTR)
 #define	BVSHDR_VERSION		0
 
 
-struct bvshdr {
+struct bvshdr_head {
 	uint		fsize ;		/* file-size */
 	uint		wtime ;		/* write-time */
 	uint		nverses ;	/* total verses */
@@ -42,16 +45,15 @@ struct bvshdr {
 	uchar		vetu[4] ;
 } ;
 
+typedef	BVSHDR		bvshdr ;
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+EXTERNC_begin
 
-extern int bvshdr(BVSHDR *,int,char *,int) ;
+extern int	bvshdr_rd(bvshdr *,char *,int) noex ;
+extern int	bvshdr_wr(bvshdr *,char *,int) noex ;
 
-#ifdef	__cplusplus
-}
-#endif
+EXTERNC_end
+
 
 #endif /* BVSHDR_INCLUDE */
 
