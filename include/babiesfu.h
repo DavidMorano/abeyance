@@ -1,10 +1,11 @@
-/* babiesfu */
+/* babieshdr HEADER */
+/* lang=C20 */
 
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
-#ifndef	BABIESFU_INCLUDE
-#define	BABIESFU_INCLUDE
+#ifndef	BABIESHDR_INCLUDE
+#define	BABIESHDR_INCLUDE
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
@@ -15,29 +16,28 @@
 #include	<usysrets.h>
 
 
-#define	BABIESFU		struct babiesfu
-#define	BABIESFU_MAGICSTR	"BABIES"
-#define	BABIESFU_MAGICLEN	sizeof(BABIESFU_MAGICSTR)
-#define	BABIESFU_MAGICSIZE	16
-#define	BABIESFU_VERSION	0
-#define	BABIESFU_IDLEN		20
+#define	BABIESHDR		struct babieshdr_head
+#define	BABIESHDR_MAGICSIZE	16
+#define	BABIESHDR_MAGICSTR	"BABIES"
+#define	BABIESHDR_VERSION	0
+#define	BABIESHDR_IDLEN		20
 
 
-enum babiesfuhs {
-	babiesfuh_shmsize,
-	babiesfuh_dbsize,
-	babiesfuh_dbtime,
-	babiesfuh_wtime,
-	babiesfuh_atime,
-	babiesfuh_acount,		/* access count */
-	babiesfuh_muoff,
-	babiesfuh_musize,
-	babiesfuh_btoff,
-	babiesfuh_btlen,
-	babiesfuh_overlast
+enum babieshdrhs {
+	babieshdrh_shmsize,
+	babieshdrh_dbsize,
+	babieshdrh_dbtime,
+	babieshdrh_wtime,
+	babieshdrh_atime,
+	babieshdrh_acount,		/* access count */
+	babieshdrh_muoff,
+	babieshdrh_musize,
+	babieshdrh_btoff,
+	babieshdrh_btlen,
+	babieshdrh_overlast
 } ;
 
-struct babiesfu {
+struct babieshdr_head {
 	uint		shmsize ;
 	uint		dbsize ;
 	uint		dbtime ;
@@ -51,17 +51,16 @@ struct babiesfu {
 	uchar		vetu[4] ;
 } ;
 
+typedef	BABIESHDR	babieshdr ;
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+EXTERNC_begin
 
-extern int babiesfu(BABIESFU *,int,char *,int) ;
+extern int	babieshdr_rd(babieshdr *,char *,int) noex ;
+extern int	babieshdr_wr(babieshdr *,cchar *,int) noex ;
 
-#ifdef	__cplusplus
-}
-#endif
+EXTERNC_end
 
-#endif /* BABIESFU_INCLUDE */
+
+#endif /* BABIESHDR_INCLUDE */
 
 
