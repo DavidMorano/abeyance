@@ -23,6 +23,7 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
 
 
 #if	(! defined(OSNAME_SunOS)) || (OSNAME_SunOS == 0)

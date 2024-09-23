@@ -22,6 +22,7 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
 #include	<usysrets.h>
 
 
@@ -34,6 +35,7 @@ extern int	getgid_group(cchar *,int) noex ;
 extern int	getgid_def(cchar *,gid_t) noex ;
 extern int	getpjid_name(cchar *,int) noex ;
 extern int	getpjid_proj(cchar *,int) noex ;
+extern int	getpjid_def(cchar *,projid_t) noex ;
 
 EXTERNC_end
 

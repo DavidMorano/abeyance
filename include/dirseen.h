@@ -26,7 +26,6 @@
 #include	<usysrets.h>
 #include	<usysdefs.h>
 #include	<usyscalls.h>
-#include	<usystem.h>
 #include	<vecobj.h>
 
 

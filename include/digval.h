@@ -22,13 +22,18 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 
 
 EXTERNC_begin
 
-extern int hexval(int) noex ;
-extern int decval(int) noex ;
-extern int digval(int) noex ;
+extern int	digval(int) noex ;
+
+extern int	digvalbin(int) noex ;
+extern int	digvaloct(int) noex ;
+extern int	digvaldec(int) noex ;
+extern int	digvalhex(int) noex ;
 
 EXTERNC_end
 
