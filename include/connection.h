@@ -1,5 +1,5 @@
-/* connection */
-
+/* connection HEADER */
+/* lang=C20 */
 
 /* manipulate INET connection information */
 /* version %I% last-modified %G% */
