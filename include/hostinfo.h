@@ -79,8 +79,8 @@ extern int hostinfo_geteffective(hostinfo *,cchar **) noex ;
 extern int hostinfo_getcanonical(hostinfo *,cchar **) noex ;
 extern int hostinfo_curbegin(hostinfo *,hostinfo_cur *) noex ;
 extern int hostinfo_curend(hostinfo *,hostinfo_cur *) noex ;
-extern int hostinfo_enumname(hostinfo *,hostinfo_cur *,cchar **) noex ;
-extern int hostinfo_enumaddr(hostinfo *,hostinfo_cur *,const uchar **) noex ;
+extern int hostinfo_curenumname(hostinfo *,hostinfo_cur *,cchar **) noex ;
+extern int hostinfo_curenumaddr(hostinfo *,hostinfo_cur *,const uchar **) noex ;
 extern int hostinfo_finish(hostinfo *) noex ;
 
 EXTERNC_end
