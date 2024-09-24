@@ -16,11 +16,12 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 #include	<ptm.h>
 #include	<lockrw.h>
 #include	<paramfile.h>
 #include	<vechand.h>
-#include	<localmisc.h>
 
 
 #define	STATMSG_MAGIC	0x75648942

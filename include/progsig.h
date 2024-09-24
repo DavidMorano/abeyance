@@ -23,6 +23,8 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 
 
 #define	PROGSIG_NENTS	30

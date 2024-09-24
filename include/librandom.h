@@ -15,6 +15,8 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 
 
 #define	LIBRANDOM		struct librandom_head
