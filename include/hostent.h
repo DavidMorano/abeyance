@@ -39,8 +39,8 @@ extern int hostent_getaf(HOSTENT *) noex ;
 extern int hostent_getalen(HOSTENT *) noex ;
 extern int hostent_curbegin(HOSTENT *,hostent_cur *) noex ;
 extern int hostent_curend(HOSTENT *,hostent_cur *) noex ;
-extern int hostent_enumname(HOSTENT *,hostent_cur *,cchar **) noex ;
-extern int hostent_enumaddr(HOSTENT *,hostent_cur *,const uchar **) noex ;
+extern int hostent_curenumname(HOSTENT *,hostent_cur *,cchar **) noex ;
+extern int hostent_curenumaddr(HOSTENT *,hostent_cur *,const uchar **) noex ;
 extern int hostent_size(HOSTENT *) noex ;
 extern int hostent_load(HOSTENT *,char *,int,const HOSTENT *) noex ;
 
