@@ -19,16 +19,16 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 #include	<hdb.h>
-#include	<localmisc.h>
 
 
 #define	NAMECACHE		struct namecache_head
 #define	NAMECACHE_ST		struct namecache_statistics
-
 #define	NAMECACHE_MAGIC		0x98643167
 #define	NAMECACHE_DEFENTS	20
 #define	NAMECACHE_DEFMAX	21

@@ -58,8 +58,8 @@ struct paramfile_head {
 	vecobj		*entsp ;	/* parameter entries */
 	varsub		*defp ;		/* defines */
 	varsub		*envp ;		/* environment-variables */
-	PARAMFILE_FL	f ;
 	time_t		ti_check ;	/* time last checked */
+	PARAMFILE_FL	f ;
 	uint		magic ;
 	int		llen ;
 	int		flen ;

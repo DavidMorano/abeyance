@@ -19,7 +19,7 @@
 
 
 #define	PWCACHE			struct pwcache_head
-#define	PWCACHE_ST		struct pwcache_sd
+#define	PWCACHE_ST		struct pwcache_stats
 
 #define	PWCACHE_MAGIC		0x98643168
 #define	PWCACHE_DEFENTS		10	/* default entries */
@@ -27,7 +27,7 @@
 #define	PWCACHE_DEFTTL		600	/* default time-to-live */
 
 
-struct pwcache_sd {
+struct pwcache_stats {
 	uint		nentries ;		/* number of current entries */
 	uint		total ;			/* accesses */
 	uint		refreshes ;		/* refreshes */
