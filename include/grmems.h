@@ -54,7 +54,7 @@ struct grmems_statdata {
 struct grmems_head {
 	recarr		*recs ;		/* linear array (of recs) */
 	pq		*lrup ;		/* least-recently-used */
-	cvoid		*usergids ;
+	void		*usergids ;
 	void		*mapdata ;
 	size_t		mapsize ;
 	time_t		ti_check ;
