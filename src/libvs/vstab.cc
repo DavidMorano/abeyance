@@ -1,17 +1,14 @@
-/* vstab */
+/* vstab SUPPORT */
+/* lang=C++20 */
 
-/* Virtual-System file-descriptor table operations */
-
-
-#define	CF_DEBUGS	0		/* non-switchable debug print-outs */
+/* Vector-String table operations */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
 
 	= 1998-12-01, David A­D­ Morano
-
 	Module was originally written.
-
 
 */
 
@@ -19,21 +16,18 @@
 
 /*******************************************************************************
 
-	This object manages the process FD table.
+	Name:
+	vstab
 
+	Description:
+	This object manages a Vector-String table.
 
 *******************************************************************************/
 
-
-#define	VSTAB_MASTER	1
-
-
-#include	<envstandards.h>
-
-#include	<sys/types.h>
-#include	<stdlib.h>
-#include	<string.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>		/* |nullptr_t(3c++)| */
+#include	<cstdlib>
+#include	<cstring>
 #include	<usystem.h>
 #include	<localmisc.h>
 
@@ -48,36 +42,33 @@
 /* external subroutines */
 
 
-/* forward referecens */
+/* external variables */
 
-int		vstab_get(VSTAB *,int,char **) ;
+
+/* local structures */
+
+
+/* forward referecens */
 
 static int	defaultcmp() ;
 
 
+/* local variables */
+
+
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int vstab_start(vsp,osize)
-VSTAB	*vsp ;
-int	osize ;
-{
+int vstab_start(vstab *vsp,int osize) noex {
 	int	rs ;
 	int	n ;
 	int	size ;
-
 	void	*np ;
 
-
-	if (vsp == NULL)
-	    return SR_FAULT ;
-
-#if	CF_DEBUGS
-	debugprintf("vstab_init: ent osize=%d\n",osize) ;
-#endif
-
+	if (vsp == NULL) return SR_FAULT ;
 	    n = VSTAB_DEFENTS ;
-
 	vsp->va = NULL ;
 	vsp->c = vsp->i = 0 ;
 	size = n * sizeof(void **) ;
@@ -92,32 +83,16 @@ int	osize ;
 }
 /* end subroutine (vstab_start) */
 
-
-/* free up the entire vector string data structure object */
-int vstab_finish(vsp)
-VSTAB	*vsp ;
-{
+int vstab_finish(vstab *vsp) noex {
 	int	rs = SR_OK ;
 	int	rs1 ;
 	int	i ;
 
-#if	CF_DEBUGS
-	debugprintf("vstab_free: ent\n") ;
-#endif
-
 	if (vsp == NULL)
 	    return SR_FAULT ;
 
-#if	CF_DEBUGS
-	debugprintf("vstab_free: continuing, c=%d i=%d\n",vsp->c,vsp->i) ;
-#endif
-
 	if (vsp->va == NULL)
 		return SR_NOTOPEN ;
-
-#if	CF_DEBUGS
-	    debugprintf("vstab_free: about to loop\n") ;
-#endif
 
 	for (i = 0 ; i < vsp->i ; i += 1) {
 	    if ((vsp->va)[i] != NULL) {
@@ -128,17 +103,9 @@ VSTAB	*vsp ;
 
 /* free the pointer vector array itself */
 
-#if	CF_DEBUGS
-	    debugprintf("vstab_free: free array\n") ;
-#endif
-
 	rs1 = uc_free(vsp->va) ;
 	if (rs >= 0) rs = rs1 ;
 	vsp->va = NULL ;
-
-#if	CF_DEBUGS
-	debugprintf("vstab_free: exiting\n") ;
-#endif
 
 	vsp->i = 0 ;
 	vsp->n = 0 ;
@@ -146,21 +113,13 @@ VSTAB	*vsp ;
 }
 /* end subroutine (vstab_finish) */
 
+int vstab_audit(vstab *vhp) noex {
+	int		rs ;
+	int		i ; /* used-afterwards */
+	cchar	*cp ;
 
-int vstab_audit(vhp)
-VSTAB	*vhp ;
-{
-	int	rs ;
-	int	i ;
-
-	const char	*cp ;
-
-
-	if (vhp == NULL)
-	    return SR_FAULT ;
-
-	if (vhp->va == NULL)
-	    return SR_NOTOPEN ;
+	if (vhp == NULL) return SR_FAULT ;
+	if (vhp->va == NULL) return SR_NOTOPEN ;
 
 	for (i = 0 ; i < vhp->i ; i += 1) {
 	    if (vhp->va[i] != NULL) {
@@ -184,14 +143,8 @@ void	**rpp ;
 	int	rs ;
 	int	i, nn ;
 	int	size ;
-
 	void	**npp ;
 	void	*np ;
-
-
-#if	CF_DEBUGS
-	debugprintf("vstab_getfd: ent\n") ;
-#endif
 
 	if (vsp == NULL)
 	    return SR_FAULT ;
@@ -201,10 +154,6 @@ void	**rpp ;
 
 	if (fd < 0)
 	    return SR_INVALID ;
-
-#if	CF_DEBUGS
-	debugprintf("vstab_getfd: SR_OK\n") ;
-#endif
 
 /* do we have to grow the vector array ? */
 
@@ -237,14 +186,9 @@ void	**rpp ;
 		*rpp = np ;
 	} /* end if (ok) */
 
-#if	CF_DEBUGS
-	debugprintf("vstab_getfd: ret rs=%d\n",rs) ;
-#endif
-
 	return rs ;
 }
 /* end subroutine (vstab_getfd) */
-
 
 int vstab_del(vsp,fd)
 VSTAB	*vsp ;
