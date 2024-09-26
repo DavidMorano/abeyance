@@ -20,8 +20,11 @@
 
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<sys/types.h>
-#include	<utypedefs.h>
 #include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 #include	<vechand.h>
 #include	<buffer.h>
 #include	<bfile.h>
@@ -76,9 +79,9 @@ extern int	varsub_addva(varsub *,mainv) noex ;
 extern int	varsub_addquick(varsub *,cchar *,int,cchar *,int) noex ;
 extern int	varsub_addvaquick(varsub *,cchar **) noex ;
 extern int	varsub_curbegin(varsub *,varsub_cur *) noex ;
-extern int	varsub_enum(varsub *,varsub_cur *,cchar **,cchar **) noex ;
+extern int	varsub_curenum(varsub *,varsub_cur *,cchar **,cchar **) noex ;
 extern int	varsub_curend(varsub *,varsub_cur *) noex ;
-extern int	varsub_del(varsub *,const char *,int) noex ;
+extern int	varsub_del(varsub *,cchar *,int) noex ;
 extern int	varsub_fetch(varsub *,cchar *,int,cchar **) noex ;
 extern int	varsub_exp(varsub *,char *,int,cchar *,int) noex ;
 extern int	varsub_expbuf(varsub *,buffer *,cchar *,int) noex ;
