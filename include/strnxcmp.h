@@ -19,16 +19,18 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<string.h>		/* |strncmp(3c)| */
+#include	<string.h>		/* |strncmp(3c)| for inline below */
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
 
 
 EXTERNC_begin
 
 extern int strnfoldcmp(cchar *,cchar *,int) noex ;
 extern int strnkeycmp(cchar *,cchar *,int) noex ;
+extern int strnvalcmp(cchar *,cchar *,int) noex ;
 extern int strnleadcmp(cchar *,cchar *,int) noex ;
 extern int strnncmp(cchar *,int,cchar *,int) noex ;
 extern int strnndictcmp(cchar *,int,cchar *,int) noex ;
