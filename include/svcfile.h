@@ -27,14 +27,10 @@
 #include	<localmisc.h>		/* |MAXHOSTNAMELEN| */
 
 
-/* object defines */
 #define	SVCFILE_MAGIC		0x31415926
 #define	SVCFILE			struct svcfile_head
 #define	SVCFILE_CUR		struct svcfile_cursor
 #define	SVCFILE_ENT		struct svcfile_entry
-
-#define	SVCFILE_SVCLEN		MAX(MAXHOSTNAMELEN,1024)
-#define	SVCFILE_ENTLEN		2048
 
 
 struct svcfile_cursor {

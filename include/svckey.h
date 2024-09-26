@@ -1,6 +1,9 @@
 /* svckey HEADER */
 /* lang=C++20 */
 
+/* service key data-structure-conversion access */
+/* version %I% last-modified %G% */
+
 
 /* Copyright © 2008 David A­D­ Morano.  All rights reserved. */
 
