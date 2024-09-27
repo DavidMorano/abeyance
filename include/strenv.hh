@@ -16,6 +16,10 @@
 
 /*******************************************************************************
 
+	Name:
+	strenv
+
+	Description:
 	Recommended usage within source code:
 		#include	<strenv.hh>
 		strenv	strpath(strenv_path) ;

@@ -16,6 +16,10 @@
 
 /*******************************************************************************
 
+	Name:
+	strlibval
+
+	Description:
 	Recommended usage within source code:
 		#include	<strlibval.hh>
 		strlibval	strpath(strlibval_path) ;

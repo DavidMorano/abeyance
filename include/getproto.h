@@ -32,6 +32,7 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
 #include	<usysrets.h>
 
 #include	<getprotofamily.h>
@@ -39,7 +40,7 @@
 
 EXTERNC_begin
 
-extern int getproto_name(cchar *,int) noex ;
+extern int	getproto_name(cchar *,int) noex ;
 
 EXTERNC_end
 

@@ -22,12 +22,13 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
 #include	<usysrets.h>
 
 
 EXTERNC_begin
 
-extern int getuserterms(vecstr *,cchar *) noex ;
+extern int	getuserterms(vecstr *,cchar *) noex ;
 
 EXTERNC_end
 
