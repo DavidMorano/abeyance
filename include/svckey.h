@@ -41,7 +41,7 @@ enum svckeys {
 } ;
 
 struct svckey_head {
-	cchar		*file ;
+	cchar		*file ;		/* data-file */
 	cchar		*pass ;		/* pass-file (pipe) */
 	cchar		*so ;		/* shared object */
 	cchar		*p ;		/* program (execfname) */

@@ -1,9 +1,17 @@
 /* svcfile HEADER */
 /* lang=C++20 */
 
-/* service file manager */
+/* service- file manager */
 /* version %I% last-modified %G% */
 
+
+/* revision history:
+
+	- 2004-05-25, David A­D­ Morano
+	This subroutine was adopted for use as a service-table file
+	processor.
+
+*/
 
 /* Copyright © 2004 David A­D­ Morano.  All rights reserved. */
 
