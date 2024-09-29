@@ -20,6 +20,10 @@
 
 /*******************************************************************************
 
+	Name:
+	fieldterms
+
+	Description:
 	This is a classic, ported forward from the old VAX-11/780
 	days.  This was translated from VAX assembly language.
 
@@ -34,6 +38,7 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
 #include	<usysrets.h>
 
 
