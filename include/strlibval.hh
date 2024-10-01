@@ -36,7 +36,6 @@
 
 #include	<envstandards.h>	/* first to configure */
 #include	<usystem.h>
-#include	<localmisc.h>
 
 
 enum strlibvals {

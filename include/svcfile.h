@@ -42,14 +42,14 @@
 
 
 struct svcfile_cursor {
-	hdb_cur		ec ;
+	hdb_cur		*ecp ;		/* memory-allocated */
 	int		i ;
 } ;
 
 struct svcfile_head {
-	vecobj		files ;		/* files */
-	vecobj		svcnames ;
-	hdb		entries ;
+	vecobj		*flp ;		/* file-list-pointer */
+	vecobj		*slp ;		/* service-list-pointer */
+	hdb		*elp ;		/* entry-list-pointer */
 	time_t		checktime ;
 	uint		magic ;
 	int		ncursors ;
@@ -73,8 +73,8 @@ extern int svcfile_open(svcfile *,cchar *) noex ;
 extern int svcfile_fileadd(svcfile *,cchar *) noex ;
 extern int svcfile_curbegin(svcfile *,svcfile_cur *) noex ;
 extern int svcfile_curend(svcfile *,svcfile_cur *) noex ;
-extern int svcfile_enumsvc(svcfile *,svcfile_cur *,char *,int) noex ;
-extern int svcfile_enum(svcfile *,svcfile_cur *,
+extern int svcfile_curenumsvc(svcfile *,svcfile_cur *,char *,int) noex ;
+extern int svcfile_curenum(svcfile *,svcfile_cur *,
 		svcfile_ent *,char *,int) noex ;
 extern int svcfile_fetch(svcfile *,cchar *,svcfile_cur *,
 		svcfile_ent *,char *,int) noex ;
