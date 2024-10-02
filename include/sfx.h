@@ -1,6 +1,9 @@
 /* sfx HEADER */
 /* lang=C20 */
 
+/* various string-find operations */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
