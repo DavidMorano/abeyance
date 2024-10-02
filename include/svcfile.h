@@ -32,7 +32,6 @@
 #include	<hdb.h>
 #include	<vecobj.h>
 #include	<vechand.h>
-#include	<localmisc.h>		/* |MAXHOSTNAMELEN| */
 
 
 #define	SVCFILE_MAGIC		0x31415926
