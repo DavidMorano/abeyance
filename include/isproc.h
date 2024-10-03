@@ -1,4 +1,4 @@
-/* isproc HEADER */
+/* ucprochave HEADER */
 /* lang=C20 */
 
 /* is a proceess (given by a PID) in the system? */
@@ -14,25 +14,25 @@
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
-#ifndef	ISPROC_INCLUDE
-#define	ISPROC_INCLUDE
+#ifndef	UCHAVEPEOC_INCLUDE
+#define	UCHAVEPEOC_INCLUDE
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
+#include	<usystem.h>
 
 
 EXTERNC_begin
 
-extern int	isproc(pid_t) noex ;
+extern int	uc_prochave(pid_t) noex ;
+
+static inline int isproc(pid_t pid) noex {
+	return uc_prochave(pid) ;
+}
 
 EXTERNC_end
 
 
-#endif /* ISPROC_INCLUDE */
+#endif /* UCHAVEPEOC_INCLUDE */
 
 
