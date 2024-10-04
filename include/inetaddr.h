@@ -12,7 +12,6 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
 #include	<netinet/in.h>
 #include	<netdb.h>
 #include	<clanguage.h>
@@ -25,12 +24,48 @@
 #define	INETADDR	union inetaddr_head
 
 
-union inetaddr_head {
-	struct in_addr	a ;
-	char		straddr[sizeof(struct in_addr)] ;
+struct inetaddr_head {
+	union {
+	    struct in_addr	a ;
+	    char		straddr[sizeof(struct in_addr)] ;
+	} ;
 } ;
 
+
+#ifdef	__cplusplus
+enum inetaddrmems {
+	inetaddrmem_finish,
+	inetaddrmem_overlast
+} ;
+struct inetaddr ;
+struct inetaddr_co {
+	inetaddr	*op = nullptr ;
+	int		w = -1 ;
+	void operator () (inetaddr *p,int m) noex {
+	    op = p ;
+	    w = m ;
+	} ;
+	operator int () noex ;
+	int operator () () noex { 
+	    return operator int () ;
+	} ;
+} ; /* end struct (inetaddr_co) */
+struct inetaddr : inetaddr_head {
+	inetaddr_co	finish ;
+	inetaddr() noex {
+	    finish(this,inetaddrmem_finish) ;
+	} ;
+	inetaddr(const inetaddr &) = delete ;
+	inetaddr &operator = (const inetaddr &) = delete ;
+	int start(cvoid *) noex ;
+	int startstr(cchar *,int = -1) noex ;
+	int startdot(cchar *,int = -1) noex ;
+	int gethexaddr(char *,int) noex ;
+	int getdotaddr(char *,int) noex ;
+} ; /* end struct (inetaddr) */
+#else /* __cplusplus */
 typedef INETADDR	inetaddr ;
+#endif /* __cplusplus */
 
 EXTERNC_begin
 

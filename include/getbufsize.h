@@ -34,7 +34,7 @@
 #include	<usysdefs.h>
 #include	<usysrets.h>
 
-#include	<getbufsizenames.h>
+#include	<bufsizenames.h>
 
 
 #define	GETBUFSIZE_CONF		"/etc/default/bufsize"

@@ -17,7 +17,7 @@
 #include	<utypealiases.h>
 #include	<usysdefs.h>
 #include	<usysrets.h>
-#include	<svcfile.h>
+#include	<svcfile.h>		/* for type |svcfile_ent| */
 
 
 #define	SVCKEY		struct svckey_head

@@ -56,19 +56,6 @@
 #include	<pwd.h>
 #include	<grp.h>
 
-#if	defined(SYSHAS_STREAMS) && (SYSHAS_STREAMS > 0)
-#endif
-
-#if	defined(SYSHAS_XTI) && (SYSHAS_XTI > 0)
-#include	<xti.h>
-#endif
-
-#if	defined(OSNAME_SunOS) && (OSNAME_SunOS > 0)
-#include	<shadow.h>
-#include	<project.h>
-#include	<user_attr.h>
-#endif
-
 #include	<stdintx.h>
 #include	<clanguage.h>
 #include	<usysdefs.h>
@@ -265,6 +252,14 @@
 
 #ifndef	INADDR4
 #define	INADDR4		struct in_addr
+#endif
+
+#ifndef	INADDR6
+#define	INADDR6		struct in6_addr
+#endif
+
+#ifndef	INADDRX
+#define	INADDRX		struct in4in6_addr
 #endif
 
 /* UTMPX */
