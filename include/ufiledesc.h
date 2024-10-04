@@ -106,6 +106,10 @@ extern int u_write(int,cvoid *,int) noex ;
 extern int u_writev(int,CIOVEC *,int) noex ;
 extern int u_getdents(int,dirent_t *,int) noex ;
 
+/* special aliases */
+extern int u_sockaddrrem(int,void *,int *) noex ;
+extern int u_sockaddrloc(int,void *,int *) noex ;
+
 static inline int u_seek(int fd,off_t wo,int w) noex {
 	return u_seeko(fd,wo,w,nullptr) ;
 }
