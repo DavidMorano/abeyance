@@ -1,11 +1,8 @@
-/* UNFINISHED */
-/* gethostaddr */
+/* gethostaddr SUPPORT (UNFINISHED) */
+/* lang=C++20 */
 
 /* subroutine to get a host INET address */
 /* version %I% last-modified %G% */
-
-
-#define	CF_DEBUGS	0		/* compile-time debugging */
 
 
 /* revision history:
@@ -19,20 +16,15 @@
 
 /*******************************************************************************
 
+	Name:
+	gethostaddr
+
 	Synopsis:
-
-	int gethostaddr(name,hep,hostbuf,buflen)
-	char		name[] ;
-	struct hostent	*hep ;
-	char		hostbuf[] ;
-	int		buflen ;
-
+	int gethostaddr(HE *hep,char *hebuf,int helen,cc *name) noex
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/socket.h>
@@ -40,11 +32,12 @@
 #include	<arpa/inet.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<cstring>
 #include	<netdb.h>
-
 #include	<usystem.h>
+#include	<getxname.h>
 #include	<localmisc.h>
 
 
@@ -56,18 +49,6 @@
 
 /* external subroutines */
 
-extern int	getnodename(char *,int) ;
-
-
-/* forward references */
-
-
-/* external variables */
-
-#if	(! GETHOSTADDR_SYSV)
-extern int	h_errno ;
-#endif
-
 
 /* external variables */
 
@@ -75,16 +56,19 @@ extern int	h_errno ;
 /* local structures */
 
 
+/* forward references */
+
+
+/* local structures */
+
+
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int gethostaddr(name,hep,hostbuf,hostlen)
-const char	name[] ;
-struct hostent	*hep ;
-char		hostbuf[] ;
-int		hostlen ;
-{
-	struct hostent	he, *lp ;
+int gethostaddr(ucentho *hep,char *hebuf,helen,cc *name) noex {
+	hostent		he, *lp ;
 
 	int	rs ;
 
