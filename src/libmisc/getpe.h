@@ -1,31 +1,38 @@
-/* getpr HEADER */
-/* lang=C20 */
+/* getpe */
 
 /* get protocol entry */
-/* version %I% last-modified %G% */
 
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
-#ifndef	GETPR_INCLUDE
-#define	GETPR_INCLUDE
+#ifndef	GETPE_INCLUDE
+#define	GETPE_INCLUDE	1
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<usystem.h>
+
+#include	<sys/types.h>
+#include	<netdb.h>
 
 
-EXTERNC_begin
+#if	(! defined(GETPE_MASTER)) || (GETPE_MASTER == 0)
 
-extern int getpr_begin(int) noex ;
-extern int getpr_ent(ucentpr *,char *,int) noex ;
-extern int getpr_name(ucentpr *,char *,int,cchar *) noex ;
-extern int getpr_num(ucentpr *,char *,int,int) noex ;
-extern int getpr_end() noex ;
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
-EXTERNC_end
+extern int getpe_begin(int) ;
+extern int getpe_ent(struct protoent *,char *,int) ;
+extern int getpe_end() ;
+extern int getpe_name(struct protoent *,char *,int,const char *) ;
+extern int getpe_num(struct protoent *,char *,int,int) ;
 
+#ifdef	__cplusplus
+}
+#endif
 
-#endif /* GETPR_INCLUDE */
+#endif /* GETPE_MASTER */
+
+#endif /* GETPE_INCLUDE */
 
 

@@ -261,7 +261,7 @@ static int get_tmpx(char *rbuf,int rlen,pid_t sid,int type)
 	    }
 #else /* CF_FETCHPID
 	    if ((rs = tmpx_curbegin(&db,&cur)) >= 0) {
-	        while ((rs = tmpx_enum(&db,&cur,&e)) >= 0) {
+	        while ((rs = tmpx_curenum(&db,&cur,&e)) >= 0) {
 	            if ((e.ut_type == TMPX_TUSERPROC) &&
 	                (e.ut_pid == sid))
 	                break ;

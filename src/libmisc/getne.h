@@ -1,31 +1,38 @@
-/* getnw HEADER */
-/* lang=C20 */
+/* getne */
 
 /* get protocol entry */
-/* version %I% last-modified %G% */
 
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
-#ifndef	GETNW_INCLUDE
-#define	GETNW_INCLUDE
+#ifndef	GETNE_INCLUDE
+#define	GETNE_INCLUDE	1
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<usystem.h>
+
+#include	<sys/types.h>
+#include	<netdb.h>
 
 
-EXTERNC_begin
+#if	(! defined(GETNE_MASTER)) || (GETNE_MASTER == 0)
 
-extern int getnw_begin(int) noex ;
-extern int getnw_ent(ucentnw *,char *,int) noex ;
-extern int getnw_name(ucentnw *,char *,int,cchar *) noex ;
-extern int getnw_addr(ucentnw *,char *,int,int,int) noex ;
-extern int getnw_end() noex ;
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
-EXTERNC_end
+extern int getne_begin(int) ;
+extern int getne_ent(struct netent *,char *,int) ;
+extern int getne_end() ;
+extern int getne_name(struct netent *,char *,int,const char *) ;
+extern int getne_addr(struct netent *,char *,int,int,int) ;
 
+#ifdef	__cplusplus
+}
+#endif
 
-#endif /* GETNW_INCLUDE */
+#endif /* GETNE_MASTER */
+
+#endif /* GETNE_INCLUDE */
 
 
