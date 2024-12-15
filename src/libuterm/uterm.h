@@ -1,4 +1,5 @@
 /* uterm HEADER */
+/* encoding=ISO8859-1 */
 /* lang=C20 */
 
 /* object to handle UNIX terminal stuff */
@@ -22,9 +23,11 @@
 #include	<sys/types.h>
 #include	<termios.h>
 #include	<limits.h>
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 #include	<charq.h>
 
 
