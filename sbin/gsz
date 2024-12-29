@@ -29,7 +29,7 @@ if ${RF_OK} ; then
     OPTS="${POPT} ${INCDIRS}"
     ;;
   gpp*|gxx*)
-    PROG=gpp14
+    PROG=gxx14
     OPTS="${POPT} ${INCDIRS}"
     ;;
   gld*)

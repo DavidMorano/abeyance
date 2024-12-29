@@ -1,4 +1,5 @@
 /* gethostaddr SUPPORT (UNFINISHED) */
+/* encoding=ISO8859-1 */
 /* lang=C++20 */
 
 /* subroutine to get a host INET address */
@@ -43,8 +44,9 @@
 
 /* local defines */
 
-#undef	GETHOSTADDR_SYSV
+#ifndef	GETHOSTADDR_SYSV
 #define	GETHOSTADDR_SYSV	SYSHAS_GETHOSTXXXR
+#endif
 
 
 /* external subroutines */
@@ -122,6 +124,5 @@ ret0:
 	return rs ;
 }
 /* end subroutine (gethostaddr) */
-
 
 
