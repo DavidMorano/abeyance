@@ -111,11 +111,6 @@
 #define	REALNAMELEN	100		/* real name length */
 #endif
 
-/* mail address */
-#ifndef	MAILADDRLEN
-#define	MAILADDRLEN	(3 * MAXHOSTNAMELEN)
-#endif
-
 #ifndef	ORGLEN
 #define	ORGLEN		MAXNAMELEN
 #endif
