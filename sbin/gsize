@@ -42,8 +42,12 @@ if ${RF_OK} ; then
   gar*)
     PROG=gar14
     ;;
-  gnm*)
+  gnm) 
+     PROG=gnm14 
+    ;;
+  gnmd)
     PROG=gnm14
+    OPTS="--demangle"
     ;;
   gcov*)
     PROG=gcov14
