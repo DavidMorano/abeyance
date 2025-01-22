@@ -157,7 +157,6 @@ longlong maxl(longlong a,longlong b) noex {
 }
 
 
-
 #endif /* CF_STRENGTH */
 
 
