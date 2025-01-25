@@ -1,24 +1,37 @@
-/* strnwcpyxc SUPPORT */
+/* strnwcpy SUPPORT */
 /* encoding=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
 /* copy a counted c-string to a sized destination buffer */
 /* version %I% last-modified %G% */
 
+#define	CF_STPNCPY	1		/* use |stpncpy(3c)| (POSIX® 2008) */
 
 /* revision history:
 
 	= 1998-11-01, David A­D­ Morano
 	This code was originally written.
 
+	= 2025-01-15, David A­D­ Morano
+	In the course of reviewing this code (after some years now)
+	for conformance with the C++20 standard (I am actually
+	compiling now-a-days for C++26), I decided (again after
+	all of these years), to change the code to use (optionally
+	when a compile-define 'define' is set to '1') the new (as
+	of POSIX® 2008) subroutine |stpncpy(3c)|.  Using this new
+	subroutine is now the default.  Does it really make this
+	faster?  Who knows?  I simply put a compile-time flag (using
+	C++11 'constexpr') around the old and new code, in the
+	subroutine |dstcpy()| below, to decide which code to use.
+
 */
 
-/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998,2025 David A­D­ Morano.  All rights reserved. */
 
 /*******************************************************************************
 
 	Name:
-	strnwcpyxc
+	strnwcpy
 
 	Description:
 	Ths subroutine is similar to |strncpy(3c)| (in that it
@@ -35,10 +48,9 @@
 	resuling c-string may not be NUL-terminated.
 
 	Synopsis:
-	char *strnwcpy{x}c(char *dp,int dl,cchar *sp,int sl) noex
+	char *strnwcpy(char *dp,int dl,cchar *sp,int sl) noex
 
 	Arguments:
-	{x}		Base, Lower, Upper, Fold
 	dp		destination character buffer pointer
 	dl		destination character buffer length
 	sp		source c-string pointer
@@ -49,36 +61,38 @@
 			of the created destination string
 
 	Notes:
-	Please be careful.  This (as simple a function as it looks)
-	is a slightly tricky one to understand.
+	Please take care with this function (as exceptionally simple
+	as it looks).  It is divided up as it is for performance
+	reasons, but this division makes it a bit tricky to understand
+	its correctness.
 
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
-#include	<cstring>		/* |memset(3c)| */
+#include	<cstring>		/* |stpncpy(3c)| + |memset(3c)| */
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<usysdefs.h>
-#include	<toxc.h>
+#include	<strwcpy.h>
 #include	<localmisc.h>
 
-#include	"strnwcpyxc.h"
+#include	"strn.h"
 
 
 /* local defines */
+
+#ifndef	CF_STPNCPY
+#define	CF_STPNCPY	1		/* use |stpncpy(3c)| */
+#endif
 
 
 /* imported namespaces */
 
 
 /* local typedefs */
-
-extern "C" {
-    typedef int (*toxc_f)(int) noex ;
-}
 
 
 /* external subroutines */
@@ -92,44 +106,20 @@ extern "C" {
 
 /* forward references */
 
-static char *dstcpy(toxc_f toxc,char *dp,cc *sp,int n) noex {
-    	while (n-- && *sp) {
-	    *dp++ = toxc(*sp++) ;
-	}
-    	return dp ;
-}
+static inline char *dstcpy(char *,cc *,int) noex ;
 
-static char *dstncpy(toxc_f toxc,char *dp,int dl,cc *sp,int sl) noex {
-    	char	*rp = dstcpy(toxc,dp,sp,sl) ;
+static char *dstncpy(char *dp,int dl,cc *sp,int sl) noex {
+    	char	*rp = dstcpy(dp,sp,sl) ;
 	if (int fl ; (fl = ((dp + dl) - rp)) > 0) {
 	    memset(rp,0,fl) ;
 	}
 	return rp ;
 }
 
-static char *strnwcpyxc(toxc_f toxc,char *dp,int dl,cchar *sp,int sl) noex {
-	char		*rp = dp ;
-	if (dp && sp) {
-	    if (dl >= 0) {
-	        if (sl >= 0) {
-		    if (sl >= dl) {
-		        rp = dstncpy(toxc,dp,dl,sp,dl) ;
-		    } else {
-		        rp = dstncpy(toxc,dp,dl,sp,sl) ;
-		    }
-	        } else {
-		    rp = dstncpy(toxc,dp,dl,sp,dl) ;
-	        }
-	    } else {
-	        rp = dstcpy(toxc,dp,sp,sl) ;
-	    }
-	} /* end if (non-null) */
-	return rp ;
-}
-/* end subroutine (strnwcpyxc) */
-
 
 /* local variables */
+
+constexpr bool		f_stpncpy = CF_STPNCPY ;
 
 
 /* exported variables */
@@ -137,23 +127,39 @@ static char *strnwcpyxc(toxc_f toxc,char *dp,int dl,cchar *sp,int sl) noex {
 
 /* exported subroutines */
 
-char *strnwcpybc(char *dp,int dl,cchar *sp,int sl) noex {
-    	return strnwcpyxc(tobc,dp,dl,sp,sl) ;
+char *strnwcpy(char *dp,int dl,cchar *sp,int sl) noex {
+	char		*rp = dp ;
+	if (dp && sp) {
+	    if (dl >= 0) {
+	        if (sl >= 0) {
+		    if (sl >= dl) {
+		        rp = dstncpy(dp,dl,sp,dl) ;
+		    } else {
+		        rp = dstncpy(dp,dl,sp,sl) ;
+		    }
+	        } else {
+		    rp = dstncpy(dp,dl,sp,dl) ;
+	        }
+	    } else {
+	        rp = dstcpy(dp,sp,sl) ;
+	    }
+	} /* end if (non-null) */
+	return rp ;
 }
-
-char *strnwcpylc(char *dp,int dl,cchar *sp,int sl) noex {
-    	return strnwcpyxc(tolc,dp,dl,sp,sl) ;
-}
-
-char *strnwcpyuc(char *dp,int dl,cchar *sp,int sl) noex {
-    	return strnwcpyxc(touc,dp,dl,sp,sl) ;
-}
-
-char *strnwcpyfc(char *dp,int dl,cchar *sp,int sl) noex {
-    	return strnwcpyxc(tofc,dp,dl,sp,sl) ;
-}
+/* end subroutine (strnwcpy) */
 
 
 /* local subroutines */
+
+static char *dstcpy(char *dp,cc *sp,int sl) noex {
+	if_constexpr (f_stpncpy) {
+	    dp = stpncpy(dp,sp,sl) ;
+	} else {
+    	    while (sl-- && *sp) {
+	        *dp++ = *sp++ ;
+	    }
+	} /* end if_constexpr (f_stpncpy) */
+    	return dp ;
+}
 
 

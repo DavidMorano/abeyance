@@ -88,39 +88,17 @@ extern "C" {
 
 /* forward references */
 
-static char *dstcpy(toxc_f toxc,char *dp,cc *sp,int n) noex {
-    	while (n-- && *sp) {
-	    *dp++ = toxc(*sp++) ;
-	}
-    	return dp ;
-}
-
-static char *dstncpy(toxc_f toxc,char *dp,int dl,cc *sp,int sl) noex {
-    	char	*rp = dstcpy(toxc,dp,sp,sl) ;
-	if (int fl ; (dl > 0) && ((fl = ((dp + dl) - rp)) > 0)) {
-	    memset(rp,0,fl) ;
-	}
-	return rp ;
-}
-
 static char *strnwcpyxc(toxc_f toxc,char *dp,int dl,cchar *sp,int sl) noex {
-	char		*rp = dp ;
 	if (dp && sp) {
-	    if (dl >= 0) {
-	        if (sl >= 0) {
-		    if (sl >= dl) {
-		        rp = dstncpy(toxc,dp,dl,sp,dl) ;
-		    } else {
-		        rp = dstncpy(toxc,dp,dl,sp,sl) ;
-		    }
-	        } else {
-		    rp = dstncpy(toxc,dp,dl,sp,dl) ;
-	        }
-	    } else {
-	        rp = dstcpy(toxc,dp,sp,sl) ;
+    	    while (dl && sl-- && *sp) {
+	        *dp++ = toxc(*sp++) ;
+		dl -= 1 ;
+	    }
+	    if (dl > 0) {
+	        memset(dp,0,dl) ;
 	    }
 	} /* end if (non-null) */
-	return rp ;
+	return dp ;
 }
 /* end subroutine (strnwcpyxc) */
 

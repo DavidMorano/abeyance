@@ -5,7 +5,6 @@
 /* copy a counted c-string to a sized destination buffer */
 /* version %I% last-modified %G% */
 
-#define	CF_STPNCPY	1		/* use |stpncpy(3c)| (POSIX® 2008) */
 
 /* revision history:
 
@@ -78,10 +77,6 @@
 
 /* local defines */
 
-#ifndef	CF_STPNCPY
-#define	CF_STPNCPY	1		/* use |stpncpy(3c)| */
-#endif
-
 
 /* imported namespaces */
 
@@ -100,20 +95,8 @@
 
 /* forward references */
 
-static inline char *dstcpy(char *,cc *,int) noex ;
-
-static char *dstncpy(char *dp,int dl,cc *sp,int sl) noex {
-    	char	*rp = dstcpy(dp,sp,sl) ;
-	if (int fl ; (fl = ((dp + dl) - rp)) > 0) {
-	    memset(rp,0,fl) ;
-	}
-	return rp ;
-}
-
 
 /* local variables */
-
-constexpr bool		f_stpncpy = CF_STPNCPY ;
 
 
 /* exported variables */
@@ -122,38 +105,20 @@ constexpr bool		f_stpncpy = CF_STPNCPY ;
 /* exported subroutines */
 
 char *strnwcpy(char *dp,int dl,cchar *sp,int sl) noex {
-	char		*rp = dp ;
 	if (dp && sp) {
-	    if (dl >= 0) {
-	        if (sl >= 0) {
-		    if (sl >= dl) {
-		        rp = dstncpy(dp,dl,sp,dl) ;
-		    } else {
-		        rp = dstncpy(dp,dl,sp,sl) ;
-		    }
-	        } else {
-		    rp = dstncpy(dp,dl,sp,dl) ;
-	        }
-	    } else {
-	        rp = dstcpy(dp,sp,sl) ;
+    	    while (dl && sl-- && *sp) {
+	        *dp++ = *sp++ ;
+		dl -= 1 ;
+	    }
+	    if (dl > 0) {
+	        memset(dp,0,dl) ;
 	    }
 	} /* end if (non-null) */
-	return rp ;
+	return dp ;
 }
 /* end subroutine (strnwcpy) */
 
 
 /* local subroutines */
-
-static char *dstcpy(char *dp,cc *sp,int sl) noex {
-	if_constexpr (f_stpncpy) {
-	    dp = stpncpy(dp,sp,sl) ;
-	} else {
-    	    while (sl-- && *sp) {
-	        *dp++ = *sp++ ;
-	    }
-	} /* end if_constexpr (f_stpncpy) */
-    	return dp ;
-}
 
 
