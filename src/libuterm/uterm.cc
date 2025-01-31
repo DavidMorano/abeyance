@@ -1,4 +1,4 @@
-/* uterm SUPPORT */
+/* uterm_main SUPPORT */
 /* encoding=ISO8859-1 */
 /* lang=C++20 */
 
@@ -100,6 +100,10 @@
 #define	HEXBUFLEN	100
 #endif
 
+#ifndef	CF_FIRSTREAD
+#define	CF_FIRSTREAD	0	/* perform an initial |read()|? */
+#endif
+
 #ifndef	CF_SUBUNIX
 #define	CF_SUBUNIX	1	/* allow UNIX® to handle Control-Z */
 #endif
@@ -156,7 +160,7 @@ constexpr int		fieldterm_tabsize = ((UCHAR_MAX + 1) / CHAR_BIT) ;
 
 constexpr uid_t		uidend(-1) ;
 
-constexpr char	uterms[] = {
+constexpr char		uterms[] = {
 	0xEF, 0xFC, 0xC0, 0xFE,
 	0x00, 0x00, 0x00, 0x00, 
 	0x00, 0x00, 0x00, 0x00, 
@@ -167,11 +171,12 @@ constexpr char	uterms[] = {
 	0x00, 0x00, 0x00, 0x00, 
 } ;
 
-static constexpr int	sigouts[] = {
+constexpr int		sigouts[] = {
 	SIGTTOU,
 	0
 } ;
 
+constexpr bool		f_firstread = CF_FIRSTREAD ;
 constexpr bool		f_subunix = CF_SUBUNIX ;
 
 
@@ -857,7 +862,6 @@ static int tty_wait(uterm *op,int timeout) noex {
 	time_t		daytime = getustime ;
 	time_t		lasttime ;
 	int		rs ;
-	int		i ;
 	int		len = 0 ;
 	int		nfds ;
 	int		polltime ;
@@ -881,16 +885,13 @@ static int tty_wait(uterm *op,int timeout) noex {
 	op->timeout = timeout ;
 	lasttime = daytime ;
 
-#if	CF_FIRSTREAD
-
-/* try it out the first time */
-
-	rs = u_read(op->fd,cbuf,TTY_READCHARS) ;
-	len = rs ;
-	f_starting = true ;
-	goto enter ;
-
-#endif /* CF_FIRSTREAD */
+	/* try it out the first time */
+	if_constexpr (f_firstread) {
+	    rs = u_read(op->fd,cbuf,TTY_READCHARS) ;
+	    len = rs ;
+	    f_starting = true ;
+	    goto enter ;
+	} /* end if_constexpr (f_firstread) */
 
 /* loop it */
 loop:
