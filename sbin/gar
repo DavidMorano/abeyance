@@ -30,7 +30,7 @@ if ${RF_OK} ; then
     ;;
   gpp*|gxx*)
     PROG=gxx14
-    OPTS="${POPT} -fmodules-ts ${INCDIRS}"
+    OPTS="${POPT} -fmodules-ts -Wno-global-module ${INCDIRS}"
     ;;
   gld*)
     PROG=gld14
