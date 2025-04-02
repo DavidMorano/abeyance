@@ -115,14 +115,16 @@ function getflags {
 case ${OSNAME}:${OSNUM} in
 Darwin:*)
   : ${CO_GCCALL:=""}
-  : ${CO_GCCDEB:="-Wall -Wextra"}
+  : ${CO_GCCDEB:="-Wall -Wextra -Wshadow -Wconversion"}
   : ${CO_GCCOPT:=""}
   : ${CO_GCCLIB:="-fpic"}
   : ${CO_GXXALL:=""}
-  : ${CO_GXXDEB:="-Wall -Wextra"}
+  : ${CO_GXXDEB:="-Wall -Wextra -Wshadow -Wconversion"}
   : ${CO_GXXOPT:=""}
   : ${CO_GXXLIB:="-fpic"}
   case ${BUILDTYPE} in
+  develop)
+    ;;
   debug)
     CO_GCCOPT="-g"
     CO_GXXOPT="-g"
@@ -213,7 +215,7 @@ develop|debug)
   MAKECPPFLAGS=
   MAKECFLAGS="${CO_GCCALL} ${CO_GCCDEB} ${CO_GCCOPT} ${CO_GCCLIB}"
   MAKECXXFLAGS="${CO_GXXALL} ${CO_GXXDEB} ${CO_GXXOPT} ${CO_GXXLIB}"
-  MAKELDFLAGS=
+  MAKELDFLAGS="${CO_GXXLIB}"
   ;;
 test)
   ;;
@@ -225,8 +227,7 @@ deliver)
   MAKECPPFLAGS=
   MAKECFLAGS="${CO_GCCALL} ${CO_GCCOPT} ${CO_GCCLIB}"
   MAKECXXFLAGS="${CO_GXXALL} ${CO_GXXOPT} ${CO_GXXLIB}"
-  MAKELDFLAGS=
-  MAKELDFLAGS=
+  MAKELDFLAGS="${CO_GXXLIB}"
   ;;
 esac
 
