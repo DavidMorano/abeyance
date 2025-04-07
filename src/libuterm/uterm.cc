@@ -306,8 +306,8 @@ int uterm_control(uterm *op,int cmd,...) noex {
 	    case utermcmd_reestablish:
 		{
 		    TERMIOS	*attrp = &op->ts_new ;
-	            cint	cmd = TCSADRAIN ;
-	            rs = uc_tcattrset(op->fd,cmd,attrp) ;
+	            cint	acmd = TCSADRAIN ;
+	            rs = uc_tcattrset(op->fd,acmd,attrp) ;
 		}
 	        break ;
 	    case utermcmd_getmesg:
@@ -453,7 +453,7 @@ int uterm_reade(uterm *op,char *rbuf,int rlen,int timeout,int fc,
 	    if (op->f.cntl_c) break ;
 
 	    ch = mkchar(qbuf[0]) ;
-	    rbuf[count] = ch ;
+	    rbuf[count] = charconv(ch) ;
 
 /* check for terminator */
 
@@ -510,7 +510,7 @@ int uterm_reade(uterm *op,char *rbuf,int rlen,int timeout,int fc,
 	    if ((rs >= 0) && (ch >= 0)) {
 	        if ((! (fc & fm_noecho)) && isprintlatin(ch)) {
 		    char	ebuf[2] ;
-		    ebuf[0] = ch ;
+		    ebuf[0] = charconv(ch) ;
 	            rs = tty_echo(op,ebuf,1) ;
 	        }
 	        count += 1 ;
@@ -558,7 +558,7 @@ int uterm_write(uterm *op,cchar *wbuf,int wlen) noex {
 	int		tlen = 0 ;
 	if ((rs = uterm_magic(op)) >= 0) {
 	    if (! op->f.cntl_o) {
-	        if (wlen < 0) wlen = strlen(wbuf) ;
+	        if (wlen < 0) wlen = xstrlen(wbuf) ;
 	        if (op->mode & fm_rawout) {
 	            rs = u_write(op->fd,wbuf,wlen) ;
 		    tlen = rs ;
@@ -729,8 +729,9 @@ static int uterm_qbegin(uterm *op) noex {
 	int		rs ;
 	if ((rs = charq_start(&op->taq,TA_SIZE)) >= 0) {
 	    rs = charq_start(&op->ecq,EC_SIZE) ;
-	    if (rs < 0)
+	    if (rs < 0) {
 		charq_finish(&op->taq) ;
+	    }
 	}
 	return rs ;
 }
@@ -769,21 +770,24 @@ static int uterm_writeproc(uterm *op,cchar *buf,int buflen) noex {
 	    buffer	pb ;
 
 	    if ((rs = buffer_start(&pb,(buflen + 10))) >= 0) {
+		int	tl ;
 	        int	bl = buflen ;
 	        cchar	*bp = buf ;
 
-	        buffer_buf(&pb,bp,(tp - bp)) ;
+	        tl = intconv(tp - bp) ;
+	        buffer_buf(&pb,bp,tl) ;
 	        buffer_chr(&pb,'\r') ;
 	        buffer_chr(&pb,'\n') ;
 
-	        bl -= ((tp + 1) - bp) ;
+	        bl -= intconv((tp + 1) - bp) ;
 	        bp = (tp + 1) ;
 
 	        while ((tp = strnchr(bp,bl,'\n')) != nullptr) {
-	            buffer_buf(&pb,bp,(tp - bp)) ;
+		    tl = intconv(tp - bp) ;
+	            buffer_buf(&pb,bp,tl) ;
 	            buffer_chr(&pb,'\r') ;
 	            buffer_chr(&pb,'\n') ;
-	            bl -= ((tp + 1) - bp) ;
+	            bl -= intconv((tp + 1) - bp) ;
 	            bp = (tp + 1) ;
 	        } /* end while */
 
@@ -810,7 +814,7 @@ static int uterm_writeproc(uterm *op,cchar *buf,int buflen) noex {
 static int tty_wps(uterm *op,cchar *ubuf,int ulen) noex {
 	int		rs = SR_OK ;
 	int		rs1 ;
-	if (ulen < 0) ulen = strlen(ubuf) ;
+	if (ulen < 0) ulen = xstrlen(ubuf) ;
 	if (ulen > 0) {
 	    if (int ci ; (ci = sinotprint(ubuf,ulen)) >= 0) {
 	        if (buffer pb ; (rs = buffer_start(&pb,ulen)) >= 0) {
@@ -929,7 +933,7 @@ enter:
 	if (len == 0) {
 	    daytime = time(nullptr) ;
 	    if (op->timeout >= 0) {
-	        op->timeout -= (daytime - lasttime) ;
+	        op->timeout -= intconv(daytime - lasttime) ;
 	        if (op->timeout <= 0)
 	            return SR_OK ;
 
@@ -1047,7 +1051,7 @@ static int tty_risr(uterm *op,cchar *sp,int sl) noex {
 
 static int tty_echo(uterm *op,cchar *ebuf,int elen) noex {
 	int		rs = SR_OK ;
-	if (elen < 0) elen = strlen(ebuf) ;
+	if (elen < 0) elen = xstrlen(ebuf) ;
 	if (elen > 0) {
 	    rs = u_write(op->fd,ebuf,elen) ;
 	}

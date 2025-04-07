@@ -46,7 +46,7 @@
 #include	<climits>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
-#include	<cstring>
+#include	<cstring>		/* |strlen(3c)| */
 #include	<usystem.h>
 #include	<ascii.h>
 #include	<cfdec.h>
@@ -92,7 +92,7 @@ struct sub {
 	int		ich ;		/* initial character */
 	int		rlen ;		/* read-length */
 	int		maxdig ;	/* maximum digits in TERMCMD_MAXPVAL */
-	int		f_error:1 ;
+	uint		f_error:1 ;
 } ;
 
 
@@ -254,7 +254,7 @@ static int sub_procesc(sub *sip) noex {
 	    default:
 	        if (iscancel(ch)) {
 	            termcmd_clear(ckp) ;
-	            if (ch == CH_ESC) sip->ich = ch ;
+	            if (ch == CH_ESC) sip->ich = charconv(ch) ;
 	            rs = 0 ;	/* signal CANCEL */
 	        } else {
 	            rs = sub_procescmore(sip,ch) ;
@@ -277,7 +277,7 @@ static int sub_procescmore(sub *sip,int ch) noex {
 	}
 	while (isinter(ch)) {
 	    if (sip->ii < ilen) {
-	        ckp->istr[sip->ii++] = ch ;
+	        ckp->istr[sip->ii++] = charconv(ch) ;
 	    } else {
 	        ckp->f.iover = true ;
 	    }
@@ -288,13 +288,13 @@ static int sub_procescmore(sub *sip,int ch) noex {
 	ckp->istr[sip->ii] = 0 ;
 	if (rs >= 0) {
 	    if (isfinalesc(ch)) {
-	        ckp->name = ch ;
+	        ckp->name = charconv(ch) ;
 	        rs = 1 ;		/* signal DONE */
 	    } else if (iscancel(ch)) {
 	        termcmd_clear(ckp) ;
 	        ckp->name = 0 ;		/* error */
 	        if (ch == CH_ESC) {
-	            sip->ich = ch ;
+	            sip->ich = charconv(ch) ;
 	            rs = 0 ;		/* signal CANCEL w/ continue */
 	        } else {
 	            rs = 1 ;		/* signal DONE w/ error */
@@ -335,7 +335,7 @@ static int sub_procCSI(sub *sip) noex {
 	            if ((ch != '0') || (! f_leadingzero)) {
 	                if (ch != '0') f_leadingzero = false ;
 	                if (dl < dlen) {
-	                    dbuf[dl++] = ch ;
+	                    dbuf[dl++] = charconv(ch) ;
 	                } else {
 	                    f_dover = true ;
 	                }
@@ -361,7 +361,7 @@ static int sub_procCSI(sub *sip) noex {
 	    } /* end if (loading the last parameter) */
 	    while ((rs >= 0) && isinter(ch)) {
 	        if (sip->ii < ilen) {
-	            ckp->istr[sip->ii++] = ch ;
+	            ckp->istr[sip->ii++] = charconv(ch) ;
 	        } else {
 	            ckp->f.iover = true ;
 	        }
@@ -371,13 +371,13 @@ static int sub_procCSI(sub *sip) noex {
 	    } /* end while */
 	    if (rs >= 0) {
 	        if (isfinalcsi(ch)) {
-	            ckp->name = ch ;
+	            ckp->name = charconv(ch) ;
 	            rs = 1 ;		/* signal DONE */
 	        } else if (iscancel(ch)) {
 	            termcmd_clear(ckp) ;
 	            ckp->name = 0 ;		/* error */
 	            if (ch == CH_ESC) {
-	                sip->ich = ch ;
+	                sip->ich = charconv(ch) ;
 	                rs = 0 ;		/* signal CANCEL w/ continue */
 	            } else {
 	                rs = 1 ;		/* signal DONE w/ error */
@@ -424,7 +424,7 @@ static int sub_proc_dcs(sub *sip) noex {
 	            if ((ch != '0') || (! f_leadingzero)) {
 	                if (ch != '0') f_leadingzero = false ;
 	                if (dl < dlen) {
-	                    dbuf[dl++] = ch ;
+	                    dbuf[dl++] = charconv(ch) ;
 	                } else {
 	                    f_dover = true ;
 			}
@@ -450,7 +450,7 @@ static int sub_proc_dcs(sub *sip) noex {
 	    } /* end if (loading the last parameter) */
 	    while ((rs >= 0) && isinter(ch)) {
 	        if (sip->ii < ilen) {
-	            ckp->istr[sip->ii++] = ch ;
+	            ckp->istr[sip->ii++] = charconv(ch) ;
 	        } else {
 	            ckp->f.iover = true ;
 	        }
@@ -460,13 +460,13 @@ static int sub_proc_dcs(sub *sip) noex {
 	    } /* end while */
 	    if (rs >= 0) {
 	        if (isfinalcsi(ch)) {
-	            ckp->name = ch ;	/* no error */
+	            ckp->name = charconv(ch) ;	/* no error */
 	            rs = 1 ;		/* signal OK */
 	        } else if (iscancel(ch)) {
 	            termcmd_clear(ckp) ;
 	            ckp->name = 0 ;		/* error (CANCEL) */
 	            if (ch == CH_ESC) {
-	                sip->ich = ch ;
+	                sip->ich = charconv(ch) ;
 	                rs = 0 ;		/* signal CANCEL w/ continue */
 	            } else {
 	                rs = 1 ;		/* signal w/ error */
@@ -478,14 +478,14 @@ static int sub_proc_dcs(sub *sip) noex {
 	    } /* end if */
 	    if ((rs >= 0) && (ckp->name != 0)) {
 	        int	f_seenesc = false ;
-	        cint	dlen = TERMCMD_DSIZE ;
+	        cint	dsz = TERMCMD_DSIZE ;
 	        while (rs >= 0) {
 	            rs = sub_readch(sip) ;
 	            if (rs < 0) break ;
 	            ch = rs ;
 	            if (f_seenesc) {
 	                if (ch != CH_BSLASH) {
-	                    sip->ich = ch ;
+	                    sip->ich = charconv(ch) ;
 	                    rs = 0 ;		/* signal CANCEL */
 	                }
 	                break ;
@@ -496,8 +496,8 @@ static int sub_proc_dcs(sub *sip) noex {
 	                    rs = 0 ;		/* signcal CANCEL */
 	                    break ;
 	                }
-	                if (sip->di < dlen) {
-	                    ckp->dstr[sip->di++] = ch ;
+	                if (sip->di < dsz) {
+	                    ckp->dstr[sip->di++] = charconv(ch) ;
 	                } else {
 	                    ckp->f.dover = true ;
 	                }
@@ -529,13 +529,13 @@ static int sub_proc_pf(sub *sip) noex {
 	if ((rs = sub_readch(sip)) >= 0) {
 	    cint	ch = rs ;
 	    if (isfinalcsi(ch)) {
-	        ckp->name = ch ;
+	        ckp->name = charconv(ch) ;
 	        rs = 1 ;		/* signal DONE */
 	    } else if (iscancel(ch)) {
 	        termcmd_clear(ckp) ;
 	        ckp->name = 0 ;		/* error */
 	        if (ch == CH_ESC) {
-	            sip->ich = ch ;
+	            sip->ich = charconv(ch) ;
 	            rs = 0 ;		/* signal CANCEL w/ continue */
 	        } else {
 	            rs = 1 ;		/* signal DONE w/ error */
@@ -554,7 +554,7 @@ static int sub_proc_reg(sub *sip,int ich) noex {
 	int		rs = 1 ;		/* signal DONE */
 	{
 	    ckp->type = termcmdtype_reg ;
-	    ckp->name = ich ;
+	    ckp->name = shortconv(ich) ;
 	}
 	return rs ;
 }
@@ -581,7 +581,7 @@ static int sub_loadparam(sub *sip,cchar *dbuf,int dl) noex {
 	        }
 	        sip->pi -= 1 ;
 	    }
-	    ckp->p[sip->pi++] = v ;
+	    ckp->p[sip->pi++] = shortconv(v) ;
 	} else {
 	    sip->f_error = true ;
 	}
