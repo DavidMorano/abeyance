@@ -2,13 +2,22 @@
 # GNU Compiler Collection
 PN=${0##*/}
 RF_OK=true
-: ${INCDIR:=include}
+: ${INCDIR:=inc}
 INCDIRS=
+INCS="inc include"
 if [[ ! -d ${INCDIR} ]] ; then
-  if [[ -n "${REPOROOT}" ]] && [[ -d "${REPOROOT}" ]] ; then
-    A=${REPOROOT}/include
-    if [[ -d "${A}" ]] ; then
-      INCDIR=${A}
+  for INC in ${INCS} ; do
+    if [[ -d ${INC} ]] ; then
+      INCDIR=${INC}
+      break
+    fi
+  done
+  if [[ ! -d ${INCDIR} ]] ; then
+    if [[ -n "${REPOROOT}" ]] && [[ -d "${REPOROOT}" ]] ; then
+      A=${REPOROOT}/include
+      if [[ -d "${A}" ]] ; then
+        INCDIR=${A}
+      fi
     fi
   fi
 fi
