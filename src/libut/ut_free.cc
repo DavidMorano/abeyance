@@ -1,4 +1,5 @@
 /* ut_free SUPPORT */
+/* encoding=ISO8859-1 */
 /* lang=C++20 */
 
 /* UNIX® XTI subroutine */
