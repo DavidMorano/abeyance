@@ -1,197 +1,151 @@
-# MAKEFILE (libut)
+# MAKEFILES (libut)
 
 T= libut
 
-ALL= $(T).a $(T).so
-
-SRCROOT= $(LOCAL)
+ALL= $(T).o
 
 
-BINDIR= $(SRCROOT)/bin
-INCDIR= $(SRCROOT)/include
-LIBDIR= $(SRCROOT)/lib
+BINDIR		?= $(REPOROOT)/bin
+INCDIR		?= $(REPOROOT)/include
+LIBDIR		?= $(REPOROOT)/lib
+MANDIR		?= $(REPOROOT)/man
+INFODIR		?= $(REPOROOT)/info
+HELPDIR		?= $(REPOROOT)/share/help
+CRTDIR		?= $(CGS_CRTDIR)
+VALDIR		?= $(CGS_VALDIR)
+RUNDIR		?= $(CGS_RUNDIR)
+
+CPP		?= cpp
+CC		?= gcc
+CXX		?= gpp
+LD		?= gld
+RANLIB		?= granlib
+AR		?= gar
+NM		?= gnm
+COV		?= gcov
+LORDER		?= lorder
+TSORT		?= tsort
+LINT		?= lint
+RM		?= rm -f
+TOUCH		?= touch
+LINT		?= lint
 
 
-CC= $(CGS_CC)
-GPP= $(CGS_GPP)
+DEFS +=
 
-GPPFLAGS= $(CGS_CXXFLAGS)
+INCS += libut.h
 
-CCOPTS_GCCOPTSGPP= $(CGS_CXXFLAGS)
-CCOPTS= $(CCOPTS_GCCOPT) $(CCOPTS_GCCALL) $(CCOPTS_GCCLIB)
-#CCOPTS= $(CCOPTS_GCCALL) $(CCOPTS_GCCLIB)
-#CCOPTS= -g -Wstrict-aliasing $(CCOPTS_GCCALL) $(CCOPTS_GCCLIB) 
-#CCOPTS= -g -Wall $(CCOPTS_GCCALL) $(CCOPTS_GCCLIB) 
+LIBS +=
 
 
-DEF0=
-DEF1= 
-DEF2=
-DEF3=
-DEF4=
-DEF5=
-DEF6=
-DEF7= $(LF_DEFS) 
+INCDIRS +=
 
-DEFS= $(DEF0) $(DEF1) $(DEF2) $(DEF3) $(DEF4) $(DEF5) $(DEF6) $(DEF7)
+LIBDIRS += -L$(LIBDIR)
 
 
-INCDIRS= -I$(INCDIR)
+RUNINFO= -rpath $(RUNDIR)
 
-CPPFLAGS= $(DEFS) $(INCDIRS)
+LIBINFO= $(LIBDIRS) $(LIBS)
 
-CFLAGS= $(CCOPTS) $(LF_CFLAGS)
-
-#LD= $(CC)
-
-LINT= lint
-LINTFLAGS= $(LF_LINTFLAGS) -uxn -Dlint
-
-NM= nm
-NMFLAGS= -sx -v
-
-CPP= cpp
-
-LORDER= lorder
-TSORT= tsort
-
-RM= rm -f
-TOUCH= /usr/bin/touch
+# flag setting
+CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
+CFLAGS		?= $(MAKECFLAGS)
+CXXFLAGS	?= $(MAKECXXFLAGS)
+ARFLAGS		?= $(MAKEARFLAGS)
+LDFLAGS		?= $(MAKELDFLAGS)
 
 
-LDFLAGS= $(LF_LDFLAGS)
-
-LDRPATH= $(EXTRA)/lib
-
-RLDFLAGS= $(LF_LDFLAGS)
-
-
-SLDFLAGS= $(LF_LDFLAGS) -m $(LDA) -R$(LIBDIR):$(CGS_RPATH):$(LDRPATH)
-
-SLIBDIRS= -L$(LIBDIR) -L$(CGS_LIBDIR)
-
-SLIB0=
-SLIB1=
-SLIB2=
-SLIB3= -lu
-SLIB4= $(CGS_LIBS)
-SLIB5= $(LF_LIBS) 
-SLIB6= -lsecdb -lproject -lpthread -lrt -lxnet -lsocket -lnsl
-SLIB7= -ldl
-
-SLIBS= $(SLIB0) $(SLIB1) $(SLIB2) $(SLIB3) $(SLIB4) $(SLIB5) $(SLIB6) $(SLIB7)
-
-SLIBINFO= $(SLIBDIRS) $(SLIBS)
-
-
-INCS=
-
-
-OBJ00=
 OBJ01= ut_open.o ut_close.o
 OBJ02= ut_bind.o ut_connect.o
 OBJ03= ut_accept.o ut_listen.o 
 OBJ04= ut_look.o ut_sync.o
 OBJ05= ut_alloc.o ut_free.o 
-OBJ06=
-OBJ07=
-OBJ08=
-OBJ09=
-OBJ10=
-OBJ11=
-OBJ12=
-OBJ13=
-OBJ14=
-OBJ15=
-OBJ16=
-OBJ17=
-OBJ18=
-OBJ19=
-OBJ20=
-OBJ21=
-OBJ22=
-OBJ23=
-OBJ24=
-OBJ25=
-OBJ26=
-OBJ27=
-OBJ28=
-OBJ29=
-OBJ30=
-OBJ31=
 
-OBJA= $(OBJ00) $(OBJ01) $(OBJ02) $(OBJ03) $(OBJ04) $(OBJ05) $(OBJ06) $(OBJ07) 
-OBJB= $(OBJ08) $(OBJ09) $(OBJ10) $(OBJ11) $(OBJ12) $(OBJ13) $(OBJ14) $(OBJ15)
-OBJC= $(OBJ16) $(OBJ17) $(OBJ18) $(OBJ19) $(OBJ20) $(OBJ21) $(OBJ22) $(OBJ23)
-OBJD= $(OBJ24) $(OBJ25) $(OBJ26) $(OBJ27) $(OBJ28) $(OBJ29) $(OBJ30) $(OBJ31)
+OBJA= obj0.o obj1.o obj2.o obj3.o
+OBJB= obj5.o
 
-OBJ= $(OBJA) $(OBJB) $(OBJC) $(OBJD)
-
-OBJS= obja.o
-
-INCS=
+OBJ= $(OBJA) $(OBJB)
 
 
-.SUFFIXES:		.ls .i .cx .cs
+.SUFFIXES:		.hh .ii .ccm
 
 
-default:		all
+default:		$(T).o
 
 all:			$(ALL)
 
 
-.cc.o:
-	$(GPP) -c $(GPPFLAGS) $(CFLAGS) $(CPPFLAGS) $<
-
-.c.o:
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $<
-
-.c.ln:
-	$(LINT) -c -u $(CPPFLAGS) $<
-
-.c.ls:
-	$(LINT) $(LINTFLAGS) $(CPPFLAGS) $<
-
 .c.i:
 	$(CPP) $(CPPFLAGS) $< > $(*).i
 
+.cc.ii:
+	$(CPP) $(CPPFLAGS) $< > $(*).ii
 
-$(T).a:			$(OBJ)
-	$(AR) -rc $(T).a $?
+.c.s:
+	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
 
-$(T).so:		$(OBJS) Makefile localmisc.h $(T).a
-	$(GXX) -shared -o $@ $(LDFLAGS) $(OBJS) $(SLIBINFO)
+.cc.s:
+	$(CXX) -S $(CPPFLAGS) $(CXXFLAGS) $<
 
-install:		$(ALL) Makefile
-	ranlib $(T).a
-	bsdinstall $(ALL) $(LIBDIR)
+.c.o:
+	$(COMPILE.c) $<
 
-safe:
-	makesafe -v=3 -I $(INCDIR) $(OBJ)
+.cc.o:
+	$(COMPILE.cc) $<
+
+.ccm.o:
+	makemodule $(*)
+
+
+$(T).o:			$(OBJ)
+	$(LD) -r $(LDFLAGS) -o $@ $(OBJ)
+
+$(T).nm:		$(T).so
+	$(NM) $(NMFLAGS) $(T).so > $(T).nm
+
+$(T).order:		$(OBJ) $(T).a
+	$(LORDER) $(T).a | $(TSORT) > $(T).order
+	$(RM) $(T).a
+	while read O ; do $(AR) $(ARFLAGS) -cr $(T).a $${O} ; done < $(T).order
 
 again:
-	rm -f $(ALL)
+	$(RM) $(ALL)
 
 clean:
-	rm -f *.o $(T).a
+	makeclean $(ALL)
 
 control:
 	(uname -n ; date) > Control
 
 
-obja.o:			$(OBJA)
-	$(LD) -o $@ -r $(RLDFLAGS) $(OBJA)
+obj0.o:			$(OBJ0)
+	$(LD) -r $(LDFLAGS) -o $@ $(OBJ0)
 
-objb.o:			$(OBJB)
-	$(LD) -o $@ -r $(RLDFLAGS) $(OBJB)
+obj1.o:			$(OBJ1)
+	$(LD) -r $(LDFLAGS) -o $@ $(OBJ1)
 
-objc.o:			$(OBJC)
-	$(LD) -o $@ -r $(RLDFLAGS) $(OBJB)
+obj2.o:			$(OBJ2)
+	$(LD) -r $(LDFLAGS) -o $@ $(OBJ2)
 
-objd.o:			$(OBJD)
-	$(LD) -o $@ -r $(RLDFLAGS) $(OBJB)
+obj3.o:			$(OBJ3)
+	$(LD) -r $(LDFLAGS) -o $@ $(OBJ3)
 
-obje.o:			$(OBJE)
-	$(LD) -o $@ -r $(RLDFLAGS) $(OBJB)
+obj4.o:			$(OBJ4)
+	$(LD) -r $(LDFLAGS) -o $@ $(OBJ4)
+
+obj5.o:			$(OBJ5)
+	$(LD) -r $(LDFLAGS) -o $@ $(OBJ5)
+
+
+ut_open.o:		ut_open.cc		$(INCS)
+ut_close.o:		ut_close.cc		$(INCS)
+ut_bind.o:		ut_bind.cc		$(INCS)
+ut_connect.o:		ut_connect.cc		$(INCS)
+ut_accept.o:		ut_accept.cc		$(INCS)
+ut_listen.o:		ut_listen.cc		$(INCS)
+ut_look.o:		ut_look.cc		$(INCS)
+ut_sync.o:		ut_sync.cc		$(INCS)
+ut_alloc.o:		ut_alloc.cc		$(INCS)
+ut_free.o:		ut_free.cc		$(INCS)
 
 
