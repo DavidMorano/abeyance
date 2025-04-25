@@ -35,6 +35,8 @@ DEFS +=
 
 INCS += six.h
 
+MODS +=
+
 LIBS +=
 
 
