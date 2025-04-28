@@ -1,6 +1,6 @@
 /* uvariables MODULE (primary module interface) */
 /* encoding=ISO8859-1 */
-/* lang=C++20 */
+/* lang=C++20 (conformance reviewed) */
 
 /* this is a database of commonly used global variables */
 /* version %I% last-modified %G% */
@@ -18,11 +18,10 @@
 /*******************************************************************************
 
   	Group:
-	uvaraibles
+	uvariables
 
 	Description:
-	This object contains various commonly used environment
-	variable names.
+	This module contains various commonly used constants.
 
 *******************************************************************************/
 
