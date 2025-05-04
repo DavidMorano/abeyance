@@ -1,0 +1,11 @@
+GCC Preprocessors (options)
+
+-------------
+-MM			print dependent header files (excluding system ones)
+-pthread		define any necessary names for PTHRAD use
+-extended-identifiers	accept extended identifiers (ON by default)
+-exec-charset		execution character set
+-input-charset		input character set
+
+
+
