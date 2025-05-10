@@ -163,7 +163,7 @@ int		argc ;
 const char	*argv[] ;
 const char	*envv[] ;
 {
-	struct stat buf;
+	USTAT buf;
 	int ret;
 	char scratch[BUFSIZ];
 	char log[BUFSIZ];
