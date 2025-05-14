@@ -1,8 +1,8 @@
-/* uvariables MODULE (primary module interface) */
+/* uvariables MODULE (primary-module-interface) */
 /* encoding=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
-/* this is a database of commonly used global variables */
+/* this is a database of commonly used global constants */
 /* version %I% last-modified %G% */
 
 
@@ -11,9 +11,12 @@
 	= 2001-04-11, David A-D- Morano
 	Originally written for Rightcore Network Services.
 
+	= 2020-05-07, David A-D- Morano
+	I converted this (formerly a header-only file) to a module.
+
 */
 
-/* Copyright © 2001 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 2001,2020 David A­D­ Morano.  All rights reserved. */
 
 /*******************************************************************************
 
@@ -21,7 +24,24 @@
 	uvariables
 
 	Description:
-	This module contains various commonly used constants.
+	This module contains various commonly used constants.  The
+	name of this module is actually misnomer.  The so-called
+	"variables" are actually useful constants.  These constants
+	are stored in one (single) place, and used in many places,
+	for memory space reasons (especially in extremely constrained
+	embedded environments).  The constants currenty available
+	come in four main categories.  These are:
+		varnames	- environment variable names
+		syswords	- system c-strings (words)
+		valuelims	- value limits on various integral types
+		digbufsizes	- sizes of digit character buffers for types
+	The assciated global variables used to access these above 
+	four categories are:
+		varname
+		sysword
+		valuelimit
+		digbufsize
+	Enjoy.
 
 *******************************************************************************/
 
