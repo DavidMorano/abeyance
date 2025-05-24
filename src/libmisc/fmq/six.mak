@@ -61,7 +61,7 @@ OBJ0= sialnum.o sialpha.o sibasename.o sibreak.o
 OBJ1= sixchr.o sicasechr.o sicite.o sidigit.o 
 OBJ2= sihyphen.o silbrace.o sileader.o
 OBJ3= siskipwhite.o sispan.o sisub.o
-OBJ4= sifext.o sinext.o
+OBJ4= sifext.o sinext.o sinon.o
 OBJ5= sidquote.o siterm.o
 
 OBJA= obj0.o obj1.o obj2.o 
@@ -165,5 +165,6 @@ sispan.o:		sispan.cc		$(INCS)
 sisub.o:		sisub.cc		$(INCS)
 siterm.o:		siterm.cc		$(INCS)
 sixchr.o:		sixchr.cc		$(INCS)
+isnon.o:		isnon.cc		$(INCS)
 
 
