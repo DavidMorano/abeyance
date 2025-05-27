@@ -3,8 +3,7 @@
 
 for N in "${@}" ; do
   if [[ -r "${N}" ]] ; then
-    gnm --demangle --extern-only ${N} | egrep ' [ST] '
+    gnm --demangle --extern-only ${N} | egrep ' [STD] '
   fi
 done
-
 
