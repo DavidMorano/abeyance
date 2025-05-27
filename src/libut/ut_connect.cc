@@ -48,7 +48,7 @@
 #include	<fcntl.h>
 #include	<poll.h>
 #include	<xti.h>
-#include	<errno.h>
+#include	<cerrno>
 #include	<usystem.h>
 
 
