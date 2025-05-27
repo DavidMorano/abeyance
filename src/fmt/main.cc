@@ -19,13 +19,13 @@
 #include	<envstandards.h>
 
 #include <sys/param.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <ctype.h>
 #include <wctype.h>
 #include <widec.h>
 #include <dlfcn.h>
-#include <stdio.h>
+#include <cstdio>
 #include <locale.h>
 
 
