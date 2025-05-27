@@ -86,12 +86,12 @@
 #include <locale.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <strings.h>
 #include <ctype.h>
 #include <maillock.h>
 #include <pwd.h>
-#include <stdio.h>
+#include <cstdio>
 
 
 
