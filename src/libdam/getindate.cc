@@ -18,7 +18,7 @@
 #include <sys/types.h>
 #include <sys/timeb.h>
 #include <ctype.h>
-#include <string.h>
+#include <cstring>
 #include <time.h>
 
 #include "dateconv.h"
