@@ -5,15 +5,15 @@
 
 #include <sys/types.h>
 #include <sys/cdio.h>
-#include <stdlib.h>
-#include <errno.h>
+#include <cstdlib>
+#include <cerrno>
 #include <unistd.h>
 #include <fcntl.h>
 #include <malloc.h>
 #include <assert.h>
 #include <volmgt.h>
 #include	<strings.h>		/* for |strcasecmp(3c)| */
-#include <stdio.h>
+#include <cstdio>
 
 #include	<localmisc.h>
 
