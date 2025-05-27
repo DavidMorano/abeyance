@@ -30,8 +30,8 @@
 #include	<sys/types.h>
 #include	<kstat.h>
 #include	<time.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstdlib>
+#include	<cstring>
 
 #if	(defined(SYSHAS_LOADAVG) && (SYSHAS_LOADAVG > 0))
 #include	<sys/loadavg.h>
