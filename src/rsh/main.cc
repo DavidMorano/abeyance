@@ -60,16 +60,16 @@ static char rcsid[] =
 #include <sys/time.h>
 
 #include <netinet/in.h>
-#include <signal.h>
+#include <csignal>
 #include <netdb.h>
 
 #include <err.h>
-#include <errno.h>
+#include <cerrno>
 #include <pwd.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <csignal>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <unistd.h>
 #include <varargs.h>
 
