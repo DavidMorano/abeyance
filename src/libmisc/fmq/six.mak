@@ -139,6 +139,12 @@ obj4.o:			$(OBJ4)
 obj5.o:			$(OBJ5)
 	$(LD) -r $(LDFLAGS) -o $@ $(OBJ5)
 
+obj6.o:			$(OBJ6)
+	$(LD) -r $(LDFLAGS) -o $@ $(OBJ6)
+
+obj7.o:			$(OBJ7)
+	$(LD) -r $(LDFLAGS) -o $@ $(OBJ7)
+
 
 obja.o:			$(OBJA)
 	$(LD) -r $(LDFLAGS) -o $@ $(OBJA)
