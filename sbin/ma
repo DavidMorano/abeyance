@@ -178,12 +178,20 @@ export CO_GXXOPT
 export CO_GXXLIB
 
 
-export BINDIR=${REPOROOT}/bin
-export INCDIR=${REPOROOT}/include
-export LIBDIR=${REPOROOT}/lib
-export MANDIR=${REPOROOT}/man
-export INFODIR=${REPOROOT}/info
-export HELPDIR=${REPOROOT}/share/help
+: ${BINDIR:=${REPOROOT}/bin}
+: ${INCDIR:=${REPOROOT}/include}
+: ${LIBDIR:=${REPOROOT}/lib}
+: ${MANDIR:=${REPOROOT}/man}
+: ${INFODIR:=${REPOROOT}/info}
+: ${HELPDIR:=${REPOROOT}/share/help}
+
+export BINDIR
+export INCDIR
+export LIBDIR
+export MANDIR
+export INFODIR
+export HELPDIR
+
 export CRTDIR=${CGS_CRTDIR}
 export VALDIR=${CGS_VALDIR}
 export RUNDIR=${CGS_RUNDIR}
