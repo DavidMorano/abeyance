@@ -1,12 +1,19 @@
 #!/usr/extra/bin/ksh
 # MAKEIT
 
-: ${REPOROOT:=${HOME}/github/system}
-export REPOROOT
-
 BUILDTYPE=develop
 #BUILDTYPE=deliver
 
+
+export REPOROOT=$( reporoot )
+
+PN=${0##/*}
+ex=0
+if [[ -z "${REPOROOT}" ]] ; then
+  print -u 2 -- "${PN}: no REPO root"
+  ex=1
+  return ${ex}
+fi
 
 : ${ARCHITECTURE:=$( architecture )}
 : ${SYSNAME:=$( sysname )}
@@ -249,6 +256,8 @@ export MAKELDFLAGS
 #print -- CGS_CC=${CGS_CC}
 #print -- CGS_GXX=${CGS_GXX}
 #print -- REPOROOT=${REPOROOT}
+#print -- INCDIR=${INCDIR}
+#print -- LIBDIR=${LIBDIR}
 
 export PATH=${REPOROOT}/bin:${PATH}
 make "${@}"
