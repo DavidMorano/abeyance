@@ -3,8 +3,8 @@
 /* default options for the RSX daemon program */
 
 /*
-	David A.D. Morano
-	November 1991
+	= 1991-11-01, David A-D- Morano
+
 */
 
 

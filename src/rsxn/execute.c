@@ -9,15 +9,12 @@
 
 /* revision history:
 
-	= David A.D. Morano, July 1986
-
+	= 1986-07-01, David A-D- Morano
 	This program was originally written.
 
-	= David A.D. Morano, July 1998
-
+	= 1998-07-01, David A-D- Morano
 	I added the ability to specify the "address_from"
 	for the case when we add an envelope header to the message.
-
 
 */
 

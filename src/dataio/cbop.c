@@ -1,9 +1,10 @@
 /* version %I% last-modified %G% */
 
-/*
-	David A.D. Morano
-	April 1983
-*/
+/*** revision history:
+
+	= 1983-04-01, David A-D- Morano
+
+****/
 
 
 
