@@ -10,10 +10,10 @@
 
 /* revision history:
 
-	= David A.D. Morano, October 1994
+	= David A-D- Morano, October 1994
 	Program was originally written.
 
-	= David A.D. Morano, March 1996
+	= David A-D- Morano, March 1996
 	The program was slightly modified to use TMPDIR as
 	the directory for temporary files.
 

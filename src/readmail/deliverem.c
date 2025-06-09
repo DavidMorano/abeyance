@@ -14,7 +14,7 @@
  * Authors of the contents of this file:				
  *									
  *		J.Mukerji						
-		David A.D. Morano
+		David A-D- Morano
  *									
 *
  * deliverem() delivers the message to all the addresses to which it is

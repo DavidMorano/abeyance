@@ -8,12 +8,12 @@
 
 /* revision history:
 
-	= 2003-03-04, David A.D. Morano
+	= 2003-03-04, David A-D- Morano
 	This was written from scratch.
 
 */
 
-/* Copyright © 2003 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 2003 David A-D- Morano.  All rights reserved. */
 
 /*******************************************************************************
 

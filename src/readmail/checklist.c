@@ -13,7 +13,7 @@
  *									
  * Authors of the contents of this file:				
  *									
-		David A.D. Morano
+		David A-D- Morano
  *		J.Mukerji						
 
 

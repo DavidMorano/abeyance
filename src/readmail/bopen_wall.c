@@ -8,7 +8,7 @@
 
 /************************************************************************
  *									
-	= David A.D. Morano	94/01/06
+	= David A-D- Morano	94/01/06
 	This subroutine was originally written.
 *
 *

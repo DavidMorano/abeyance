@@ -10,14 +10,14 @@
 
 /* revision history:
 
-	= 1997-12-01, David A.D. Morano
+	= 1997-12-01, David A-D- Morano
         This program completely (I think) can replace any existing 'rslow'
         programs. Some elements of some previous 'rslow' programs may have been
         used but it is all mixed in now.
 
 */
 
-/* Copyright © 1997 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1997 David A-D- Morano.  All rights reserved. */
 
 /**************************************************************************
 

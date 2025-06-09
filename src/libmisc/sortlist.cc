@@ -7,12 +7,12 @@
 
 /* revision history:
 
-	 = 2007-12-01, David A.D. Morano
+	 = 2007-12-01, David A-D- Morano
 	Module was originally written.
 
 */
 
-/* Copyright © 2007 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 2007 David A-D- Morano.  All rights reserved. */
 
 /*******************************************************************************
 

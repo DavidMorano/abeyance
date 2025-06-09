@@ -2,7 +2,7 @@
 
 /************************************************************************
  *									
-	David A.D. Morano
+	David A-D- Morano
 	- 95/10/06
 
 	The subroutine 'isheader' checks the first word in a line to

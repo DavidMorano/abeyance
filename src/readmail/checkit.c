@@ -14,7 +14,7 @@
  * Authors of the contents of this file:				*
  *									*
  *		J.Mukerji						*
-		David A.D. Morano
+		David A-D- Morano
  *									*
 *
  * checkit() does the footwork for the "check" command.
