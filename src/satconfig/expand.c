@@ -3,7 +3,7 @@
 /* parse out a quoted field */
 
 /*
-	David A.D. Morano
+	David A-D- Morano
 	November 1991
 */
 

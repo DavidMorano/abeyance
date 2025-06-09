@@ -3,7 +3,7 @@
 /* default options for the SATconfig program */
 
 /*
-	David A.D. Morano
+	David A-D- Morano
 	November 1991
 */
 

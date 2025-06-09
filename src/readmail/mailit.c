@@ -15,7 +15,7 @@
  *									*
  *		J.Mukerji						*
  *		A.M.Toto						*
-		David A.D. Morano
+		David A-D- Morano
  *									*
  
 *									*

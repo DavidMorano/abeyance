@@ -13,7 +13,7 @@
 
 #ifdef LONGLONG
 
-/* David A.D. Morano commented these next two lines out and added the two 
+/* David A-D- Morano commented these next two lines out and added the two 
 that follow.
 
 typedef long long longlong_t;
