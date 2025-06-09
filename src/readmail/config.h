@@ -1,8 +1,10 @@
-/* config */
+/* config HEADER */
+/* encoding=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-/* 
-	= David A.D. Morano, 94/01/06
+/* revision history:
 
+	= David A-D- Morano, 1994-01-06
 
 */
 
