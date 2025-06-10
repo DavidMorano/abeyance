@@ -24,22 +24,29 @@ fi
 if [[ -n "${INCDIR}" ]] && [[ -d "${INCDIR}" ]] ; then
   INCDIRS="-I${INCDIR}"
 fi
+# execution-character-set option
+EOPT=
+if [[ -n "${LANG}" ]] ; then
+  EOPT="-finput-charset=${LANG##*.} -fexec-charset=${LANG##*.}"
+fi
+# program
 PROG="print -u2 -- ${PN}: no-program"
 if ${RF_OK} ; then
   POPT="-pthread"
+  COPT="-fmodules-ts -Wno-global-module"
   OPTS=
   case ${PN} in
   gcpp*)
     PROG=gcpp14
-    OPTS="${INCDIRS}"
+    OPTS="${EOPT} ${INCDIRS}"
     ;;
   gcc*)
     PROG=gcc14
-    OPTS="${POPT} ${INCDIRS}"
+    OPTS="${EOPT} ${POPT} ${COPT} ${INCDIRS}"
     ;;
   gpp*|gxx*)
     PROG=gxx14
-    OPTS="${POPT} -fmodules-ts -Wno-global-module ${INCDIRS}"
+    OPTS="${EOPT} ${POPT} ${COPT} ${INCDIRS}"
     ;;
   gld*)
     PROG=gld14
