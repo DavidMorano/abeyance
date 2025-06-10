@@ -1,6 +1,0 @@
-PCS
-
-This program is part of the Personal Communication Services (PCS)
-facility package.  This is just one of the many fine programs
-distributed with the PCS package.
-
