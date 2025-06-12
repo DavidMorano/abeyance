@@ -33,7 +33,8 @@ fi
 PROG="print -u2 -- ${PN}: no-program"
 if ${RF_OK} ; then
   POPT="-pthread"
-  COPT="-fmodules-ts -Wno-global-module"
+  COPT=
+  MOPT="-fmodules-ts -Wno-global-module"
   OPTS=
   case ${PN} in
   gcpp*)
@@ -46,7 +47,7 @@ if ${RF_OK} ; then
     ;;
   gpp*|gxx*)
     PROG=gxx14
-    OPTS="${EOPT} ${POPT} ${COPT} ${INCDIRS}"
+    OPTS="${EOPT} ${POPT} ${COPT} ${MOPT} ${INCDIRS}"
     ;;
   gld*)
     PROG=gld14
