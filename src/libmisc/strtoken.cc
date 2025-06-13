@@ -1,5 +1,5 @@
 /* strtoken SUPPORT (deprecated) */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* break a string out into tokens */
