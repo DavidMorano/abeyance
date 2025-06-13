@@ -1,5 +1,5 @@
 /* vecstr_srvargs SUPPORT */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* process server file program arguments */
