@@ -1,5 +1,5 @@
 /* xxtostr HEADER */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C20,C++20 */
 
 /* subroutines to convert an integer to a c-string */
