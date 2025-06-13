@@ -1,5 +1,5 @@
 /* getenv3 HEADER */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C20 */
 
 /* the the value of an environment variable */
