@@ -1,5 +1,5 @@
 /* vecpstr_avmkstr SUPPORT */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* make the Array-Vector and the String-table */

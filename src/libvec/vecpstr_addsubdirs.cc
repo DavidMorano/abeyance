@@ -1,5 +1,5 @@
 /* vecpstr_addsubdirs SUPPORT */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* find and load UNIX® directories under a given root */
