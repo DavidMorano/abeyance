@@ -1,5 +1,5 @@
 /* env SUPPORT */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C20 */
 
 /* manipulate the process environment variable list */
