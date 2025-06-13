@@ -1,5 +1,5 @@
 /* cfb26 SUPPORT */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* convert a base-26 digit string to its binary integer value */

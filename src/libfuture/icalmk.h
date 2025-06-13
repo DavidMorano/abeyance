@@ -1,5 +1,5 @@
 /* icalmk HEADER */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C20 */
 
 /* make a iCalendar (ICS) database file */
