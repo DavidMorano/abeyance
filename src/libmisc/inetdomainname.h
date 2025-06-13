@@ -1,5 +1,5 @@
 /* inetdomainname HEADER */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C20 */
 
 /* get the local node name and INET domain name */
