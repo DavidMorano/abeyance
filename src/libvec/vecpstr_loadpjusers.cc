@@ -1,5 +1,5 @@
 /* vecpstr_loadpjusers SUPPORT */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* find and load UNIX® users who have the given project name */
