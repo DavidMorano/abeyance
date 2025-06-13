@@ -1,5 +1,5 @@
 /* cvtcase SUPPORT */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
 /* subroutine to convert a counted string to upper case */

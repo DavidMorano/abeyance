@@ -1,5 +1,5 @@
 /* cpq HEADER */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* Circular-Pointer-Queue */
 
 /* regular (no-frills) pointer queue */
