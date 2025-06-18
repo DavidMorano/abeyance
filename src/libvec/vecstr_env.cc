@@ -109,7 +109,7 @@ int vecstr_envadds(vecstr *op,cchar *sp,int sl) noex {
 	    cchar	*tp ;
 	    rs = SR_OK ;
 	    if (sl < 0) sl = strlen(sp) ;
-	    while ((tp = strnpbrk(sp,sl," \t\r\n,")) != nullptr) {
+	    while ((tp = strnbrk(sp,sl," \t\r\n,")) != nullptr) {
 	        cint	cl = (tp - sp) ;
 	        cchar	*cp = sp ;
 	        if (cl > 0) {

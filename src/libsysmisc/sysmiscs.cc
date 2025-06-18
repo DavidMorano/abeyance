@@ -85,7 +85,6 @@ extern int	sfbasename(cchar *,int,cchar **) ;
 extern int	sfdirname(cchar *,int,cchar **) ;
 extern int	sfshrink(cchar *,int,cchar **) ;
 extern int	sfword(cchar *,int,cchar **) ;
-extern int	strnnlen(cchar *,int,int) ;
 extern int	cfdeci(cchar *,int,int *) ;
 extern int	cfdecui(cchar *,int,uint *) ;
 extern int	cfhexi(cchar *,int,uint *) ;
@@ -101,8 +100,6 @@ extern int	debugprintf(cchar *,...) ;
 
 extern char	*strwcpy(char *,cchar *,int) ;
 extern char	*strwcpylc(char *,cchar *,int) ;
-extern char	*strnchr(cchar *,int,int) ;
-extern char	*strnpbrk(cchar *,int,cchar *) ;
 
 
 /* external variables */

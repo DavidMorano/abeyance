@@ -42,6 +42,8 @@
 #include	<vecobj.h>
 #include	<buffer.h>
 #include	<sbuf.h>
+#include	<strn.h>
+#include	<ischarx.h>
 #include	<localmisc.h>
 
 #include	"utermer.h"
@@ -91,12 +93,7 @@
 #endif
 
 
-/* externals subroutines */
-
-extern int	isprintlatin(int) ;
-
-extern char	*strnchr(cchar *,int,int) ;
-extern char	*strnpbrk(cchar *,int,cchar *) ;
+/* external subroutines */
 
 
 /* external variables */

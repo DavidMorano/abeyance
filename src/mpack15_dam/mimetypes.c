@@ -36,21 +36,17 @@
 
 *******************************************************************************/
 
-
-#define	MIMETYPES_MASTER	1
-
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<stdlib.h>
 #include	<string.h>
-
 #include	<usystem.h>
 #include	<bfile.h>
 #include	<hdb.h>
 #include	<field.h>
+#include	<strn.h>
+#include	<strwcpy.h>
 #include	<char.h>
 #include	<localmisc.h>
 
@@ -68,10 +64,6 @@
 /* external subroutines */
 
 extern int	snwcpy(char *,int,const char *,int) ;
-extern int	sncpy1(char *,int,const char *) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnpbrk(const char *,int,const char *) ;
 
 
 /* external variables */
@@ -176,7 +168,7 @@ const char	fname[] ;
 	if ((rs = bopen(mfp,fname,"r",0666)) >= 0) {
 	    HDB_DATUM	key, data ;
 	    FIELD	fb ;
-	    const int	llen = LINEBUFLEN ;
+	    cint	llen = LINEBUFLEN ;
 	    int		len ;
 	    char	lbuf[LINEBUFLEN + 1] ;
 
@@ -317,7 +309,7 @@ const char	ext[] ;
 	    key.buf = tp ;
 	    if ((rs = hdb_fetch(dbp,key,NULL,&data)) >= 0) {
 	        if (typespec != NULL) {
-		    const int	typelen = MIMETYPES_TYPELEN ;
+		    cint	typelen = MIMETYPES_TYPELEN ;
 	            rs = snwcpy(typespec,typelen,data.buf,data.len) ;
 		    len = rs ;
 	        }
@@ -381,7 +373,7 @@ char		typespec[] ;
 	    typespec[0] = '\0' ;
 
 	if ((rs = hdb_enum(dbp,curp,&key,&val)) >= 0) {
-	    const int	ml = MIN(key.len,MIMETYPES_TYPELEN) ;
+	    cint	ml = MIN(key.len,MIMETYPES_TYPELEN) ;
 	    strwcpy(ext,key.buf,ml) ;
 	    rs = MIN(val.len,MIMETYPES_TYPELEN) ;
 	    if (typespec != NULL) strwcpy(typespec,val.buf,rs) ;
@@ -414,7 +406,7 @@ char		typespec[] ;
 	key.len = -1 ;
 	typespec[0] = '\0' ;
 	if ((rs = hdb_fetch(dbp,key,curp,&val)) >= 0) {
-	    const int	ml = MIN(val.len,MIMETYPES_TYPELEN) ;
+	    cint	ml = MIN(val.len,MIMETYPES_TYPELEN) ;
 	    const char	*mp = (const char *) val.buf ;
 	    rs = (strwcpy(typespec,mp,ml) - typespec) ;
 	}
@@ -475,18 +467,12 @@ const char	**rpp ;
 
 #ifdef	COMMENT
 
-static int cmpentry(s1,s2,len)
-const char	s1[] ;
-const char	s2[] ;
-int		len ;
-{
+static int cmpentry(cc *s1,cc *s2,int len) noex {
 	int	rc = 0 ;
-
 	if (len > 0) {
 	    rc = (s2[len] - s1[len]) ;
 	    if (rc == 0) rc = strncmp(s1,s2,len) ;
 	}
-
 	return rc ;
 }
 /* end subroutine (cmpentry) */

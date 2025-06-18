@@ -84,7 +84,7 @@ int vecpstr_adduniqs(vecpstr *qlp,cchar *sp,int sl) noex {
 	    cchar	*tp ;
 	    rs = SR_OK ;
 	    if (sl < 0) sl = strlen(sp) ;
-	    while ((tp = strnpbrk(sp,sl," ,")) != NULL) {
+	    while ((tp = strnbrk(sp,sl," ,")) != NULL) {
 	        if ((cl = sfshrink(sp,(tp-sp),&cp)) > 0) {
 	            rs = vecpstr_adduniq(qlp,cp,cl) ;
 	            c += ((rs < INT_MAX) ? 1 : 0) ;

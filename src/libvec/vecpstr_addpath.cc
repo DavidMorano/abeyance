@@ -118,7 +118,7 @@ int vecpstr_addpathclean(vecpstr *vlp,cchar *lp,int ll) noex {
 		    cint	dlen = rs ;
 		    if (char *dbuf ; (rs = uc_libmalloc((dlen+1),&dbuf)) >= 0) {
 	                cchar	*tp ;
-	                while ((tp = strnpbrk(lp,ll,":;")) != nullptr) {
+	                while ((tp = strnbrk(lp,ll,":;")) != nullptr) {
 		            if ((tp-lp) >= 0) {
 	    	                if ((rs = pathclean(dbuf,lp,(tp-lp))) >= 0) {
 		                    rs = vecpstr_adduniq(vlp,dbuf,rs) ;
@@ -153,7 +153,7 @@ int vecpstr_addpath(vecpstr *vlp,cchar *lp,int ll) noex {
 	    if (ll < 0) ll = strlen(lp) ;
 	    if (ll > 0) {
 	        cchar	*tp ;
-	        while ((tp = strnpbrk(lp,ll,":;")) != nullptr) {
+	        while ((tp = strnbrk(lp,ll,":;")) != nullptr) {
 		    if ((tp-lp) >= 0) {
 		        rs = vecpstr_adduniq(vlp,lp,(tp-lp)) ;
 		        if (rs < INT_MAX) c += 1 ;

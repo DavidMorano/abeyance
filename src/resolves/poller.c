@@ -20,9 +20,7 @@
 
 	This object manages poll events.
 
-
 *******************************************************************************/
-
 
 #include	<envstandards.h>	/* MUST be first to configure */
 
@@ -54,9 +52,6 @@ extern int	pathclean(char *,const char *,int) ;
 #if	CF_DEBUGS
 extern int	debugprintf(const char *,...) ;
 #endif
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnpbrk(const char *,int,const char *) ;
 
 
 /* local structures */
