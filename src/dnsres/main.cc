@@ -101,7 +101,7 @@ extern int	cfdeci(const char *,int,int *) ;
 extern int	cfdecui(const char *,int,uint *) ;
 extern int	optbool(cchar *,int) ;
 extern int	optvalue(cchar *,int) ;
-extern int	sperm(IDS *,struct ustat *,int) ;
+extern int	sperm(IDS *,ustat *,int) ;
 extern int	acceptpass(int, struct strrecvfd *,int) ;
 extern int	isdigitlatin(int) ;
 
@@ -322,7 +322,7 @@ char	*argv[] ;
 char	*envv[] ;
 {
 	PROGINFO	pi, *pip = &pi ;
-	struct ustat	sb ;
+	ustat	sb ;
 	SIGHAND		sm ;
 	IDS		id ;
 	KEYOPT		akopts ;
@@ -1539,7 +1539,7 @@ const char	ofname[] ;
 
 #ifdef	OPTIONAL
 	{
-	    struct ustat	sb ;
+	    ustat	sb ;
 	    rs = u_stat(ofname,&sb) ;
 	    if ((rs >= 0) && S_ISDIR(sb.st_mode))
 		rs = SR_ISDIR ;
@@ -1602,7 +1602,7 @@ PROGINFO	*pip ;
 int		fd ;
 gid_t		gid ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	SBUF	b ;
 
@@ -1888,7 +1888,7 @@ PROGINFO	*pip ;
 
 static int msglogdev(IDS *idp,const char *fname)
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs ;
 	int	f = FALSE ;

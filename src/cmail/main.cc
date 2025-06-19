@@ -1,19 +1,20 @@
 /* cmail */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* program to deliver company email */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_DEBUG	0		/* run-time debugging */
 #define	CF_REXECTEST	0
 
-
 /* revision history:
 
 	= 1997-12-01, David A-D- Morano
-        This program completely (I think) can replace any existing 'rslow'
-        programs. Some elements of some previous 'rslow' programs may have been
-        used but it is all mixed in now.
+	This program completely (I think) can replace any existing
+	'rslow' programs. Some elements of some previous 'rslow'
+	programs may have been used but it is all mixed in now.
 
 */
 
@@ -26,11 +27,9 @@
 	$ cmail [-f from_address]
 		[-i input] address [address ...] < input
 
-
 **************************************************************************/
 
-
-#include	<envstandards.h>
+#include	<envstandards.h>	/* MUST be first to configure */
 
 #include	<sys/types.h>
 #include	<sys/param.h>
@@ -45,6 +44,7 @@
 
 #include	<bfile.h>
 #include	<logfile.h>
+#include	<strx.h>
 #include	<localmisc.h>
 
 #include	"config.h"
@@ -121,7 +121,7 @@ struct global	g ;
 
 int main(int argc,cchar **argv,cchar **envv)
 {
-	struct ustat	sb ;
+	ustat	sb ;
 	struct tm	*timep ;
 	struct passwd	*pp ;
 	struct group	*gp ;
@@ -798,7 +798,7 @@ int main(int argc,cchar **argv,cchar **envv)
 
 	    address_reply = strshrink(address_reply) ;
 
-	    if (((cp = strpbrk(address_reply,"!\\@%/=")) == NULL) &&
+	    if (((cp = strbrk(address_reply,"!\\@%/=")) == NULL) &&
 	        ((pp = getpwnam(address_reply)) != NULL)) {
 
 	        name_to = ns_mailname(pp->pw_gecos) ;
@@ -841,7 +841,7 @@ int main(int argc,cchar **argv,cchar **envv)
 
 	    address_from = strshrink(address_from) ;
 
-	    if (((cp = strpbrk(address_from,"!\\@%/=")) == NULL) &&
+	    if (((cp = strbrk(address_from,"!\\@%/=")) == NULL) &&
 	        ((pp = getpwnam(address_from)) != NULL)) {
 
 	        name_from = ns_mailname(pp->pw_gecos) ;

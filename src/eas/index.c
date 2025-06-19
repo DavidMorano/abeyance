@@ -1,50 +1,52 @@
-/* index */
+/* index SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* create the index of the library file */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0
 #define	CF_DEBUG	1
 
-
 /* revision history:
 
-	= David A-D- Morano, October 1994
+	= 1994-10-01, David A-D- Morano
 	Program was originally written.
 
-	= David A-D- Morano, March 1996
+	= 1996-03-01, David A-D- Morano
 	The program was slightly modified to use TMPDIR as
 	the directory for temporary files.
 
 */
 
+/* Copyright © 1994,1196 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /****************************************************************************
 
 	Create an index of subcircuits on the library file.
 
-
 ******************************************************************************/
 
-
-#include	<envstandards.h>
+#include	<envstandards.h>	/* MUST be first to configure */
 
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/utsname.h>
 #include	<unistd.h>
-#include	<stdlib.h>
-#include	<time.h>
 #include	<pwd.h>
 #include	<grp.h>
-#include	<signal.h>
+#include	<cerrno>
+#include	<csignal>
+#include	<ctime>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<strings.h>		/* for |strcasecmp(3c)| */
-#include	<errno.h>
 
 #include	<bfile.h>
 #include	<baops.h>
+#include	<strx.h>
 #include	<localmisc.h>
 
 #include	"config.h"
@@ -391,7 +393,7 @@ int	sl ;
 	    debugprintf("gotcircuit: copied circuit name\n") ;
 #endif
 
-	if ((cp = strpbrk(subname,". \t(")) != NULL)
+	if ((cp = strbrk(subname,". \t(")) != NULL)
 	    *cp = '\0' ;
 
 #if	CF_DEBUG

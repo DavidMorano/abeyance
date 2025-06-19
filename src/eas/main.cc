@@ -1,12 +1,12 @@
 /* eas (Extract Advice Subcircuit) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* flatten and possibly extract an ADVICE subcircuit */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0		/* compile-time */
 #define	CF_DEBUG	0		/* run-time */
-
 
 /* revision history:
 
@@ -14,8 +14,8 @@
 	Program was originally written.
 
 	= 1996-03-01, David A­D­ Morano
-	The program was slightly modified to use TMPDIR as the directory
-	for temporary files.
+	The program was slightly modified to use TMPDIR as the
+	directory for temporary files.
 
 */
 
@@ -31,16 +31,13 @@
 		[-o outputfile] [-i inputfile] [-a] [-VD?]
 
 	Arguments:
-
 	-s	extract subcircuits into separate files by subcircuit name
 	-t	specify circuit types to extract
 	-c	print out only table of circuits that would have been extracted
 
-
 ******************************************************************************/
 
-
-#include	<envstandards.h>
+#include	<envstandards.h>	/* MUST be first to configure */
 
 #include	<sys/types.h>
 #include	<sys/param.h>
@@ -55,6 +52,7 @@
 #include	<bfile.h>
 #include	<baops.h>
 #include	<mallocstuff.h>
+#include	<strx.h>
 #include	<localmisc.h>
 
 #include	"config.h"
@@ -69,9 +67,9 @@
 
 /* external subroutines */
 
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mktmpfile(char *,mode_t,const char *) ;
-extern int	matstr(const char **,const char *,int) ;
+extern int	mkpath2(char *,cchar *,cchar *) ;
+extern int	mktmpfile(char *,mode_t,cchar *) ;
+extern int	matstr(cchar **,cchar *,int) ;
 
 extern char	*strbasename(char *) ;
 
@@ -102,7 +100,7 @@ struct global		g ;
 
 /* local statics */
 
-static const char	*keywords[] = {
+static cchar	*keywords[] = {
 	NULL,
 	".main",
 	".subckt",
@@ -114,7 +112,7 @@ static const char	*keywords[] = {
 
 /* define command option words */
 
-static const char	*argopts[] = {
+static cchar	*argopts[] = {
 	    "VERSION",		/* 0 */
 	    "TMPDIR",		/* 1 */
 	    NULL,
@@ -126,7 +124,7 @@ static const char	*argopts[] = {
 
 /* circuit types */
 
-const const char	*cirtypes[] = {
+const cchar	*cirtypes[] = {
 	"envelope",
 	"main",
 	"subckt",
@@ -169,10 +167,10 @@ int main(int argc,cchar **argv,cchar **argv)
 	int		f_cktmain, f_cktsub ;
 	int		f_contents = FALSE ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*ifname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*cp, *subname ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*ifname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*cp, *subname ;
 	char		argpresent[MAXARGGROUPS] ;
 	char		buf[BUFLEN + 1], *bp ;
 	char		cirtype[4] ;
@@ -1072,7 +1070,7 @@ int	sl ;
 	    debugprintf("gotcircuit: copied circuit name\n") ;
 #endif
 
-	if ((cp = strpbrk(subname,". \t(")) != NULL)
+	if ((cp = strbrk(subname,". \t(")) != NULL)
 	    *cp = '\0' ;
 
 #if	CF_DEBUG
@@ -1525,7 +1523,7 @@ char		*s ;
 	char		*cp ;
 
 
-	while ((cp = strpbrk(s," \t,")) != NULL) {
+	while ((cp = strbrk(s," \t,")) != NULL) {
 
 	    *cp = '\0' ;
 	    if (loadtype(headp,s) < 0) return BAD ;
