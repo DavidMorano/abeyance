@@ -86,7 +86,7 @@ typedef struct listwin {
 
 /* this is the status window for decoding
  */
-typedef struct ustatuswin {
+typedef ustatuswin {
 	na_win win;
 	RgnHandle urgn;			/* user region */
 	Rect urect;				/* user rectangle */

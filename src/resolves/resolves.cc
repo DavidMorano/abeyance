@@ -180,7 +180,7 @@ extern int	mknpath2(char *,int,const char *,const char *) ;
 extern int	mknpath3(char *,int,const char *,const char *,const char *) ;
 extern int	matstr(const char **,const char *,int) ;
 extern int	nleadstr(const char *,const char *,int) ;
-extern int	sperm(IDS *,struct ustat *,int) ;
+extern int	sperm(IDS *,ustat *,int) ;
 extern int	permsched(const char **,vecstr *,char *,int,const char *,int) ;
 extern int	getnodedomain(char *,char *) ;
 extern int	getgid_group(cchar *,int) ;
@@ -1292,7 +1292,7 @@ time_t		daytime ;
 	        } /* end if */
 #else /* CF_PARAMFILE */
 	        {
-	            struct ustat	sb ;
+	            ustat	sb ;
 
 	            int	rs1 = u_stat(mmp->fname,&sb) ;
 
@@ -1479,7 +1479,7 @@ int		fd ;
 static int mapper_mapload(mmp)
 RESOLVES_MAPPER	*mmp ;
 {
-	struct ustat		sb ;
+	ustat		sb ;
 
 	PARAMFILE		*pfp = &mmp->dirsfile ;
 	PARAMFILE_ENT		pe ;
@@ -1541,7 +1541,7 @@ ret0:
 static int mapper_mapload(mmp)
 RESOLVES_MAPPER	*mmp ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	bfile	mfile, *mfp = &mfile ;
 

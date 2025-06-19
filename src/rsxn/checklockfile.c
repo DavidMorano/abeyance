@@ -84,7 +84,7 @@ char	banner[], filename[] ;
 time_t	daytime ;
 pid_t	pid ;
 {
-	struct ustat	sb1, sb2 ;
+	ustat	sb1, sb2 ;
 
 	pid_t	oldpid ;
 

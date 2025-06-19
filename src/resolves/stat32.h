@@ -16,7 +16,7 @@
 
 #if	(! defined(_SYSCALL32))
 
-struct ustat32 {
+ustat32 {
 	uint		st_dev;
 	uint		st_pad1[3];
 	uint		st_ino;

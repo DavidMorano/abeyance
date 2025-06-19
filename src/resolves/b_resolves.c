@@ -225,7 +225,7 @@ extern int	vecstr_adduniq(vecstr *,const char *,int) ;
 extern int	vecstr_envadd(vecstr *,const char *,const char *,int) ;
 extern int	vecstr_envset(vecstr *,const char *,const char *,int) ;
 extern int	perm(const char *,uid_t,gid_t,gid_t *,int) ;
-extern int	sperm(IDS *,struct ustat *,int) ;
+extern int	sperm(IDS *,ustat *,int) ;
 extern int	mkdirs(const char *,mode_t) ;
 extern int	acceptpass(int,struct strrecvfd *,int) ;
 extern int	hasalldig(const char *,int) ;
@@ -1581,7 +1581,7 @@ struct locinfo	*lip ;
 {
 	PROGINFO	*pip = lip->pip ;
 
-	struct ustat	usb ;
+	ustat	usb ;
 
 	mode_t	dmode = TMPDMODE ;
 
@@ -1699,7 +1699,7 @@ struct locinfo	*lip ;
 static int locinfo_tmpmaint(lip)
 struct locinfo	*lip ;
 {
-	struct ustat	usb ;
+	ustat	usb ;
 
 	struct dargs	da ;
 
@@ -1833,7 +1833,7 @@ static int locinfo_chgrp(lip,fname)
 struct locinfo	*lip ;
 const char	fname[] ;
 {
-	struct ustat	usb ;
+	ustat	usb ;
 
 	uid_t	cuid = -1 ;
 
@@ -2010,7 +2010,7 @@ const char	mntfname[] ;
 {
 	struct locinfo	*lip = pip->lip ;
 
-	struct ustat	usb ;
+	ustat	usb ;
 
 	LFM	pidlock, *plp = &pidlock ;
 
@@ -2244,7 +2244,7 @@ int		f ;
 	ccp = lip->pidfname ;
 	if ((ccp != NULL) && (ccp[0] != '\0') && (ccp[0] != '-')) {
 
-	    struct ustat	usb ;
+	    ustat	usb ;
 
 	    LFM_CHECK	lc ;
 
@@ -3114,7 +3114,7 @@ void		*vap ;
 static int deleter_all(dap)
 struct dargs	*dap ;
 {
-	struct ustat	usb ;
+	ustat	usb ;
 
 	FSDIR		dir ;
 

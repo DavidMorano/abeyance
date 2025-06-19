@@ -128,7 +128,7 @@ int	argc ;
 char	*argv[] ;
 char	*envv[] ;
 {
-	struct ustat	ss ;
+	ustat	ss ;
 
 	struct field	fsb ;
 

@@ -1364,7 +1364,7 @@ PROGINFO	*pip ;
 
 #else /* OPTIONAL */
 	{
-	    struct ustat	sb ;
+	    ustat	sb ;
 
 	    rs = u_stat(dname,&sb) ;
 	    if ((rs < 0) || ((sb.st_mode & S_ISVTX) != S_ISVTX)) {
