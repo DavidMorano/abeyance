@@ -149,12 +149,12 @@ static int	babycalcs_lookproc(BABYCALCS *,time_t,uint *) ;
 static int	babycalcs_lookinfo(BABYCALCS *,BABYCALCS_INFO *) ;
 static int	babycalcs_calc(BABYCALCS *,int,time_t,uint *) ;
 static int	babycalcs_dbcheck(BABYCALCS *,time_t) ;
-static int	babycalcs_dbwait(BABYCALCS *,time_t,struct ustat *) ;
-static int	babycalcs_reloadshm(BABYCALCS *,time_t,struct ustat *) ;
-static int	babycalcs_reloadtxt(BABYCALCS *,time_t,struct ustat *) ;
-static int	babycalcs_shmcheck(BABYCALCS *,struct ustat *) ;
+static int	babycalcs_dbwait(BABYCALCS *,time_t,ustat *) ;
+static int	babycalcs_reloadshm(BABYCALCS *,time_t,ustat *) ;
+static int	babycalcs_reloadtxt(BABYCALCS *,time_t,ustat *) ;
+static int	babycalcs_shmcheck(BABYCALCS *,ustat *) ;
 static int	babycalcs_shmaccess(BABYCALCS *,time_t) ;
-static int	babycalcs_shmupdate(BABYCALCS *,time_t,struct ustat *,int) ;
+static int	babycalcs_shmupdate(BABYCALCS *,time_t,ustat *,int) ;
 static int	babycalcs_shmaddwrite(BABYCALCS *,int) ;
 static int	babycalcs_shminfo(BABYCALCS *,BABYCALCS_INFO *) ;
 
@@ -434,7 +434,7 @@ BABYCALCS	*op ;
 const char	dbname[] ;
 int		operms ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	time_t	daytime = 0 ;
 
@@ -777,7 +777,7 @@ static int babycalcs_proctxt(op,tlp)
 BABYCALCS	*op ;
 vecobj		*tlp ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	CVTDATER	cdater ;
 
@@ -1308,7 +1308,7 @@ static int babycalcs_dbcheck(op,daytime)
 BABYCALCS	*op ;
 time_t		daytime ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
@@ -1422,9 +1422,9 @@ BABYCALCS_INFO	*bip ;
 static int babycalcs_dbwait(op,daytime,sbp)
 BABYCALCS	*op ;
 time_t		daytime ;
-struct ustat	*sbp ;
+ustat	*sbp ;
 {
-	struct ustat	nsb ;
+	ustat	nsb ;
 
 	int	rs = SR_OK ;
 	int	f ;
@@ -1462,7 +1462,7 @@ ret0:
 static int babycalcs_reloadshm(op,daytime,sbp)
 BABYCALCS	*op ;
 time_t		daytime ;
-struct ustat	*sbp ;
+ustat	*sbp ;
 {
 	sigset_t	oldsigmask, newsigmask ;
 
@@ -1563,7 +1563,7 @@ ret0:
 static int babycalcs_shmupdate(op,daytime,sbp,fd)
 BABYCALCS	*op ;
 time_t		daytime ;
-struct ustat	*sbp ;
+ustat	*sbp ;
 int		fd ;
 {
 	BABYCALCS_ENTRY	*tblp = op->table ;
@@ -1687,7 +1687,7 @@ ret0:
 static int babycalcs_reloadtxt(op,daytime,sbp)
 BABYCALCS	*op ;
 time_t		daytime ;
-struct ustat	*sbp ;
+ustat	*sbp ;
 {
 	int	rs = SR_OK ;
 
@@ -1707,7 +1707,7 @@ struct ustat	*sbp ;
 
 static int babycalcs_shmcheck(op,sbp)
 BABYCALCS	*op ;
-struct ustat	*sbp ;
+ustat	*sbp ;
 {
 	uint	*hwp ;
 

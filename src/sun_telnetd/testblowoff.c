@@ -39,7 +39,7 @@ int main(int argc,const char **argv,const char **envv)
 	}
 
 	{
-		struct ustat	sb ;
+		ustat	sb ;
 		int	tlen = LINEBUFLEN ;
 		int	tl ;
 		char	tbuf[LINEBUFLEN+1] ;

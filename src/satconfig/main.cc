@@ -151,7 +151,7 @@ static cchar	*funtab[FUN_OVERLAST] = {
 /& ARGSUSED */
 int main(int argc,cchar **argv,cchar **envv)
 {
-	struct ustat	ss ;
+	ustat	ss ;
 	struct system	system[NSYSTEM] ;
 	struct direct	direntry ;
 	struct expand	se ;

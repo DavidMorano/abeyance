@@ -184,7 +184,7 @@ struct proginfo	*pip ;
 CTL_MSG		*request ;
 char		*remote_machine ;
 {
-	struct ustat stbuf ;
+	ustat stbuf ;
 
 	struct passwd *p ;
 

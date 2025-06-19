@@ -274,7 +274,7 @@ static int getatime(termdev,tp)
 const char	termdev[] ;
 time_t		*tp ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs ;
 

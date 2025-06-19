@@ -208,7 +208,7 @@ char	*argv[], *envp[] ;
 	bfile		logfile ;
 	bfile		pidfile ;
 
-	struct ustat		sb ;
+	ustat		sb ;
 
 	struct global		*gp = &g ;
 
