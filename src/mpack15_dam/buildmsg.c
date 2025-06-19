@@ -478,7 +478,7 @@ ATTACH_ENT	*ep ;
 
 	        if (ep->clen < 0) {
 
-	            struct ustat	sb ;
+	            ustat	sb ;
 
 
 	            if ((bcontrol(ifp,BC_STAT,&sb) >= 0) &&
@@ -729,7 +729,7 @@ char		tmpdir[] ;
 	bfile	infile, *ifp = &infile ;
 	bfile	auxfile, *afp = &auxfile ;
 
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	f_needaux = FALSE ;
 	int	clen = 0 ;

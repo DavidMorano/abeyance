@@ -914,7 +914,7 @@ static int icalmk_nfcreate(op,fsuf)
 ICALMK		*op ;
 cchar	fsuf[] ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs ;
 	int	rs1 ;
@@ -1094,7 +1094,7 @@ cchar	outfname[] ;
 static int icalmk_nfexists(op)
 ICALMK		*op ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;

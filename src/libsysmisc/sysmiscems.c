@@ -573,7 +573,7 @@ struct loadinfo	*lip ;
 int		shmi ;
 const char	shmname[] ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs = SR_OK ;
 	int	fd = -1 ;

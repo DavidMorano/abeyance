@@ -1,4 +1,5 @@
 /* lsdbf SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C20 */
 
 /*	Copyright (c) 1984, 1986, 1987, 1988, 1989 AT&T	*/
@@ -35,6 +36,7 @@
 #include <stdio.h>
 
 #include	<usystem.h>	/* for system return codes */
+#include	<strx.h>
 
 /* listener include files */
 
@@ -784,7 +786,7 @@ register dbf_t	*dbp;
 	register char *savep;
 	register char *tp;
 	char scratch[BUFSIZ];
-	char *strpbrk();
+	char *strbrk();
 #ifdef	DEBUGMODE
 	register int i = 0;
 #endif
@@ -792,7 +794,7 @@ register dbf_t	*dbp;
 	*argvp = 0;
 	savep = p;
 	while (p && *p) {
-		if (p = strpbrk(p, delim)) {
+		if (p = strbrk(p, delim)) {
 			switch (*p) {
 			case ' ':
 			case '\t':

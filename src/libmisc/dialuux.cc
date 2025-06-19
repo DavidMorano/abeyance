@@ -62,6 +62,7 @@
 #include	<pathclean.h>
 #include	<matxstr.h>
 #include	<uuname.h>
+#include	<strx.h>
 #include	<localmisc.h>
 
 #include	"dialuux.h"
@@ -410,7 +411,7 @@ static int vecstr_loadpath(vecstr *clp,cchar *pp) noex {
 	cchar	*cp ;
 	char		tmpfname[MAXPATHLEN + 1] ;
 
-	while ((cp = strpbrk(pp,":;")) != nullptr) {
+	while ((cp = strbrk(pp,":;")) != nullptr) {
 
 	    cl = pathclean(tmpfname,pp,(cp - pp)) ;
 

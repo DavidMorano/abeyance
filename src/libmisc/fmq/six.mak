@@ -56,7 +56,7 @@ ARFLAGS		?= $(MAKEARFLAGS)
 LDFLAGS		?= $(MAKELDFLAGS)
 
 
-OBJ0= sialnum.o sialpha.o sibasename.o sibreak.o
+OBJ0= sialnum.o sialpha.o sibasename.o sixbrk.o
 OBJ1= sixchr.o sicasechr.o sicite.o sidigit.o 
 OBJ2= sihyphen.o silbrace.o sileader.o
 OBJ3= siskipwhite.o sispan.o sisub.o
@@ -151,7 +151,7 @@ sifext.o:		sifext.cc sifext.h	$(INCS)
 sialnum.o:		sialnum.cc		$(INCS)
 sialpha.o:		sialpha.cc		$(INCS)
 sibasename.o:		sibasename.cc		$(INCS)
-sibreak.o:		sibreak.cc		$(INCS)
+sixbrk.o:		sixbrk.cc		$(INCS)
 sicasechr.o:		sicasechr.cc		$(INCS)
 sicite.o:		sicite.cc		$(INCS)
 sidigit.o:		sidigit.cc		$(INCS)
@@ -167,5 +167,6 @@ siterm.o:		siterm.cc		$(INCS)
 sixchr.o:		sixchr.cc		$(INCS)
 isnon.o:		isnon.cc		$(INCS)
 siwht.o:		siwht.cc siwht.h	$(INCS)
+sifield.o:		sifield.cc		$(INCS)
 
 

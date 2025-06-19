@@ -242,7 +242,7 @@ char *pathpart, *dbfile ;
 	char bigram1[128], bigram2[128] ;
 
 /* To check the age of the database.  */
-	struct ustat st ;
+	ustat st ;
 	time_t now ;
 
 
@@ -484,7 +484,7 @@ char	*envv[] ;
 static int isfile(name)
 const char	name[] ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs1 ;
 	int	namelen ;
