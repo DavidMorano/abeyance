@@ -166,7 +166,17 @@ sisub.o:		sisub.cc		$(INCS)
 siterm.o:		siterm.cc		$(INCS)
 sixchr.o:		sixchr.cc		$(INCS)
 isnon.o:		isnon.cc		$(INCS)
-siwht.o:		siwht.cc siwht.h	$(INCS)
 sifield.o:		sifield.cc		$(INCS)
+
+# SIWHT
+siwht.o:		siwht0.o siwht1.o
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+siwht0.o:		siwht.ccm		$(INCS)
+	makemodule siwht
+
+siwht1.o:		siwht1.cc siwht.ccm	$(INCS)
+	makemodule siwht
+	$(COMPILE.cc) $<
 
 
