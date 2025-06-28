@@ -60,7 +60,7 @@
 #include	<sbuf.h>
 #include	<vecstr.h>
 #include	<outbuf.h>
-#include	<xperm.h>
+#include	<permx.h>
 #include	<vstrkeycmp.h>
 #include	<localmisc.h>
 

@@ -180,7 +180,7 @@ extern int	mknpath2(char *,int,const char *,const char *) ;
 extern int	mknpath3(char *,int,const char *,const char *,const char *) ;
 extern int	matstr(const char **,const char *,int) ;
 extern int	nleadstr(const char *,const char *,int) ;
-extern int	sperm(IDS *,ustat *,int) ;
+extern int	permid(IDS *,ustat *,int) ;
 extern int	permsched(const char **,vecstr *,char *,int,const char *,int) ;
 extern int	getnodedomain(char *,char *) ;
 extern int	getgid_group(cchar *,int) ;
@@ -1510,7 +1510,7 @@ RESOLVES_MAPPER	*mmp ;
 
 	    while (rs >= 0) {
 
-	        kl = paramfile_enum(pfp,&cur,&pe,pbuf,PBUFLEN) ;
+	        kl = paramfile_curenum(pfp,&cur,&pe,pbuf,PBUFLEN) ;
 	        if (kl == SR_NOTFOUND) break ;
 
 	        rs = kl ;

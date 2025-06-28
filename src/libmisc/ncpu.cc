@@ -149,7 +149,7 @@ extern int	sfbasename(const char *,int,const char **) ;
 extern int	nleadstr(const char *,const char *,int) ;
 extern int	cfdecti(const char *,int,int *) ;
 extern int	cfdecui(const char *,int,uint *) ;
-extern int	sperm(IDS *,ustat *,int) ;
+extern int	permid(IDS *,ustat *,int) ;
 extern int	getnodedomain(char *,char *) ;
 extern int	mkpr(char *,int,const char *,const char *) ;
 extern int	pathclean(char *,const char *,int) ;

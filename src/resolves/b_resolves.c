@@ -225,7 +225,7 @@ extern int	vecstr_adduniq(vecstr *,const char *,int) ;
 extern int	vecstr_envadd(vecstr *,const char *,const char *,int) ;
 extern int	vecstr_envset(vecstr *,const char *,const char *,int) ;
 extern int	perm(const char *,uid_t,gid_t,gid_t *,int) ;
-extern int	sperm(IDS *,ustat *,int) ;
+extern int	permid(IDS *,ustat *,int) ;
 extern int	mkdirs(const char *,mode_t) ;
 extern int	acceptpass(int,struct strrecvfd *,int) ;
 extern int	hasalldig(const char *,int) ;
@@ -2067,7 +2067,7 @@ const char	mntfname[] ;
 	    rs = SR_BUSY ;
 
 	if (rs >= 0)
-	    rs = sperm(&pip->id,&usb,W_OK) ;
+	    rs = permid(&pip->id,&usb,W_OK) ;
 
 	if (rs < 0) {
 	    if (! pip->f.quiet)

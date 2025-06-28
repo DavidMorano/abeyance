@@ -101,7 +101,7 @@ extern int	cfdeci(const char *,int,int *) ;
 extern int	cfdecui(const char *,int,uint *) ;
 extern int	optbool(cchar *,int) ;
 extern int	optvalue(cchar *,int) ;
-extern int	sperm(IDS *,ustat *,int) ;
+extern int	permid(IDS *,ustat *,int) ;
 extern int	acceptpass(int, struct strrecvfd *,int) ;
 extern int	isdigitlatin(int) ;
 
@@ -1902,7 +1902,7 @@ static int msglogdev(IDS *idp,const char *fname)
 
 	rs = u_stat(fname,&sb) ;
 	if (rs >= 0) {
-	    rs = sperm(idp,&sb,W_OK) ;
+	    rs = permid(idp,&sb,W_OK) ;
 	    if (rs >= 0) {
 	        f = f || S_ISCHR(sb.st_mode) ;
 	        f = f || S_ISFIFO(sb.st_mode) ;
