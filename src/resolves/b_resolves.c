@@ -3068,7 +3068,7 @@ PARAMOPT	*app ;
 
 	    while (rs >= 0) {
 
-	        cl = paramopt_fetch(app,po,&pcur,&cp) ;
+	        cl = paramopt_curfetch(app,po,&pcur,&cp) ;
 	        if (cl == SR_NOTFOUND) break ;
 
 	        rs = cl ;
