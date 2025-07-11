@@ -60,7 +60,7 @@ if ${RF_OK} ; then
     PROG=gar14
     ;;
   gnm) 
-     PROG=gnm14 
+    PROG=gnm14 
     ;;
   gnmd)
     PROG=gnm14
