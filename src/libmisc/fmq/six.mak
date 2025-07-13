@@ -62,9 +62,11 @@ OBJ2= sihyphen.o silbrace.o sileader.o
 OBJ3= siskipwhite.o sispan.o sisub.o
 OBJ4= sifext.o sinext.o sinon.o
 OBJ5= sidquote.o siterm.o siwht.o
+OBJ6= siext.o
+OBJ7=
 
 OBJA= obj0.o obj1.o obj2.o 
-OBJB= obj3.o obj4.o obj5.o
+OBJB= obj3.o obj4.o obj5.o obj6.o
 
 OBJ= obja.o objb.o
 
@@ -147,26 +149,27 @@ objb.o:			$(OBJB)
 	$(LD) -r $(LDFLAGS) -o $@ $(OBJB)
 
 
-sifext.o:		sifext.cc sifext.h	$(INCS)
-sialnum.o:		sialnum.cc		$(INCS)
-sialpha.o:		sialpha.cc		$(INCS)
-sibasename.o:		sibasename.cc		$(INCS)
-sixbrk.o:		sixbrk.cc		$(INCS)
-sicasechr.o:		sicasechr.cc		$(INCS)
-sicite.o:		sicite.cc		$(INCS)
-sidigit.o:		sidigit.cc		$(INCS)
-sidquote.o:		sidquote.cc		$(INCS)
-sihyphen.o:		sihyphen.cc		$(INCS)
-silbrace.o:		silbrace.cc		$(INCS)
-sileader.o:		sileader.cc		$(INCS)
-sinext.o:		sinext.cc		$(INCS)
-siskipwhite.o:		siskipwhite.cc		$(INCS)
-sispan.o:		sispan.cc		$(INCS)
-sisub.o:		sisub.cc		$(INCS)
-siterm.o:		siterm.cc		$(INCS)
-sixchr.o:		sixchr.cc		$(INCS)
-isnon.o:		isnon.cc		$(INCS)
-sifield.o:		sifield.cc		$(INCS)
+sifext.o:		sifext.cc sifext.h		$(INCS)
+sialnum.o:		sialnum.cc			$(INCS)
+sialpha.o:		sialpha.cc			$(INCS)
+sibasename.o:		sibasename.cc			$(INCS)
+sixbrk.o:		sixbrk.cc			$(INCS)
+sicasechr.o:		sicasechr.cc			$(INCS)
+sicite.o:		sicite.cc			$(INCS)
+sidigit.o:		sidigit.cc			$(INCS)
+sidquote.o:		sidquote.cc			$(INCS)
+sihyphen.o:		sihyphen.cc			$(INCS)
+silbrace.o:		silbrace.cc			$(INCS)
+sileader.o:		sileader.cc			$(INCS)
+sinext.o:		sinext.cc			$(INCS)
+siskipwhite.o:		siskipwhite.cc			$(INCS)
+sispan.o:		sispan.cc			$(INCS)
+sisub.o:		sisub.cc			$(INCS)
+siterm.o:		siterm.cc			$(INCS)
+sixchr.o:		sixchr.cc			$(INCS)
+isnon.o:		isnon.cc			$(INCS)
+sifield.o:		sifield.cc			$(INCS)
+siext.o:		siext.cc	siext.h		$(INCS)
 
 # SIWHT
 siwht.o:		siwht0.o siwht1.o
