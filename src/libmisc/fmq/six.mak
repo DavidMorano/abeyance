@@ -56,13 +56,13 @@ ARFLAGS		?= $(MAKEARFLAGS)
 LDFLAGS		?= $(MAKELDFLAGS)
 
 
-OBJ0= sialnum.o sialpha.o sibasename.o sixbrk.o
-OBJ1= sixchr.o sicasechr.o sicite.o sidigit.o 
+OBJ0= sichar.o sicasechr.o 
+OBJ1= sicite.o sibasename.o
 OBJ2= sihyphen.o silbrace.o sileader.o
-OBJ3= siskipwhite.o sispan.o sisub.o
+OBJ3= siskipwhite.o sispan.o 
 OBJ4= sifext.o sinext.o sinon.o
-OBJ5= sidquote.o siterm.o siwht.o
-OBJ6= siext.o
+OBJ5= sidquote.o sixterm.o siext.o
+OBJ6= sixchr.o sixbrk.o sixsub.o siwht.o
 OBJ7=
 
 OBJA= obj0.o obj1.o obj2.o 
@@ -150,13 +150,8 @@ objb.o:			$(OBJB)
 
 
 sifext.o:		sifext.cc sifext.h		$(INCS)
-sialnum.o:		sialnum.cc			$(INCS)
-sialpha.o:		sialpha.cc			$(INCS)
 sibasename.o:		sibasename.cc			$(INCS)
-sixbrk.o:		sixbrk.cc			$(INCS)
-sicasechr.o:		sicasechr.cc			$(INCS)
 sicite.o:		sicite.cc			$(INCS)
-sidigit.o:		sidigit.cc			$(INCS)
 sidquote.o:		sidquote.cc			$(INCS)
 sihyphen.o:		sihyphen.cc			$(INCS)
 silbrace.o:		silbrace.cc			$(INCS)
@@ -164,21 +159,25 @@ sileader.o:		sileader.cc			$(INCS)
 sinext.o:		sinext.cc			$(INCS)
 siskipwhite.o:		siskipwhite.cc			$(INCS)
 sispan.o:		sispan.cc			$(INCS)
-sisub.o:		sisub.cc			$(INCS)
-siterm.o:		siterm.cc			$(INCS)
-sixchr.o:		sixchr.cc			$(INCS)
 isnon.o:		isnon.cc			$(INCS)
-sifield.o:		sifield.cc			$(INCS)
+
 siext.o:		siext.cc	siext.h		$(INCS)
+sixchr.o:		sixchr.cc	sixchr.h	$(INCS)
+sixbrk.o:		sixbrk.cc	sixbrk.h	$(INCS)
+sixterm.o:		sixterm.cc	sixterm.h	$(INCS)
+sixsub.o:		sixsub.cc	sixsub.h	$(INCS)
+sicasechr.o:		sicasechr.cc	sicasechr.h	$(INCS)
+sinon.o:		sinon.cc	sinon.h		$(INCS)
+sichar.o:		sichar.cc	sichar.h	$(INCS)
 
 # SIWHT
 siwht.o:		siwht0.o siwht1.o
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
-siwht0.o:		siwht.ccm		$(INCS)
+siwht0.o:		siwht.ccm			$(INCS)
 	makemodule siwht
 
-siwht1.o:		siwht1.cc siwht.ccm	$(INCS)
+siwht1.o:		siwht1.cc siwht.ccm		$(INCS)
 	makemodule siwht
 	$(COMPILE.cc) $<
 
