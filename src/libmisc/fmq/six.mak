@@ -63,10 +63,10 @@ OBJ3= siskipwhite.o sispan.o
 OBJ4= sifext.o sinext.o sinon.o
 OBJ5= sidquote.o sixterm.o siext.o
 OBJ6= sixchr.o sixbrk.o sixsub.o siwht.o
-OBJ7=
+OBJ7= sileadzero.o
 
-OBJA= obj0.o obj1.o obj2.o 
-OBJB= obj3.o obj4.o obj5.o obj6.o
+OBJA= obj0.o obj1.o obj2.o obj3.o 
+OBJB= obj4.o obj5.o obj6.o obj7.o
 
 OBJ= obja.o objb.o
 
@@ -159,7 +159,7 @@ sileader.o:		sileader.cc			$(INCS)
 sinext.o:		sinext.cc			$(INCS)
 siskipwhite.o:		siskipwhite.cc			$(INCS)
 sispan.o:		sispan.cc			$(INCS)
-isnon.o:		isnon.cc			$(INCS)
+sileadzero.o:		sileadzero.cc			$(INCS)
 
 siext.o:		siext.cc	siext.h		$(INCS)
 sixchr.o:		sixchr.cc	sixchr.h	$(INCS)
