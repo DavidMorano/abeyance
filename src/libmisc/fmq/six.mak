@@ -40,6 +40,21 @@ MODS +=
 LIBS +=
 
 
+OBJ0= sichar.o sicasechr.o 
+OBJ1= sicite.o sibasename.o
+OBJ2= sihyphen.o silbrace.o sileader.o
+OBJ3= siskipwhite.o sispan.o 
+OBJ4= sifext.o sinext.o sinon.o
+OBJ5= sidquote.o sixterm.o siext.o
+OBJ6= sixchr.o sixbrk.o sixsub.o siwht.o
+OBJ7= sileadzero.o
+
+OBJA= obj0.o obj1.o obj2.o obj3.o 
+OBJB= obj4.o obj5.o obj6.o obj7.o
+
+OBJ= obja.o objb.o
+
+
 INCDIRS +=
 
 LIBDIRS += -L$(LIBDIR)
@@ -54,21 +69,6 @@ CFLAGS		?= $(MAKECFLAGS)
 CXXFLAGS	?= $(MAKECXXFLAGS)
 ARFLAGS		?= $(MAKEARFLAGS)
 LDFLAGS		?= $(MAKELDFLAGS)
-
-
-OBJ0= sichar.o sicasechr.o 
-OBJ1= sicite.o sibasename.o
-OBJ2= sihyphen.o silbrace.o sileader.o
-OBJ3= siskipwhite.o sispan.o 
-OBJ4= sifext.o sinext.o sinon.o
-OBJ5= sidquote.o sixterm.o siext.o
-OBJ6= sixchr.o sixbrk.o sixsub.o siwht.o
-OBJ7= sileadzero.o
-
-OBJA= obj0.o obj1.o obj2.o obj3.o 
-OBJB= obj4.o obj5.o obj6.o obj7.o
-
-OBJ= obja.o objb.o
 
 
 .SUFFIXES:		.hh .ii .ccm
