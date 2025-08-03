@@ -77,10 +77,10 @@
 #if	CF_STRENGTH
 
 template<typename T> T minx(int a,int b) noex {
-	const T		sbit = ((szof(T)*8)-1) ;
-	const T		d = (a-b) ;
-	const T		sel = (!(((a-b) >> sbit)&1)) ;
-	return (a - (sel*d)) ;
+	const T		sbit = ((szof(T) * CHAR_BIT) - 1) ;
+	const T		d = (a - b) ;
+	const T		sel = (! (((a - b) >> sbit) & 1)) ;
+	return (a - (sel * d)) ;
 }
 
 int mini(int a,int b) noex {
@@ -97,10 +97,10 @@ longlong minl(longlong a,longlong b) noex {
 
 
 typedef<typename T> T maxx(T a,T b) noex {
-	const T		sbit = ((szof(T)*8)-1) ;
-	const T		d = (a-b) ;
-	const T		sel = (((a-b) >> sbit)&1) ;
-	return (a - (sel*d)) ;
+	const T		sbit = ((szof(T) * CHAR_BIT) - 1) ;
+	const T		d = (a - b) ;
+	const T		sel = (((a - b) >> sbit) & 1) ;
+	return (a - (sel * d)) ;
 }
 
 int maxi(int a,int b) noex {
