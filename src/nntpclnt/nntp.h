@@ -90,9 +90,9 @@
 #define	ERR_NOART	430	/* No such article at all */
 #define ERR_NOPORT      431     /* Problem with DATA port (V2) */
 #define ERR_NOLIST      432     /* No list of newsgroups available (V2)*/
-#define	ERR_GOTIT	435	/* Already got that article, don't send */
+#define	ERR_GOTIT	435	/* Already got that article, do not send */
 #define	ERR_XFERFAIL	436	/* Transfer failed */
-#define	ERR_XFERRJCT	437	/* Article rejected, don't resend */
+#define	ERR_XFERRJCT	437	/* Article rejected, do not resend */
 #define ERR_ASKAGN      438     /* Ask again later (V2) */
 #define ERR_TEMP        439     /* Service temporarily unavailable (V2) */
 #define	ERR_NOPOST	440	/* Posting not allowed */
@@ -115,6 +115,6 @@
 #define ERR_BATCH       567     /* BATCH option not set (V2) */
 #define	ERR_OLDAUTHBAD	580	/* Authorization Failed */
 
-/* RFC 977 defines this; don't change it. */
+/* RFC 977 defines this; do not change it. */
 
 #define	NNTP_STRLEN	512

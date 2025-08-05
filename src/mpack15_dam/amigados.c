@@ -138,7 +138,7 @@ os_newtypedfile(char *fname, char *contentType, int binary, params contentParams
         for (p = name; *p; p += 1)
                 if (!isprint(*p) || strchr(BADCHARS, *p)) *p = 'X' ;
 
-        /* Add a count if we don't have a name, or we aren't overwriting */
+        /* Add a count if we do not have a name, or we are not overwriting */
         if (!*fname || !overwrite_files) {
                 if (*name) strcpy(buf, name) ;
                 else {

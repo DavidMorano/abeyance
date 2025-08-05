@@ -60,7 +60,7 @@ extern "C" {
 	pascal ICError ICFindConfigFile(ICInstance inst, short count, ICDirSpecArrayPtr folders);
 	/* count is the number of ICDirSpecs that are valid in folders */
 	/* searches the specified folders first, then backs out to preferences folder */
-	/* don't you worry about how it finds the file (; */
+	/* do not you worry about how it finds the file (; */
 	/* you can pass nil to folders if count is 0 */
 
 	pascal ICError ICSpecifyConfigFile(ICInstance inst, FSSpec *config);

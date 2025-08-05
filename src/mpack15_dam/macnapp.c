@@ -350,7 +350,7 @@ static void AdjustCursor(na_win *winp, Point gmouse, Boolean active)
 {
 	short	status = NA_NOTPROCESSED;
 	
-	/* don't change the cursor when in wrong window */
+	/* do not change the cursor when in wrong window */
 	if (active && FrontWindow() != winp->pwin) return;
 	
 	/* if the cursor is on */
@@ -804,7 +804,7 @@ void NAmainloop()
 				part = FindWindow(event.where, &window);
 				/* Rules for clicks when a modal dialog is in front:
 				 *  1) let the user command-move other windows
-				 *  2) don't let user do anything else with other app windows
+				 *  2) do not let user do anything else with other app windows
 				 *  3) if not movable, require click to be in window
 				 */
 				if (winp != (na_win*) NULL && winp->flags & NA_MODAL
@@ -838,7 +838,7 @@ void NAmainloop()
 							break;
 						}
 						
-						/* don't bother processing further if no mouse proc */
+						/* do not bother processing further if no mouse proc */
 						if (winp == (na_win*) NULL) break;
 	
 						/* check for control events */

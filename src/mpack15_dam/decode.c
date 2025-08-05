@@ -94,7 +94,7 @@ int extractText;
 	return handlePartial(inpart, headers, contentParams, extractText);
     }
     else if (!cistrncmp(contentType, "message/", 8)) {
-	/* Probably message/external.  We don't care--toss it */
+	/* Probably message/external.  We do not care--toss it */
 	return ignoreMessage(inpart);
     }
     else if (!cistrncmp(contentType, "multipart/", 10)) {
@@ -703,7 +703,7 @@ int extractText;
 		}
 	    }
 	    else {
-		/* First byte of headers is extra newline, don't write it to file */
+		/* First byte of headers is extra newline, do not write it to file */
 		if (skippedfirstbyte++)	putc(*headers, partfile);
 		headers++;
 	    }
@@ -750,7 +750,7 @@ int extractText;
     }
 
     if (i || !nparts) {
-	/* We don't have all the parts yet */
+	/* We do not have all the parts yet */
 	return 0;
     }
 
