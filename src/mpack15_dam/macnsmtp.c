@@ -356,7 +356,7 @@ static short closep(na_win *w)
  
 /* submit file to SMTP:
  *  creates SMTP task, initializes data, starts TCP connection
- *  copies from & dest addresses, so they don't need to persist
+ *  copies from & dest addresses, so they do not need to persist
  *  task is not completed until statf() is called
  */
 void NASMTPsubmit(na_smtpstat statf, char *server, FSSpec *fspec, Handle headers,

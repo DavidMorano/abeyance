@@ -306,7 +306,7 @@ again:
 
 	/*
 	 * Close server sends the server a
-	 * "quit" command for us, which is why we don't send it.
+	 * "quit" command for us, which is why we do not send it.
 	 */
 
 	close_server();
@@ -485,7 +485,7 @@ int which;
 	}
 	if (which == PATH){
 	/* Only the login name - nntp server will add uucp name */
-	/* Folks aren't supposed to the Paths for replies, so we don't */
+	/* Folks are not supposed to the Paths for replies, so we do not */
 	/* care if it generates something inaccurate for replies! */
 	/*	fprintf(ser_wr_fp, "Path: %s\r\n", username); */
 		fprintf(ser_wr_fp, "Path: not-for-mail\r\n");

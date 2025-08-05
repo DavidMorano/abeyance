@@ -70,7 +70,7 @@ char *os_genid()
 	time(&curtime);
 	gethostname(hostname, sizeof(hostname));
 
-	/* If we don't have a FQDN, try canonicalizing with gethostbyname */
+	/* If we do not have a FQDN, try canonicalizing with gethostbyname */
 	if (!strchr(hostname, '.')) {
 	    hp = gethostbyname(hostname);
 	    if (hp) {

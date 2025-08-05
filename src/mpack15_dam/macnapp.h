@@ -315,7 +315,7 @@ extern RgnHandle NAfullRgn, NAnullRgn;
 #define NA_COPYDATA		0x00020000L	/* data will by copied by NAwindow */
 #define NA_SMARTSIZE	0x00040000L	/* window resizes & placements are saved in WIND res */
 #define NA_FORCESIZE	0x00080000L	/* when a resource is used, re-size the window anyway */
-#define NA_RAWKEY		0x00100000L	/* if set, key event fields aren't stripped */
+#define NA_RAWKEY		0x00100000L	/* if set, key event fields are not stripped */
 #define NA_HILITECTRLS	0x00200000L	/* if set, hilite controls on activate/deactive */
 #define NATE_FLAGS		0x0f000000L	/* flags reserved for NATE */
 #define NA_USER_FLAG1	0x10000000L	/* flags reserved for users */
@@ -343,7 +343,7 @@ extern RgnHandle NAfullRgn, NAnullRgn;
 #define NA_REQCLOSE		-1		/* request to close current window */
 #define NA_NOTPROCESSED	0		/* use any default handler available */
 #define NA_PROCESSED	1		/* do nothing more */
-#define NA_USERINTERACT 2		/* user interaction pending -- don't do tasks */
+#define NA_USERINTERACT 2		/* user interaction pending -- do not do tasks */
 /* Gestalt bits */
 #define NA_HASAEVENTS	0x00000001L	/* Apple events supported */
 #define NA_HASFSSPEC    0x00000002L /* FSSpec calls supported */

@@ -225,7 +225,7 @@ struct part *part;
 
     if (part->boundary_seen < part->boundary_num-1) {
 	/* We saw an enclosing boundary.  Signal end of multipart, but
-	 * don't skip over the boundary.
+	 * do not skip over the boundary.
 	 */
 	part->boundary_num--;
 	return 1;
@@ -269,7 +269,7 @@ struct part *part;
     int bufleft;
     int i;
 
-    /* Fill buffer if we don't have enough to do our look ahead */
+    /* Fill buffer if we do not have enough to do our look ahead */
     if (part->cnt < 3 ||
 	(part->cnt < PART_MAX_BOUNDARY_LEN+3 && part->ptr[1] == '-' &&
 	 part->ptr[2] == '-')) {
