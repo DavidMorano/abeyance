@@ -181,7 +181,7 @@ void unsetenv(const char *name) {
  *	environmental array, for use by setenv(3) and unsetenv(3).
  *	Explicitly removes '=' in argument name.
  *
- *	This routine *should* be a static; don't use it.
+ *	This routine *should* be a static; do not use it.
  */
 
 static char *__findenv(const char *name,int *offset) {

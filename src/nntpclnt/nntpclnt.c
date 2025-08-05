@@ -802,7 +802,7 @@ char    *nntpserver;
 		printf(
 	"NOTE: This machine does not have permission to post articles.\n");
 		printf(
-	"      Please don't waste your time trying.\n\n");
+	"      Please do not waste your time trying.\n\n");
 
 	case OK_CANPOST:
 		return (0);
@@ -926,7 +926,7 @@ printf("at 708-979-3333.\n\n");
  *
  *      Note:           This routine flushes the buffer each time
  *                      it is called.  For large transmissions
- *                      (i.e., posting news) don't use it.  Instead,
+ *                      (i.e., posting news) do not use it.  Instead,
  *                      do the fprintf's yourself, and then a final
  *                      fflush.
  */
