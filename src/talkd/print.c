@@ -97,7 +97,7 @@ print_error(char *string)
     if ((sys = strerror(errno)) == (char *) NULL)
 	    sys = "Unknown error";
 
-	/* don't ever open tty's directly, let a child do it */
+	/* do not ever open tty's directly, let a child do it */
     if ((pid = fork()) == 0) {
 	cons = fopen(err_dev, "a");
 	if (cons != NULL) {
