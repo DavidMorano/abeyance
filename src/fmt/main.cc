@@ -48,7 +48,7 @@ int	filler;				/* Filler amount in outbuf */
 
 int	pfx;			/* Current leading blank count */
 int	width = 72;		/* Width that we will not exceed */
-int	nojoin = 0;		/* split lines only, don't join short ones */
+int	nojoin = 0;		/* split lines only, do not join short ones */
 int	errs = 0;		/* Current number of errors */
 int	debug = 0 ;
 
@@ -232,7 +232,7 @@ int fmt(FILE *fi)
 			 * Need to convert string from wchar_t to char,
 			 * since this is what ishead() expects.  Since we
 			 * only want to make sure cp points to a "From" line
-			 * of the email, we don't have to alloc
+			 * of the email, we do not have to alloc
 			 * BUFSIZ * MB_LEN_MAX to cbuf.
 			 */
 			wcstombs(cbuf, cp, (BUFSIZ - 1));
@@ -313,14 +313,14 @@ prefix(wchar_t line[])
 	if (crown_state == c_none && np != pfx && (np > pfx || abs(pfx-np) > 8))
 		oflush();
 	/*
-	 * if this is a mail header line, don't split it; flush previous
-	 * line, if any, so we don't join this line to it
+	 * if this is a mail header line, do not split it; flush previous
+	 * line, if any, so we do not join this line to it
 	 */
 	if (hdr_state == do_hdr) {
 		nosplit = 1;
 		oflush();
 	}
-	/* flush previous line so we don't join this one to it */
+	/* flush previous line so we do not join this one to it */
 	if (nojoin)
 		oflush();
 	/* nroff-type lines starting with '.' are not split nor joined */

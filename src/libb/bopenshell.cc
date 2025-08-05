@@ -195,7 +195,7 @@ int bopenshell(bfile **fpa,cchar *cmd) noex {
 	}
 	if (rs < 0) goto bad0 ;
 
-/* open the FIFO for reading and writing so that we don't hang! */
+/* open the FIFO for reading and writing so that we do not hang! */
 
 	rs = u_open(tmpfname,O_RDWR,0666) ;
 	if (rs < 0)

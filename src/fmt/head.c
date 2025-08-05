@@ -203,7 +203,7 @@ int isdate(date)
 
 /*
  * Match the given string against the given template.
- * Return 1 if they match, 0 if they don't
+ * Return 1 if they match, 0 if they do not
  */
 
 int cmatch(str, temp)
