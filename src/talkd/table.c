@@ -63,7 +63,7 @@
 
 /* local defines */
 
-#define MAX_ID 16000 /* << 2^15 so I don't have sign troubles */
+#define MAX_ID 16000 /* << 2^15 so I do not have sign troubles */
 
 #define NIL ( (TABLE_ENT *) 0)
 
