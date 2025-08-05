@@ -247,7 +247,7 @@ char		*remote_machine ;
 	            continue ;
 #endif
 
-/* fopen uses O_CREAT|O_TRUNC, we don't want that */
+/* fopen uses O_CREAT|O_TRUNC, we do not want that */
 	        if ((fd = open(tp, O_NOCTTY|O_WRONLY|O_NONBLOCK)) == -1)
 	            continue ;
 
@@ -300,7 +300,7 @@ char		*remote_machine ;
 	if (access(full_tty, 0) != 0)
 	    return FAILED ;
 
-/* fopen uses O_CREAT|O_TRUNC, we don't want that */
+/* fopen uses O_CREAT|O_TRUNC, we do not want that */
 	if ((fd = open(full_tty, O_WRONLY|O_NONBLOCK)) == -1) {
 	    return (PERMISSION_DENIED) ;
 	}

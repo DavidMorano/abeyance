@@ -102,7 +102,7 @@ int	registerd_host_only = 0;
 #include <sys/stream.h>
 # include <stropts.h>
 # include <termio.h>
-/* make sure we don't get the bsd version */
+/* make sure we do not get the bsd version */
 #ifdef HAVE_SYS_TTY_H
 # include "/usr/include/sys/tty.h"
 #endif
@@ -966,7 +966,7 @@ static void doit(who)
 	 */
 	if (secflag) {
 		char slave_dev[16];
-/*xxx This code needs to be fixed to work without ptynum; I don't understand why they don't currently use line, so I don't really know how to fix.*/
+/*xxx This code needs to be fixed to work without ptynum; I do not understand why they do not currently use line, so I do not really know how to fix.*/
 		sprintf(tty_dev, "/dev/pty/%03d", ptynum);
 		if (setdevs(tty_dev, &dv) < 0)
 		 	fatal(net, "cannot set pty security");
@@ -983,7 +983,7 @@ static void doit(who)
 		fatal(net, error_message(retval));
 	}
 	if (registerd_host_only) {
-	    /* Get name of connected client -- but we don't actually
+	    /* Get name of connected client -- but we do not actually
 	       use it.  Just confirm that we can get it.  */
 	    int aierror;
 	    char hostnamebuf[NI_MAXHOST];
@@ -1138,7 +1138,7 @@ telnet(f, p, host)
 	 * some REALLY DUMB telnets out there might not respond
 	 * to the DO ECHO.  So, we spin looking for NAWS, (most dumb
 	 * telnets so far seem to respond with WONT for a DO that
-	 * they don't understand...) because by the time we get the
+	 * they do not understand...) because by the time we get the
 	 * response, it will already have processed the DO ECHO.
 	 * Kludge upon kludge.
 	 */

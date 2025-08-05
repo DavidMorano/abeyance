@@ -33,7 +33,7 @@
 
 	When processing, we time-out writes to the caller-supplied
 	file-descriptor because we do not know if it is a non-regular
-	file that might be flow-controlled.  We don't wait forever
+	file that might be flow-controlled.  We do not wait forever
 	for those sorts of outputs.  So let us say that the output
 	is a terminal that is currently flow-controlled.  We will
 	time-out on our writes and the user will not get this whole

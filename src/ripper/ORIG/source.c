@@ -469,11 +469,11 @@ dump_track(CdInfo *cd, int index, FILE *out)
             bytes_to_skip = i + BLOCK_SIZE * BLOCKS_COMPARE;
             blocks_to_write = blocks_to_read - blocks_overlap;
 
-            /* make sure we don't write more than we read */
+            /* make sure we do not write more than we read */
             while (bytes_to_skip + blocks_to_write*BLOCK_SIZE
                    > blocks_to_read * BLOCK_SIZE) blocks_to_write--;
 
-            /* make shure we don't write more than what's on the track */
+            /* make shure we do not write more than what's on the track */
             if (blocks_to_write+current > track->addr+track->duration.frames) {
                 blocks_to_write=track->addr + track->duration.frames-current;
             }
