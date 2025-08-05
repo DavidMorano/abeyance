@@ -189,7 +189,7 @@ const char	*envv[] ;
 	sprintf(log, "%s/%s/%s", ALTDIR, Mytag_p, LOGNAME);
 	sprintf(olog, "%s/%s/%s", ALTDIR, Mytag_p, OLOGNAME);
 	if (stat(log, &buf) == 0) {
-		/* file exists, try and save it but if we can't don't worry */
+		/* file exists, try and save it but if we can't do not worry */
 		unlink(olog);
 		rename(log, olog);
 	}
@@ -246,7 +246,7 @@ const char	*envv[] ;
 
 	/* 
 	 * SAC will start the listener in the correct directory, so we
-	 * don't need to chdir there, as we did in older versions
+	 * do not need to chdir there, as we did in older versions
 	 */
 
 	strcpy(Provbuf, "/dev/");
@@ -1258,7 +1258,7 @@ cleanup:
 #ifdef	COREDUMP
 				abort();
 #endif
-				exit(1); /* server failed, don't log */
+				exit(1); /* server failed, do not log */
 					/* no return */
 			}	
 			/* only parent gets here */
@@ -1370,7 +1370,7 @@ register dbf_t *dbp;
 
 	if (dup(0) != 1 || dup(0) != 2) {
 		logmessage("Dup of fd 0 failed");
-		exit(2); /* server, don't log */
+		exit(2); /* server, do not log */
 	}
 
 
@@ -1379,7 +1379,7 @@ register dbf_t *dbp;
 		snprintf(msgbuf,MAXPATHLEN,
 		"LISTEN: Cannot push server's modules (%d): exit",rs);
 		logmessage(msgbuf) ;
-		exit(2); /* server, don't log */
+		exit(2); /* server, do not log */
 	}
 
 	rst_signals();
@@ -1395,30 +1395,30 @@ register dbf_t *dbp;
 	if ((pwdp = getpwnam(dbp->dbf_id)) == NULL)  {
 		sprintf(msgbuf, "Missing or bad passwd entry for <%s>",dbp->dbf_id);
 		logmessage(msgbuf);
-		exit(2); /* server, don't log */
+		exit(2); /* server, do not log */
 	}		
 
 	if (setgid(pwdp->pw_gid)) {
 		if ((grpp = getgrgid(pwdp->pw_gid)) == NULL) {
 			sprintf(msgbuf, "No group entry for %ld", pwdp->pw_gid);
 			logmessage(msgbuf);
-			exit(2); /* server, don't log */
+			exit(2); /* server, do not log */
 		}
 		sprintf(msgbuf, "Cannot set group id to %s", grpp->gr_name);
 		logmessage(msgbuf);
-		exit(2); /* server, don't log */
+		exit(2); /* server, do not log */
 	}
 
 	if (setuid(pwdp->pw_uid)) {
 		sprintf(msgbuf, "Cannot set user id to %s", dbp->dbf_id);
 		logmessage(msgbuf);
-		exit(2); /* server, don't log */
+		exit(2); /* server, do not log */
 	}
 
 	if (chdir(pwdp->pw_dir)) {
                 sprintf(msgbuf, "Cannot chdir to %s", pwdp->pw_dir);
                 logmessage(msgbuf);
-                exit(2); /* server, don't log */
+                exit(2); /* server, do not log */
         }
 
 
@@ -1468,7 +1468,7 @@ register struct t_call *call;
 /*
  * The following code handles the case where the listener was started with
  * no environment.  If so, supply a reasonable default path.  Parent already
- * set TZ on startup if it wasn't, so don't need to do it here.
+ * set TZ on startup if it wasn't, so do not need to do it here.
  */
 
 	if (getenv("PATH") == NULL)
@@ -1861,7 +1861,7 @@ dbf_t	*dbp;
 		free(tmp);
 	}
 
-	/* delete free call structs we don't need */
+	/* delete free call structs we do not need */
 	for ( ; i < dbp->dbf_maxcon; i++) {
 		tmp = dequeue(Free_call_p);
 		t_free((char *)tmp->c_cp, T_CALL);

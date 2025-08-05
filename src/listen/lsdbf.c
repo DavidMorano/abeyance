@@ -49,7 +49,7 @@
 
 
 #define SUPPRESS	1	/* suppress messages during scan*/
-#define NOSUPPRESS	0	/* don't suppress messages 	*/
+#define NOSUPPRESS	0	/* do not suppress messages 	*/
 
 #define	NDEBUGFNAME	"/tmp/nlps_server.d"
 
@@ -630,7 +630,7 @@ int mflag;
 		if (ptr) {
 			if ((*prognum = atoi(nexttok)) < 0) {
 				if (!mflag) {
-					/* messages aren't suppressed */
+					/* messages are not suppressed */
 					sprintf(scratch, "service code <%s> specifies negative program number", *svc_code_p);
 					logmessage(scratch);
 				}
@@ -673,7 +673,7 @@ int mflag;
 					logmessage(scratch);
 					logmessage("  address info ignored");
 				}
-				/* don't set DFLAG and wipe out private addr */
+				/* do not set DFLAG and wipe out private addr */
 				**private_p = '\0';
 			}
 			else {
@@ -825,7 +825,7 @@ register dbf_t	*dbp;
 					if (*p == '\0') {
 						sprintf(scratch, "invalid command line, non-terminated string for service code %s", dbp->dbf_svc_code);
 						logmessage(scratch);
-						exit(2); /* server, don't log */
+						exit(2); /* server, do not log */
 					}
 					if (*p == delch) {
 						if (*(tp - 1) == '\\') { /* \delim */
@@ -851,7 +851,7 @@ register dbf_t	*dbp;
 				break;
 			default:
 				logmessage("Internal error in parse routine");
-				exit(2); /* server, don't log */
+				exit(2); /* server, do not log */
 			}
 		}
 		else {

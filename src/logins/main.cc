@@ -1921,7 +1921,7 @@ main(argc, argv)
 	}
 
 	/* Let the user know about logins they requested that
-	 * don't exist */
+	 * do not exist */
 	if (l_seen) for (plogin = reqloginhead ; plogin ; plogin = plogin->next)
 	    if (!plogin->found)
 		wrtmsg(MM_WARNING, MM_NULLACT, MM_NULLTAG, gettext("%s was not found"), plogin->loginname);

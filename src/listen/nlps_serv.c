@@ -92,7 +92,7 @@ extern int t_errno ;
 
 /* 
  * These global symbols are used for logging.
- * Pid, NLPS_proc, and Lastmsg are significant here; the others aren't used.
+ * Pid, NLPS_proc, and Lastmsg are significant here; the others are not used.
  */
 int	NLPS_proc = 1 ;
 pid_t	Pid ;
@@ -340,7 +340,7 @@ char *bp ;
 
 /*
  * The following code is for patching a 6300 side bug.  The original
- * message that comes over may contain 2 null bytes which aren't
+ * message that comes over may contain 2 null bytes which are not
  * part of the message, and if left on the stream, will poison the
  * server.  Peek into the stream and snarf up those bytes if they
  * are there.  If anything goes wrong with the I_PEEK, just continue,
@@ -533,7 +533,7 @@ char *bp ;
 	                    "NLPS: Cannot push stream modules (0:%d): exit",
 				rs) ;
 	                    logmessage(msgbuf) ;
-	                    (void)exit(2); /* server, don't log */
+	                    (void)exit(2); /* server, do not log */
 	                }
 
 	                sprintf(msgbuf,"NLPS (%s) passfd: %s", 
@@ -690,7 +690,7 @@ char **o_argv ;
 /* this shouldn't happen because at this point we've
 						   already found it once */
 	        logmessage("NLPS: SMB message, missing data base entry") ;
-	        (void)exit(2); /* server, don't log */
+	        (void)exit(2); /* server, do not log */
 	    }
 	} else
 	    argvp = mkdbfargv(dbp) ;
@@ -772,7 +772,7 @@ char **o_argv ;
 	        snprintf(msgbuf,MAXPATHLEN,
 	            "NLPS: Cannot push stream modules (1:%d): exit",rs) ;
 	        logmessage(msgbuf) ;
-	        exit(2); /* server, don't log */
+	        exit(2); /* server, do not log */
 	    }
 	}
 
@@ -786,7 +786,7 @@ char **o_argv ;
 
 	if (wdbp == NULL) {
 	    logmessage("NLPS: No database entry") ;
-	    exit(2); /* server, don't log */
+	    exit(2); /* server, do not log */
 	}
 
 	if ((pwdp = getpwnam(wdbp->dbf_id)) == NULL)  {
@@ -794,7 +794,7 @@ char **o_argv ;
 	    "NLPS: Missing or bad passwd entry for <%s>",
 		wdbp->dbf_id) ;
 	    logmessage(msgbuf) ;
-	    exit(2); /* server, don't log */
+	    exit(2); /* server, do not log */
 	}
 
 
@@ -802,23 +802,23 @@ char **o_argv ;
 	    if ((grpp = getgrgid(pwdp->pw_gid)) == NULL) {
 	        sprintf(msgbuf, "NLPS: No group entry for %ld", pwdp->pw_gid) ;
 	        logmessage(msgbuf) ;
-	        exit(2); /* server, don't log */
+	        exit(2); /* server, do not log */
 	    }
 	    sprintf(msgbuf, "NLPS: Cannot set group id to %s", grpp->gr_name) ;
 	    logmessage(msgbuf) ;
-	    (void)exit(2); /* server, don't log */
+	    (void)exit(2); /* server, do not log */
 	}
 
 	if (setuid(pwdp->pw_uid)) {
 	    sprintf(msgbuf, "NLPS: Cannot set user id to %s", wdbp->dbf_id) ;
 	    logmessage(msgbuf) ;
-	    (void)exit(2); /* server, don't log */
+	    (void)exit(2); /* server, do not log */
 	}
 
 	if (chdir(pwdp->pw_dir)) {
 	    sprintf(msgbuf, "NLPS: Cannot chdir to %s", pwdp->pw_dir) ;
 	    logmessage(msgbuf) ;
-	    (void)exit(2); /* server, don't log */
+	    (void)exit(2); /* server, do not log */
 	}
 
 	DEBUG((9, "New uid %ld New gid %ld", getuid(), getgid())) ;

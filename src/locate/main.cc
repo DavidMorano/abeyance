@@ -335,7 +335,7 @@ char *pathpart, *dbfile ;
 
 	If the previous path matched, scan the whole path for the last char in
 	the subpattern.  If not, the shared prefix doesn't match the pattern,
-	so don't scan it for the last char.
+	so do not scan it for the last char.
 
 ****/
 
