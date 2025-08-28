@@ -1,4 +1,5 @@
-/* main SUPPORT */
+/* main SUPPORT (machostid) */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* get the various IDs from the system */
@@ -18,17 +19,22 @@
 
 /************************************************************************
 
+  	Name:
+	main
+
+	Description:
 	Get the host-IDs from the system.
 
 ***************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<unistd.h>		/* <- for |gethostid(3c)| */
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
-#include	<iostream>		/* for |cout(3c++)| */
+#include	<iostream>		/* |cout(3c++)| */
 #include	<cstring>
 #include	<usystem.h>
-#include	<localmisc.h>		/* <- for |eol(3dam)| */
+#include	<localmisc.h>		/* |eol(3local)| */
 
 
 /* local defines */
