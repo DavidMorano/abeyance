@@ -91,7 +91,7 @@ int vecpstr_loadpjusers(vecpstr *ulp,cchar *pjn) noex {
 	        if ((rs = getbufsize(getbufsize_ua)) >= 0) {
 	            cint	ual = rs ;
 	            char	*uab{} ;
-	            if ((rs = uc_libmalloc((ual+1),&uab)) >= 0) {
+	            if ((rs = lm_mall((ual+1),&uab)) >= 0) {
 	                ucenumua	eua ;
 	                if ((rs = ucenumua_open(&eua,nullptr)) >= 0) {
 		            re_f	re = ucenumua_readent ;
@@ -104,7 +104,7 @@ int vecpstr_loadpjusers(vecpstr *ulp,cchar *pjn) noex {
 	                    rs1 = ucenumua_close(&eua) ;
 	                    if (rs >= 0) rs = rs1 ;
 	                } /* end if (sysuserattr) */
-	                rs1 = uc_libfree(uab) ;
+	                rs1 = lm_free(uab) ;
 		        if (rs >= 0) rs = rs1 ;
 	            } /* end if (memory-allocation) */
 	        } /* end if (getbufsize) */
