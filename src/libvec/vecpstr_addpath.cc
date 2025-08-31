@@ -116,7 +116,7 @@ int vecpstr_addpathclean(vecpstr *vlp,cchar *lp,int ll) noex {
 	    if (ll > 0) {
 		if ((rs = maxpathlen) >= 0) {
 		    cint	dlen = rs ;
-		    if (char *dbuf ; (rs = uc_libmalloc((dlen+1),&dbuf)) >= 0) {
+		    if (char *dbuf ; (rs = lm_mall((dlen+1),&dbuf)) >= 0) {
 	                cchar	*tp ;
 	                while ((tp = strnbrk(lp,ll,":;")) != nullptr) {
 		            if ((tp-lp) >= 0) {
@@ -135,7 +135,7 @@ int vecpstr_addpathclean(vecpstr *vlp,cchar *lp,int ll) noex {
 		                if (rs < INT_MAX) c += 1 ;
 		            }
 	                }
-			rs1 = uc_libfree(dbuf) ;
+			rs1 = lm_free(dbuf) ;
 			if (rs >= 0) rs = rs1 ;
 		    } /* end if (m-a-f) */
 		} /* end if (maxpathlen) */
@@ -179,13 +179,13 @@ int vecpstr_addcspath(vecpstr *vsp) noex {
 	if (vsp) {
 	    if ((rs = maxpathlen) >= 0) {
 		cint	plen = (NPATH * rs) ;
-	        if (char *pbuf{} ; (rs = uc_libmalloc((plen+1),&pbuf)) >= 0) {
+	        if (char *pbuf{} ; (rs = lm_mall((plen+1),&pbuf)) >= 0) {
 		    cint	req = _CS_PATH ;
 	            if ((rs = uc_sysconfstr(pbuf,plen,req)) >= 0) {
 	                rs = vecpstr_addpath(vsp,pbuf,rs) ;
 	                c += rs ;
 	            } /* end if */
-	            rs1 = uc_libfree(pbuf) ;
+	            rs1 = lm_free(pbuf) ;
 		    if (rs >= 0) rs = rs1 ;
 	        } /* end if (m-a-f) */
 	    } /* end if (maxpathlen) */
