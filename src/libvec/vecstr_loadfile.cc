@@ -214,7 +214,7 @@ static int vecstr_loadfd(vecstr *vsp,int fu,int fd) noex {
 		if ((rs = maxlinelen) >= 0) {
 		    cint	llen = (linelen > 0) ? linelen : rs ;
 	            char	*lbuf{} ;
-		    if ((rs = uc_libmalloc((llen+1),&lbuf)) >= 0) {
+		    if ((rs = lm_mall((llen+1),&lbuf)) >= 0) {
 			filer		loadfile, *lfp = &loadfile ;
 	        	if ((rs = filer_start(lfp,fd,0z,fbsize,fbo)) >= 0) {
 			    auto	rl = filer_readln ;
@@ -230,7 +230,7 @@ static int vecstr_loadfd(vecstr *vsp,int fu,int fd) noex {
 	                    rs1 = filer_finish(lfp) ;
 		            if (rs >= 0) rs = rs1 ;
 	                } /* end if (filer) */
-			rs1 = uc_libfree(lbuf) ;
+			rs1 = lm_free(lbuf) ;
 			if (rs >= 0) rs = rs1 ;
 		    } /* end if (m-a-f) */
 		} /* end if (maxlinelen) */
