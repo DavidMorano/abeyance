@@ -215,7 +215,7 @@ int subinfo::start() noex {
 	char		*bp{} ;
 	llen = var.linebuflen ;
 	sz += (2*(llen+1)) ;
-	if ((rs = uc_libmalloc(sz,&bp)) >= 0) {
+	if ((rs = lm_mall(sz,&bp)) >= 0) {
 	    a = bp ;
 	    lbuf = bp ;
 	    bp += (llen+1) ;
@@ -230,7 +230,7 @@ int subinfo::finish() noex {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	if (a) {
-	    rs1 = uc_libfree(a) ;
+	    rs1 = lm_free(a) ;
 	    if (rs >= 0) rs = rs1 ;
 	    a = nullptr ;
 	}
