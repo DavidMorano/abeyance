@@ -83,7 +83,7 @@ int vecstr_addsubdirs(vecstr *op,cchar *newsdname) noex {
 	        if (rs >= 0) {
 	            vecstr_sort(op,nullptr) ;
 	        }
-		rs1 = uc_libfree(fbuf) ;
+		rs1 = lm_free(fbuf) ;
 		if (rs >= 0) rs = rs1 ;
 	    } /* end if (m-a-f) */
 	} /* end if (non-null) */
