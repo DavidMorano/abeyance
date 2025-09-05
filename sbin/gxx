@@ -1,6 +1,7 @@
 #!/usr/extra/bin/ksh
 # GNU Compiler Collection
 PN=${0##*/}
+VER=15
 RF_OK=true
 : ${INCDIR:=inc}
 INCDIRS=
@@ -38,36 +39,36 @@ if ${RF_OK} ; then
   OPTS=
   case ${PN} in
   gcpp*)
-    PROG=gcpp14
+    PROG=gcpp${VER}
     OPTS="${EOPT} ${INCDIRS}"
     ;;
   gcc*)
-    PROG=gcc14
+    PROG=gcc${VER}
     OPTS="${EOPT} ${POPT} ${COPT} ${INCDIRS}"
     ;;
   gpp*|gxx*)
-    PROG=gxx14
+    PROG=gxx${VER}
     OPTS="${EOPT} ${POPT} ${COPT} ${MOPT} ${INCDIRS}"
     ;;
   gld*)
-    PROG=gld14
+    PROG=gld${VER}
     OPTS="${POPT}"
     ;;
   granlib*)
-    PROG=granlib14
+    PROG=granlib${VER}
     ;;
   gar*)
-    PROG=gar14
+    PROG=gar${VER}
     ;;
   gnm) 
-    PROG=gnm14 
+    PROG=gnm${VER} 
     ;;
   gnmd)
-    PROG=gnm14
+    PROG=gnm${VER}
     OPTS="--demangle"
     ;;
   gcov*)
-    PROG=gcov14
+    PROG=gcov${VER}
     ;;
   gsize*|gsz*)
     PROG=size
