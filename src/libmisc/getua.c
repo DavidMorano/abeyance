@@ -17,10 +17,11 @@
 
 /*******************************************************************************
 
-        These subroutines were was written so that we could use a single
-        interface to access the user-attribute database on all UNIX® platforms.
-        The idea is that this code module provides a platform independent
-        implementation of UNIX 'passwd' database access subroutines.
+	These subroutines were was written so that we could use a
+	single interface to access the user-attribute database on
+	all UNIX® platforms.  The idea is that this code module
+	provides a platform independent implementation of UNIX®
+	'passwd' database access subroutines.
 
 	These are subroutines:
 
@@ -30,18 +31,11 @@
 	getua_name() 
 	getua_uid()
 
-
 *******************************************************************************/
 
-
-#define	GETUA_MASTER	0
-
-
-#include	"envstandards.h"
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
-
 #include	<usystem.h>
 #include	<userattrent.h>
 #include	<localmisc.h>
