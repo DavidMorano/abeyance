@@ -35,7 +35,7 @@
 #include	<stdlib.h>
 #include	<string.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<baops.h>
 #include	<findbit.h>
 #include	<localmisc.h>
