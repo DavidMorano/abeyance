@@ -67,7 +67,7 @@
 #include	<string.h>
 #include	<netdb.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<localmisc.h>
 
 
