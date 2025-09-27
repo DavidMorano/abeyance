@@ -40,7 +40,7 @@
 #include	<sys/param.h>
 #include	<unistd.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<localmisc.h>
 
 #include	"getne.h"
