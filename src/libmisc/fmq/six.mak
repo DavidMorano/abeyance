@@ -47,7 +47,7 @@ OBJ3= sispan.o sispanwht.o
 OBJ4= sifext.o sinext.o sinon.o
 OBJ5= sidquote.o sixterm.o siext.o
 OBJ6= sixchr.o sixbrk.o sixsub.o siwht.o
-OBJ7= sileadzero.o
+OBJ7= sileadzero.o sileadchr.o
 
 OBJA= obj0.o obj1.o obj2.o obj3.o 
 OBJB= obj4.o obj5.o obj6.o obj7.o
@@ -172,6 +172,7 @@ sixsub.o:		sixsub.cc	sixsub.h	$(INCS)
 sicasechr.o:		sicasechr.cc	sicasechr.h	$(INCS)
 sinon.o:		sinon.cc	sinon.h		$(INCS)
 sichar.o:		sichar.cc	sichar.h	$(INCS)
+sileadchr.o:		sileadchr.cc	sileadchr.h	$(INCS)
 
 # SIWHT
 siwht.o:		siwht0.o siwht1.o
