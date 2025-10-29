@@ -1,4 +1,6 @@
-/* defs */
+/* who_defs HEADER */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* version %I% last-modified %G% */
 
