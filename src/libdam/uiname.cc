@@ -26,7 +26,7 @@
 	contained in the USERINFO object.
 
 	Synopsis:
-	int uiname(char *rbuf,int rlen,usernfo *uip) noex
+	int uiname(userinfo *uip,char *rbuf,int rlen) noex
 
 	Arguments:
 	rbuf		supplied result buffer
