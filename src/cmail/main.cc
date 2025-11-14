@@ -493,7 +493,7 @@ int main(int argc,cchar **argv,cchar **envv)
 
 	                            break ;
 
-/* wait time between 'mkjobfile' attempts */
+/* wait time between 'mkfilejob' attempts */
 	                        case 't':
 	                            if (argr <= 0) goto badargnum ;
 
@@ -942,7 +942,7 @@ int main(int argc,cchar **argv,cchar **envv)
 	for (i = 0 ; i < 10 ; i += 1) {
 
 	    buf[0] = '\0' ;
-	    if ((rs = mkjobfile(tmpdir,0600,buf)) >= 0) break ;
+	    if ((rs = mkfilejob(tmpdir,0600,buf)) >= 0) break ;
 
 	    logfile_printf(&g.lh,
 	        "couldn't make jobfile \"%s\" on pass %d (rs %d)\n",
