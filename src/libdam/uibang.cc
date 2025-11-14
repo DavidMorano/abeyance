@@ -27,7 +27,7 @@
 	and the username into a "bangname."
 
 	Synopsis:
-	int uibang(char *nbuf,int nlen,USERINFO *uip) noex
+	int uibang(userinfo *uip,char *nbuf,int nlen) noex
 
 	Arguments:
 	nbuf		buffer to receive resulting name
