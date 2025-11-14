@@ -51,7 +51,7 @@
 
 /* external subroutines */
 
-extern int	mkjobfile(const char *,mode_t,char *) ;
+extern int	mkfilejob(const char *,mode_t,char *) ;
 
 extern "C" {
     extern char	*strbasename(char *) noex ;
@@ -159,7 +159,7 @@ int bopenrcmde(bfile *fpa[],mainv environ,cc *remotehost,cc *cmd) noex {
 /* put together the remote command file */
 
 	jobfname[0] = '\0' ;
-	if ((rs = mkjobfile("/tmp",0740,jobfname)) < 0)
+	if ((rs = mkfilejob("/tmp",0740,jobfname)) < 0)
 		goto badjobfile ;
 
 	if ((rs = bopen(jfp,jobfname,"wct",0744)) < 0)
