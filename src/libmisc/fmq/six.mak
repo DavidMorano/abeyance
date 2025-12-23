@@ -43,7 +43,7 @@ LIBS +=
 OBJ0= sichar.o sicasechr.o 
 OBJ1= sicite.o sibasename.o
 OBJ2= sihyphen.o silbrace.o sileader.o
-OBJ3= sispan.o sispanwht.o 
+OBJ3= sispan.o
 OBJ4= sifext.o sinext.o sinon.o
 OBJ5= sidquote.o sixterm.o siext.o
 OBJ6= sixchr.o sixbrk.o sixsub.o siwht.o
@@ -162,7 +162,6 @@ sileader.o:		sileader.cc			$(INCS)
 sinext.o:		sinext.cc			$(INCS)
 sileadzero.o:		sileadzero.cc			$(INCS)
 sispan.o:		sispan.cc	sispan.h	$(INCS)
-sispanwht.o:		sispanwht.cc	sispanwht.h	$(INCS)
 
 siext.o:		siext.cc	siext.h		$(INCS)
 sixchr.o:		sixchr.cc	sixchr.h	$(INCS)
