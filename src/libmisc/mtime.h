@@ -44,7 +44,7 @@ struct usys_mtime {
 	static mtime_t operator () () noex {
 	    return umtime() ;
 	} ;
-} ; /* end struct (getustime) */
+} ; /* end struct (usys_mtime) */
 
 extern usys_mtime	mtime ;
 extern usys_mtime	getmtime ;
