@@ -96,6 +96,11 @@
 #endif
 #endif
 
+/* mail address */
+#ifndef	MAILADDRLEN
+#define	MAILADDRLEN	(3 * MAXHOSTNAMELEN)
+#endif
+
 /* timezone (zoneinfo) name */
 #ifndef	TZLEN
 #define	TZLEN		60
