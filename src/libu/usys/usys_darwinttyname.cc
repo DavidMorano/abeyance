@@ -142,14 +142,14 @@ int usysdarwinttyr::init() noex {
 	        if ((rs = mx.create) >= 0) {
 	            void_f	b = usysdarwintty_atforkbefore ;
 	            void_f	a = usysdarwintty_atforkafter ;
-	            if ((rs = uc_atfork(b,a,a)) >= 0) {
+	            if ((rs = uc_atforkrec(b,a,a)) >= 0) {
 			void_f	e = usysdarwintty_exit ;
 	                if ((rs = uc_atexit(e)) >= 0) {
 	    	            finitdone = true ;
 		            f = true ;
 		        }
 		        if (rs < 0) {
-		            uc_atforkexpunge(b,a,a) ;
+		            uc_atforkexp(b,a,a) ;
 			}
 	            } /* end if (uc_atfork) */
 	 	    if (rs < 0) {
@@ -184,7 +184,7 @@ int usysdarwinttyr::fini() noex {
 	    {
 	        void_f	b = usysdarwintty_atforkbefore ;
 	        void_f	a = usysdarwintty_atforkafter ;
-	        rs1 = uc_atforkexpunge(b,a,a) ;
+	        rs1 = uc_atforkexp(b,a,a) ;
 		if (rs >= 0) rs = rs1 ;
 	    }
 	    {
