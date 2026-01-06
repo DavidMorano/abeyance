@@ -34,8 +34,9 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstdarg>
-#include	<cstring>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<uclibmem.h>
 #include	<intceil.h>
 #include	<estrings.h>
 #include	<filer.h>
@@ -108,7 +109,6 @@
 /* external subroutines */
 
 extern int	snsds(char *,int,const char *,const char *) ;
-extern int	snopenflags(char *,int,int) ;
 extern int	sncpy1(char *,int,const char *) ;
 extern int	sncpy2(char *,int,const char *,const char *) ;
 extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
@@ -249,7 +249,7 @@ int votds_open(VOTDS *op,const char *pr,const char *lang,int of)
 	debugprintf("votds_open: vstrsize=%d\n",VOTDS_VSTRSIZE) ;
 	{
 	    char	obuf[100+1] ;
-	    snopenflags(obuf,100,of) ;
+	    snflagsopen(obuf,100,of) ;
 	    debugprintf("votds_open: of=%s\n",obuf) ;
 	}
 #endif /* CF_DEBUGS */
