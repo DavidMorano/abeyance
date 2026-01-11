@@ -35,7 +35,7 @@
 #include <sys/types.h>
 #include <sys/timeb.h>
 #include <cstring>
-#include <time.h>
+#include <ctime>
 #include <tzfile.h>
 
 #include	<mallocstuff.h>
