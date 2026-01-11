@@ -19,7 +19,7 @@
 #include <sys/timeb.h>
 #include <ctype.h>
 #include <cstring>
-#include <time.h>
+#include <ctime>
 
 #include "dateconv.h"
 #include "datetok.h"
