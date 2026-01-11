@@ -40,7 +40,7 @@
 #include	<pwd.h>
 #include	<grp.h>
 #include	<strings.h>		/* for |strcasecmp(3c)| */
-#include	<time.h>
+#include	<ctime>
 
 #include	<bfile.h>
 #include	<logfile.h>
