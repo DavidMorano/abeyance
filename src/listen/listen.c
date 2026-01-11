@@ -43,7 +43,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <memory.h>
-#include	<time.h>
+#include	<ctime>
 #include <values.h>
 #include <ctype.h>
 #include <pwd.h>
