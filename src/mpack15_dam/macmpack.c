@@ -31,7 +31,7 @@
 #include <GestaltEqu.h>
 
 #include <stdio.h>
-#include <time.h>
+#include <ctime>
 #include <string.h>
 #include <ctype.h>
 #include "version.h"
