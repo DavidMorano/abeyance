@@ -26,7 +26,7 @@
 
 #include <sys/types.h>
 #include <sys/param.h>
-#include	<time.h>
+#include	<ctime>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
