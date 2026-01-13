@@ -44,7 +44,7 @@
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<cstdlib>
-#include	<time.h>
+#include	<ctime>
 #include	<strings.h>		/* for |strcasecmp(3c)| */
 #include	<pwd.h>
 #include	<grp.h>
