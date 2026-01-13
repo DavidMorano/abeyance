@@ -36,7 +36,7 @@
 #include	<arpa/inet.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<time.h>
+#include	<ctime>
 #include	<stdlib.h>
 #include	<strings.h>		/* for |strcasecmp(3c)| */
 #include	<usystem.h>
