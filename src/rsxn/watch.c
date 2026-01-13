@@ -44,14 +44,14 @@
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/wait.h>
-#include	<sys/time.h>
+#include	<sys/ctime>
 #include	<sys/socket.h>
 #include	<netinet/in.h>
 #include	<stdlib.h>
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<signal.h>
-#include	<time.h>
+#include	<ctime>
 #include	<ftw.h>
 #include	<errno.h>
 #include	<dirent.h>
