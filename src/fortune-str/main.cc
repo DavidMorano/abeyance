@@ -39,7 +39,7 @@
 #include	<cstdlib>
 #include	<cstring>
 #include	<ctype.h>
-#include	<time.h>
+#include	<ctime>
 
 #include	<bfile.h>
 #include	<baops.h>
