@@ -34,7 +34,7 @@
 #include <errno.h>
 #include <values.h>
 #include <ctype.h>
-#include <time.h>
+#include <ctime>
 
 /* listener include files */
 
