@@ -54,7 +54,7 @@
 #include <sys/wait.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include <time.h>
+#include <ctime>
 #include <unistd.h>
 #include <cstdlib>
 #include <cstring>
