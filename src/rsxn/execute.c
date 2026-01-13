@@ -36,7 +36,7 @@
 #include	<fcntl.h>
 #include	<unistd.h>
 #include	<stdlib.h>
-#include	<time.h>
+#include	<ctime>
 #include	<pwd.h>
 #include	<grp.h>
 #include	<signal.h>
