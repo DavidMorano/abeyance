@@ -47,7 +47,7 @@
 #include	<termios.h>
 #include	<signal.h>
 #include	<unistd.h>
-#include	<time.h>
+#include	<ctime>
 #include	<stdlib.h>
 #include	<string.h>
 #include	<ctype.h>
