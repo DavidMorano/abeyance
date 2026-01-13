@@ -56,7 +56,7 @@
 #include	<netdb.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<time.h>
+#include	<ctime>
 #include	<signal.h>
 #include	<stdlib.h>
 #include	<string.h>
