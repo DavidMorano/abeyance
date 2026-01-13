@@ -53,7 +53,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/param.h>
-#include <time.h>
+#include <ctime>
 #include <cstdio>
 #include <getopt.h>
 
