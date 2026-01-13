@@ -62,7 +62,7 @@ static char     *rcsid = "@(#)$Id: nntpclnt.c,v 1.6 1992/08/03 04:54:23 sob Exp 
 #define net_write(a,b,c,d)	   sowrite(a,b,c)
 #endif
 
-#include	<time.h>
+#include	<ctime>
 
 #if defined(USG) || defined(MSDOS)
 #include <string.h>
