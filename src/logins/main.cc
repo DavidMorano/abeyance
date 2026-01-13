@@ -27,7 +27,7 @@
  *	grp.h		Definitions for referencing the /etc/group file
  *	pwd.h		Definitions for referencing the /etc/passwd file
  *	shadow.h	Definitions for the shadow password file /etc/shadow
- *	time.h		Time definitions (ctime(), asctime(), etc.)
+ *	ctime		Time definitions (ctime(), asctime(), etc.)
  *	varargs.h	Definitions for using a variable argument list
  *	fmtmsg.h	Definitions for using the standard message generator
  */
@@ -40,7 +40,7 @@
 #include	<grp.h>
 #include	<pwd.h>
 #include	<shadow.h>
-#include	<time.h>
+#include	<ctime>
 #include	<cstdarg>
 #include	<fmtmsg.h>
 #include <locale.h>
