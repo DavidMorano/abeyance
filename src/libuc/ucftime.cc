@@ -61,7 +61,7 @@ struct timeb {
 #include	<cstring>
 #include	<usystem.h>
 #include	<usysflag.h>
-#include	<tmtime.hh>
+#include	<tmctimeh>
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
