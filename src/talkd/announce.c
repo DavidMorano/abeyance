@@ -48,7 +48,7 @@
 #include <netinet/in.h>
 #include <fcntl.h>
 #include <netdb.h>
-#include <time.h>
+#include <ctime>
 #include <fcntl.h>
 #include <pwd.h>
 #include <unistd.h>
