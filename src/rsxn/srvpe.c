@@ -45,7 +45,7 @@
 #include	<unistd.h>
 #include	<stdlib.h>
 #include	<fcntl.h>
-#include	<time.h>
+#include	<ctime>
 #include	<ftw.h>
 #include	<dirent.h>
 #include	<limits.h>
