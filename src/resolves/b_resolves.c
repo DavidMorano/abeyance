@@ -94,7 +94,7 @@
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<time.h>
+#include	<ctime>
 #include	<dlfcn.h>
 #include	<stdlib.h>
 #include	<string.h>
