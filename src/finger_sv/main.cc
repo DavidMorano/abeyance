@@ -76,12 +76,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
-#include <sys/time.h>
+#include <sys/ctime>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <utmpx.h>
 #include <lastlog.h>
-#include <time.h>
+#include <ctime>
 #include <netdb.h>
 #include <locale.h>
 #include <unistd.h>
