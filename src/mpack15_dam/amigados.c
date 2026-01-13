@@ -38,7 +38,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
+#include <ctime>
 #include <string.h>
 #include <dos.h>
 #include <ctype.h>
