@@ -21,7 +21,7 @@
 #include	<fcntl.h>
 #include	<ctype.h>
 #include	<string.h>
-#include	<time.h>
+#include	<ctime>
 #include	<poll.h>
 
 #include 	"localmisc.h"
