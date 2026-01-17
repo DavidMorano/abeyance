@@ -17,34 +17,29 @@
 
 */
 
-
 /*****************************************************************************
 
+  	Description:
 	This subroutine is responsible for listening on the given
 	socket and spawning off a program to handle any incoming
 	connection.
 
-
 	Arguments:
-
 	gp	global data pointer
 	s	socket to listen on
 	elp	vector list of exported variables
 
-
 	Returns:
-
 	OK	doesn't really matter in the current implementation
-
 
 *****************************************************************************/
 
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/wait.h>
-#include	<sys/ctime>
+#include	<sys/time.h>
 #include	<sys/socket.h>
 #include	<netinet/in.h>
 #include	<stdlib.h>
