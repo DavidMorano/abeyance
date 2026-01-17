@@ -1192,7 +1192,7 @@ const char	*sargv[] ;
 /* read whatever the client sent us */
 
 	if (rs >= 0) {
-	    rs = uc_readlinetimed(cip->fd_input,buf,BUFLEN,TIMEOUT) ;
+	    rs = uc_readlnto(cip->fd_input,buf,BUFLEN,TIMEOUT) ;
 	    len = rs ;
 	}
 
