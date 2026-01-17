@@ -237,7 +237,7 @@ struct clientinfo	*cip ;
 
 /* pop off the service name */
 
-	rs = uc_readlinetimed(ifd,svcspec,BUFLEN,TO_SVC) ;
+	rs = uc_readlnto(ifd,svcspec,BUFLEN,TO_SVC) ;
 	len = rs ;
 	if (rs <= 1) {
 
