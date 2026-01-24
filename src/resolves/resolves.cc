@@ -1,4 +1,5 @@
 /* resolves SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* object to help (manage) RESOLVES messages */
@@ -25,6 +26,10 @@
 
 /**************************************************************************
 
+  	Name:
+	resolves
+
+	Description:
 	This object module writes the contents of various RESOLVESs
 	(as specified by the caller) to an open file descriptor
 	(also specified by the caller).
@@ -82,7 +87,8 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<getbufsize.h>
 #include	<estrings.h>
 #include	<ids.h>
@@ -101,6 +107,9 @@
 
 #include	"resolves.h"
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
@@ -165,47 +174,11 @@
 
 /* external subroutines */
 
-extern int	snsds(char *,int,const char *,const char *) ;
-extern int	sncpy1(char *,int,const char *) ;
-extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	sncpy4(char *,int,const char *,const char *,cchar *,cchar *) ;
-extern int	sncpylc(char *,int,const char *) ;
-extern int	sncpyuc(char *,int,const char *) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	mknpath1(char *,int,const char *) ;
-extern int	mknpath2(char *,int,const char *,const char *) ;
-extern int	mknpath3(char *,int,const char *,const char *,const char *) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	nleadstr(const char *,const char *,int) ;
-extern int	permid(IDS *,ustat *,int) ;
-extern int	permsched(const char **,vecstr *,char *,int,const char *,int) ;
-extern int	getnodedomain(char *,char *) ;
-extern int	getgid_group(cchar *,int) ;
-extern int	getuserhome(char *,int,cchar *) ;
-extern int	ctdecui(char *,int,uint) ;
-extern int	vecstr_envset(vecstr *,const char *,const char *,int) ;
-extern int	msleep(int) ;
-extern int	haslc(const char *,int) ;
-extern int	hasuc(const char *,int) ;
-extern int	isNotPresent(int) ;
-
 #if	CF_DEBUGS || CF_DEBUGN
-extern int	nprintf(const char *,...) ;
-extern int	debugprintf(const char *,...) ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	nprintf(cchar *,...) noex ;
+extern int	debugprintf(cchar *,...) noex ;
+extern int	strlinelen(cchar *,int,int) noex ;
 #endif
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
-extern char	*strdcpy1(char *,int,const char *) ;
-extern char	*strdcpy2(char *,int,const char *,const char *) ;
-extern char	*strdcpy3(char *,int,const char *,const char *,const char *) ;
-extern char	*strdcpy4(char *,int,const char *,const char *,
-			const char *,const char *) ;
-extern char	*strdcpy1w(char *,int,const char *,int) ;
 
 
 /* external variables */
@@ -217,16 +190,16 @@ extern char	**environ ;
 
 struct resolves_mapdir {
 	LOCKRW		rwm ;
-	const char	*admin ;
-	const char	*dirname ;	/* raw */
-	const char	*dname ;	/* expanded */
+	cchar	*admin ;
+	cchar	*dirname ;	/* raw */
+	cchar	*dname ;	/* expanded */
 } ;
 
 
 /* forward references */
 
 int 		resolves_procid(RESOLVES *,RESOLVES_ID *,
-			const char **,int) ;
+			cchar **,int) ;
 
 static int	resolves_mapfind(RESOLVES *,time_t) ;
 static int	resolves_maplose(RESOLVES *) ;
@@ -236,75 +209,75 @@ static int	resolves_checker(RESOLVES *,time_t) ;
 static int	resolves_envbegin(RESOLVES *) ;
 static int	resolves_envend(RESOLVES *) ;
 static int	resolves_envadds(RESOLVES *,STRPACK *,
-			const char **,RESOLVES_ID *) ;
+			cchar **,RESOLVES_ID *) ;
 static int	resolves_envstore(RESOLVES *,STRPACK *,
-			const char **,int, const char *,int) ;
-static int 	resolves_processor(RESOLVES *,const char **,
-			const char **, const char *,int) ;
+			cchar **,int, cchar *,int) ;
+static int 	resolves_processor(RESOLVES *,cchar **,
+			cchar **, cchar *,int) ;
 static int	resolves_idcheck(RESOLVES *,RESOLVES_ID *,char *) ;
 static int	resolves_ufindstart(RESOLVES *) ;
 static int	resolves_ufindfinish(RESOLVES *) ;
 static int	resolves_ufindlook(RESOLVES *,char *,uid_t) ;
 
-static int	mapper_start(RESOLVES_MAPPER *,time_t,const char *) ;
+static int	mapper_start(RESOLVES_MAPPER *,time_t,cchar *) ;
 static int	mapper_finish(RESOLVES_MAPPER *) ;
 static int	mapper_check(RESOLVES_MAPPER *,time_t) ;
-static int	mapper_process(RESOLVES_MAPPER *,const char **,
-			const char **, const char *,int) ;
-static int	mapper_processor(RESOLVES_MAPPER *,const char **,
-			const char **, const char *,int) ;
+static int	mapper_process(RESOLVES_MAPPER *,cchar **,
+			cchar **, cchar *,int) ;
+static int	mapper_processor(RESOLVES_MAPPER *,cchar **,
+			cchar **, cchar *,int) ;
 static int	mapper_mapload(RESOLVES_MAPPER *) ;
-static int	mapper_mapadd(RESOLVES_MAPPER *,const char *,int,
-			const char *,int) ;
+static int	mapper_mapadd(RESOLVES_MAPPER *,cchar *,int,
+			cchar *,int) ;
 static int	mapper_mapfrees(RESOLVES_MAPPER *) ;
 
 #if	CF_TESTPROC
-static int	mapper_lockcheck(RESOLVES_MAPPER *,const char *) ;
+static int	mapper_lockcheck(RESOLVES_MAPPER *,cchar *) ;
 #endif
 
-static int	mapdir_start(RESOLVES_MAPDIR *,const char *,int,
-			const char *,int) ;
+static int	mapdir_start(RESOLVES_MAPDIR *,cchar *,int,
+			cchar *,int) ;
 static int	mapdir_finish(RESOLVES_MAPDIR *) ;
-static int	mapdir_process(RESOLVES_MAPDIR *,const char **,
-			const char **, const char *,int) ;
+static int	mapdir_process(RESOLVES_MAPDIR *,cchar **,
+			cchar **, cchar *,int) ;
 static int	mapdir_expand(RESOLVES_MAPDIR *) ;
 static int	mapdir_expander(RESOLVES_MAPDIR *) ;
-static int	mapdir_processor(RESOLVES_MAPDIR *,const char **,
-			const char *,int) ;
-static int	mapdir_procout(RESOLVES_MAPDIR *,const char **,
-			const char *, const char *,int) ;
-static int	mapdir_procouter(RESOLVES_MAPDIR *,const char **,
-			const char *,int) ;
+static int	mapdir_processor(RESOLVES_MAPDIR *,cchar **,
+			cchar *,int) ;
+static int	mapdir_procout(RESOLVES_MAPDIR *,cchar **,
+			cchar *, cchar *,int) ;
+static int	mapdir_procouter(RESOLVES_MAPDIR *,cchar **,
+			cchar *,int) ;
 
-static int	writeto(int,const char *,int,int) ;
+static int	writeto(int,cchar *,int,int) ;
 
 
 /* local variables */
 
-static const char	*schedmaps[] = {
+static cchar	*schedmaps[] = {
 	"%p/%e/%n/%n.%f",
 	"%p/%e/%n/%f",
 	"%p/%e/%n.%f",
 	"%p/%n.%f",
 	"%n.%f",
-	NULL
+	nullptr
 } ;
 
-static const char	*envbad[] = {
+static cchar	*envbad[] = {
 	"TMOUT",
 	"A__z",
-	NULL
+	nullptr
 
 } ;
 
-static const char	*envstrs[] = {
+static cchar	*envstrs[] = {
 	"USERNAME",
 	"GROUPNAME",
 	"UID",
 	"GID",
 	"ADMIN",
 	"ADMINDIR",
-	NULL
+	nullptr
 } ;
 
 enum envstrs {
@@ -317,27 +290,27 @@ enum envstrs {
 	envstr_overlast
 } ;
 
-const static char	*envpre = "RESOLVES_" ;	/* environment prefix */
+cchar		envpre[] = "RESOLVES_" ;	/* environment prefix */
+
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-
-int resolves_open(op,pr)
-RESOLVES		*op ;
-const char	pr[] ;
-{
-	time_t	daytime = time(NULL) ;
+int resolves_open(RESOLVES *op,cchar *pr) noex {
+	ptm		*mxp = &op->pm ;
+	time_t	daytime = time(nullptr) ;
 
 	int	rs ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
-	if (pr == NULL)
+	if (pr == nullptr)
 	    return SR_FAULT ;
 
 	if (pr[0] == '\0')
@@ -347,14 +320,14 @@ const char	pr[] ;
 	debugprintf("resolves_open: sizeof(RESOLVES)=%u\n",sizeof(RESOLVES)) ;
 #endif
 
-	memset(op,0,sizeof(RESOLVES)) ;
+	memclear(op) ; /* dangerous */
 	op->fe = RESOLVES_DIRSFNAME ;
 
 	rs = uc_mallocstrw(pr,-1,&cp) ;
 	if (rs < 0) goto bad0 ;
 	op->pr = cp ;
 
-	rs = ptm_create(&op->m,NULL) ;
+	rs = mxp->create(nullptr) ;
 	if ( rs < 0) goto bad1 ;
 
 	rs = resolves_mapfind(op,daytime) ;
@@ -379,26 +352,24 @@ bad3:
 	resolves_maplose(op) ;
 
 bad2:
-	ptm_destroy(&op->m) ;
+	mxp->destroy() ;
 
 bad1:
 	uc_free(op->pr) ;
-	op->pr = NULL ;
+	op->pr = nullptr ;
 
 bad0:
 	goto ret0 ;
 }
 /* end subroutine (resolves_open) */
 
-
-int resolves_close(op)
-RESOLVES		*op ;
-{
+int resolves_close(RESOLVES *op) noex {
+	ptm		*mxp = &op->pm ;
 	int	rs = SR_OK ;
 	int	rs1 ;
 
 
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != RESOLVES_MAGIC)
@@ -413,12 +384,12 @@ RESOLVES		*op ;
 	rs1 = resolves_maplose(op) ;
 	if (rs >= 0) rs = rs1 ;
 
-	rs1 = ptm_destroy(&op->m) ;
+	rs1 = mxp->destroy() ;
 	if (rs >= 0) rs = rs1 ;
 
-	if (op->pr != NULL) {
+	if (op->pr != nullptr) {
 	    uc_free(op->pr) ;
-	    op->pr = NULL ;
+	    op->pr = nullptr ;
 	}
 
 	op->magic = 0 ;
@@ -434,7 +405,7 @@ time_t		daytime ;
 	int	rs ;
 
 
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != RESOLVES_MAGIC)
@@ -449,8 +420,8 @@ time_t		daytime ;
 
 int resolves_process(op,groupname,admins,fd)
 RESOLVES		*op ;
-const char	groupname[] ;
-const char	*admins[] ;
+cchar	groupname[] ;
+cchar	*admins[] ;
 int		fd ;
 {
 	RESOLVES_ID		id ;
@@ -472,7 +443,7 @@ int		fd ;
 int resolves_procid(op,idp,admins,fd)
 RESOLVES		*op ;
 RESOLVES_ID		*idp ;
-const char	*admins[] ;
+cchar	*admins[] ;
 int		fd ;
 {
 	RESOLVES_ID	id ;
@@ -484,27 +455,27 @@ int		fd ;
 	int	size ;
 	int	wlen = 0 ;
 
-	const char	*groupname ;
+	cchar	*groupname ;
 
 	char	ubuf[USERNAMELEN + 1] ;
 
 	void	*p ;
 
 
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != RESOLVES_MAGIC)
 	    return SR_NOTOPEN ;
 
-	if (idp == NULL)
+	if (idp == nullptr)
 	    return SR_FAULT ;
 
 	if (fd < 0)
 	    return SR_BADF ;
 
 	groupname = idp->groupname ;
-	if (groupname == NULL)
+	if (groupname == nullptr)
 	    return SR_FAULT ;
 
 	if (groupname[0] == '\0')
@@ -515,9 +486,9 @@ int		fd ;
 	    debugprintf("resolves_procid: tar groupname=%s\n",groupname) ;
 	    debugprintf("resolves_procid: tar username=%s\n",idp->username) ;
 	    debugprintf("resolves_procid: tar uid=%d\n",idp->uid) ;
-	    if (admins != NULL) {
+	    if (admins != nullptr) {
 	        int	i ;
-	        for (i = 0 ; admins[i] != NULL ; i += 1)
+	        for (i = 0 ; admins[i] != nullptr ; i += 1)
 	            debugprintf("resolves_procid: a[%u[=%s\n",i,admins[i]) ;
 	    }
 	}
@@ -538,9 +509,9 @@ int		fd ;
 /* go */
 
 	n = nelem(envstrs) ;
-	size = (op->nenv + n + 1) * sizeof(const char *) ;
+	size = (op->nenv + n + 1) * sizeof(cchar *) ;
 	if ((rs = uc_malloc(size,&p)) >= 0) {
-	    const char	**ev = (const char **) p ;
+	    cchar	**ev = (cchar **) p ;
 
 #if	CF_DEBUGS
 	    debugprintf("resolves_procid: allocced\n") ;
@@ -585,14 +556,14 @@ ret0:
 
 int resolvesid_load(idp,un,gn,uid,gid)
 RESOLVES_ID		*idp ;
-const char	*un ;
-const char	*gn ;
+cchar	*un ;
+cchar	*gn ;
 uid_t		uid ;
 gid_t		gid ;
 {
 
 
-	if (idp == NULL)
+	if (idp == nullptr)
 	    return SR_FAULT ;
 
 	memset(idp,0,sizeof(RESOLVES_ID)) ;
@@ -726,7 +697,7 @@ vecstr		*slp ;
 {
 	int	rs = SR_OK ;
 
-	const char	*name = RESOLVES_NAME ;
+	cchar	*name = RESOLVES_NAME ;
 
 
 	if (rs >= 0)
@@ -742,11 +713,8 @@ vecstr		*slp ;
 }
 /* end subroutine (resolves_schedload) */
 
-
-static int resolves_checker(op,daytime)
-RESOLVES		*op ;
-time_t		daytime ;
-{
+static int resolves_checker(RESOLVED *op,time_t daytime) noex {
+	ptm		*mxp = &op->pm ;
 	int	rs = SR_OK ;
 	int	nchanged = 0 ;
 
@@ -758,9 +726,9 @@ time_t		daytime ;
 	if (op->nmaps == 0)
 	    goto ret0 ;
 
-	if (daytime == NULL) daytime = time(NULL) ;
+	if (daytime == nullptr) daytime = time(nullptr) ;
 
-	if ((rs = ptm_lock(&op->m)) >= 0) {
+	if ((rs = mxp->lockbegin) >= 0) {
 
 #if	CF_DEBUGS
 	    debugprintf("resolves_checker: got lock\n") ;
@@ -778,7 +746,7 @@ time_t		daytime ;
 
 	    } /* end if */
 
-	    ptm_unlock(&op->m) ;
+	    mxp->lockend() ;
 	} /* end if (mutex) */
 
 ret0:
@@ -807,16 +775,16 @@ RESOLVES		*op ;
 	void	*p ;
 
 
-	for (i = 0 ; environ[i] != NULL ; i += 1) ;
+	for (i = 0 ; environ[i] != nullptr ; i += 1) ;
 
-	size = (i + 1) * sizeof(const char *) ;
+	size = (i + 1) * sizeof(cchar *) ;
 	rs = uc_malloc(size,&p) ;
 
 	if (rs >= 0) {
-	    const char	*ep ;
-	    const char	**va = (const char **) p ;
+	    cchar	*ep ;
+	    cchar	**va = (cchar **) p ;
 	    op->envv = va ;
-	    for (i = 0 ; environ[i] != NULL ; i += 1) {
+	    for (i = 0 ; environ[i] != nullptr ; i += 1) {
 	        ep = environ[i] ;
 	        f = TRUE ;
 	        f = f && (ep[0] != '_') ;
@@ -826,7 +794,7 @@ RESOLVES		*op ;
 	        if (f)
 	            va[c++] = ep ;
 	    } /* end for */
-	    va[c] = NULL ;
+	    va[c] = nullptr ;
 	    op->nenv = c ;
 	} /* end if */
 
@@ -840,9 +808,9 @@ RESOLVES		*op ;
 {
 
 
-	if (op->envv != NULL) {
+	if (op->envv != nullptr) {
 	    uc_free(op->envv) ;
-	    op->envv = NULL ;
+	    op->envv = nullptr ;
 	}
 
 	return SR_OK ;
@@ -853,7 +821,7 @@ RESOLVES		*op ;
 static int resolves_envadds(op,spp,ev,idp)
 RESOLVES		*op ;
 STRPACK		*spp ;
-const char	**ev ;
+cchar	**ev ;
 RESOLVES_ID		*idp ;
 {
 	const int	envlen = ENVBUFLEN ;
@@ -864,9 +832,9 @@ RESOLVES_ID		*idp ;
 	int	n, i ;
 	int	el ;
 
-	const char	**envv = op->envv ;
-	const char	*pre = envpre ;
-	const char	*cp ;
+	cchar	**envv = op->envv ;
+	cchar	*pre = envpre ;
+	cchar	*cp ;
 
 	char	envbuf[ENVBUFLEN + 1] ;
 	char	digbuf[DIGBUFLEN + 1] ;
@@ -876,7 +844,7 @@ RESOLVES_ID		*idp ;
 	        ev[n] = envv[n] ;
 	}
 
-	for (i = 0 ; (rs >= 0) && (envstrs[i] != NULL) ; i += 1) {
+	for (i = 0 ; (rs >= 0) && (envstrs[i] != nullptr) ; i += 1) {
 	    envbuf[0] = '\0' ;
 	    el = -1 ;
 	    switch (i) {
@@ -902,14 +870,14 @@ RESOLVES_ID		*idp ;
 	        break ;
 	    case envstr_username:
 	        cp = idp->username ;
-	        if ((cp != NULL) && (cp[0] != '\0')) {
+	        if ((cp != nullptr) && (cp[0] != '\0')) {
 	            rs = sncpy4(envbuf,envlen,pre,envstrs[i],"=",cp) ;
 	            el = rs ;
 	        }
 	        break ;
 	    case envstr_groupname:
 	        cp = idp->groupname ;
-	        if ((cp != NULL) && (cp[0] != '\0')) {
+	        if ((cp != nullptr) && (cp[0] != '\0')) {
 	            rs = sncpy4(envbuf,envlen,pre,envstrs[i],"=",cp) ;
 	            el = rs ;
 	        }
@@ -920,7 +888,7 @@ RESOLVES_ID		*idp ;
 	        if (rs > 0) n += 1 ;
 	    }
 	} /* end for */
-	ev[n] = NULL ; /* very important! */
+	ev[n] = nullptr ; /* very important! */
 
 	return (rs >= 0) ? n : rs ;
 }
@@ -930,19 +898,19 @@ RESOLVES_ID		*idp ;
 static int resolves_envstore(op,spp,ev,n,ep,el)
 RESOLVES		*op ;
 STRPACK		*spp ;
-const char	*ev[] ;
+cchar	*ev[] ;
 int		n ;
-const char	*ep ;
+cchar	*ep ;
 int		el ;
 {
 	int	rs = SR_OK ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 
-	if (op == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
 
-	if (ep != NULL) {
+	if (ep != nullptr) {
 	    rs = strpack_store(spp,ep,el,&cp) ;
 	    if (rs >= 0) {
 	        ev[n++] = cp ;
@@ -962,11 +930,11 @@ char		*ubuf ;
 {
 	int		rs = SR_OK ;
 
-	if (op == NULL) return SR_FAULT ;
-	if (idp == NULL) return SR_FAULT ;
-	if (ubuf == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
+	if (idp == nullptr) return SR_FAULT ;
+	if (ubuf == nullptr) return SR_FAULT ;
 
-	if (idp->groupname == NULL) return SR_FAULT ;
+	if (idp->groupname == nullptr) return SR_FAULT ;
 
 	if (idp->groupname[0] == '\0') return SR_INVALID ;
 
@@ -984,12 +952,12 @@ char		*ubuf ;
 #endif
 
 	if (rs >= 0) {
-	    const char	*tun = idp->username ;
-	    if ((tun == NULL) || (tun[0] == '\0') || (tun[0] == '-')) {
+	    cchar	*tun = idp->username ;
+	    if ((tun == nullptr) || (tun[0] == '\0') || (tun[0] == '-')) {
 		rs = SR_OK ;
 		ubuf[0] = '\0' ;
 #if	CF_FINDUID
- 	 	if ((tun == NULL) || (tun[0] == '\0')) {
+ 	 	if ((tun == nullptr) || (tun[0] == '\0')) {
 		    rs = resolves_ufindlook(op,ubuf,idp->uid) ;
 		}
 #endif /* CF_FINDUID */
@@ -1010,9 +978,9 @@ char		*ubuf ;
 
 static int resolves_processor(op,ev,admins,groupname,fd)
 RESOLVES		*op ;
-const char	**ev ;
-const char	*groupname ;
-const char	*admins[] ;
+cchar	**ev ;
+cchar	*groupname ;
+cchar	*admins[] ;
 int		fd ;
 {
 	int	rs = SR_OK ;
@@ -1070,7 +1038,7 @@ RESOLVES		*op ;
 
 	if (! op->open.ufind) {
 	    op->open.ufind = TRUE ;
-	    rs = finduid_start(&op->ufind,NULL,maxent,ttl) ;
+	    rs = finduid_start(&op->ufind,nullptr,maxent,ttl) ;
 	}
 
 	return rs ;
@@ -1095,12 +1063,13 @@ RESOLVES		*op ;
 /* end subroutine (resolves_ufindfinish) */
 
 static int resolves_ufindlook(RESOLVES *op,char *ubuf,uid_t uid) noex {
+	ptm		*mxp = &op->pm ;
 	int		rs ;
 	int		rs1 ;
 	int		ul = 0 ;
 	if ((rs = getbufsize(getbufsize_un)) >= 0) {
 	    ulen = rs ;
-	    if ((rs = ptm_lock(&op->m)) >= 0) {
+	    if ((rs = mxp->lockbegin) >= 0) {
 	        if (! op->open.ufind) {
 		    rs = resolves_ufindstart(op) ;
 	        }
@@ -1108,7 +1077,7 @@ static int resolves_ufindlook(RESOLVES *op,char *ubuf,uid_t uid) noex {
 		    rs = finduid_lookup(&op->ufind,ubuf,ulen,uid) ;
 		    ul = rs ;
 	        } /* end if */
-	        rs1 = ptm_unlock(&op->m) ;
+	        rs1 = mxp->lockend ;
 		if (rs >= 0) rs = rs1 ;
 	    } /* end if (mutex) */
 	} /* end if (getbufsize) */
@@ -1119,12 +1088,12 @@ static int resolves_ufindlook(RESOLVES *op,char *ubuf,uid_t uid) noex {
 static int mapper_start(mmp,daytime,fname)
 RESOLVES_MAPPER	*mmp ;
 time_t		daytime ;
-const char	fname[] ;
+cchar	fname[] ;
 {
 	int	rs ;
 
-	const char	**evp = (const char **) environ ;
-	const char	*ccp ;
+	cchar	**evp = (cchar **) environ ;
+	cchar	*ccp ;
 
 
 #if	CF_DEBUGS
@@ -1195,7 +1164,7 @@ bad3:
 
 bad2:
 	uc_free(mmp->fname) ;
-	mmp->fname = NULL ;
+	mmp->fname = nullptr ;
 
 bad1:
 	lockrw_destroy(&mmp->rwm) ;
@@ -1213,7 +1182,7 @@ RESOLVES_MAPPER	*mmp ;
 	int	rs1 ;
 
 
-	if (mmp == NULL)
+	if (mmp == nullptr)
 	    return SR_FAULT ;
 
 	if (mmp->magic != RESOLVES_MAPPERMAGIC)
@@ -1228,9 +1197,9 @@ RESOLVES_MAPPER	*mmp ;
 	rs1 = vechand_finish(&mmp->mapdirs) ;
 	if (rs >= 0) rs = rs1 ;
 
-	if (mmp->fname != NULL) {
+	if (mmp->fname != nullptr) {
 	    uc_free(mmp->fname) ;
-	    mmp->fname = NULL ;
+	    mmp->fname = nullptr ;
 	}
 
 	rs1 = lockrw_destroy(&mmp->rwm) ;
@@ -1258,7 +1227,7 @@ time_t		daytime ;
 	int	nchanged = 0 ;
 
 
-	if (mmp == NULL)
+	if (mmp == nullptr)
 	    return SR_FAULT ;
 
 	if (mmp->magic != RESOLVES_MAPPERMAGIC)
@@ -1273,7 +1242,7 @@ time_t		daytime ;
 	if (rs >= 0) {
 
 	    if (daytime == 0)
-	        daytime = time(NULL) ;
+	        daytime = time(nullptr) ;
 
 	    if ((daytime - mmp->ti_check) >= TO_MAPCHECK) {
 
@@ -1330,9 +1299,9 @@ time_t		daytime ;
 
 static int mapper_process(mmp,ev,admins,groupname,fd)
 RESOLVES_MAPPER	*mmp ;
-const char	**ev ;
-const char	*admins[] ;
-const char	groupname[] ;
+cchar	**ev ;
+cchar	*admins[] ;
+cchar	groupname[] ;
 int		fd ;
 {
 	const int	to_lock = TO_LOCK ;
@@ -1342,7 +1311,7 @@ int		fd ;
 	int	wlen = 0 ;
 
 
-	if (mmp == NULL)
+	if (mmp == nullptr)
 	    return SR_FAULT ;
 
 	if (mmp->magic != RESOLVES_MAPPERMAGIC)
@@ -1362,25 +1331,25 @@ int		fd ;
 
 #if	CF_DEBUGS
 	    debugprintf("resolves/mapper_process: gn=%s\n",groupname) ;
-	    if (admins != NULL) {
+	    if (admins != nullptr) {
 	        int	i ;
-	        for (i = 0 ; admins[i] != NULL ; i += 1)
+	        for (i = 0 ; admins[i] != nullptr ; i += 1)
 	            debugprintf("resolves/mapper_process: a%u=%s\n",i,admins[i]) ;
 	    }
 #endif /* CF_DEBUGS */
 
 #if	CF_TESTPROC
 	    {
-	        const char	*pr = "/home/genserv" ;
-	        const char	*prn = "genserv" ;
-	        const char	*svc = "hello" ;
+	        cchar	*pr = "/home/genserv" ;
+	        cchar	*prn = "genserv" ;
+	        cchar	*svc = "hello" ;
 	        const int	of = O_RDONLY ;
 	        const mode_t	om = 0666 ;
-	        const char		*argv[2] ;
+	        cchar		*argv[2] ;
 	        const int		to = 5 ;
 
 	        argv[0] = svc ;
-	        argv[1] = NULL ;
+	        argv[1] = nullptr ;
 	        rs = uc_openfsvc(pr,prn,svc,of,om,argv,ev,to) ;
 	        if (rs >= 0) {
 	            char	buf[BUFLEN+1] ;
@@ -1429,9 +1398,9 @@ int		fd ;
 
 static int mapper_processor(mmp,ev,admins,groupname,fd)
 RESOLVES_MAPPER	*mmp ;
-const char	*ev[] ;
-const char	*admins[] ;
-const char	groupname[] ;
+cchar	*ev[] ;
+cchar	*admins[] ;
+cchar	groupname[] ;
 int		fd ;
 {
 	RESOLVES_MAPDIR	*ep ;
@@ -1441,7 +1410,7 @@ int		fd ;
 	int	wlen = 0 ;
 
 
-	if (mmp == NULL)
+	if (mmp == nullptr)
 	    return SR_FAULT ;
 
 	if (mmp->magic != RESOLVES_MAPPERMAGIC)
@@ -1452,7 +1421,7 @@ int		fd ;
 #endif
 
 	for (i = 0 ; vechand_get(&mmp->mapdirs,i,&ep) >= 0 ; i += 1) {
-	    if (ep == NULL) continue ;
+	    if (ep == nullptr) continue ;
 
 #if	CF_DEBUGS
 	    debugprintf("resolves/mapper_processor: i=%u admin=%s\n",i,ep->admin) ;
@@ -1490,12 +1459,12 @@ RESOLVES_MAPPER	*mmp ;
 	int	kl, vl ;
 	int	c = 0 ;
 
-	const char	*kp, *vp ;
+	cchar	*kp, *vp ;
 
 	char	pbuf[PBUFLEN + 1] ;
 
 
-	if (mmp == NULL)
+	if (mmp == nullptr)
 	    return SR_FAULT ;
 
 	if (mmp->magic != RESOLVES_MAPPERMAGIC)
@@ -1552,13 +1521,13 @@ RESOLVES_MAPPER	*mmp ;
 	int	sl ;
 	int	c = 0 ;
 
-	const char	*tp, *sp ;
-	const char	*kp, *vp ;
+	cchar	*tp, *sp ;
+	cchar	*kp, *vp ;
 
 	char	linebuf[LINEBUFLEN + 1] ;
 
 
-	if (mmp == NULL)
+	if (mmp == nullptr)
 	    return SR_FAULT ;
 
 	if (mmp->magic != RESOLVES_MAPPERMAGIC)
@@ -1580,7 +1549,7 @@ RESOLVES_MAPPER	*mmp ;
 	    sl = len ;
 	    if (sp[0] == '#') continue ;
 
-	    if ((tp = strnchr(sp,sl,'#')) != NULL)
+	    if ((tp = strnchr(sp,sl,'#')) != nullptr)
 	        sl = (tp - sp) ;
 
 	    kl = nextfield(sp,sl,&kp) ;
@@ -1614,8 +1583,8 @@ static int mapper_mapadd(mmp,kp,kl,vp,vl)
 RESOLVES_MAPPER	*mmp ;
 int		kl ;
 int		vl ;
-const char	*kp ;
-const char	*vp ;
+cchar	*kp ;
+cchar	*vp ;
 {
 	RESOLVES_MAPDIR	*ep ;
 
@@ -1624,7 +1593,7 @@ const char	*vp ;
 	int	rs ;
 
 
-	if ((kp == NULL) || (vp == NULL)) return SR_FAULT ;
+	if ((kp == nullptr) || (vp == nullptr)) return SR_FAULT ;
 	if ((kl == 0) || (vl == 0)) return SR_INVALID ;
 
 	rs = uc_malloc(size,&ep) ;
@@ -1656,14 +1625,14 @@ RESOLVES_MAPPER	*mmp ;
 	int	i ;
 
 
-	if (mmp == NULL)
+	if (mmp == nullptr)
 	    return SR_FAULT ;
 
 	if (mmp->magic != RESOLVES_MAPPERMAGIC)
 	    return SR_NOTOPEN ;
 
 	for (i = 0 ; vechand_get(mlp,i,&ep) >= 0 ; i += 1) {
-	    if (ep == NULL) continue ;
+	    if (ep == nullptr) continue ;
 	    rs1 = mapdir_finish(ep) ;
 	    if (rs >= 0) rs = rs1 ;
 	    vechand_del(mlp,i--) ;
@@ -1679,7 +1648,7 @@ RESOLVES_MAPPER	*mmp ;
 
 static int mapper_lockcheck(mmp,s)
 RESOLVES_MAPPER	*mmp ;
-const char	*s ;
+cchar	*s ;
 {
 	const int	to_lock = TO_LOCK ;
 
@@ -1687,7 +1656,7 @@ const char	*s ;
 	int	rs1 ;
 
 
-	if (mmp == NULL)
+	if (mmp == nullptr)
 	    return SR_FAULT ;
 
 	if (mmp->magic != RESOLVES_MAPPERMAGIC)
@@ -1721,19 +1690,19 @@ const char	*s ;
 
 static int mapdir_start(ep,kp,kl,vp,vl)
 RESOLVES_MAPDIR	*ep ;
-const char	*kp, *vp ;
+cchar	*kp, *vp ;
 int		kl, vl ;
 {
 	int	rs = SR_OK ;
 	int	size ;
 
-	char	*ap = NULL ;
+	char	*ap = nullptr ;
 
 
-	if (ep == NULL)
+	if (ep == nullptr)
 	    return SR_FAULT ;
 
-	if ((kp == NULL) || (vp == NULL)) return SR_FAULT ;
+	if ((kp == nullptr) || (vp == nullptr)) return SR_FAULT ;
 	if ((kl == 0) || (vl == 0)) return SR_INVALID ;
 
 	memset(ep,0,sizeof(RESOLVES_MAPDIR)) ;
@@ -1777,23 +1746,23 @@ RESOLVES_MAPDIR	*ep ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 
-	if (ep == NULL)
+	if (ep == nullptr)
 	    return SR_FAULT ;
 
-	if (ep->dname != NULL) {
+	if (ep->dname != nullptr) {
 	    rs1 = uc_free(ep->dname) ;
 	    if (rs >= 0) rs = rs1 ;
-	    ep->dname = NULL ;
+	    ep->dname = nullptr ;
 	}
 
 	rs1 = lockrw_destroy(&ep->rwm) ;
 	if (rs >= 0) rs = rs1 ;
 
-	if (ep->admin != NULL) {
+	if (ep->admin != nullptr) {
 	    rs1 = uc_free(ep->admin) ;
 	    if (rs >= 0) rs = rs1 ;
-	    ep->admin = NULL ;
-	    ep->dirname = NULL ;
+	    ep->admin = nullptr ;
+	    ep->dirname = nullptr ;
 	}
 
 	return rs ;
@@ -1803,9 +1772,9 @@ RESOLVES_MAPDIR	*ep ;
 
 static int mapdir_process(ep,ev,admins,groupname,fd)
 RESOLVES_MAPDIR	*ep ;
-const char	*ev[] ;
-const char	*admins[] ;
-const char	groupname[] ;
+cchar	*ev[] ;
+cchar	*admins[] ;
+cchar	groupname[] ;
 int		fd ;
 {
 	const int	to_lock = TO_LOCK ;
@@ -1820,8 +1789,8 @@ int		fd ;
 	    int	i ;
 	    debugprintf("resolves/mapdir_process: entered gn=%s\n",groupname) ;
 	    debugprintf("resolves/mapdir_process: dirname=%s\n",ep->dirname) ;
-	    if (admins != NULL) {
-	        for (i = 0 ; admins[i] != NULL ; i += 1)
+	    if (admins != nullptr) {
+	        for (i = 0 ; admins[i] != nullptr ; i += 1)
 	            debugprintf("resolves/mapdir_process: a[%u]=%s\n",i,admins[i]) ;
 	    }
 	}
@@ -1830,12 +1799,12 @@ int		fd ;
 	if (ep->dirname[0] == '\0')
 	    goto ret0 ;
 
-	if ((admins != NULL) && (admins[0] != NULL)) {
+	if ((admins != nullptr) && (admins[0] != nullptr)) {
 	    if (matstr(admins,ep->admin,-1) < 0)
 	        goto ret0 ;
 	} /* end if (admins) */
 
-	if ((ep->dirname[0] == '~') && (ep->dname == NULL)) {
+	if ((ep->dirname[0] == '~') && (ep->dname == nullptr)) {
 
 #if	CF_DEBUGS
 	    debugprintf("resolves/mapdir_process: mapdir_expand() \n") ;
@@ -1853,7 +1822,7 @@ int		fd ;
 	if (rs < 0)
 	    goto ret0 ;
 
-	if ((ep->dirname[0] == '~') && (ep->dname == NULL))
+	if ((ep->dirname[0] == '~') && (ep->dname == nullptr))
 	    goto ret0 ;
 
 	rs = lockrw_rdlock(&ep->rwm,to_lock) ;
@@ -1870,7 +1839,7 @@ int		fd ;
 	    debugprintf("resolves/mapdir_process: dname=%s\n",ep->dname) ;
 #endif
 
-	    if ((ep->dirname[0] != '~') || (ep->dname != NULL)) {
+	    if ((ep->dirname[0] != '~') || (ep->dname != nullptr)) {
 
 #if	CF_DEBUGS
 	        debugprintf("resolves/mapdir_process: mapdir_processor() \n") ;
@@ -1925,7 +1894,7 @@ RESOLVES_MAPDIR	*ep ;
 
 	if (rs >= 0) {
 
-	    if ((ep->dirname[0] == '~') && (ep->dname == NULL)) {
+	    if ((ep->dirname[0] == '~') && (ep->dname == nullptr)) {
 	        rs = mapdir_expander(ep) ;
 
 #if	CF_DEBUGS
@@ -1959,9 +1928,9 @@ RESOLVES_MAPDIR	*ep ;
 	int		rs1 = SR_OK ;
 	int		unl ;
 	int		fl = 0 ;
-	const char	*tp ;
-	const char	*pp ;
-	const char	*un = NULL ;
+	cchar	*tp ;
+	cchar	*pp ;
+	cchar	*un = nullptr ;
 	char		ubuf[USERNAMELEN + 1] ;
 	char		hbuf[MAXPATHLEN+ 1] ;
 	char		tmpfname[MAXPATHLEN + 1] ;
@@ -1970,15 +1939,15 @@ RESOLVES_MAPDIR	*ep ;
 	debugprintf("resolves/mapdir_expander: dirname=%s\n",ep->dirname) ;
 #endif
 
-	if ((ep->dirname == NULL) || (ep->dirname[0] != '~')) {
+	if ((ep->dirname == nullptr) || (ep->dirname[0] != '~')) {
 	    rs = SR_INVALID ;
 	    goto ret0 ;
 	}
 
 	un = (ep->dirname+1) ;
 	unl = -1 ;
-	pp = NULL ;
-	if ((tp = strchr(un,'/')) != NULL) {
+	pp = nullptr ;
+	if ((tp = strchr(un,'/')) != nullptr) {
 	    unl = (tp - un) ;
 	    pp = tp ;
 	}
@@ -1990,7 +1959,7 @@ RESOLVES_MAPDIR	*ep ;
 
 #if	CF_DEBUGS
 	debugprintf("resolves/mapdir_expander: u=%t\n",un,unl) ;
-	if (pp != NULL)
+	if (pp != nullptr)
 	    debugprintf("resolves/mapdir_expander: pp=%s\n",pp) ;
 #endif
 
@@ -2000,7 +1969,7 @@ RESOLVES_MAPDIR	*ep ;
 	    }
 	if ((rs = getuserhome(hbuf,hlen,un)) >= 0) {
 
-	    if (pp != NULL) {
+	    if (pp != nullptr) {
 	        rs = mkpath2(tmpfname,hbuf,pp) ;
 	        fl = rs ;
 	    } else {
@@ -2015,7 +1984,7 @@ RESOLVES_MAPDIR	*ep ;
 #endif
 
 	    if (rs >= 0) {
-		const char	*cp ;
+		cchar	*cp ;
 	        rs = uc_mallocstrw(tmpfname,fl,&cp) ;
 	        if (rs >= 0) ep->dname = cp ;
 	    }
@@ -2030,8 +1999,8 @@ ret0:
 
 static int mapdir_processor(ep,ev,groupname,fd)
 RESOLVES_MAPDIR	*ep ;
-const char	*ev[] ;
-const char	groupname[] ;
+cchar	*ev[] ;
+cchar	groupname[] ;
 int		fd ;
 {
 	int	rs = SR_OK ;
@@ -2039,10 +2008,10 @@ int		fd ;
 	int	n ;
 	int	wlen = 0 ;
 
-	const char	*dn ;
-	const char	*gn ;
-	const char	*defname = RESOLVES_DEFGROUP ;
-	const char	*allname = RESOLVES_ALLGROUP ;
+	cchar	*dn ;
+	cchar	*gn ;
+	cchar	*defname = RESOLVES_DEFGROUP ;
+	cchar	*allname = RESOLVES_ALLGROUP ;
 
 	char	env_admin[ENVBUFLEN+1] ;
 	char	env_admindir[ENVBUFLEN+1] ;
@@ -2051,22 +2020,22 @@ int		fd ;
 	dn = ep->dirname ;
 	if (dn[0] == '~') {
 	    dn = ep->dname ;
-	    if ((dn == NULL) || (dn[0] == '\0'))
+	    if ((dn == nullptr) || (dn[0] == '\0'))
 	        goto ret0 ;
 	}
 
 	{
-	    const char	*pre = envpre ;
-	    const char	*post ;
+	    cchar	*pre = envpre ;
+	    cchar	*post ;
 	    const int	envlen = ENVBUFLEN ;
 	    post = envstrs[envstr_admin] ;
 	    strdcpy4(env_admin,envlen,pre,post,"=",ep->admin) ;
 	    post = envstrs[envstr_admindir] ;
 	    strdcpy4(env_admindir,envlen,pre,post,"=",dn) ;
-	    for (n = 0 ; ev[n] != NULL ; n += 1) ;
+	    for (n = 0 ; ev[n] != nullptr ; n += 1) ;
 	    ev[n+0] = env_admin ;
 	    ev[n+1] = env_admindir ;
-	    ev[n+2] = NULL ;
+	    ev[n+2] = nullptr ;
 	}
 
 	gn = groupname ;
@@ -2076,7 +2045,7 @@ int		fd ;
 	    int	i ;
 	    debugprintf("resolves/mapdir_processor: mapdir_procout() gn=%s\n",gn) ;
 #ifdef	COMMENT
-	    for (i = 0 ; ev[i] != NULL ; i += 1) {
+	    for (i = 0 ; ev[i] != nullptr ; i += 1) {
 	        debugprintf("resolves/mapdir_processor: env[%u]=>%t<\n",
 		    i,ev[i],strlinelen(ev[i],60,60)) ;
 	    }
@@ -2141,7 +2110,7 @@ int		fd ;
 	}
 
 	{
-	    ev[n] = NULL ;
+	    ev[n] = nullptr ;
 	}
 
 ret0:
@@ -2162,16 +2131,16 @@ ret0:
 /* we must return SR_NOENT if there was no file */
 static int mapdir_procout(ep,ev,dn,groupname,fd)
 RESOLVES_MAPDIR	*ep ;
-const char	*ev[] ;
-const char	dn[] ;
-const char	groupname[] ;
+cchar	*ev[] ;
+cchar	dn[] ;
+cchar	groupname[] ;
 int		fd ;
 {
 	int	rs = SR_OK ;
 	int	rs1 ;
 	int	wlen = 0 ;
 
-	const char	*name = RESOLVES_NAME ;
+	cchar	*name = RESOLVES_NAME ;
 
 	char	cname[MAXNAMELEN + 1] ;
 	char	fname[MAXPATHLEN + 1] ;
@@ -2198,8 +2167,8 @@ ret0:
 
 static int mapdir_procouter(ep,ev,fname,ofd)
 RESOLVES_MAPDIR	*ep ;
-const char	*ev[] ;
-const char	fname[] ;
+cchar	*ev[] ;
+cchar	fname[] ;
 int		ofd ;
 {
 	const mode_t	operms = 0664 ;
@@ -2216,7 +2185,7 @@ int		ofd ;
 	char	buf[BUFLEN + 1] ;
 
 
-	if (ep == NULL) return SR_FAULT ;
+	if (ep == nullptr) return SR_FAULT ;
 
 #if	CF_DEBUGS
 	debugprintf("resolves/mapdir_procouter: fname=%s\n",fname) ;
@@ -2266,13 +2235,13 @@ ret0:
 
 static int writeto(wfd,wbuf,wlen,wto)
 int		wfd ;
-const char	wbuf[] ;
+cchar	wbuf[] ;
 int		wlen ;
 int		wto ;
 {
-	struct pollfd	fds[2] ;
+	POLLFD		fds[2] ;
 
-	time_t	daytime = time(NULL) ;
+	time_t	daytime = time(nullptr) ;
 	time_t	ti_write ;
 
 	int	rs = SR_OK ;
@@ -2285,7 +2254,7 @@ int		wto ;
 	if (wfd < 0)
 	    return SR_BADF ;
 
-	if (wbuf == NULL)
+	if (wbuf == nullptr)
 	    return SR_FAULT ;
 
 	if (wlen < 0)
@@ -2307,7 +2276,7 @@ int		wto ;
 
 	    rs = u_poll(fds,1,pto) ;
 
-	    daytime = time(NULL) ;
+	    daytime = time(nullptr) ;
 	    if (rs > 0) {
 	        int	re = fds[0].revents ;
 
