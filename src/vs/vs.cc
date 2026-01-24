@@ -1,15 +1,17 @@
-/* vs */
+/* vs SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* virtual system stuff */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
-
 
 /* revision history:
 
 	= 1998-11-01, David A­D­ Morano
-	This subroutine was written for Rightcore Network Services (RNS).
+	This subroutine was written for Rightcore Network Services
+	(RNS).
 
 */
 
@@ -17,14 +19,15 @@
 
 /*******************************************************************************
 
-	This is the famous (infamous) virtual system stuff.
+  	Name:
+	vs
 
+	Description:
+	This is the famous (infamous) virtual system stuff.
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/resource.h>
@@ -32,9 +35,8 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<pthread.h>
-#include	<malloc.h>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<hdb.h>
 #include	<vecobj.h>
 #include	<ptm.h>
@@ -49,12 +51,14 @@
 struct vs_head	vshead ;		/* zeroed out by loader */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int vsinit()
-{
+int vsinit() noex {
 	struct vs_head	*hp = &vshead ;
+	ptm		*mxp = &op->pm ;
 	int		rs = SR_OK ;
 	int		size ;
 
@@ -73,7 +77,7 @@ int vsinit()
 
 /* initialize the process-wide variables */
 
-	rs = ptm_create(&hp->pm,NULL) ;
+	rs = mxp->create(nullptr) ;
 
 #if	CF_DEBUGS
 	debugprintf("vsinit: ret rs=%d\n",rs) ;
@@ -84,20 +88,13 @@ bad0:
 }
 /* end subroutine (vsinit) */
 
-
-int vsfree()
-{
+int vsfree() noex {
 	struct vs_head	*hp = &vshead ;
-	int		i ;
 
 	if (hp->f_init) {
-
-	ptm_free(&hp->pm) ;
-
+	mxp->destroy() ;
 	vstab_free(&hp->fds) ;
-
 	hp->f_init = 0 ;
-
 	}
 
 	return SR_OK ;
@@ -245,12 +242,12 @@ sigset_t	*op ;
 {
 	sigset_t	oldsigs ;
 
-	if (op == NULL) {
+	if (op == nullptr) {
 	    op = &oldsigs ;
 	    sigemptyset(&oldsigs) ;
 	}
 
-	pthread_sigmask(SIG_SETMASK,op,NULL) ;
+	pthread_sigmask(SIG_SETMASK,op,nullptr) ;
 
 	return SR_OK ;
 }
@@ -265,7 +262,7 @@ int vsesem_init(esp)
 VSESEM	*esp ;
 {
 
-	if (esp == NULL) return SR_FAULT ;
+	if (esp == nullptr) return SR_FAULT ;
 
 	esp->esem = TRUE ;
 	esp->magic = VSESEM_MAGIC ;
@@ -279,7 +276,7 @@ int vsesem_free(esp)
 VSESEM	*esp ;
 {
 
-	if (esp == NULL) return SR_FAULT ;
+	if (esp == nullptr) return SR_FAULT ;
 
 	esp->magic = 0 ;
 	return SR_OK ;
@@ -295,7 +292,7 @@ VSESEM	*esp ;
 	int		rs = SR_OK ;
 	int		f ;
 
-	if (esp == NULL) return SR_FAULT ;
+	if (esp == nullptr) return SR_FAULT ;
 
 	if (esp->esem) return SR_OK ;
 
