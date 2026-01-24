@@ -1,8 +1,9 @@
-/* b_resolves */
+/* b_resolves SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* SHELL built-in for Message-of-the-Day */
 /* version %I% last-modified %G% */
-
 
 #define	CF_DEBUGS	0		/* non-switchable debug print-outs */
 #define	CF_DEBUG	0		/* switchable at invocation */
@@ -11,7 +12,6 @@
 #define	CF_ENVIRON	0		/* change environment on processing */
 #define	CF_PROCID	1		/* call 'resolves_procid(3dam)' */
 #define	CF_UGETPW	1		/* use 'ugetpw(3uc)' */
-
 
 /* revision history:
 
@@ -23,19 +23,20 @@
 	note in the comments below.
 
 	= 2011-11-08, David A­D­ Morano
-	I took the "environment" hack *out* of the code.  It was actually
-	not correct in a multithreaded environment.  Currently (at this
-	present time) the KSH Shell is not multithreaded, but other
-	programs (notably servers) that dynamically load "programs" 
-	(commands) from a shared-object library containing these might
-	someday (probably much sooner than KSH) become multithreaded.
-	I needed to make environment handling multithreaded before
-	this present command gets dynamically loaded and executed by
-	some server or another.  The fix was to take environment handling
-	out of this code and to put into the RESOLVES object code.  Also,
-	a new LIBUC-level call had to be invented to handle the new
-	case of opening a general file w/ a specified environment.  
-	The LIBUC call to open programs specifically handled passing
+	I took the "environment" hack *out* of the code.  It was
+	actually not correct in a multithreaded environment.
+	Currently (at this present time) the KSH Shell is not
+	multithreaded, but other programs (notably servers) that
+	dynamically load "programs" (commands) from a shared-object
+	library containing these might someday (probably much sooner
+	than KSH) become multithreaded.  I needed to make environment
+	handling multithreaded before this present command gets
+	dynamically loaded and executed by some server or another.
+	The fix was to take environment handling out of this code
+	and to put into the RESOLVES object code.  Also, a new
+	LIBUC-level call had to be invented to handle the new case
+	of opening a general file w/ a specified environment.  The
+	LIBUC call to open programs specifically handled passing
 	environment already but it was not general for opening any
 	sort of "file."  The new LIBUC call ('uc_openenv(3uc)') is.
 
@@ -45,34 +46,41 @@
 
 /*******************************************************************************
 
-        This is a built-in command to the KSH shell. It should also be able to
-        be made into a stand-alone program without much (if almost any)
-        difficulty, but I have not done that yet.
+  	Name:
+	b_resolves
+
+	Description:
+	This is a built-in command to the KSH shell.  It should also
+	be able to be made into a stand-alone program without much
+	(if almost any) difficulty, but I have not done that yet.
 
 	Synopsis:
 	$ motd [-u <username>] [-a <admin(s)>] [-d[=<intrun>] [-V]
 
 	Design problems:
 
-        I put a real hack into this code. The RESOLVES object was supposed to
-        handle all aspects of the actual RESOLVES processing. But a new issue
-        arose. People want any subprograms executed as a result of reading
-        sub-RESOLVES files to know the client UID and GID (the only things that
-        we know). We are currently doing this by placing these as special
-        environment variables into our own process environment before executing
-        'resolves_process()'. But switching out own actual environment in a way
-        that does not leak memory (meaning do not use 'putenv(3c)') adds a
-        little complication, which can be seen below. Somehow in the future we
-        will try to move some kind of processing into the RESOLVES object
-        itself.
+	I put a real hack into this code.  The RESOLVES object was
+	supposed to handle all aspects of the actual RESOLVES
+	processing.  But a new issue arose.  People want any
+	subprograms executed as a result of reading sub-RESOLVES
+	files to know the client UID and GID (the only things that
+	we know).  We are currently doing this by placing these as
+	special environment variables into our own process environment
+	before executing |resolves_process()|.  But switching out
+	own actual environment in a way that does not leak memory
+	(meaning do not use |putenv(3c)|) adds a little complication,
+	which can be seen below.  Somehow in the future we will try
+	to move some kind of processing into the RESOLVES object
+	itself.
 
 	Updated note on design problems:
 
-        The hack above to pass modified environment down to the RESOLVES object
-        is no longer needed. The RESOLVES object itself now handles that. A new
-        RESOLVES object method has been added to pass fuller specified
-        identification down into the RESOLVES object. This new interface is
-        'resolves_procid()'.
+	The hack above to pass modified environment down to the
+	RESOLVES object is no longer needed.  The RESOLVES object
+	itself now handles that.  A new RESOLVES object method has
+	been added to pass fuller specified identification down
+	into the RESOLVES object.  This new interface is
+	|resolves_procid()|.
 
 *******************************************************************************/
 
@@ -128,7 +136,10 @@
 #include	"upt.h"
 #include	"gncache.h"
 #include	"resolves.h"
+'
+#pragma		GCC dependency		"mod/libutil.ccm"
 
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
@@ -304,44 +315,44 @@ struct client {
 
 /* forward references */
 
-static int	usage(PROGINFO *) ;
+local int	usage(PROGINFO *) ;
 
-static int	locinfo_start(struct locinfo *,PROGINFO *) ;
-static int	locinfo_finish(struct locinfo *) ;
-static int	locinfo_mkenvv(struct locinfo *) ;
+local int	locinfo_start(struct locinfo *,PROGINFO *) ;
+local int	locinfo_finish(struct locinfo *) ;
+local int	locinfo_mkenvv(struct locinfo *) ;
 #if	CF_ENVIRON
-static int	locinfo_process(struct locinfo *,RESOLVES *,struct client *) ;
-static int	locinfo_addenvdig(struct locinfo *,int,const char *,int) ;
-static int	locinfo_addenvstr(struct locinfo *,int,const char *,
+local int	locinfo_process(struct locinfo *,RESOLVES *,struct client *) ;
+local int	locinfo_addenvdig(struct locinfo *,int,const char *,int) ;
+local int	locinfo_addenvstr(struct locinfo *,int,const char *,
 			const char *,int) ;
 #endif /* CF_ENVIRON */
-static int	locinfo_loadids(struct locinfo *) ;
-static int	locinfo_mdname(struct locinfo *) ;
-static int	locinfo_tmpmaint(struct locinfo *) ;
-static int	locinfo_getgid(struct locinfo *) ;
-static int	locinfo_chgrp(struct locinfo *,const char *) ;
+local int	locinfo_loadids(struct locinfo *) ;
+local int	locinfo_mdname(struct locinfo *) ;
+local int	locinfo_tmpmaint(struct locinfo *) ;
+local int	locinfo_getgid(struct locinfo *) ;
+local int	locinfo_chgrp(struct locinfo *,const char *) ;
 
-static int	procopts(PROGINFO *,KEYOPT *) ;
-static int	procregular(PROGINFO *,PARAMOPT *,const char *) ;
-static int	procdaemon(PROGINFO *,PARAMOPT *,const char *) ;
-static int	procregout(PROGINFO *,PARAMOPT *,SHIO *) ;
-static int	procregouter(PROGINFO *,const char **,SHIO *) ;
-static int	procmotd(PROGINFO *,const char *,const char **,int) ;
-static int	procextras(PROGINFO *) ;
-static int	procpidfile(PROGINFO *) ;
-static int	proclockacquire(PROGINFO *,LFM *,int) ;
-static int	proclockrelease(PROGINFO *,LFM *) ;
-static int	proclockcheck(PROGINFO *,LFM *) ;
-static int	proclockprint(PROGINFO *,LFM_CHECK *) ;
-static int	procdown(PROGINFO *,LFM *,const char *) ;
-static int	procserve(PROGINFO *,LFM *,const char *) ;
-static int	prochandle(PROGINFO *,GNCACHE *,RESOLVES *,
+local int	procopts(PROGINFO *,KEYOPT *) ;
+local int	procregular(PROGINFO *,PARAMOPT *,const char *) ;
+local int	procdaemon(PROGINFO *,PARAMOPT *,const char *) ;
+local int	procregout(PROGINFO *,PARAMOPT *,SHIO *) ;
+local int	procregouter(PROGINFO *,const char **,SHIO *) ;
+local int	procmotd(PROGINFO *,const char *,const char **,int) ;
+local int	procextras(PROGINFO *) ;
+local int	procpidfile(PROGINFO *) ;
+local int	proclockacquire(PROGINFO *,LFM *,int) ;
+local int	proclockrelease(PROGINFO *,LFM *) ;
+local int	proclockcheck(PROGINFO *,LFM *) ;
+local int	proclockprint(PROGINFO *,LFM_CHECK *) ;
+local int	procdown(PROGINFO *,LFM *,const char *) ;
+local int	procserve(PROGINFO *,LFM *,const char *) ;
+local int	prochandle(PROGINFO *,GNCACHE *,RESOLVES *,
 			uid_t,gid_t,int) ;
 
-static int	vecstr_loadadmins(vecstr *,PARAMOPT *) ;
+local int	vecstr_loadadmins(vecstr *,PARAMOPT *) ;
 
-static int	deleter(void *) ;
-static int	deleter_all(struct dargs *) ;
+local int	deleter(void *) ;
+local int	deleter_all(struct dargs *) ;
 
 static void	sighand_int(int) ;
 
@@ -389,7 +400,7 @@ static const char *argopts[] = {
 	"mnt",
 	"pid",
 	"fg",
-	NULL
+	nullptr
 } ;
 
 enum argopts {
@@ -435,7 +446,7 @@ static const struct mapex	mapexs[] = {
 static const char *akonames[] = {
 	"quiet",
 	"runint",
-	NULL
+	nullptr
 } ;
 
 enum akonames {
@@ -454,7 +465,7 @@ static const char *strvar_motdgid = "RESOLVES_GID" ;
 static const char *badenvs[] = {
 	"_",
 	"TMOUT",
-	NULL
+	nullptr
 } ;
 
 
@@ -489,27 +500,27 @@ void	*contextp ;
 	int	cl ;
 	int	ex = EX_INFO ;
 	int	f_optminus, f_optplus, f_optequal ;
-	int	f_version = FALSE ;
-	int	f_usage = FALSE ;
-	int	f_help = FALSE ;
-	int	f_child = FALSE ;
+	int	f_version = false ;
+	int	f_usage = false ;
+	int	f_help = false ;
+	int	f_child = false ;
 	int	f ;
 
 	const char	*po_admin = PO_ADMIN ;
 
 	const char	*argp, *aop, *akp, *avp ;
-	const char	*argval = NULL ;
+	const char	*argval = nullptr ;
 	char	argpresent[MAXARGGROUPS] ;
-	const char	*pr = NULL ;
-	const char	*sn = NULL ;
-	const char	*afname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*efname = NULL ;
-	const char	*mntfname = NULL ;
+	const char	*pr = nullptr ;
+	const char	*sn = nullptr ;
+	const char	*afname = nullptr ;
+	const char	*ofname = nullptr ;
+	const char	*efname = nullptr ;
+	const char	*mntfname = nullptr ;
 	const char	*cp ;
 
 
-	if (contextp != NULL) lib_initenviron() ;
+	if (contextp != nullptr) lib_initenviron() ;
 
 	if_exit = 0 ;
 	if_int = 0 ;
@@ -518,11 +529,11 @@ void	*contextp ;
 	if (rs < 0) goto ret0 ;
 
 #if	CF_DEBUGS || CF_DEBUG
-	if ((cp = getenv(VARDEBUGFNAME)) == NULL) {
-	    if ((cp = getenv(VARDEBUGFD1)) == NULL)
+	if ((cp = getenv(VARDEBUGFNAME)) == nullptr) {
+	    if ((cp = getenv(VARDEBUGFD1)) == nullptr)
 	        cp = getenv(VARDEBUGFD2) ;
 	}
-	if (cp != NULL)
+	if (cp != nullptr)
 	    debugopen(cp) ;
 	debugprintf("b_resolves: starting\n") ;
 #endif /* CF_DEBUGS */
@@ -538,7 +549,7 @@ void	*contextp ;
 	    goto badprogstart ;
 	}
 
-	if ((cp = getenv(VARBANNER)) == NULL) cp = BANNER ;
+	if ((cp = getenv(VARBANNER)) == nullptr) cp = BANNER ;
 	proginfo_setbanner(pip,cp) ;
 
 /* initialize */
@@ -573,7 +584,7 @@ void	*contextp ;
 	ai_max = 0 ;
 	ai_pos = 0 ;
 	argr = argc ;
-	for (ai = 0 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
+	for (ai = 0 ; (ai < argc) && (argv[ai] != nullptr) ; ai += 1) {
 	    if (rs < 0) break ;
 	    argr -= 1 ;
 	    if (ai == 0) continue ;
@@ -600,15 +611,15 @@ void	*contextp ;
 	            aop = argp + 1 ;
 	            akp = aop ;
 	            aol = argl - 1 ;
-	            f_optequal = FALSE ;
-	            if ((avp = strchr(aop,'=')) != NULL) {
-	                f_optequal = TRUE ;
+	            f_optequal = false ;
+	            if ((avp = strchr(aop,'=')) != nullptr) {
+	                f_optequal = true ;
 	                akl = avp - aop ;
 	                avp += 1 ;
 	                avl = aop + argl - 1 - avp ;
 	                aol = akl ;
 	            } else {
-	                avp = NULL ;
+	                avp = nullptr ;
 	                avl = 0 ;
 	                akl = aol ;
 	            }
@@ -621,7 +632,7 @@ void	*contextp ;
 
 /* version */
 	                case argopt_version:
-	                    f_version = TRUE ;
+	                    f_version = true ;
 	                    if (f_optequal)
 	                        rs = SR_INVALID ;
 	                    break ;
@@ -630,7 +641,7 @@ void	*contextp ;
 	                case argopt_verbose:
 	                    pip->verboselevel = 2 ;
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl) {
 	                            rs = cfdeci(avp,avl,&v) ;
 	                            pip->verboselevel = v ;
@@ -641,7 +652,7 @@ void	*contextp ;
 /* program root */
 	                case argopt_root:
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            pr = avp ;
 	                    } else {
@@ -658,10 +669,10 @@ void	*contextp ;
 	                    break ;
 
 	                case argopt_pid:
-	                    lip->have.pidfname = TRUE ;
-			    lip->final.pidfname = TRUE ;
+	                    lip->have.pidfname = true ;
+			    lip->final.pidfname = true ;
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            lip->pidfname = avp ;
 	                    } else {
@@ -678,9 +689,9 @@ void	*contextp ;
 	                    break ;
 
 	                case argopt_mnt:
-	                    lip->have.mnt = TRUE ;
+	                    lip->have.mnt = true ;
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            mntfname = avp ;
 	                    } else {
@@ -697,13 +708,13 @@ void	*contextp ;
 	                    break ;
 
 	                case argopt_help:
-	                    f_help = TRUE ;
+	                    f_help = true ;
 	                    break ;
 
 /* program search-name */
 	                case argopt_sn:
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            sn = avp ;
 	                    } else {
@@ -722,7 +733,7 @@ void	*contextp ;
 /* argument file */
 	                case argopt_af:
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            afname = avp ;
 	                    } else {
@@ -741,7 +752,7 @@ void	*contextp ;
 /* output name */
 	                case argopt_of:
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            ofname = avp ;
 	                    } else {
@@ -760,7 +771,7 @@ void	*contextp ;
 /* error file name */
 	                case argopt_ef:
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            efname = avp ;
 	                    } else {
@@ -777,11 +788,11 @@ void	*contextp ;
 	                    break ;
 
 	                case argopt_fg:
-	                    lip->final.fg = TRUE ;
-	                    lip->have.fg = TRUE ;
-	                    lip->f.fg = TRUE ;
+	                    lip->final.fg = true ;
+	                    lip->have.fg = true ;
+	                    lip->f.fg = true ;
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl) {
 	                            rs = optbool(avp,avl) ;
 	                    	    lip->f.fg = (rs > 0) ;
@@ -807,7 +818,7 @@ void	*contextp ;
 	                    case 'D':
 	                        pip->debuglevel = 1 ;
 	                        if (f_optequal) {
-	                            f_optequal = FALSE ;
+	                            f_optequal = false ;
 	                            if (avl) {
 	                                rs = cfdeci(avp,avl,&v) ;
 	                                pip->debuglevel = v ;
@@ -816,10 +827,10 @@ void	*contextp ;
 	                        break ;
 
 			    case 'P':
-	                        lip->have.pidfname = TRUE ;
-				lip->final.pidfname = TRUE ;
+	                        lip->have.pidfname = true ;
+				lip->final.pidfname = true ;
 	                        if (f_optequal) {
-	                            f_optequal = FALSE ;
+	                            f_optequal = false ;
 	                            if (avl)
 	                                lip->pidfname = avp ;
 	                        } else {
@@ -837,11 +848,11 @@ void	*contextp ;
 
 /* quiet mode */
 	                    case 'Q':
-	                        pip->have.quiet = TRUE ;
-				pip->final.quiet = TRUE ;
-	                        pip->f.quiet = TRUE ;
+	                        pip->have.quiet = true ;
+				pip->final.quiet = true ;
+	                        pip->f.quiet = true ;
 	                        if (f_optequal) {
-	                            f_optequal = FALSE ;
+	                            f_optequal = false ;
 	                            if (avl) {
 	                                rs = optbool(avp,avl) ;
 					pip->f.quiet = (rs > 0) ;
@@ -864,12 +875,12 @@ void	*contextp ;
 
 /* version */
 	                    case 'V':
-	                        f_version = TRUE ;
+	                        f_version = true ;
 	                        break ;
 
 /* print header */
 	                    case 'a':
-	                        pip->have.aparams = TRUE ;
+	                        pip->have.aparams = true ;
 	                        if (argr <= 0) {
 	                            rs = SR_INVALID ;
 	                            break ;
@@ -883,13 +894,13 @@ void	*contextp ;
 	                        break ;
 
 	                    case 'd':
-	                        pip->have.daemon = TRUE ;
-	                        pip->f.daemon = TRUE ;
+	                        pip->have.daemon = true ;
+	                        pip->f.daemon = true ;
 	                        if (f_optequal) {
-	                            f_optequal = FALSE ;
+	                            f_optequal = false ;
 	                            if (avl) {
-	                                pip->final.intrun = TRUE ;
-	                                pip->have.intrun = TRUE ;
+	                                pip->final.intrun = true ;
+	                                pip->have.intrun = true ;
 					pip->intrun = -1 ;
 					if (avp[0] != '-')
 	                                    rs = cfdecti(avp,avl,&pip->intrun) ;
@@ -916,7 +927,7 @@ void	*contextp ;
 
 /* target username */
 	                    case 'u':
-	                        lip->have.un = TRUE ;
+	                        lip->have.un = true ;
 	                        if (argr <= 0) {
 	                            rs = SR_INVALID ;
 	                            break ;
@@ -932,7 +943,7 @@ void	*contextp ;
 	                    case 'v':
 	                        pip->verboselevel = 2 ;
 	                        if (f_optequal) {
-	                            f_optequal = FALSE ;
+	                            f_optequal = false ;
 	                            if (avl) {
 	                                rs = cfdeci(avp,avl,&v) ;
 	                                pip->verboselevel = v ;
@@ -941,7 +952,7 @@ void	*contextp ;
 	                        break ;
 
 	                    case '?':
-	                        f_usage = TRUE ;
+	                        f_usage = true ;
 	                        break ;
 
 	                    default:
@@ -979,12 +990,12 @@ void	*contextp ;
 	    debugprintf("b_resolves: debuglevel=%u\n",pip->debuglevel) ;
 #endif
 
-	if (efname == NULL) efname = getenv(VARERRORFNAME) ;
-	if (efname == NULL) efname = STDFNERR ;
+	if (efname == nullptr) efname = getenv(VARERRORFNAME) ;
+	if (efname == nullptr) efname = STDFNERR ;
 	if ((rs1 = shio_open(&errfile,efname,"wca",0666)) >= 0) {
 	    pip->efp = &errfile ;
-	    pip->open.errfile = TRUE ;
-	    shio_control(&errfile,SHIO_CSETBUFLINE,TRUE) ;
+	    pip->open.errfile = true ;
+	    shio_control(&errfile,SHIO_CSETBUFLINE,true) ;
 	}
 
 	if (rs < 0) {
@@ -997,13 +1008,13 @@ void	*contextp ;
 	}
 
 	if (pip->debuglevel > 0) {
-		int	f_sfio = FALSE ;
-		int	f_builtin = FALSE ;
+		int	f_sfio = false ;
+		int	f_builtin = false ;
 #if	CF_SFIO
-		f_sfio = TRUE ;
+		f_sfio = true ;
 #endif
 #if	(defined(KSHBUILTIN) && (KSHBUILTIN > 0))
-		f_builtin = TRUE ;
+		f_builtin = true ;
 #endif
 	    shio_printf(pip->efp,"%s: debuglevel=%u\n",
 	        pip->progname,pip->debuglevel) ;
@@ -1041,7 +1052,7 @@ void	*contextp ;
 #if	CF_SFIO
 	    printhelp(sfstdout,pip->pr,pip->searchname,HELPFNAME) ;
 #else
-	    printhelp(NULL,pip->pr,pip->searchname,HELPFNAME) ;
+	    printhelp(nullptr,pip->pr,pip->searchname,HELPFNAME) ;
 #endif
 	}
 
@@ -1061,9 +1072,9 @@ void	*contextp ;
 
 /* argument defaults */
 
-	if (lip->un == NULL) lip->un = getenv(VARTARUSER) ;
+	if (lip->un == nullptr) lip->un = getenv(VARTARUSER) ;
 
-	if (argval != NULL) {
+	if (argval != nullptr) {
 	    rs = cfdeci(argval,-1,&argvalue) ;
 	    if (rs < 0) {
 		ex = EX_USAGE ;
@@ -1090,8 +1101,8 @@ void	*contextp ;
 
 /* other initilization */
 
-	if (pip->tmpdname == NULL) pip->tmpdname = getenv(VARTMPDNAME) ;
-	if (pip->tmpdname == NULL) pip->tmpdname = TMPDNAME ;
+	if (pip->tmpdname == nullptr) pip->tmpdname = getenv(VARTMPDNAME) ;
+	if (pip->tmpdname == nullptr) pip->tmpdname = TMPDNAME ;
 
 /* other */
 
@@ -1108,7 +1119,7 @@ void	*contextp ;
 	for (ai = 1 ; ai < argc ; ai += 1) {
 
 	    f = (ai <= ai_max) && BATST(argpresent,ai) ;
-	    f = f || ((ai > ai_pos) && (argv[ai] != NULL)) ;
+	    f = f || ((ai > ai_pos) && (argv[ai] != nullptr)) ;
 	    if (! f) continue ;
 
 	    cp = argv[ai] ;
@@ -1121,7 +1132,7 @@ void	*contextp ;
 
 	} /* end for */
 
-	if ((rs >= 0) && (afname != NULL) && (afname[0] != '\0')) {
+	if ((rs >= 0) && (afname != nullptr) && (afname[0] != '\0')) {
 	    SHIO	afile, *afp = &afile ;
 
 	    if (strcmp(afname,"-") == 0)
@@ -1164,13 +1175,13 @@ void	*contextp ;
 	if (rs < 0)
 	    goto badloadname ;
 
-	if (mntfname == NULL)
+	if (mntfname == nullptr)
 	    mntfname = getenv(VARMNTFNAME) ;
 
-	if (mntfname != NULL)
-	    pip->f.daemon = TRUE ;
+	if (mntfname != nullptr)
+	    pip->f.daemon = true ;
 
-	if ((mntfname == NULL) || (mntfname[0] == '\0'))
+	if ((mntfname == nullptr) || (mntfname[0] == '\0'))
 	    mntfname = MNTFNAME ;
 
 #if	CF_DEBUG
@@ -1236,19 +1247,19 @@ retearly:
 	    shio_printf(pip->efp,"%s: exiting ex=%u (%d)\n",
 	        pip->progname,ex,rs) ;
 
-	if (pip->efp != NULL) {
-	    pip->open.errfile = FALSE ;
+	if (pip->efp != nullptr) {
+	    pip->open.errfile = false ;
 	    shio_close(pip->efp) ;
-	    pip->efp = NULL ;
+	    pip->efp = nullptr ;
 	}
 
 	if (pip->open.aparams) {
-	    pip->open.aparams = FALSE ;
+	    pip->open.aparams = false ;
 	    paramopt_finish(&aparams) ;
 	}
 
 	if (pip->open.akopts) {
-	    pip->open.akopts = FALSE ;
+	    pip->open.akopts = false ;
 	    keyopt_finish(&akopts) ;
 	}
 
@@ -1290,11 +1301,11 @@ int	sn ;
 	switch (sn) {
 
 	case SIGINT:
-	    if_int = TRUE ;
+	    if_int = true ;
 	    break ;
 
 	default:
-	    if_exit = TRUE ;
+	    if_exit = true ;
 	    break ;
 
 	} /* end switch */
@@ -1303,7 +1314,7 @@ int	sn ;
 /* end subroutine (sighand_int) */
 
 
-static int usage(pip)
+local int usage(pip)
 PROGINFO	*pip ;
 {
 	int	rs ;
@@ -1329,14 +1340,11 @@ PROGINFO	*pip ;
 }
 /* end subroutine (usage) */
 
-
-static int locinfo_start(lip,pip)
-struct locinfo	*lip ;
-PROGINFO	*pip ;
-{
+local int locinfo_start(locinfo *lip,procinfo *pip) noex {
+	ptm		*mxp = &lip->envm ;
 	int		rs = SR_OK ;
 
-	memset(lip,0,sizeof(struct locinfo)) ;
+	memclear(lip) ; /* dangerous */
 	lip->pip = pip ;
 	lip->gid_prog = -1 ;
 	lip->gid_motd = -1 ;
@@ -1347,49 +1355,48 @@ PROGINFO	*pip ;
 	lip->uid = getuid() ;
 	lip->euid = geteuid() ;
 
-	if ((rs = ptm_create(&lip->envm,NULL)) >= 0) {
+	if ((rs = mxp->create) >= 0) {
 	    if ((rs = locinfo_mkenvv(lip)) >= 0) {
 		rs = vecstr_start(&lip->tmpstr,2,0) ;
 		if (rs < 0)
-		    if (lip->mdname != NULL) {
+		    if (lip->mdname != nullptr) {
 	    	    uc_free(lip->mdname) ;
-	    	    lip->mdname = NULL ;
+	    	    lip->mdname = nullptr ;
 		}
 	    }
-	    if (rs < 0)
-	    ptm_destroy(&lip->envm) ;
+	    if (rs < 0) {
+	        mxp->destroy() ;
+	    }
 	}
 
 	return rs ;
 }
 /* end subroutine (locinfo_start) */
 
-
-static int locinfo_finish(lip)
-struct locinfo	*lip ;
-{
+local int locinfo_finish(locinfo *lip) noex {
+	ptm		*mxp = &lip->envm ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 
 	rs1 = locinfo_tmpmaint(lip) ;
 	if (rs >= 0) rs = rs1 ;
 
-	if (lip->mdname != NULL) {
+	if (lip->mdname != nullptr) {
 	    rs1 = uc_free(lip->mdname) ;
 	    if (rs >= 0) rs = rs1 ;
-	    lip->mdname = NULL ;
+	    lip->mdname = nullptr ;
 	}
 
 	rs1 = vecstr_finish(&lip->tmpstr) ;
 	if (rs >= 0) rs = rs1 ;
 
-	if (lip->envv != NULL) {
+	if (lip->envv != nullptr) {
 	    rs1 = uc_free(lip->envv) ;
 	    if (rs >= 0) rs = rs1 ;
-	    lip->envv = NULL ;
+	    lip->envv = nullptr ;
 	}
 
-	rs1 = ptm_destroy(&lip->envm) ;
+	rs1 = mxp->destroy() ;
 	if (rs >= 0) rs = rs1 ;
 
 	return rs ;
@@ -1397,7 +1404,7 @@ struct locinfo	*lip ;
 /* end subroutine (locinfo_finish) */
 
 
-static int locinfo_mkenvv(lip)
+local int locinfo_mkenvv(lip)
 struct locinfo	*lip ;
 {
 	PROGINFO	*pip ;
@@ -1417,7 +1424,7 @@ struct locinfo	*lip ;
 
 	pip = lip->pip ;
 	envp = pip->envv ;
-	for (i = 0 ; envp[i] != NULL ; i += 1) envl += 1 ;
+	for (i = 0 ; envp[i] != nullptr ; i += 1) envl += 1 ;
 
 	size = (envl + 1 + EXTRAENVS) * sizeof(char *) ;
 	rs = uc_malloc(size,&p) ;
@@ -1426,7 +1433,7 @@ struct locinfo	*lip ;
 
 	lip->envv = (const char **) p ;
 	envv = (const char **) p ;
-	for (i = 0 ; envp[i] != NULL ; i += 1) {
+	for (i = 0 ; envp[i] != nullptr ; i += 1) {
 	    ep = envp[i] ;
 	    if ((matstr(badenvs,ep,-1) < 0) && (strncmp(ep,"RESOLVES_",5) != 0)) {
 		envv[envc++] = ep ;
@@ -1434,7 +1441,7 @@ struct locinfo	*lip ;
 	}
 
 	lip->envc = envc ;
-	envv[envc] = NULL ;
+	envv[envc] = nullptr ;
 
 ret0:
 	return rs ;
@@ -1444,11 +1451,12 @@ ret0:
 
 #if	CF_ENVIRON
 
-static int locinfo_process(lip,mp,cip)
+local int locinfo_process(lip,mp,cip)
 struct locinfo	*lip ;
 RESOLVES		*mp ;
 struct client	*cip ;
 {
+	ptm		*mxp = &lip->envm ;
 	int	rs = SR_OK ;
 	int	iw ;
 	int	i ;
@@ -1476,7 +1484,7 @@ struct client	*cip ;
 	    } else rs = SR_NOANODE ;
 	}
 
-	if ((rs >= 0) && (lip->un != NULL)) {
+	if ((rs >= 0) && (lip->un != nullptr)) {
 	    if (i++ < EXTRAENVS) {
 		const char	*vp = lip->un ;
 	        rs = locinfo_addenvstr(lip,envc,strvar_motdun,vp,-1) ;
@@ -1494,11 +1502,11 @@ struct client	*cip ;
 
 /* IMPORTANT NOTE: only add extra environment variables up to EXTRAENVS! */
 
-	lip->envv[envc] = NULL ;
+	lip->envv[envc] = nullptr ;
 
 /* enter mutual-exclusion region */
 
-	if ((rs >= 0) && ((rs = ptm_lock(&lip->envm)) >= 0)) {
+	if ((rs >= 0) && ((rs = mxp->lockbegin) >= 0)) {
 	    char	**oenvv = environ ; /* save old */
 
 	    environ = (char **) lip->envv ;
@@ -1509,7 +1517,7 @@ struct client	*cip ;
 	    }
 
 	    environ = oenvv ; /* restore old */
-	    ptm_unlock(&lip->envm) ;
+	    mxp->lockend() ;
 	} /* end if (mutual-exclusion region) */
 
 /* exited mutual-exclusion region */
@@ -1522,7 +1530,7 @@ ret0:
 /* end subroutine (locinfo_process) */
 
 
-static int locinfo_addenvdig(lip,envc,s,iw)
+local int locinfo_addenvdig(lip,envc,s,iw)
 struct locinfo	*lip ;
 int		envc ;
 const char	*s ;
@@ -1549,7 +1557,7 @@ int		iw ;
 /* end subroutine (locinfo_addenvdig) */
 
 
-static int locinfo_addenvstr(lip,envc,kn,vp,vl)
+local int locinfo_addenvstr(lip,envc,kn,vp,vl)
 struct locinfo	*lip ;
 int		envc ;
 const char	*kn ;
@@ -1576,7 +1584,7 @@ int		vl ;
 #endif /* CF_ENVIRON */
 
 
-static int locinfo_mdname(lip)
+local int locinfo_mdname(lip)
 struct locinfo	*lip ;
 {
 	PROGINFO	*pip = lip->pip ;
@@ -1587,14 +1595,14 @@ struct locinfo	*lip ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
-	int	f_created = FALSE ;
+	int	f_created = false ;
 
-	const char	*mdn = NULL ;
+	const char	*mdn = nullptr ;
 
 	char	mdname[MAXPATHLEN + 1] ;
 
 
-	if (lip->mdname != NULL)
+	if (lip->mdname != nullptr)
 	    goto ret0 ;
 
 	rs = proginfo_rootname(pip) ;
@@ -1613,7 +1621,7 @@ struct locinfo	*lip ;
 
 	} else {
 
-	    f_created = TRUE ;
+	    f_created = true ;
 	    mdn = mdname ;
 	    if ((rs = mkdirs(mdname,dmode)) >= 0) {
 	        if ((rs = u_chmod(mdname,dmode)) >= 0)
@@ -1622,13 +1630,13 @@ struct locinfo	*lip ;
 
 	} /* end if */
 
-	if ((rs >= 0) && (mdn != NULL)) {
+	if ((rs >= 0) && (mdn != nullptr)) {
 	    const char	*cp ;
 	    rs = uc_mallocstrw(mdn,-1,&cp) ;
 	    if (rs >= 0) {
 		lip->mdname = cp ;
 	    } else
-	        lip->mdname = NULL ;
+	        lip->mdname = nullptr ;
 	}
 
 ret0:
@@ -1644,17 +1652,17 @@ ret0:
 /* end subroutine (locinfo_mdname) */
 
 
-static int locinfo_loadids(lip)
+local int locinfo_loadids(lip)
 struct locinfo	*lip ;
 {
 	PROGINFO	*pip = lip->pip ;
 	int		rs = SR_OK ;
-	int		f_other = FALSE ;
+	int		f_other = false ;
 	const char	*un = lip->un ;
 
 	if (lip->groupname[0] == '\0') {
 
-	    if ((un == NULL) || (un[0] == '\0') || (un[0] == '-')) {
+	    if ((un == nullptr) || (un[0] == '\0') || (un[0] == '-')) {
 		const int	unlen = USERNAMELEN ;
 		rs = getusername(lip->username,unlen,lip->uid) ;
 	    	lip->un = lip->username ;
@@ -1696,25 +1704,25 @@ struct locinfo	*lip ;
 /* end subroutine (locinfo_loadids) */
 
 
-static int locinfo_tmpmaint(lip)
+local int locinfo_tmpmaint(lip)
 struct locinfo	*lip ;
 {
 	ustat	usb ;
 
 	struct dargs	da ;
 
-	time_t	daytime = time(NULL) ;
+	time_t	daytime = time(nullptr) ;
 
 	const int	to = TO_TMPFILE ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
-	int	f_needed = FALSE ;
+	int	f_needed = false ;
 
 	char	tsfname[MAXPATHLEN+1] ;
 
 
-	if (lip->mdname == NULL)
+	if (lip->mdname == nullptr)
 	    goto ret0 ;
 
 /* get out if no possible need */
@@ -1745,7 +1753,7 @@ struct locinfo	*lip ;
 	if (rs1 >= 0) goto ret0 ;
 	if (rs < 0) goto ret0 ;
 
-	f_needed = TRUE ;
+	f_needed = true ;
 
 /* continue */
 
@@ -1784,13 +1792,13 @@ ret0:
 /* end subroutine (locinfo_tmpmaint) */
 
 
-static int locinfo_getgid(lip)
+local int locinfo_getgid(lip)
 struct locinfo	*lip ;
 {
 	PROGINFO	*pip = lip->pip ;
 	int		rs = SR_OK ;
 	int		rs1 ;
-	int		f_got = FALSE ;
+	int		f_got = false ;
 
 	if (lip->gid_prog < 0) {
 	    struct passwd	pw ;
@@ -1829,7 +1837,7 @@ struct locinfo	*lip ;
 /* end subroutine (locinfo_getgid) */
 
 
-static int locinfo_chgrp(lip,fname)
+local int locinfo_chgrp(lip,fname)
 struct locinfo	*lip ;
 const char	fname[] ;
 {
@@ -1840,7 +1848,7 @@ const char	fname[] ;
 	int	rs = SR_OK ;
 
 
-	if (fname == NULL)
+	if (fname == nullptr)
 	    return SR_FAULT ;
 
 	if (fname[0] == '\0')
@@ -1864,7 +1872,7 @@ ret0:
 
 
 /* process the program ako-options */
-static int procopts(pip,kop)
+local int procopts(pip,kop)
 PROGINFO	*pip ;
 KEYOPT		*kop ;
 {
@@ -1881,7 +1889,7 @@ KEYOPT		*kop ;
 	const char	*cp ;
 
 
-	if ((cp = getenv(VAROPTS)) != NULL)
+	if ((cp = getenv(VAROPTS)) != nullptr)
 	    rs = keyopt_loads(kop,cp,-1) ;
 
 	if (rs < 0)
@@ -1895,7 +1903,7 @@ KEYOPT		*kop ;
 
 /* get the first value for this key */
 
-	    vl = keyopt_fetch(kop,kp,NULL,&vp) ;
+	    vl = keyopt_fetch(kop,kp,nullptr,&vp) ;
 
 /* do we support this option? */
 
@@ -1906,9 +1914,9 @@ KEYOPT		*kop ;
 
 	        case akoname_quiet:
 	            if (! pip->final.quiet) {
-	                pip->have.quiet = TRUE ;
-	                pip->final.quiet = TRUE ;
-	                pip->f.quiet = TRUE ;
+	                pip->have.quiet = true ;
+	                pip->final.quiet = true ;
+	                pip->f.quiet = true ;
 	                if (vl > 0) {
 			    rs = optbool(vp,vl) ;
 	                    pip->f.quiet = (rs > 0) ;
@@ -1918,9 +1926,9 @@ KEYOPT		*kop ;
 
 	        case akoname_intrun:
 	            if (! pip->final.intrun) {
-	                pip->have.intrun = TRUE ;
-	                pip->final.intrun = TRUE ;
-	                pip->f.intrun = TRUE ;
+	                pip->have.intrun = true ;
+	                pip->final.intrun = true ;
+	                pip->f.intrun = true ;
 	                if (vl > 0) {
 			    rs = cfdecui(vp,vl,&uv) ;
 	                    pip->intrun = uv ;
@@ -1947,7 +1955,7 @@ ret0:
 /* end subroutine (procopts) */
 
 
-static int procregular(pip,app,ofname)
+local int procregular(pip,app,ofname)
 PROGINFO	*pip ;
 PARAMOPT	*app ;
 const char	ofname[] ;
@@ -1969,13 +1977,13 @@ const char	ofname[] ;
 	    debugprintf("b_resolves/procregular: un=%s\n",lip->un) ;
 #endif
 
-	if ((pip->debuglevel > 0) && (lip->groupname != NULL))
+	if ((pip->debuglevel > 0) && (lip->groupname != nullptr))
 	    shio_printf(pip->efp,"%s: group=%s\n",
 		pip->progname,lip->groupname) ;
 
 /* open output file */
 
-	if ((ofname == NULL) || (ofname[0] == '\0'))
+	if ((ofname == nullptr) || (ofname[0] == '\0'))
 	    ofname = STDFNOUT ;
 
 	if ((rs = shio_open(ofp,ofname,"wct",0666)) >= 0) {
@@ -2003,7 +2011,7 @@ bad0:
 /* end subroutine (procregular) */
 
 
-static int procdaemon(pip,app,mntfname)
+local int procdaemon(pip,app,mntfname)
 PROGINFO	*pip ;
 PARAMOPT	*app ;
 const char	mntfname[] ;
@@ -2018,7 +2026,7 @@ const char	mntfname[] ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
-	int	f_child = FALSE ;
+	int	f_child = false ;
 
 
 #if	CF_DEBUG
@@ -2026,7 +2034,7 @@ const char	mntfname[] ;
 	    debugprintf("b_resolves/procdaemon: entered\n") ;
 #endif
 
-	pip->daytime = time(NULL) ;
+	pip->daytime = time(nullptr) ;
 
 	if (pip->debuglevel > 0) {
 	    const char	*fmt ;
@@ -2048,7 +2056,7 @@ const char	mntfname[] ;
 	if (rs < 0)
 	    goto ret0 ;
 
-	rs = proclockacquire(pip,plp,TRUE) ;
+	rs = proclockacquire(pip,plp,true) ;
 
 	if (rs >= 0)
 	    proclockrelease(pip,plp) ;
@@ -2100,8 +2108,8 @@ const char	mntfname[] ;
 
 	    if (! lip->f.fg) {
 
-		if ((pip->efp != NULL) && pip->open.errfile) {
-		    pip->open.errfile = FALSE ;
+		if ((pip->efp != nullptr) && pip->open.errfile) {
+		    pip->open.errfile = false ;
 		    shio_close(pip->efp) ;
 	    	    memset(pip->efp,0,sizeof(SHIO)) ;
 		}
@@ -2144,7 +2152,7 @@ const char	mntfname[] ;
 		const char	*tf = lip->termfname ;
 	        rs1 = shio_open(pip->efp,tf,"w",0666) ;
 		if ((rs1 == SR_ACCESS) && (lip->uid != lip->euid)) {
-		    rs1 = perm(tf,lip->euid,lip->egid,NULL,X_OK) ;
+		    rs1 = perm(tf,lip->euid,lip->egid,nullptr,X_OK) ;
 		    if (rs1 >= 0) {
 		        u_setreuid(-1,lip->uid) ;
 	                rs1 = shio_open(pip->efp,tf,"w",0666) ;
@@ -2162,7 +2170,7 @@ const char	mntfname[] ;
 	    } /* end if (opening controlling terminal) */
 
 	    if ((lip->termfname[0] == '\0') || (rs1 < 0))
-	        pip->efp = NULL ;
+	        pip->efp = nullptr ;
 
 /* after the last 'open', we no longer need our real UID */
 
@@ -2176,7 +2184,7 @@ const char	mntfname[] ;
 #endif
 
 	    if (rs >= 0) {
-	        if ((rs = proclockacquire(pip,plp,FALSE)) >= 0) {
+	        if ((rs = proclockacquire(pip,plp,false)) >= 0) {
 
 		    rs = procdown(pip,plp,mntfname) ;
 
@@ -2184,7 +2192,7 @@ const char	mntfname[] ;
 	 	}
 	    } /* end if */
 
-	    if ((pip->debuglevel > 0) && (pip->efp != NULL))
+	    if ((pip->debuglevel > 0) && (pip->efp != nullptr))
 	        shio_printf(pip->efp,"%s: daemon exiting (%d)\n",
 	            pip->progname,rs) ;
 
@@ -2197,8 +2205,8 @@ const char	mntfname[] ;
 	}
 #endif /* CF_DEBUGMALL */
 
-	    if (pip->efp != NULL) {
-		pip->open.errfile = FALSE ;
+	    if (pip->efp != nullptr) {
+		pip->open.errfile = false ;
 	        shio_close(pip->efp) ;
 	    }
 
@@ -2225,7 +2233,7 @@ ret0:
 /* end subroutine (procdaemon) */
 
 
-static int proclockacquire(pip,plp,f)
+local int proclockacquire(pip,plp,f)
 PROGINFO	*pip ;
 LFM		*plp ;
 int		f ;
@@ -2242,7 +2250,7 @@ int		f ;
 
 
 	ccp = lip->pidfname ;
-	if ((ccp != NULL) && (ccp[0] != '\0') && (ccp[0] != '-')) {
+	if ((ccp != nullptr) && (ccp[0] != '\0') && (ccp[0] != '-')) {
 
 	    ustat	usb ;
 
@@ -2280,7 +2288,7 @@ int		f ;
 /* end subroutine (proclockacquire) */
 
 
-static int proclockrelease(pip,plp)
+local int proclockrelease(pip,plp)
 PROGINFO	*pip ;
 LFM		*plp ;
 {
@@ -2289,7 +2297,7 @@ LFM		*plp ;
 	int		rs1 ;
 
 	if (lip->open.pidlock) {
-	    lip->open.pidlock = FALSE ;
+	    lip->open.pidlock = false ;
 	    rs1 = lfm_finish(plp) ;
 	    if (rs >= 0) rs = rs1 ;
 	}
@@ -2299,7 +2307,7 @@ LFM		*plp ;
 /* end subroutine (proclockrelease) */
 
 
-static int procdown(pip,plp,mntfname)
+local int procdown(pip,plp,mntfname)
 PROGINFO	*pip ;
 LFM		*plp ;
 const char	mntfname[] ;
@@ -2326,7 +2334,7 @@ ret0:
 /* end subroutine (procdown) */
 
 
-static int procserve(pip,plp,mntfname)
+local int procserve(pip,plp,mntfname)
 PROGINFO	*pip ;
 LFM		*plp ;
 const char	mntfname[] ;
@@ -2380,7 +2388,7 @@ const char	mntfname[] ;
 #endif
 
 	if (rs < 0) {
-	    if ((! pip->f.quiet) && (pip->efp != NULL))
+	    if ((! pip->f.quiet) && (pip->efp != nullptr))
 	        shio_printf(pip->efp,"%s: could not perform mount (%d)\n",
 	            pip->progname,rs) ;
 	    goto ret2 ;
@@ -2389,7 +2397,7 @@ const char	mntfname[] ;
 	u_close(cfd) ;
 	cfd = -1 ;
 
-	uc_closeonexec(sfd,TRUE) ;
+	uc_closeonexec(sfd,true) ;
 
 	rs = gncache_start(&g,211,to_gid) ;
 	if (rs < 0)
@@ -2420,7 +2428,7 @@ const char	mntfname[] ;
 	while (rs >= 0) {
 
 	    rs = u_poll(fds,1,pto) ;
-	    pip->daytime = time(NULL) ;
+	    pip->daytime = time(nullptr) ;
 
 	    if (rs > 0) {
 	        int	re = fds[0].revents ;
@@ -2461,7 +2469,7 @@ const char	mntfname[] ;
 		ti_wait = pip->daytime ;
 		rs1 = SR_OK ;
 		while (((nhandle > 0) || f) &&
-		    ((rs1 = u_waitpid(-1,NULL,WNOHANG)) > 0)) {
+		    ((rs1 = u_waitpid(-1,nullptr,WNOHANG)) > 0)) {
 		        if (nhandle > 0) nhandle -= 1 ;
 		}
 		if ((rs1 == SR_CHILD) && f && (nhandle > 0))
@@ -2490,14 +2498,14 @@ const char	mntfname[] ;
 	    if ((rs >= 0) && (pip->intrun > 0) &&
 	        ((pip->daytime - ti_run) >= pip->intrun)) {
 
-	        if (pip->efp != NULL)
+	        if (pip->efp != nullptr)
 	            shio_printf(pip->efp,"%s: exiting on run-int timeout\n",
 	                pip->progname) ;
 
 	        break ;
 	    }
 
-	    if ((pip->efp != NULL) && if_int)		/* fun only! */
+	    if ((pip->efp != nullptr) && if_int)		/* fun only! */
 		shio_printf(pip->efp,"%s: interrupt\n",	/* fun only! */
 	                pip->progname) ;
 
@@ -2535,7 +2543,7 @@ ret0:
 /* end subroutine (procserve) */
 
 
-static int prochandle(pip,gp,mp,uid,gid,pfd)
+local int prochandle(pip,gp,mp,uid,gid,pfd)
 PROGINFO	*pip ;
 GNCACHE		*gp ;
 RESOLVES		*mp ;
@@ -2581,8 +2589,8 @@ int		pfd ;
 #if	CF_PROCID
 	{
 	    RESOLVES_ID	id ;
-	    resolvesid_load(&id,NULL,groupname,uid,gid) ;
-	    rs = resolves_procid(mp,&id,NULL,pfd) ;
+	    resolvesid_load(&id,nullptr,groupname,uid,gid) ;
+	    rs = resolves_procid(mp,&id,nullptr,pfd) ;
 	    wlen = rs ;
 	}
 #else /* CF_PROCID */
@@ -2599,7 +2607,7 @@ int		pfd ;
 	    wlen = rs ;
 	}
 #else
-	rs = resolves_process(mp,groupname,NULL,pfd) ;
+	rs = resolves_process(mp,groupname,nullptr,pfd) ;
 	wlen = rs ;
 #endif /* CF_ENVIRON */
 #endif /* CF_PROCID */
@@ -2618,20 +2626,20 @@ ret0:
 /* end subroutine (prochandle) */
 
 
-static int procextras(pip)
+local int procextras(pip)
 PROGINFO	*pip ;
 {
 	int	rs = SR_OK ;
 
 
-	if ((rs >= 0) && (pip->username == NULL)) {
+	if ((rs >= 0) && (pip->username == nullptr)) {
 	    char	username[USERNAMELEN + 1] ;
 	    rs = getusername(username,USERNAMELEN,-1) ;
 	    if (rs >= 0)
 	        rs = proginfo_setentry(pip,&pip->username,username,-1) ;
 	} /* end if (username) */
 
-	if ((rs >= 0) && (pip->nodename == NULL)) {
+	if ((rs >= 0) && (pip->nodename == nullptr)) {
 	    char	nodename[NODENAMELEN + 1] ;
 	    char	domainname[MAXHOSTNAMELEN + 1] ;
 	    rs = getnodedomain(nodename,domainname) ;
@@ -2647,7 +2655,7 @@ ret0:
 /* end subroutine (procextras) */
 
 
-static int procpidfile(pip)
+local int procpidfile(pip)
 PROGINFO	*pip ;
 {
 	struct locinfo	*lip = pip->lip ;
@@ -2667,7 +2675,7 @@ PROGINFO	*pip ;
 	    debugprintf("b_resolves/procpidfile: entered\n") ;
 #endif
 
-	if ((pf == NULL) || (pf[0] == '+')) {
+	if ((pf == nullptr) || (pf[0] == '+')) {
 
 	    rs = snsds(cname,MAXNAMELEN,pip->nodename,PIDFNAME) ;
 
@@ -2681,7 +2689,7 @@ PROGINFO	*pip ;
 
 	if (pip->debuglevel > 0) {
 	    pf = lip->pidfname ;
-	    if ((pf != NULL) && (pf[0] != '\0') && (pf[0] != '-'))
+	    if ((pf != nullptr) && (pf[0] != '\0') && (pf[0] != '-'))
 	        shio_printf(pip->efp,"%s: pidfile=%s\n",
 	            pip->progname,lip->pidfname) ;
 	}
@@ -2700,7 +2708,7 @@ ret0:
 /* end subroutine (procpidfile) */
 
 
-static int procregout(pip,app,ofp)
+local int procregout(pip,app,ofp)
 PROGINFO	*pip ;
 PARAMOPT	*app ;
 SHIO		*ofp ;
@@ -2755,7 +2763,7 @@ ret0:
 /* end subroutine (procregout) */
 
 
-static int procregouter(pip,av,ofp)
+local int procregouter(pip,av,ofp)
 PROGINFO	*pip ;
 const char	**av ;
 SHIO		*ofp ;
@@ -2871,7 +2879,7 @@ ret0:
 /* end subroutine (procregouter) */
 
 
-static int procmotd(pip,groupname,av,fd)
+local int procmotd(pip,groupname,av,fd)
 PROGINFO	*pip ;
 const char	groupname[] ;
 const char	**av ;
@@ -2885,7 +2893,7 @@ int		fd ;
 	int	wlen = 0 ;
 
 
-	if (groupname == NULL)
+	if (groupname == nullptr)
 	    return SR_FAULT ;
 
 	if (groupname[0] == '\0')
@@ -2942,7 +2950,7 @@ ret0:
 /* end subroutine (procmotd) */
 
 
-static int proclockcheck(pip,plp)
+local int proclockcheck(pip,plp)
 PROGINFO	*pip ;
 LFM		*plp ;
 {
@@ -2962,7 +2970,7 @@ LFM		*plp ;
 
 
 /* print out lock-check information */
-static int proclockprint(pip,lcp)
+local int proclockprint(pip,lcp)
 PROGINFO	*pip ;
 LFM_CHECK	*lcp ;
 {
@@ -2998,17 +3006,17 @@ LFM_CHECK	*lcp ;
 	        "other_pid=%d\n",
 	        lcp->pid) ;
 
-	    if (lcp->nodename != NULL)
+	    if (lcp->nodename != nullptr)
 	        logfile_printf(&pip->lh,
 	            "other_node=%s\n",
 	            lcp->nodename) ;
 
-	    if (lcp->username != NULL)
+	    if (lcp->username != nullptr)
 	        logfile_printf(&pip->lh,
 	            "other_user=%s\n",
 	            lcp->username) ;
 
-	    if (lcp->banner != NULL)
+	    if (lcp->banner != nullptr)
 	        logfile_printf(&pip->lh,
 	            "other_banner=%s\n",
 	            lcp->banner) ;
@@ -3016,7 +3024,7 @@ LFM_CHECK	*lcp ;
 	} /* end if (logging) */
 #endif /* COMMENT */
 
-	if ((pip->debuglevel > 0) && (pip->efp != NULL)) {
+	if ((pip->debuglevel > 0) && (pip->efp != nullptr)) {
 
 	    shio_printf(pip->efp,
 	        "%s: %s lock %s\n",
@@ -3028,17 +3036,17 @@ LFM_CHECK	*lcp ;
 	        "%s: other_pid=%d\n",
 	        pip->progname,lcp->pid) ;
 
-	    if (lcp->nodename != NULL)
+	    if (lcp->nodename != nullptr)
 	        shio_printf(pip->efp,
 	            "%s: other_node=%s\n",
 	            pip->progname,lcp->nodename) ;
 
-	    if (lcp->username != NULL)
+	    if (lcp->username != nullptr)
 	        rs = shio_printf(pip->efp,
 	            "%s: other_user=%s\n",
 	            pip->progname,lcp->username) ;
 
-	    if (lcp->banner != NULL)
+	    if (lcp->banner != nullptr)
 	        shio_printf(pip->efp,
 	            "%s: other_banner=»%s«\n",
 	            pip->progname,lcp->banner) ;
@@ -3050,7 +3058,7 @@ LFM_CHECK	*lcp ;
 /* end subroutine (proclockprint) */
 
 
-static int vecstr_loadadmins(alp,app)
+local int vecstr_loadadmins(alp,app)
 vecstr		*alp ;
 PARAMOPT	*app ;
 {
@@ -3091,7 +3099,7 @@ PARAMOPT	*app ;
 /* end subroutine (vecstr_loadadmins) */
 
 
-static int deleter(vap)
+local int deleter(vap)
 void		*vap ;
 {
 	struct dargs	*dap = (struct dargs *) vap ;
@@ -3111,7 +3119,7 @@ void		*vap ;
 /* end subroutine (deleter) */
 
 
-static int deleter_all(dap)
+local int deleter_all(dap)
 struct dargs	*dap ;
 {
 	ustat	usb ;
@@ -3122,7 +3130,7 @@ struct dargs	*dap ;
 
 	vecstr		files ;
 
-	time_t		daytime = time(NULL) ;
+	time_t		daytime = time(nullptr) ;
 
 	const int	to = TO_TMPFILE ;
 
@@ -3136,7 +3144,7 @@ struct dargs	*dap ;
 	char	tmpfname[MAXPATHLEN + 1] ;
 
 
-	if (dap->tmpdname == NULL) {
+	if (dap->tmpdname == nullptr) {
 	    rs = SR_FAULT ;
 	    goto ret0 ;
 	}
@@ -3193,7 +3201,7 @@ struct dargs	*dap ;
 
 	if (rs >= 0) {
 	    for (i = 0 ; vecstr_get(&files,i,&fp) >= 0 ; i += 1) {
-	        if (fp == NULL) continue ;
+	        if (fp == nullptr) continue ;
 	        if (fp[0] != '\0') {
 
 #if	CF_DEBUGS
