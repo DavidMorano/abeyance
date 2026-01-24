@@ -1,4 +1,5 @@
 /* votds SUPPORT (VOTD system Shared-memory management) */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* VOTDs system Cache management */
@@ -19,6 +20,10 @@
 
 /*******************************************************************************
 
+  	Name:
+	votds
+
+	Description:
 	This modules provides management for the system Verse-of-the-Day
 	(VOTD) cache.
 
@@ -108,37 +113,37 @@
 
 /* external subroutines */
 
-extern int	snsds(char *,int,const char *,const char *) ;
-extern int	sncpy1(char *,int,const char *) ;
-extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	sncpy4(char *,int,const char *,const char *,
-			const char *,const char *) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	sfbasename(const char *,int,const char **) ;
-extern int	sfrootname(const char *,int,const char **) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matostr(const char **,int,const char *,int) ;
-extern int	matocasestr(const char **,int,const char *,int) ;
-extern int	strnnlen(const char *,int,int) ;
-extern int	cfdecui(const char *,int,uint *) ;
+extern int	snsds(char *,int,cchar *,cchar *) ;
+extern int	sncpy1(char *,int,cchar *) ;
+extern int	sncpy2(char *,int,cchar *,cchar *) ;
+extern int	sncpy3(char *,int,cchar *,cchar *,cchar *) ;
+extern int	sncpy4(char *,int,cchar *,cchar *,
+			cchar *,cchar *) ;
+extern int	mkpath1(char *,cchar *) ;
+extern int	mkpath2(char *,cchar *,cchar *) ;
+extern int	mkpath3(char *,cchar *,cchar *,cchar *) ;
+extern int	sfbasename(cchar *,int,cchar **) ;
+extern int	sfrootname(cchar *,int,cchar **) ;
+extern int	matstr(cchar **,cchar *,int) ;
+extern int	matostr(cchar **,int,cchar *,int) ;
+extern int	matocasestr(cchar **,int,cchar *,int) ;
+extern int	strnnlen(cchar *,int,int) ;
+extern int	cfdecui(cchar *,int,uint *) ;
 extern int	msleep(uint) ;
-extern int	isOneOf(const int *,int) ;
-extern int	uc_openshmto(const char *,int,mode_t,int) ;
-extern int	filer_writefill(FILER *,const char *,int) ;
+extern int	isOneOf(cint *,int) ;
+extern int	uc_openshmto(cchar *,int,mode_t,int) ;
+extern int	filer_writefill(FILER *,cchar *,int) ;
 extern int	filer_writezero(FILER *,int) ;
 extern int	filer_writealign(FILER *,int) ;
 
 #if	CF_DEBUGS
-extern int	debugprintf(const char *,...) ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	debugprintf(cchar *,...) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strwcpyopaque(char *,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
+extern char	*strwcpyopaque(char *,cchar *,int) ;
+extern char	*strnchr(cchar *,int,int) ;
 
 #if	CF_DEBUGS
 extern char	*timestr_log(time_t,char *) ;
@@ -158,76 +163,76 @@ VOTDS_OBJ	votds = {
 
 /* forward references */
 
-static int	votds_shmhandbegin(VOTDS *,const char *) ;
-static int	votds_shmhandend(VOTDS *) ;
+local int	votds_shmhandbegin(VOTDS *,cchar *) ;
+local int	votds_shmhandend(VOTDS *) ;
 
-static int	votds_shmbegin(VOTDS *,int,mode_t) ;
-static int	votds_shmend(VOTDS *) ;
+local int	votds_shmbegin(VOTDS *,int,mode_t) ;
+local int	votds_shmend(VOTDS *) ;
 
-static int	votds_mapbegin(VOTDS *,time_t,int) ;
-static int	votds_mapend(VOTDS *) ;
+local int	votds_mapbegin(VOTDS *,time_t,int) ;
+local int	votds_mapend(VOTDS *) ;
 
-static int	votds_shmhdrin(VOTDS *,VOTDSHDR *) ;
-static int	votds_shmprep(VOTDS *,time_t,int,mode_t,VOTDSHDR *) ;
-static int	votds_shmpreper(VOTDS *,time_t,int,mode_t,VOTDSHDR *) ;
-static int	votds_shmwriter(VOTDS *,time_t,int fd,VOTDSHDR *,
-			const char *,int) ;
-static int	votds_allocinit(VOTDS *,VOTDSHDR *) ;
-static int	votds_mutexinit(VOTDS *) ;
-static int	votds_verify(VOTDS *) ;
+local int	votds_shmhdrin(VOTDS *,VOTDSHDR *) ;
+local int	votds_shmprep(VOTDS *,time_t,int,mode_t,VOTDSHDR *) ;
+local int	votds_shmpreper(VOTDS *,time_t,int,mode_t,VOTDSHDR *) ;
+local int	votds_shmwriter(VOTDS *,time_t,int fd,VOTDSHDR *,
+			cchar *,int) ;
+local int	votds_allocinit(VOTDS *,VOTDSHDR *) ;
+local int	votds_mutexinit(VOTDS *) ;
+local int	votds_verify(VOTDS *) ;
 
-static int	votds_bookslotfind(VOTDS *,const char *) ;
-static int	votds_bookslotload(VOTDS *,time_t,int,const char *,
-			const char **) ;
-static int	votds_bookslotdump(VOTDS *,int) ;
-static int	votds_verselangdump(VOTDS *,int) ;
+local int	votds_bookslotfind(VOTDS *,cchar *) ;
+local int	votds_bookslotload(VOTDS *,time_t,int,cchar *,
+			cchar **) ;
+local int	votds_bookslotdump(VOTDS *,int) ;
+local int	votds_verselangdump(VOTDS *,int) ;
 
-static int	votds_booklanghave(VOTDS *,const char *) ;
-static int	votds_versehave(VOTDS *,int,int) ;
-static int	votds_verseslotfind(VOTDS *) ;
-static int	votds_verseslotfinder(VOTDS *) ;
+local int	votds_booklanghave(VOTDS *,cchar *) ;
+local int	votds_versehave(VOTDS *,int,int) ;
+local int	votds_verseslotfind(VOTDS *) ;
+local int	votds_verseslotfinder(VOTDS *) ;
 
-static int	votds_mktitles(VOTDS *,const char *,int) ;
-static int	votds_titlematcher(VOTDS *,int,int,const char *,int) ;
-static int	votds_titlevalid(VOTDS *,int) ;
-static int	votds_titletouse(VOTDS *) ;
-static int	votds_access(VOTDS *) ;
-static int	votds_getwcount(VOTDS *) ;
-static int	votds_titlefins(VOTDS *) ;
+local int	votds_mktitles(VOTDS *,cchar *,int) ;
+local int	votds_titlematcher(VOTDS *,int,int,cchar *,int) ;
+local int	votds_titlevalid(VOTDS *,int) ;
+local int	votds_titletouse(VOTDS *) ;
+local int	votds_access(VOTDS *) ;
+local int	votds_getwcount(VOTDS *) ;
+local int	votds_titlefins(VOTDS *) ;
 
 #if	CF_GETACOUNT
-static int	votds_getacount(VOTDS *) ;
+local int	votds_getacount(VOTDS *) ;
 #endif /* CF_GETACOUNT */
 
 #if	CF_UPDATE
-static int	votds_update(VOTDS *) ;
+local int	votds_update(VOTDS *) ;
 #endif /* CF_UPDATE */
 
-static int	verse_dump(VOTDS_VERSE *,SHMALLOC *,int) ;
-static int	verse_match(VOTDS_VERSE *,int,int) ;
-static int	verse_read(VOTDS_VERSE *,char *,VOTDS_CITE *,char *,int) ;
-static int	verse_load(VOTDS_VERSE *,time_t,int,SHMALLOC *,char *,
-			VOTDS_CITE *,int,const char *,int) ;
-static int	verse_empty(VOTDS_VERSE *) ;
-static int	verse_younger(VOTDS_VERSE *,time_t *) ;
+local int	verse_dump(VOTDS_VERSE *,SHMALLOC *,int) ;
+local int	verse_match(VOTDS_VERSE *,int,int) ;
+local int	verse_read(VOTDS_VERSE *,char *,VOTDS_CITE *,char *,int) ;
+local int	verse_load(VOTDS_VERSE *,time_t,int,SHMALLOC *,char *,
+			VOTDS_CITE *,int,cchar *,int) ;
+local int	verse_empty(VOTDS_VERSE *) ;
+local int	verse_younger(VOTDS_VERSE *,time_t *) ;
 
-static int	book_load(VOTDS_BOOK *,SHMALLOC *,char *,time_t,int,
-			const char *,const char **) ;
-static int	book_dump(VOTDS_BOOK *,SHMALLOC *) ;
-static int	book_getwmark(VOTDS_BOOK *) ;
-static int	book_getwmarklang(VOTDS_BOOK *,const char **) ;
-static int	book_read(VOTDS_BOOK *,char *,int,char *,int,int) ;
+local int	book_load(VOTDS_BOOK *,SHMALLOC *,char *,time_t,int,
+			cchar *,cchar **) ;
+local int	book_dump(VOTDS_BOOK *,SHMALLOC *) ;
+local int	book_getwmark(VOTDS_BOOK *) ;
+local int	book_getwmarklang(VOTDS_BOOK *,cchar **) ;
+local int	book_read(VOTDS_BOOK *,char *,int,char *,int,int) ;
 
-static int	titlecache_load(VOTDS_TC *,int,const char *,char *,int *) ;
-static int	titlecache_release(VOTDS_TC *) ;
+local int	titlecache_load(VOTDS_TC *,int,cchar *,char *,int *) ;
+local int	titlecache_release(VOTDS_TC *) ;
 
-static int	mkshmname(char *,int,const char *,int,const char *) ;
+local int	mkshmname(char *,int,cchar *,int,cchar *) ;
 
 
 /* local variables */
 
 #ifdef	COMMENT
-static const int	loadrs[] = {
+static cint	loadrs[] = {
 	SR_NOENT,
 	SR_NOTSUP,
 	SR_NOSYS,
@@ -239,7 +244,7 @@ static const int	loadrs[] = {
 /* exported subroutines */
 
 
-int votds_open(VOTDS *op,const char *pr,const char *lang,int of)
+int votds_open(VOTDS *op,cchar *pr,cchar *lang,int of)
 {
 	int		rs ;
 
@@ -272,7 +277,7 @@ int votds_open(VOTDS *op,const char *pr,const char *lang,int of)
 	op->fd = -1 ;
 
 	if ((rs = votds_shmhandbegin(op,pr)) >= 0) {
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if ((rs = uc_mallocstrw(lang,-1,&cp)) >= 0) {
 		const mode_t	om = VOTDS_PERMS ;
 		op->lang = cp ;
@@ -333,10 +338,9 @@ VOTDS		*op ;
 }
 /* end subroutine (votds_close) */
 
-
 #ifdef	COMMENT
-int votds_langfetch(VOTDS *op,char *rbuf,int rlen,int li)
-{
+int votds_langfetch(VOTDS *op,char *rbuf,int rlen,int li) noex {
+	ptm		*mxp = op->mp ;
 	int	rs ;
 
 	if (op == NULL) return SR_FAULT ;
@@ -347,13 +351,14 @@ int votds_langfetch(VOTDS *op,char *rbuf,int rlen,int li)
 	if ((li < 0) || (li >= VOTDS_NLANGS)) return SR_NOTFOUND ;
 
 	rbuf[0] = '\0' ;
-	if ((rs = ptm_lock(op->mp)) >= 0) {
-	    const char	*lang = op->langs[li].lang ;
+	if ((rs = mxp->lockbegin) >= 0) {
+	    cchar	*lang = op->langs[li].lang ;
 	    if (lang[0] != '\0') {
 		rs = sncpy1(rbuf,rlen,lang) ;
-	    } else
+	    } else {
 		rs = SR_NOTFOUND ;
-	    ptm_unlock(op->mp) ;
+	    }
+	    mxp->lockend() ;
 	} /* end if (mutex) */
 
 	return rs ;
@@ -363,8 +368,8 @@ int votds_langfetch(VOTDS *op,char *rbuf,int rlen,int li)
 
 
 /* loads all book-titles with one call */
-int votds_titleloads(VOTDS *op,const char *lang,const char **tv)
-{
+int votds_titleloads(VOTDS *op,cchar *lang,cchar **tv) noex {
+	ptm		*mxp = op->mp ;
 	SIGBLOCK	s ;
 	int		rs ;
 #if	CF_DEBUGS
@@ -380,7 +385,7 @@ int votds_titleloads(VOTDS *op,const char *lang,const char **tv)
 	if (lang[0] == '\0') return SR_INVALID ;
 
 	if ((rs = sigblocker_start(&s,NULL)) >= 0) {
-	    if ((rs = ptm_lock(op->mp)) >= 0) {
+	    if ((rs = mxp->lockbegin) >= 0) {
 #if	CF_DEBUGS
 	debugprintf("votds_titleloads: locked\n") ;
 #endif
@@ -390,7 +395,7 @@ int votds_titleloads(VOTDS *op,const char *lang,const char **tv)
 	    	        rs = votds_bookslotload(op,dt,rs,lang,tv) ;
 	            } /* end if (votds_findslot) */
 		} /* end if (votds_access) */
-	        ptm_unlock(op->mp) ;
+	        mxp->lockend() ;
 	    } /* end if (mutex) */
 	    sigblocker_finish(&s) ;
 	} /* end if (sigblock) */
@@ -402,10 +407,9 @@ int votds_titleloads(VOTDS *op,const char *lang,const char **tv)
 }
 /* end subroutine (votds_titleloads) */
 
-
 /* do we have a specified title in a language? */
-int votds_titlelang(VOTDS *op,const char *lang)
-{
+int votds_titlelang(VOTDS *op,cchar *lang) noex {
+	ptm		*mxp = op->mp ;
 	SIGBLOCK	s ;
 	int		rs ;
 	int		f = FALSE ;
@@ -424,9 +428,9 @@ int votds_titlelang(VOTDS *op,const char *lang)
 	if (lang[0] == '\0') return SR_INVALID ;
 
 	if ((rs = sigblocker_start(&s,NULL)) >= 0) {
-	    if ((rs = ptm_lock(op->mp)) >= 0) {
+	    if ((rs = mxp->lockbegin) >= 0) {
 	            int		bi ;
-	            const char	*blang ;
+	            cchar	*blang ;
 #if	CF_DEBUGS
 		    debugprintf("votds_titlelang: inside\n") ;
 #endif
@@ -435,7 +439,7 @@ int votds_titlelang(VOTDS *op,const char *lang)
 		        f = (strcasecmp(blang,lang) == 0) ;
 		        if (f) break ;
 	            } /* end for */
-	        ptm_unlock(op->mp) ;
+	        mxp->lockend() ;
 	    } /* end if (mutex) */
 	    sigblocker_finish(&s) ;
 	} /* end if (sigblock) */
@@ -448,9 +452,8 @@ int votds_titlelang(VOTDS *op,const char *lang)
 }
 /* end subroutine (votds_titlelang) */
 
-
-int votds_titlefetch(VOTDS *op,char *rbuf,int rlen,const char *lang,int ti)
-{
+int votds_titlefetch(VOTDS *op,char *rbuf,int rlen,cchar *lang,int ti) noex {
+	ptm		*mxp = op->mp ;
 	SIGBLOCK	s ;
 	int		rs ;
 
@@ -465,12 +468,12 @@ int votds_titlefetch(VOTDS *op,char *rbuf,int rlen,const char *lang,int ti)
 
 	rbuf[0] = '\0' ;
 	if ((rs = sigblocker_start(&s,NULL)) >= 0) {
-	    if ((rs = ptm_lock(op->mp)) >= 0) {
+	    if ((rs = mxp->lockbegin) >= 0) {
 		if ((rs = votds_access(op)) >= 0) {
-		    const int	ac = rs ;
+		    cint	ac = rs ;
 	            int		bi ;
 	            int		f = FALSE ;
-	            const char	*blang ;
+	            cchar	*blang ;
 	            for (bi = 0 ; bi < VOTDS_NBOOKS ; bi += 1) {
 		        blang = op->books[bi].lang ;
 		        f = (strcasecmp(blang,lang) == 0) ;
@@ -483,7 +486,7 @@ int votds_titlefetch(VOTDS *op,char *rbuf,int rlen,const char *lang,int ti)
 		    } else
 		        rs = SR_NOTFOUND ;
 		} /* end if (votds_access) */
-	        ptm_unlock(op->mp) ;
+	        mxp->lockend() ;
 	    } /* end if (mutex) */
 	    sigblocker_finish(&s) ;
 	} /* end if (sigblock) */
@@ -492,9 +495,8 @@ int votds_titlefetch(VOTDS *op,char *rbuf,int rlen,const char *lang,int ti)
 }
 /* end subroutine (votds_titlefetch) */
 
-
-int votds_titlematch(VOTDS *op,const char *lang,const char *sp,int sl)
-{
+int votds_titlematch(VOTDS *op,cchar *lang,cchar *sp,int sl) noex {
+	ptm		*mxp = op->mp ;
 	SIGBLOCK	s ;
 	int		rs ;
 	int		bi = 0 ;
@@ -509,18 +511,18 @@ int votds_titlematch(VOTDS *op,const char *lang,const char *sp,int sl)
 	if (sp[0] == '\0') return SR_INVALID ;
 
 	if ((rs = sigblocker_start(&s,NULL)) >= 0) {
-	    if ((rs = ptm_lock(op->mp)) >= 0) {
+	    if ((rs = mxp->lockbegin) >= 0) {
 		if ((rs = votds_access(op)) >= 0) {
-		    const int	ac = rs ;
+		    cint	ac = rs ;
 	            int		f = FALSE ;
-	            const char	*blang ;
+	            cchar	*blang ;
 	            for (bi = 0 ; bi < op->hdr.booklen ; bi += 1) {
 		        blang = op->books[bi].lang ;
 		        f = (strcasecmp(blang,lang) == 0) ;
 		        if (f) break ;
 	            } /* end for */
 	            if (f) {
-		        const int	clen = VOTDS_BOOKLEN ;
+		        cint	clen = VOTDS_BOOKLEN ;
 		        int		cl ;
 		        char	cbuf[VOTDS_BOOKLEN+1] ;
 		        cl = strwcpyopaque(cbuf,sp,MIN(clen,sl)) - cbuf ;
@@ -531,7 +533,7 @@ int votds_titlematch(VOTDS *op,const char *lang,const char *sp,int sl)
 	            } else
 		        rs = SR_NOTFOUND ;
 		} /* end if (votds_access) */
-	        ptm_unlock(op->mp) ;
+	        mxp->lockend() ;
 	    } /* end if (mutex) */
 	    sigblocker_finish(&s) ;
 	} /* end if (sigblock) */
@@ -546,9 +548,10 @@ VOTDS		*op ;
 VOTDS_CITE	*citep ;
 char		*rbuf ;
 int		rlen ;
-const char	*lang ;
+cchar	*lang ;
 int		mjd ;
 {
+	ptm		*mxp = op->mp ;
 	SIGBLOCK	s ;
 	int		rs ;
 	int		vl = 0 ;
@@ -562,7 +565,7 @@ int		mjd ;
 	if (lang[0] == '\0') return SR_INVALID ;
 	if (mjd < 0) return SR_INVALID ;
 	if ((rs = sigblocker_start(&s,NULL)) >= 0) {
-	    if ((rs = ptm_lock(op->mp)) >= 0) {
+	    if ((rs = mxp->lockbegin) >= 0) {
 	        if ((rs = votds_booklanghave(op,lang)) >= 0) {
 	            int	li = rs ;
 		    if ((rs = votds_versehave(op,li,mjd)) >= 0) {
@@ -572,7 +575,7 @@ int		mjd ;
 			vl = rs ;
 		    } /* end if (votds_versehave) */
 	        } /* end if (votds_booklanghave) */
-	        ptm_unlock(op->mp) ;
+	        mxp->lockend() ;
 	    } /* end if (mutex) */
 	    sigblocker_finish(&s) ;
 	} /* end if (sigblock) */
@@ -589,12 +592,13 @@ int		mjd ;
 
 int votds_verseload(op,lang,citep,mjd,vp,vl)
 VOTDS		*op ;
-const char	*lang ;
+cchar	*lang ;
 VOTDS_CITE	*citep ;
 int		mjd ;
-const char	*vp ;
+cchar	*vp ;
 int		vl ;
 {
+	ptm		*mxp = op->mp ;
 	SIGBLOCK	s ;
 	int		rs ;
 #if	CF_DEBUGS
@@ -610,13 +614,13 @@ int		vl ;
 	if (vp[0] == '\0') return SR_INVALID ;
 	if (mjd < 0) return SR_INVALID ;
 	if ((rs = sigblocker_start(&s,NULL)) >= 0) {
-	    if ((rs = ptm_lock(op->mp)) >= 0) {
+	    if ((rs = mxp->lockbegin) >= 0) {
 		if ((rs = votds_access(op)) >= 0) {
-		    const int	ac = rs ;
+		    cint	ac = rs ;
 	            if ((rs = votds_booklanghave(op,lang)) >= 0) {
 		        SHMALLOC	*vap = op->vall ;
 		        const time_t	dt = time(NULL) ;
-			const int	nrs = SR_NOTFOUND ;
+			cint	nrs = SR_NOTFOUND ;
 	                int		li = rs ;
 		        int		vi = -1 ;
 		        char		*vstr = op->vstr ;
@@ -665,7 +669,7 @@ int		vl ;
 		        } /* end if (ok) */
 	            } /* end if (votds_booklanghave) */
 		} /* end if (votds_access) */
-	        ptm_unlock(op->mp) ;
+	        mxp->lockend() ;
 	    } /* end if (mutex) */
 	    sigblocker_finish(&s) ;
 	} /* end if (sigblock) */
@@ -676,11 +680,8 @@ int		vl ;
 }
 /* end subroutine (votds_verseload) */
 
-
-int votds_info(op,bip)
-VOTDS		*op ;
-VOTDS_INFO	*bip ;
-{
+int votds_info(votds *op,votd_info *bip) noex {
+	ptm		*mxp = op->mp ;
 	SIGBLOCK	s ;
 	int		rs ;
 
@@ -690,7 +691,7 @@ VOTDS_INFO	*bip ;
 	if (op->magic != VOTDS_MAGIC) return SR_NOTOPEN ;
 
 	if ((rs = sigblocker_start(&s,NULL)) >= 0) {
-	    if ((rs = ptm_lock(op->mp)) >= 0) {
+	    if ((rs = mxp->lockbegin) >= 0) {
 	        VOTDSHDR	*hdrp = &op->hdr ;
 	        int		n, i ;
 	        bip->wtime = (hdrp->wtime & UINT_MAX) ;
@@ -719,7 +720,7 @@ VOTDS_INFO	*bip ;
 	            } /* end for */
 	            bip->nverses = n ;
 	        }
-	        ptm_unlock(op->mp) ;
+	        mxp->lockend() ;
 	    } /* end if (mutex) */
 	    sigblocker_finish(&s) ;
 	} /* end if (sigblock) */
@@ -732,16 +733,16 @@ VOTDS_INFO	*bip ;
 /* private subroutines */
 
 
-static int votds_shmbegin(VOTDS *op,int of,mode_t om)
+local int votds_shmbegin(VOTDS *op,int of,mode_t om)
 {
 	VOTDSHDR	*hdrp = &op->hdr ;
 	const time_t	dt = time(NULL) ;
-	const int	nrs = SR_NOENT ;
+	cint	nrs = SR_NOENT ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		fd = -1 ;
 	int		f_needinit = FALSE ;
-	const char	*shmname = op->shmname ;
+	cchar	*shmname = op->shmname ;
 	char		*newname = NULL ;
 
 #if	CF_DEBUGS
@@ -756,7 +757,7 @@ static int votds_shmbegin(VOTDS *op,int of,mode_t om)
 	memset(hdrp,0,sizeof(VOTDSHDR)) ;
 
 	if (shmname[0] != '/') {
-	    const int	ns = (sizeof(shmname)+2) ;
+	    cint	ns = (sizeof(shmname)+2) ;
 	    char	*newname ;
 	    if ((rs = uc_malloc(ns,&newname)) >= 0) {
 		char	*bp = newname ;
@@ -789,7 +790,7 @@ static int votds_shmbegin(VOTDS *op,int of,mode_t om)
 #endif
 
 	if ((rs == SR_ACCESS) || (rs == SR_EXIST)) {
-	    const int	to = TO_WAITSHM ;
+	    cint	to = TO_WAITSHM ;
 	    op->shmsize = 0 ;
 	    rs = uc_openshmto(shmname,of,om,to) ;
 	    fd = rs ;
@@ -837,7 +838,7 @@ static int votds_shmbegin(VOTDS *op,int of,mode_t om)
 /* end subroutine (votds_shmbegin) */
 
 
-static int votds_shmend(VOTDS *op)
+local int votds_shmend(VOTDS *op)
 {
 	int		rs = SR_OK ;
 	int		rs1 ;
@@ -855,7 +856,7 @@ static int votds_shmend(VOTDS *op)
 /* end subroutine (votds_shmend) */
 
 
-static int votds_mapbegin(op,dt,fd)
+local int votds_mapbegin(op,dt,fd)
 VOTDS		*op ;
 time_t		dt ;
 int		fd ;
@@ -884,7 +885,7 @@ int		fd ;
 /* end subroutine (votds_mapbegin) */
 
 
-static int votds_mapend(op)
+local int votds_mapend(op)
 VOTDS		*op ;
 {
 	int		rs = SR_OK ;
@@ -906,7 +907,7 @@ VOTDS		*op ;
 /* end subroutine (votds_mapend) */
 
 
-static int votds_shmprep(op,dt,fd,om,hdrp)
+local int votds_shmprep(op,dt,fd,om,hdrp)
 VOTDSHDR	*hdrp ;
 VOTDS		*op ;
 time_t		dt ;
@@ -933,14 +934,14 @@ mode_t		om ;
 /* end subroutine (votds_shmprep) */
 
 
-static int votds_shmpreper(op,dt,fd,om,hdrp)
+local int votds_shmpreper(op,dt,fd,om,hdrp)
 VOTDS		*op ;
 time_t		dt ;
 int		fd ;
 mode_t		om ;
 VOTDSHDR	*hdrp ;
 {
-	const int	hlen = HDRBUFLEN ;
+	cint	hlen = HDRBUFLEN ;
 	int		rs ;
 	int		foff = 0 ;
 	char		hbuf[HDRBUFLEN + 1] ;
@@ -968,16 +969,16 @@ VOTDSHDR	*hdrp ;
 /* end subroutine (votds_shmpreper) */
 
 
-static int votds_shmwriter(op,dt,fd,hdrp,hbuf,hlen)
+local int votds_shmwriter(op,dt,fd,hdrp,hbuf,hlen)
 VOTDS		*op ;
 time_t		dt ;
 int		fd ;
 VOTDSHDR	*hdrp ;
-const char	hbuf[] ;
+cchar	hbuf[] ;
 int		hlen ;
 {
 	FILER		sfile, *sfp = &sfile ;
-	const int	bsize = 2048 ;
+	cint	bsize = 2048 ;
 	int		rs ;
 	int		rs1 ;
 	int		size ;
@@ -987,7 +988,7 @@ int		hlen ;
 	if (dt == 0) dt = time(NULL) ;
 
 	if ((rs = filer_start(sfp,fd,0,bsize,0)) >= 0) {
-	    const int	asize = SHMALLOC_ALIGNSIZE ;
+	    cint	asize = SHMALLOC_ALIGNSIZE ;
 
 	    if (rs >= 0) {
 	        rs = filer_write(sfp,hbuf,hlen) ;
@@ -1098,7 +1099,7 @@ int		hlen ;
 /* end subroutine (votds_shmwriter) */
 
 
-static int votds_shmhdrin(VOTDS *op,VOTDSHDR *hdrp)
+local int votds_shmhdrin(VOTDS *op,VOTDSHDR *hdrp)
 {
 	int		rs ;
 
@@ -1129,7 +1130,7 @@ static int votds_shmhdrin(VOTDS *op,VOTDSHDR *hdrp)
 /* end subroutine (votds_shmhdrin) */
 
 
-static int votds_allocinit(VOTDS *op,VOTDSHDR *hdrp)
+local int votds_allocinit(VOTDS *op,VOTDSHDR *hdrp)
 {
 	int		rs ;
 
@@ -1143,9 +1144,8 @@ static int votds_allocinit(VOTDS *op,VOTDSHDR *hdrp)
 }
 /* end subroutine (votds_allocinit) */
 
-
-static int votds_mutexinit(VOTDS *op)
-{
+local int votds_mutexinit(VOTDS *op) noex {
+	ptm		*mxp = op->mp ;
 	PTMA		ma ;
 	int		rs ;
 
@@ -1154,7 +1154,7 @@ static int votds_mutexinit(VOTDS *op)
 #endif
 
 	if ((rs = ptma_create(&ma)) >= 0) {
-	    const int	cmd = PTHREAD_PROCESS_SHARED ;
+	    cint	cmd = PTHREAD_PROCESS_SHARED ;
 	    if ((rs = ptma_setpshared(&ma,cmd)) >= 0) {
 	        PTM	*mp = (PTM *) op->mp ;
 
@@ -1162,7 +1162,7 @@ static int votds_mutexinit(VOTDS *op)
 	        memset(mp,0,sizeof(PTM)) ;
 #endif
 
-	        rs = ptm_create(mp,&ma) ; /* we leave the MUTEX initialized */
+	        rs = mxp->create(&ma) ; /* we leave the MUTEX initialized */
 
 	    } /* end if (ptma_setpshared) */
 	    ptma_destroy(&ma) ;
@@ -1172,9 +1172,7 @@ static int votds_mutexinit(VOTDS *op)
 }
 /* end subroutine (votds_mutexinit) */
 
-
-static int votds_verify(VOTDS *op)
-{
+local int votds_verify(VOTDS *op) noex {
 	VOTDSHDR	*hdrp = &op->hdr ;
 	int		rs = SR_OK ;
 	int		size ;
@@ -1210,17 +1208,17 @@ static int votds_verify(VOTDS *op)
 /* end subroutine (votds_verify) */
 
 
-static int votds_shmhandbegin(VOTDS *op,const char *pr)
+local int votds_shmhandbegin(VOTDS *op,cchar *pr)
 {
 	int		rs = SR_OK ;
 	int		rl ;
-	const char	*rn ;
+	cchar	*rn ;
 	if ((rl = sfrootname(pr,-1,&rn)) > 0) {
-	    const int	slen = MAXNAMELEN ;
-	    const char	*suf = VOTDS_SHMPOSTFIX ;
+	    cint	slen = MAXNAMELEN ;
+	    cchar	*suf = VOTDS_SHMPOSTFIX ;
 	    char	sbuf[MAXNAMELEN+1] ;
 	    if ((rs = mkshmname(sbuf,slen,rn,rl,suf)) >= 0) {
-	        const char	*np ;
+	        cchar	*np ;
 	        if ((rs = uc_mallocstrw(sbuf,rs,&np)) >= 0) {
 	            op->shmname = np ;
 	        }
@@ -1232,7 +1230,7 @@ static int votds_shmhandbegin(VOTDS *op,const char *pr)
 /* end subroutine (votds_shmhandbegin) */
 
 
-static int votds_shmhandend(VOTDS *op)
+local int votds_shmhandend(VOTDS *op)
 {
 	int		rs = SR_OK ;
 	int		rs1 ;
@@ -1246,12 +1244,12 @@ static int votds_shmhandend(VOTDS *op)
 /* end subroutine (votds_shmhandend) */
 
 
-static int votds_bookslotload(op,dt,si,lang,tv)
+local int votds_bookslotload(op,dt,si,lang,tv)
 VOTDS		*op ;
 time_t		dt ;
 int		si ;
-const char	*lang ;
-const char	**tv ;
+cchar	*lang ;
+cchar	**tv ;
 {
 	int		rs ;
 
@@ -1268,7 +1266,7 @@ const char	**tv ;
 	if ((rs = votds_getwcount(op)) >= 0) {
 	    VOTDS_BOOK	*blp = (op->books + si) ;
 	    SHMALLOC	*bap = op->ball ;
-	    const int	wc = rs ;
+	    cint	wc = rs ;
 #if	CF_DEBUGS
 	    debugprintf("votds_bookslotload: votds_getwcount() wc=%u\n",wc) ;
 #endif
@@ -1283,7 +1281,7 @@ const char	**tv ;
 /* end subroutine (votds_bookslotload) */
 
 
-static int votds_bookslotfind(VOTDS *op,const char *lang)
+local int votds_bookslotfind(VOTDS *op,cchar *lang)
 {
 	VOTDS_BOOK	*blp = op->books ;
 	int		rs = SR_OK ;
@@ -1295,7 +1293,7 @@ static int votds_bookslotfind(VOTDS *op,const char *lang)
 	debugprintf("votds_bookslotfind: ent lang=%s\n",lang) ;
 #endif
 	for (i = 0 ; i < op->hdr.booklen ; i += 1) {
-	    const char	*elang = blp[i].lang ;
+	    cchar	*elang = blp[i].lang ;
 	    if (elang[0] != '\0') {
 		f_same = (strcmp(elang,lang) == 0) ;
 	    } else
@@ -1331,7 +1329,7 @@ static int votds_bookslotfind(VOTDS *op,const char *lang)
 /* end subroutine (votds_bookslotfind) */
 
 
-static int votds_bookslotdump(VOTDS *op,int ei)
+local int votds_bookslotdump(VOTDS *op,int ei)
 {
 	int		rs ;
 
@@ -1352,7 +1350,7 @@ static int votds_bookslotdump(VOTDS *op,int ei)
 /* end subroutine (votds_bookslotdump) */
 
 
-static int votds_verselangdump(VOTDS *op,int li)
+local int votds_verselangdump(VOTDS *op,int li)
 {
 	VOTDS_VERSE	*vep = op->verses ;
 	SHMALLOC	*vap = op->vall ;
@@ -1367,7 +1365,7 @@ static int votds_verselangdump(VOTDS *op,int li)
 /* end subroutine (votds_verselangdump) */
 
 
-static int votds_booklanghave(VOTDS *op,const char *lang)
+local int votds_booklanghave(VOTDS *op,cchar *lang)
 {
 	VOTDS_BOOK	*bap = op->books ;
 	int		rs = SR_NOTFOUND ;
@@ -1386,7 +1384,7 @@ static int votds_booklanghave(VOTDS *op,const char *lang)
 /* end subroutine (votds_booklanghave) */
 
 
-static int votds_versehave(VOTDS *op,int li,int mjd)
+local int votds_versehave(VOTDS *op,int li,int mjd)
 {
 	VOTDS_VERSE	*vep = op->verses ;
 	int		rs = SR_NOTFOUND ;
@@ -1413,7 +1411,7 @@ static int votds_versehave(VOTDS *op,int li,int mjd)
 /* end subroutine (votds_versehave) */
 
 
-static int votds_verseslotfind(VOTDS *op)
+local int votds_verseslotfind(VOTDS *op)
 {
 	VOTDS_VERSE	*vep = op->verses ;
 	int		rs = SR_NOTFOUND ;
@@ -1427,7 +1425,7 @@ static int votds_verseslotfind(VOTDS *op)
 /* end subroutine (votds_verseslotfind) */
 
 
-static int votds_verseslotfinder(VOTDS *op)
+local int votds_verseslotfinder(VOTDS *op)
 {
 	VOTDS_VERSE	*vep = op->verses ;
 	time_t		mt = INT_MAX ;
@@ -1448,7 +1446,7 @@ static int votds_verseslotfinder(VOTDS *op)
 /* end subroutine (votds_verseslotfinder) */
 
 
-static int votds_getwcount(VOTDS *op)
+local int votds_getwcount(VOTDS *op)
 {
 	int		rs ;
 	char		*mdp = (char *) op->mapdata ;
@@ -1462,7 +1460,7 @@ static int votds_getwcount(VOTDS *op)
 /* end subroutine (votds_getwcount) */
 
 
-static int votds_access(VOTDS *op)
+local int votds_access(VOTDS *op)
 {
 	uint		*htab ;
 	int		rs ;
@@ -1485,7 +1483,7 @@ static int votds_access(VOTDS *op)
 
 
 #if	CF_UPDATE
-static int votds_update(VOTDS *op)
+local int votds_update(VOTDS *op)
 {
 	uint		*htab ;
 	int		rs ;
@@ -1509,7 +1507,7 @@ static int votds_update(VOTDS *op)
 
 
 #if	CF_GETACOUNT
-static int votds_getacount(VOTDS *op)
+local int votds_getacount(VOTDS *op)
 {
 	uint		*htab ;
 	int		rs ;
@@ -1524,9 +1522,9 @@ static int votds_getacount(VOTDS *op)
 #endif /* CF_GETACOUNT */
 
 
-static int votds_mktitles(VOTDS *op,const char *lang,int bi)
+local int votds_mktitles(VOTDS *op,cchar *lang,int bi)
 {
-	const int	nrs = SR_NOTFOUND ;
+	cint	nrs = SR_NOTFOUND ;
 	int		rs ;
 	int		ci = 0 ;
 
@@ -1536,7 +1534,7 @@ static int votds_mktitles(VOTDS *op,const char *lang,int bi)
 		VOTDS_BOOK	*bep = (op->books+bi) ;
 		ci = rs ;
 		if ((rs = book_getwmark(bep)) >= 0) {
-		    const int	wm = rs ;
+		    cint	wm = rs ;
 		    char	*bstr = op->bstr ;
 		    rs = titlecache_load(tcp,wm,lang,bstr,bep->b) ;
 		} /* end if (book_getwmark) */
@@ -1548,7 +1546,7 @@ static int votds_mktitles(VOTDS *op,const char *lang,int bi)
 /* end subroutine (votds_mktitles) */
 
 
-static int votds_titlematcher(VOTDS *op,int ac,int ci,const char *cbuf,int cl)
+local int votds_titlematcher(VOTDS *op,int ac,int ci,cchar *cbuf,int cl)
 {
 	VOTDS_TC	*tcp = (op->tcs+ci) ;
 	int		rs = SR_NOTFOUND ;
@@ -1561,7 +1559,7 @@ static int votds_titlematcher(VOTDS *op,int ac,int ci,const char *cbuf,int cl)
 /* end subroutine (votds_titlematcher) */
 
 
-static int votds_titletouse(VOTDS *op)
+local int votds_titletouse(VOTDS *op)
 {
 	VOTDS_TC	*tcp = op->tcs ;
 	int		rs = SR_OK ;
@@ -1587,16 +1585,16 @@ static int votds_titletouse(VOTDS *op)
 /* end subroutine (votds_titletouse) */
 
 
-static int votds_titlevalid(VOTDS *op,int bi)
+local int votds_titlevalid(VOTDS *op,int bi)
 {
 	VOTDS_BOOK	*bep = (op->books+bi) ;
 	int		rs ;
 	int		i = 0 ;
-	const char	*blang ;
+	cchar	*blang ;
 	if ((rs = book_getwmarklang(bep,&blang)) >= 0) {
 	    VOTDS_TC	*tcp = op->tcs ;
-	    const int	wm = rs ;
-	    const int	n = VOTDS_NBOOKS ;
+	    cint	wm = rs ;
+	    cint	n = VOTDS_NBOOKS ;
 	    int		f = FALSE ;
 	    for (i = 0 ; i < n ; i += 1) {
 		if ((tcp[i].lang[0] != '\0') && (tcp[i].wmark == wm)) {
@@ -1611,9 +1609,9 @@ static int votds_titlevalid(VOTDS *op,int bi)
 /* end subroutine (votds_titlevalid) */
 
 
-static int votds_titlefins(VOTDS *op)
+local int votds_titlefins(VOTDS *op)
 {
-	const int	n = VOTDS_NBOOKS ;
+	cint	n = VOTDS_NBOOKS ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		i ;
@@ -1626,7 +1624,7 @@ static int votds_titlefins(VOTDS *op)
 /* end subroutine (votds_titlefins) */
 
 
-static int verse_dump(VOTDS_VERSE *vep,SHMALLOC *vap,int li)
+local int verse_dump(VOTDS_VERSE *vep,SHMALLOC *vap,int li)
 {
 	int		rs = SR_OK ;
 	li &= UCHAR_MAX ;
@@ -1645,7 +1643,7 @@ static int verse_dump(VOTDS_VERSE *vep,SHMALLOC *vap,int li)
 /* end subroutine (verse_dump) */
 
 
-static int verse_match(VOTDS_VERSE *vep,int li,int mjd)
+local int verse_match(VOTDS_VERSE *vep,int li,int mjd)
 {
 	int	rs = SR_NOTFOUND ;
 #if	CF_DEBUGS
@@ -1665,7 +1663,7 @@ static int verse_match(VOTDS_VERSE *vep,int li,int mjd)
 /* end subroutine (verse_match) */
 
 
-static int verse_read(vep,vstr,citep,rbuf,rlen)
+local int verse_read(vep,vstr,citep,rbuf,rlen)
 VOTDS_VERSE	*vep ;
 char		*vstr ;
 VOTDS_CITE	*citep ;
@@ -1683,7 +1681,7 @@ int		rlen ;
 /* end subroutine (verse_read) */
 
 
-static int verse_load(vep,dt,wm,vap,vstr,citep,mjd,vp,vl)
+local int verse_load(vep,dt,wm,vap,vstr,citep,mjd,vp,vl)
 SHMALLOC	*vap ;
 time_t		dt ;
 int		wm ;
@@ -1691,7 +1689,7 @@ VOTDS_VERSE	*vep ;
 char		*vstr ;
 VOTDS_CITE	*citep ;
 int		mjd ;
-const char	*vp ;
+cchar	*vp ;
 int		vl ;
 {
 	int		rs ;
@@ -1717,7 +1715,7 @@ int		vl ;
 /* end subroutine (verse_load) */
 
 
-static int verse_empty(VOTDS_VERSE *vep)
+local int verse_empty(VOTDS_VERSE *vep)
 {
 	int		rs = SR_OK ;
 	if (vep->mjd > 0) rs = SR_NOTFOUND ;
@@ -1726,7 +1724,7 @@ static int verse_empty(VOTDS_VERSE *vep)
 /* end subroutine (verse_empty) */
 
 
-static int verse_younger(VOTDS_VERSE *vep,time_t *tp)
+local int verse_younger(VOTDS_VERSE *vep,time_t *tp)
 {
 	int		rs = 0 ;
 	if ((vep->mjd == 0) || (vep->atime < *tp)) {
@@ -1738,14 +1736,14 @@ static int verse_younger(VOTDS_VERSE *vep,time_t *tp)
 /* end subroutine (verse_younger) */
 
 
-static int book_load(blp,bap,bsp,dt,wm,lang,tv)
+local int book_load(blp,bap,bsp,dt,wm,lang,tv)
 VOTDS_BOOK	*blp ;
 SHMALLOC	*bap ;
 char		*bsp ;
 time_t		dt ;
 int		wm ;
-const char	*lang ;
-const char	**tv ;
+cchar	*lang ;
+cchar	**tv ;
 {
 	int		rs = SR_OK ;
 	int		i ;
@@ -1785,7 +1783,7 @@ const char	**tv ;
 /* end subroutine (book_load) */
 
 
-static int book_dump(blp,bap)
+local int book_dump(blp,bap)
 VOTDS_BOOK	*blp ;
 SHMALLOC	*bap ;
 {
@@ -1808,7 +1806,7 @@ SHMALLOC	*bap ;
 /* end subroutine (book_dump) */
 
 
-static int book_getwmark(VOTDS_BOOK *bep)
+local int book_getwmark(VOTDS_BOOK *bep)
 {
 	int		rs = SR_NOTFOUND ;
 	if (bep->lang[0] != '\0') {
@@ -1819,7 +1817,7 @@ static int book_getwmark(VOTDS_BOOK *bep)
 /* end subroutine (book_getwmark) */
 
 
-static int book_getwmarklang(VOTDS_BOOK *bep,const char **lpp)
+local int book_getwmarklang(VOTDS_BOOK *bep,cchar **lpp)
 {
 	int		rs = SR_NOTFOUND ;
 	if (bep->lang[0] != '\0') {
@@ -1831,7 +1829,7 @@ static int book_getwmarklang(VOTDS_BOOK *bep,const char **lpp)
 /* end subroutine (book_getwmarklang) */
 
 
-static int book_read(bep,bstr,ac,rbuf,rlen,ti)
+local int book_read(bep,bstr,ac,rbuf,rlen,ti)
 VOTDS_BOOK	*bep ;
 char		*bstr ;
 int		ac ;
@@ -1839,7 +1837,7 @@ char		rbuf[] ;
 int		rlen ;
 int		ti ;
 {
-	const int	boff = bep->b[ti] ;
+	cint	boff = bep->b[ti] ;
 	int		rs ;
 	bep->amark = ac ;
 	rs = sncpy1(rbuf,rlen,(bstr+boff)) ;
@@ -1848,18 +1846,18 @@ int		ti ;
 /* end subroutine (book_read) */
 
 
-static int titlecache_load(tcp,wm,lang,bstr,boffs) 
+local int titlecache_load(tcp,wm,lang,bstr,boffs) 
 VOTDS_TC	*tcp ;
 int		wm ;
-const char	*lang ;
+cchar	*lang ;
 char		*bstr ;
 int		*boffs ;
 {
-	const int	n = VOTDS_NTITLES ;
+	cint	n = VOTDS_NTITLES ;
 	int		rs = SR_OK ;
-	int		size = sizeof(const char *) ;
+	int		size = sizeof(cchar *) ;
 	int		i ;
-	const char	*np ;
+	cchar	*np ;
 	char		*bp ;
 	memset(tcp,0,sizeof(VOTDS_TC)) ;
 	tcp->wmark = wm ;
@@ -1867,13 +1865,13 @@ int		*boffs ;
 	strwcpy(tcp->lang,lang,VOTDS_LANGLEN) ;
 	for (i = 0 ; i < n ; i += 1) {
 	    np = (bstr + boffs[i]) ;
-	    size += sizeof(const char *) ;
+	    size += sizeof(cchar *) ;
 	    size += (strlen(np)+1) ;
 	} /* end for */
 	if ((rs = uc_malloc(size,&bp)) >= 0) {
-	    tcp->a = (const char *) bp ;
-	    tcp->titles = (const char **) bp ;
-	    bp += ((n+1)*sizeof(const char *)) ;
+	    tcp->a = (cchar *) bp ;
+	    tcp->titles = (cchar **) bp ;
+	    bp += ((n+1)*sizeof(cchar *)) ;
 	    for (i = 0 ; i < n ; i += 1) {
 		np = (bstr + boffs[i]) ;
 		tcp->titles[i] = np ;
@@ -1885,7 +1883,7 @@ int		*boffs ;
 /* end subroutine (titlecache_load) */
 
 
-static int titlecache_release(VOTDS_TC *tcp)
+local int titlecache_release(VOTDS_TC *tcp)
 {
 	int		rs = SR_OK ;
 	int		rs1 ;
@@ -1903,7 +1901,7 @@ static int titlecache_release(VOTDS_TC *tcp)
 /* end subroutine (titlecache_release) */
 
 
-static int mkshmname(char *rbuf,int rlen,const char *rn,int rl,const char *suf)
+local int mkshmname(char *rbuf,int rlen,cchar *rn,int rl,cchar *suf)
 {
 	int		rs = SR_OK ;
 	int		i = 0 ;
