@@ -119,7 +119,7 @@
 #include	<vecstr.h>
 #include	<vecobj.h>
 #include	<getax.h>
-#include	<ugetpw.h>
+#include	<getpwx.h>
 #include	<getusername.h>
 #include	<lfm.h>
 #include	<getutmpent.h>
