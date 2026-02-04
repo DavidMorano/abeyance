@@ -2,6 +2,7 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
+/* definitions? */
 /* version %I% last-modified %G% */
 
 
@@ -15,20 +16,17 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	DEFS_INCLUDE
-#define	DEFS_INCLUDE	1
+#define	DEFS_INCLUDE
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/timeb.h>		/* for 'struct timeb' */
 #include	<limits.h>
-
 #include	<vecstr.h>
 #include	<logfile.h>
 #include	<ids.h>
-#include	<localmisc.h>
 
 
 #ifndef	MAXPATHLEN
