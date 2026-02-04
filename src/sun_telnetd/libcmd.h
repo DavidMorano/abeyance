@@ -1,3 +1,7 @@
+/* libcmd HEADER */
+/* charset=ISO8859-1 */
+/* lang=C20 */
+
 /*
  * Copyright (c) 1997, by Sun Microsystems, Inc.
  * All rights reserved.
@@ -12,28 +16,31 @@
 
 #pragma ident	"@(#)libcmd.h 1.1	97/06/26 SMI"
 
-#include <sum.h>
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<sum.h>
+#include	<localmisc.h>
 
-extern int getterm(char *, char *, char *, char *);
 
-extern int mkmtab(char *, int);
-extern int ckmtab(char *, int, int);
-extern void prtmtab(void);
+EXTERNC_begin
 
-extern void sumpro(struct suminfo *sip);
-extern void sumupd(struct suminfo *, char *, int);
-extern void sumepi(struct suminfo *);
-extern void sumout(FILE *, struct suminfo *);
+extern int getterm(char *, char *, char *, char *) noex ;
 
-extern int defcntl(int cmd, int newflags);
+extern int mkmtab(char *, int) noex ;
+extern int ckmtab(char *, int, int) noex ;
+extern void prtmtab(void) noex ;
 
-#ifdef	__cplusplus
-}
-#endif
+extern void sumpro(struct suminfo *sip) noex ;
+extern void sumupd(struct suminfo *, char *, int) noex ;
+extern void sumepi(struct suminfo *) noex ;
+extern void sumout(FILE *, struct suminfo *) noex ;
+
+extern int defcntl(int cmd, int newflags) noex ;
+
+EXTERNC_end
+
 
 #endif /* _LIBCMD_H */
 
