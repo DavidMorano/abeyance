@@ -1,4 +1,4 @@
-#!/usr/extra/bin/ksh
+#!/usr/local/bin/ksh
 # GNU Compiler Collection
 PN=${0##*/}
 VER=15
