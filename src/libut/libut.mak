@@ -1,4 +1,4 @@
-# MAKEFILES (libut)
+# MAKEFILE (libut)
 
 T= libut
 
