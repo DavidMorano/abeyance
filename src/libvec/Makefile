@@ -1,4 +1,4 @@
-# MAKEFILES (vec)
+# MAKEFILE (vec)
 
 T= vec
 
