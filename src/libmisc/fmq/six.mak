@@ -1,4 +1,4 @@
-# MAKEFILES (six)
+# MAKEFILE (six)
 
 T= six
 
