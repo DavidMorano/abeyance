@@ -1,19 +1,17 @@
-/* main */
+/* main SUPPORT (rsxn) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* generic (pretty much) daemon front end subroutine */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0		/* compile-time */
 #define	CF_DEBUG	0		/* run-time */
-
 
 /* revision history:
 
 	= 1994-09-10, David A­D­ Morano
-
 	This program was originally written.
-
 
 */
 
@@ -21,56 +19,54 @@
 
 /*****************************************************************************
 
+  	Description:
 	This subroutine forms the front-end part of a generic PCS
-	daemon type of program.  This front-end is used in a variety of
-	PCS daemons and other programs.
-
-	This subroutine was originally part of the Personal
-	Communications Services (PCS) package but can also be used
-	independently from it.  Historically, this was developed as
-	part of an effort to maintain high function (and reliable)
-	email communications in the face of increasingly draconian
-	security restrictions imposed on the computers in the DEFINITY
-	development organization.
-
+	daemon type of program.  This front-end is used in a variety
+	of PCS daemons and other programs.  This subroutine was
+	originally part of the Personal Communications Services
+	(PCS) package but can also be used independently from it.
+	Historically, this was developed as part of an effort to
+	maintain high function (and reliable) email communications
+	in the face of increasingly draconian security restrictions
+	imposed on the computers in the DEFINITY development
+	organization.
 
 *****************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/socket.h>
 #include	<netinet/in.h>
 #include	<arpa/inet.h>
-#include	<climits>
+#include	<dirent.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<dirent.h>
-#include	<cstdlib>
-#include	<cstring>
-#include	<ctype.h>
+#include	<netdb.h>
 #include	<pwd.h>
 #include	<grp.h>
-#include	<netdb.h>
-#include	<ctime>
 #include	<ftw.h>
-
+#include	<ctime>
+#include	<climits>
+#include	<cstdlib>
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<getax.h>
+#include	<getusername.h>
 #include	<bfile.h>
 #include	<field.h>
 #include	<logfile.h>
 #include	<vecstr.h>
 #include	<baops.h>
 #include	<varsub.h>
-#include	<getax.h>
-#include	<getusername.h>
 #include	<userinfo.h>
 #include	<srvtab.h>
 #include	<srvpe.h>
 #include	<storebuf.h>
 #include	<mallocstuff.h>
+#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -96,28 +92,11 @@
 
 /* external subroutines */
 
-extern int	vstrkeycmp(char **,char **) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	getpwd(const char *,int) ;
-extern int	getnodedomain() ;
-extern int	vecstr_envadd(vecstr *,const char *,const char *,int) ;
-extern int	vecstr_envset(vecstr *,const char *,const char *,int) ;
-extern int	perm(const char *,uid_t,gid_t,gid_t *,int) ;
-extern int	permsched(const char **,vecstr *,char *,int,const char *,int) ;
-extern int	getfname(char *,char *,int,char *) ;
-extern int	bopenroot(bfile *,char *,char *,char *,char *,int) ;
-extern int	var_load(), var_subbuf(), var_merge() ;
-extern int	expander() ;
-extern int	getportnum() ;
-extern int	procfileenv(char *,char *,VECSTR *) ;
-extern int	procfilepaths(char *,char *,VECSTR *) ;
+extern int	procfilepaths(char *,char *,vecstr *) noex ;
 extern int	watch(struct global *,
-			SRVPE *,int,VECSTR *,SRVTAB *,BUILTIN *) ;
+			SRVPE *,int,vecstr *,SRVTAB *,BUILTIN *) noex ;
 extern int	watchone(struct global *,
-			SRVPE *,int,VECSTR *,SRVTAB *,BUILTIN *) ;
-
-extern char	*strbasename() ;
-extern char	*timestr_log() ;
+			SRVPE *,int,vecstr *,SRVTAB *,BUILTIN *) noex ;
 
 #if	CF_DEBUG
 extern void	whoopen() ;
@@ -127,31 +106,16 @@ extern void	whoopen() ;
 /* externals variables */
 
 
+/* local structures */
+
+
 /* forward references */
 
-static int	procfile(int (*)(char *,char *,VECSTR *),
-			char *,vecstr *,char *,VECSTR *) ;
-
-
-/* local global variabes */
-
-struct global		g ;
+static int	procfile(int (*)(char *,char *,vecstr *),
+			char *,vecstr *,char *,vecstr *) noex ;
 
 
 /* local structures */
-
-/* define command option words */
-
-static char *argopts[] = {
-	"TMPDIR",
-	"VERSION",
-	"VERBOSE",
-	"ROOT",
-	"LOGFILE",
-	"CONFIG",
-	NULL,
-} ;
-
 
 #define	ARGOPT_TMPDIR	0
 #define	ARGOPT_VERSION	1
@@ -160,50 +124,61 @@ static char *argopts[] = {
 #define	ARGOPT_LOGFILE	4
 #define	ARGOPT_CONFIG	5
 
+constexpr cpcchar	argopts[] = {
+	"TMPDIR",
+	"VERSION",
+	"VERBOSE",
+	"ROOT",
+	"LOGFILE",
+	"CONFIG",
+	nullptr
+} ;
 
 
 /* local variables */
 
 /* 'conf' for most regular programs */
-static char	*sched1[] = {
+constexpr cpcchar	sched1[] = {
 	"%p/%e/%n/%n.%f",
 	"%p/%e/%n/%f",
 	"%p/%e/%n.%f",
 	"%p/%n.%f",
-	NULL,
+	nullptr,
 } ;
 
 /* non-'conf' ETC stuff for all regular programs */
-static char	*sched2[] = {
+constexpr cpcchar	sched2[] = {
 	"%p/%e/%n/%n.%f",
 	"%p/%e/%n/%f",
 	"%p/%e/%n.%f",
 	"%p/%e/%f",
 	"%p/%n.%f",
-	NULL,
+	nullptr,
 } ;
 
 /* 'conf' and non-'conf' ETC stuff for local searching */
-static char	*sched3[] = {
+constexpr cpcchar	sched3[] = {
 	"%e/%n/%n.%f",
 	"%e/%n/%f",
 	"%e/%n.%f",
 	"%e/%f",
 	"%n.%f",
 	"%f",
-	NULL,
+	nullptr,
 } ;
 
 
+/* exported variabes */
+
+struct global		g ;
 
 
+/* exported variables */
 
 
+/* exported subroutines */
 
-int main(argc,argv,envp)
-int	argc ;
-char	*argv[], *envp[] ;
-{
+int main(argc argc,mainv argv,mainv envp) {
 	bfile		errfile, *efp = &errfile ;
 	bfile		logfile ;
 	bfile		pidfile ;
@@ -228,8 +203,8 @@ char	*argv[], *envp[] ;
 
 	struct group	ge ;
 
-	VECSTR		defines, unsets, exports ;
-	VECSTR		schedvars ;
+	vecstr		defines, unsets, exports ;
+	vecstr		schedvars ;
 
 	VARSUB		vsh_e, vsh_d ;
 
@@ -264,7 +239,7 @@ char	*argv[], *envp[] ;
 
 	char	*argp, *aop, *akp, *avp ;
 	char	argpresent[MAXARGGROUPS] ;
-	char	*programroot = NULL ;
+	char	*programroot = nullptr ;
 	char	buf[BUFLEN + 1], *bp ;
 	char	buf2[BUFLEN + 1] ;
 	char	userbuf[USERINFO_LEN + 1] ;
@@ -275,13 +250,13 @@ char	*argv[], *envp[] ;
 	char	logfname[MAXPATHLEN + 1] ;
 	char	pwd[MAXPATHLEN + 1] ;
 	char	timebuf[TIMEBUFLEN + 1] ;
-	char	*pr = NULL ;
-	char	*configfname = NULL ;
-	char	*portspec = NULL ;
+	char	*pr = nullptr ;
+	char	*configfname = nullptr ;
+	char	*portspec = nullptr ;
 	char	*cp ;
 
 
-	if (((cp = getenv("ERROR_FD")) != NULL) &&
+	if (((cp = getenv("ERROR_FD")) != nullptr) &&
 	    (cfdeci(cp,-1,&err_fd) >= 0))
 	    debugsetfd(err_fd) ;
 
@@ -332,17 +307,17 @@ char	*argv[], *envp[] ;
 
 	port = -1 ;
 
-	g.programroot = NULL ;
-	g.username = NULL ;
-	g.groupname = NULL ;
-	g.lockfile = NULL ;
-	g.pidfname = NULL ;
-	g.tmpdir = NULL ;
-	g.defuser = NULL ;
-	g.defgroup = NULL ;
-	g.userpass = NULL ;
-	g.machpass = NULL ;
-	g.prog_sendmail = NULL ;
+	g.programroot = nullptr ;
+	g.username = nullptr ;
+	g.groupname = nullptr ;
+	g.lockfile = nullptr ;
+	g.pidfname = nullptr ;
+	g.tmpdir = nullptr ;
+	g.defuser = nullptr ;
+	g.defgroup = nullptr ;
+	g.userpass = nullptr ;
+	g.machpass = nullptr ;
+	g.prog_sendmail = nullptr ;
 
 
 	pidfname[0] = '\0' ;
@@ -386,7 +361,7 @@ char	*argv[], *envp[] ;
 	                aol = argl - 1 ;
 	                akp = aop ;
 	                f_optequal = FALSE ;
-	                if ((avp = strchr(aop,'=')) != NULL) {
+	                if ((avp = strchr(aop,'=')) != nullptr) {
 
 #if	CF_DEBUGS
 	                    debugprintf("main: got an option key w/ a value\n") ;
@@ -766,17 +741,17 @@ char	*argv[], *envp[] ;
 
 /* get our program root */
 
-	if (g.programroot == NULL) {
+	if (g.programroot == nullptr) {
 
 	    programroot = getenv(VARPROGRAMROOT1) ;
 
-	    if (programroot == NULL)
+	    if (programroot == nullptr)
 	        programroot = getenv(VARPROGRAMROOT2) ;
 
-	    if (programroot == NULL)
+	    if (programroot == nullptr)
 	        programroot = getenv(VARPROGRAMROOT3) ;
 
-	    if (programroot == NULL)
+	    if (programroot == nullptr)
 	        programroot = PROGRAMROOT ;
 
 	    g.programroot = programroot ;
@@ -790,7 +765,7 @@ char	*argv[], *envp[] ;
 
 /* get some host/user information */
 
-	rs = userinfo(&u,userbuf,USERINFO_LEN,NULL) ;
+	rs = userinfo(&u,userbuf,USERINFO_LEN,nullptr) ;
 
 	g.nodename = u.nodename ;
 	g.domainname = u.domainname ;
@@ -891,7 +866,7 @@ char	*argv[], *envp[] ;
 #endif /* CF_DEBUG */
 
 	rs = SR_NOEXIST ;
-	if ((configfname == NULL) || (configfname[0] == '\0')) {
+	if ((configfname == nullptr) || (configfname[0] == '\0')) {
 
 		configfname = CONFIGFILE ;
 
@@ -937,7 +912,7 @@ char	*argv[], *envp[] ;
 
 /* read in the configuration file if we have one */
 
-	if ((rs >= 0) || (perm(configfname,-1,-1,NULL,R_OK) >= 0)) {
+	if ((rs >= 0) || (perm(configfname,-1,-1,nullptr,R_OK) >= 0)) {
 
 #if	CF_DEBUG
 	    if (g.debuglevel > 1)
@@ -994,7 +969,7 @@ char	*argv[], *envp[] ;
 
 /* program root from configuration file */
 
-	    if ((cf.root != NULL) && (! f_programroot)) {
+	    if ((cf.root != nullptr) && (! f_programroot)) {
 
 #if	CF_DEBUG
 	        if (g.debuglevel > 1)
@@ -1053,7 +1028,7 @@ char	*argv[], *envp[] ;
 
 /* all of the rest of the configuration file stuff */
 
-	    if ((cf.workdir != NULL) && (g.workdir == NULL)) {
+	    if ((cf.workdir != nullptr) && (g.workdir == nullptr)) {
 
 	        if (((l = var_subbuf(&vsh_d,&vsh_e,cf.workdir,
 	            -1,buf,BUFLEN)) > 0) &&
@@ -1065,7 +1040,7 @@ char	*argv[], *envp[] ;
 
 	    }
 
-	    if (g.f.daemon && (cf.pidfile != NULL) && 
+	    if (g.f.daemon && (cf.pidfile != nullptr) && 
 	        (pidfname[0] == '\0')) {
 
 #if	CF_DEBUG
@@ -1101,7 +1076,7 @@ char	*argv[], *envp[] ;
 	    }
 #endif
 
-	    if ((cf.logfname != NULL) && (logfile_type < 0)) {
+	    if ((cf.logfname != nullptr) && (logfile_type < 0)) {
 
 #if	CF_DEBUG
 	        if (g.debuglevel > 1)
@@ -1114,7 +1089,7 @@ char	*argv[], *envp[] ;
 
 	            strwcpy(logfname,buf2,l2) ;
 
-	            if (strchr(logfname,'/') != NULL)
+	            if (strchr(logfname,'/') != nullptr)
 	                logfile_type = 1 ;
 
 	        }
@@ -1126,7 +1101,7 @@ char	*argv[], *envp[] ;
 
 	    } /* end if (configuration file log filename) */
 
-	    if ((cf.port != NULL) && (port < 0) && (portspec == NULL)) {
+	    if ((cf.port != nullptr) && (port < 0) && (portspec == nullptr)) {
 
 #if	CF_DEBUG
 	        if (g.debuglevel > 1)
@@ -1142,7 +1117,7 @@ char	*argv[], *envp[] ;
 	                sep = getservbyname(buf2, "tcp") ;
 
 	                port = -1 ;
-	                if (sep != NULL)
+	                if (sep != nullptr)
 	                    port = (int) ntohs(sep->s_port) ;
 
 	            } else if (cfdeci(buf2,l2,&port) < 0)
@@ -1152,7 +1127,7 @@ char	*argv[], *envp[] ;
 
 	    } /* end if (handling the configuration file port parameter) */
 
-	    if ((cf.user != NULL) && (g.defuser == NULL)) {
+	    if ((cf.user != nullptr) && (g.defuser == nullptr)) {
 
 #if	CF_DEBUG
 	        if (g.debuglevel > 1)
@@ -1169,7 +1144,7 @@ char	*argv[], *envp[] ;
 
 	    }
 
-	    if ((cf.group != NULL) && (g.defgroup == NULL)) {
+	    if ((cf.group != nullptr) && (g.defgroup == nullptr)) {
 
 #if	CF_DEBUG
 	        if (g.debuglevel > 1)
@@ -1191,7 +1166,7 @@ char	*argv[], *envp[] ;
 
 	    } /* end if */
 
-	    if ((cf.userpass != NULL) && (g.userpass == NULL)) {
+	    if ((cf.userpass != nullptr) && (g.userpass == nullptr)) {
 
 #if	CF_DEBUG
 	        if (g.debuglevel > 1)
@@ -1208,7 +1183,7 @@ char	*argv[], *envp[] ;
 
 	    }
 
-	    if ((cf.machpass != NULL) && (g.machpass == NULL)) {
+	    if ((cf.machpass != nullptr) && (g.machpass == nullptr)) {
 
 #if	CF_DEBUG
 	        if (g.debuglevel > 1)
@@ -1230,7 +1205,7 @@ char	*argv[], *envp[] ;
 
 	    } /* end if */
 
-	    if ((cf.srvtab != NULL) && (srvfname[0] == '\0')) {
+	    if ((cf.srvtab != nullptr) && (srvfname[0] == '\0')) {
 
 #if	CF_DEBUG
 	        if (g.debuglevel > 1)
@@ -1250,14 +1225,14 @@ char	*argv[], *envp[] ;
 #endif
 
 	            srvtab_type = 0 ;
-	            if (strchr(srvfname,'/') != NULL)
+	            if (strchr(srvfname,'/') != nullptr)
 	                srvtab_type = 1 ;
 
 	        }
 
 	    } /* end if (srvtab) */
 
-	    if ((cf.sendmail != NULL) && (g.prog_sendmail == NULL)) {
+	    if ((cf.sendmail != nullptr) && (g.prog_sendmail == nullptr)) {
 
 #if	CF_DEBUG
 	        if (g.debuglevel > 1)
@@ -1282,7 +1257,7 @@ char	*argv[], *envp[] ;
 
 /* what about an 'environ' file ? */
 
-	    if (cf.envfile != NULL) {
+	    if (cf.envfile != nullptr) {
 
 #if	CF_DEBUG
 	        if (g.debuglevel > 1)
@@ -1300,7 +1275,7 @@ char	*argv[], *envp[] ;
 
 /* "do" any 'paths' file before we process the environment variables */
 
-	    if (cf.pathsfile != NULL)
+	    if (cf.pathsfile != nullptr)
 	        procfilepaths(g.programroot,cf.pathsfile,&exports) ;
 
 	    else
@@ -1322,7 +1297,7 @@ char	*argv[], *envp[] ;
 
 	    for (i = 0 ; vecstr_get(&cf.unsets,i,&cp) >= 0 ; i += 1) {
 
-	        rs = vecstr_finder(&exports,cp,vstrkeycmp,NULL) ;
+	        rs = vecstr_finder(&exports,cp,vstrkeycmp,nullptr) ;
 
 	        if (rs >= 0)
 	            vecstr_del(&exports,rs) ;
@@ -1347,7 +1322,7 @@ char	*argv[], *envp[] ;
 	                "main: 1 about to merge> %W\n",buf,l2) ;
 #endif
 
-	            var_merge(NULL,&exports,buf2,l2) ;
+	            var_merge(nullptr,&exports,buf2,l2) ;
 
 #if	CF_DEBUG
 	            if (g.debuglevel > 1) debugprintf(
@@ -1429,7 +1404,7 @@ char	*argv[], *envp[] ;
 #endif
 
 
-	if (g.programroot == NULL)
+	if (g.programroot == nullptr)
 	    g.programroot = programroot ;
 
 	if (g.f.verbose || (g.debuglevel > 0))
@@ -1505,22 +1480,22 @@ char	*argv[], *envp[] ;
 	    "main: checking program parameters\n") ;
 #endif
 
-	if (g.workdir == NULL)
+	if (g.workdir == nullptr)
 	    g.workdir = WORKDIR ;
 
 	else if (g.workdir[0] == '\0')
 	    g.workdir = "." ;
 
 
-	if ((g.tmpdir == NULL) || (g.tmpdir[0] == '\0')) {
+	if ((g.tmpdir == nullptr) || (g.tmpdir[0] == '\0')) {
 
-	    if ((g.tmpdir = getenv("TMPDIR")) == NULL)
+	    if ((g.tmpdir = getenv("TMPDIR")) == nullptr)
 	        g.tmpdir = TMPDIR ;
 
 	} /* end if (tmpdir) */
 
 
-	if (g.prog_sendmail == NULL)
+	if (g.prog_sendmail == nullptr)
 	    g.prog_sendmail = mallocstr(PROG_SENDMAIL) ;
 
 #if	CF_DEBUG
@@ -1562,8 +1537,8 @@ char	*argv[], *envp[] ;
 	    debugprintf("main: access working directory \"%s\"\n",g.workdir) ;
 #endif
 
-	if ((perm(g.workdir,-1,-1,NULL,X_OK) < 0) || 
-	    (perm(g.workdir,-1,-1,NULL,R_OK) < 0))
+	if ((perm(g.workdir,-1,-1,nullptr,X_OK) < 0) || 
+	    (perm(g.workdir,-1,-1,nullptr,R_OK) < 0))
 	    goto badworking ;
 
 
@@ -1649,13 +1624,13 @@ char	*argv[], *envp[] ;
 
 
 	    buf[0] = '\0' ;
-	    if ((u.name != NULL) && (u.name[0] != '\0'))
+	    if ((u.name != nullptr) && (u.name[0] != '\0'))
 	        sprintf(buf,"(%s)",u.name) ;
 
-	    else if ((u.gecosname != NULL) && (u.gecosname[0] != '\0'))
+	    else if ((u.gecosname != nullptr) && (u.gecosname[0] != '\0'))
 	        sprintf(buf,"(%s)",u.gecosname) ;
 
-	    else if ((u.fullname != NULL) && (u.fullname[0] != '\0'))
+	    else if ((u.fullname != nullptr) && (u.fullname[0] != '\0'))
 	        sprintf(buf,"(%s)",u.fullname) ;
 
 	    logfile_printf(&g.lh,"%s!%s %s\n",
@@ -1721,7 +1696,7 @@ char	*argv[], *envp[] ;
 
 /* look up some miscellaneous stuff in various databases */
 
-	    if (portspec != NULL) {
+	    if (portspec != nullptr) {
 
 	        if (getportnum(portspec,&port) < 0)
 	            goto badport ;
@@ -1737,7 +1712,7 @@ char	*argv[], *envp[] ;
 
 	        sep = getservbyname(PORTNAME, "tcp") ;
 
-	        if (sep != NULL)
+	        if (sep != nullptr)
 	            port = (int) ntohs(sep->s_port) ;
 
 	        else
@@ -1760,7 +1735,7 @@ char	*argv[], *envp[] ;
 
 	    pep = getprotobyname("tcp") ;
 
-	    if (pep != NULL)
+	    if (pep != nullptr)
 	        proto = pep->p_proto ;
 
 	    else
@@ -1909,7 +1884,7 @@ char	*argv[], *envp[] ;
 	    if (rs == 0)
 	        logfile_printf(&g.lh,"backgrounded pid=%d\n",gp->pid) ;
 
-	    if ((g.pidfname != NULL) && (g.pidfname[0] != '\0')) {
+	    if ((g.pidfname != nullptr) && (g.pidfname[0] != '\0')) {
 
 #if	CF_DEBUG
 	        if (g.debuglevel > 1)
@@ -2010,14 +1985,14 @@ char	*argv[], *envp[] ;
 	    debugprintf("main: 1 srvfname=%s\n",srvfname) ;
 #endif
 
-	if ((rs >= 0) || (perm(srvfname,-1,-1,NULL,R_OK) >= 0)) {
+	if ((rs >= 0) || (perm(srvfname,-1,-1,nullptr,R_OK) >= 0)) {
 
 	    if (g.f.verbose || (g.debuglevel > 0))
 	        bprintf(efp,"%s: srvtab=%s\n",g.progname,srvfname) ;
 
 	    logfile_printf(&g.lh,"srvtab=%s\n",srvfname) ;
 
-	    if ((rs = srvtab_open(&sfile,srvfname,NULL)) < 0) {
+	    if ((rs = srvtab_open(&sfile,srvfname,nullptr)) < 0) {
 
 	        logfile_printf(&g.lh,"bad (%d) server file\n",rs) ;
 
@@ -2034,9 +2009,9 @@ char	*argv[], *envp[] ;
 
 	        for (i = 0 ; srvtab_enum(&sfile,i,&srvp) >= 0 ; i += 1) {
 
-	            if (srvp == NULL) continue ;
+	            if (srvp == nullptr) continue ;
 
-	            if (srvp->service != NULL)
+	            if (srvp->service != nullptr)
 	                debugprintf("main: service=%s\n",srvp->service) ;
 
 	        } /* end for */
@@ -2062,7 +2037,7 @@ char	*argv[], *envp[] ;
 #endif /* COMMENT */
 
 
-	if (vecstr_finder(&exports,"HZ",vstrkeycmp,NULL) < 0) {
+	if (vecstr_finder(&exports,"HZ",vstrkeycmp,nullptr) < 0) {
 
 		sl = bufprintf(tmpfname,MAXPATHLEN,"HZ=%ld",CLK_TCK) ;
 
@@ -2071,7 +2046,7 @@ char	*argv[], *envp[] ;
 	}
 
 
-	if (vecstr_finder(&exports,"PATH",vstrkeycmp,NULL) < 0) {
+	if (vecstr_finder(&exports,"PATH",vstrkeycmp,nullptr) < 0) {
 
 		sl = bufprintf(tmpfname,MAXPATHLEN,"PATH=%s",DEFPATH) ;
 
@@ -2163,13 +2138,13 @@ daemonret1:
 	        g.progname) ;
 #endif
 
-	if (f_freeconfigfname && (configfname != NULL))
+	if (f_freeconfigfname && (configfname != nullptr))
 	    free(configfname) ;
 
 	if (g.f.log)
 		logfile_close(&g.lh) ;
 
-	if (g.lfp != NULL) bclose(g.lfp) ;
+	if (g.lfp != nullptr) bclose(g.lfp) ;
 
 	bclose(efp) ;
 
@@ -2367,13 +2342,12 @@ badnotsocket:
 
 /* local subroutines */
 
-
 static int procfile(func,pr,svp,fname,elp)
-int		(*func)(char *,char *,VECSTR *) ;
-const char	pr[] ;
+int		(*func)(char *,char *,vecstr *) ;
+cchar	pr[] ;
 vecstr		*svp ;
 char		fname[] ;
-VECSTR		*elp ;
+vecstr		*elp ;
 {
 	int	sl ;
 
