@@ -83,7 +83,6 @@ extern int	matstr(const char **,const char *,int) ;
 extern int	getnodename(char *,int) ;
 extern int	perm(const char *,uid_t,gid_t,gid_t *,int) ;
 extern int	vecstr_envadd(vecstr *,const char *,const char *,int) ;
-extern int	vstrkeycmp(const char *,const char *) ;
 extern int	xfile(IDS *,const char *) ;
 
 #if	CF_DEBUGS
