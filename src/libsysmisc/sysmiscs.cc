@@ -92,7 +92,6 @@ extern int	getnodename(char *,int) ;
 extern int	getpwd(char *,int) ;
 extern int	perm(cchar *,uid_t,gid_t,gid_t *,int) ;
 extern int	hasuc(cchar *,int) ;
-extern int	vstrkeycmp(cchar *,cchar *) ;
 
 #if	CF_DEBUGS
 extern int	debugprintf(cchar *,...) ;
@@ -109,7 +108,7 @@ extern char	*strwcpylc(char *,cchar *,int) ;
 
 MODLOAD_MID	sysmiscs_mod = {
 	"sysmiscs",
-	sizeof(sysmiscs)
+	szof(sysmiscs)
 } ;
 
 
@@ -128,7 +127,7 @@ static int	sysmiscs_nodename(sysmiscs *) ;
 
 SYSMISCS_OBJ	sysmiscs_mod = {
 	"sysmiscs",
-	sizeof(SYSMISCS)
+	szof(SYSMISCS)
 } ;
 
 
@@ -378,7 +377,7 @@ SYSMISCS	*op ;
 
 	vecstr_getvec(&envs,(cchar ***) &ev) ;
 
-	memset(&ps,0,sizeof(SPAWNPROC)) ;
+	memclear(&ps,szof(SPAWNPROC)) ;
 
 	for (i = 0 ; i < 3 ; i += 1) {
 	    ps.disp[i] = (i != 2) ? SPAWNPROC_DCLOSE : SPAWNPROC_DINHERIT ;
