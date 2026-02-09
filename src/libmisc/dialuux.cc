@@ -135,8 +135,6 @@
 
 /* external subroutines */
 
-extern int	strkeycmp(cchar *,cchar *) noex ;
-extern int	vstrkeycmp(cvoid **,cvoid **) noex ;
 extern int	prgetprogpath(cchar *,char *,cchar *,int) noex ;
 extern int	getprogroot(cchar *,cchar **,int *,char *,cchar *) noex ;
 
