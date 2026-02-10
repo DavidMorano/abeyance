@@ -1,4 +1,5 @@
 /* bopensched SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* open a file name according to rules */
@@ -17,8 +18,8 @@
 
 /*******************************************************************************
 
+  	Description:
 	This subroutine will form a file name according to some rules.
-
 	We try in order:
 
 	programroot/etc/name/name.fname
@@ -54,13 +55,16 @@
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<sbuf.h>
 #include	<vecstr.h>
 #include	<outbuf.h>
 #include	<permx.h>
+#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<vstrkeycmp.h>
 #include	<localmisc.h>
 
@@ -84,7 +88,7 @@
 
 /* forward references */
 
-static int	schedexpand(cchar *,VECSTR *,cchar *,char *,int) noex ;
+local int	schedexpand(cchar *,VECSTR *,cchar *,char *,int) noex ;
 
 
 /* local global variabes */
@@ -93,8 +97,10 @@ static int	schedexpand(cchar *,VECSTR *,cchar *,char *,int) noex ;
 /* local variables */
 
 
-/* exported subroutines */
+/* exported variables */
 
+
+/* exported subroutines */
 
 int bopensched(fp,sched,nsp,fname,outname,mode,permission)
 bfile		*fp ;
@@ -216,8 +222,7 @@ ret0:
 
 /* local subroutines */
 
-
-static int schedexpand(fmt,nsp,fname,buf,buflen)
+local int schedexpand(fmt,nsp,fname,buf,buflen)
 cchar	*fmt ;
 VECSTR		*nsp ;
 cchar	fname[] ;
