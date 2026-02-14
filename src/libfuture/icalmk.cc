@@ -206,7 +206,7 @@ int		f_tmp ;
 	if (year < 0) {
 	    tmtime	tm ;
 	    time_t	daytime = time(NULL) ;
-	    rs = tmtime_localtime(&tm,daytime) ;
+	    rs = tmtime_timelocal(&tm,daytime) ;
 	    year = (tm.year + TM_YEAR_BASE) ;
 	    if (rs < 0)
 		goto ret0 ;
