@@ -101,11 +101,11 @@ int uc_ftime(TIMEB *tbp) noex {
 		    custime 	t = tbp->time ;
 	            tbp->time = tv.tv_sec ;
 	            tbp->millitm = (tv.tv_usec / 1000) ;
-	            if (tmtime tmt ; (rs = tmtime_localtime(&tmt,t)) >= 0) {
+	            if (tmtime tmt ; (rs = tmtime_timelocal(&tmt,t)) >= 0) {
 	                tbp->timezone = (tmt.gmtoff / 60) ;
 	                tbp->dstflag = tmt.isdst ;
 	                rs = (tmt.isdst > 0) ? 1 : 0 ;
-	            } /* end if (tmtime_localtime) */
+	            } /* end if (tmtime_timelocal) */
 	        } /* end if (uc_gettimeofday) */
 	    } /* end if_constexpr (f_darwin) */
 	} /* end if (non-null) */
