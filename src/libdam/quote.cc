@@ -2618,7 +2618,7 @@ DI	*sip ;
 
 
 	if (sip->year == 0) {
-	    rs = tmtime_localtime(&tm,sip->daytime) ;
+	    rs = tmtime_timelocal(&tm,sip->daytime) ;
 	    sip->year = (tm.year + TM_YEAR_BASE) ;
 	    sip->isdst = tm.tm_isdst ;
 	    sip->gmtoff = tm.gmtoff ;
