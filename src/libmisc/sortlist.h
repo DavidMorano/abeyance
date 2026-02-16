@@ -1,4 +1,5 @@
 /* sortlist HEADER */
+/* charset=ISO8859-1 */
 /* lang=C20 */
 
 /* sorted list structures (Sorted List) */
@@ -34,16 +35,13 @@
 
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
+#include	<usysbase.h>
 
 
 /* object defines */
-#define	SORTLIST_MAGIC	0x31415926
 #define	SORTLIST	struct sortlist_head
 #define	SORTLIST_ENT	struct sortlist_ent
+#define	SORTLIST_MAGIC	0x31415926
 
 
 EXTERNC_begin
@@ -64,12 +62,9 @@ struct sortlist_head {
 	uint		magic ;
 } ;
 
-
 typedef SORTLIST	sortlist ;
 
 EXTERNC_begin
-
-typedef int (*sortlist_f)(cvoid **,cvoid **) noex ;
 
 extern int sortlist_start(sortlist *,sortlist_f) noex ;
 extern int sortlist_add(sortlist *,void *,void *,int) noex ;
