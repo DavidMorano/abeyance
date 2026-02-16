@@ -1,4 +1,5 @@
 /* sortlist SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* sorted list operations */
@@ -66,18 +67,16 @@
 /* forward references */
 
 template<typename ... Args>
-static int sortlist_ctor(sortlist *op,Args ... args) noex {
+local int sortlist_ctor(sortlist *op,Args ... args) noex {
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) {
-	    cnullptr	np{} ;
 	    rs = SR_OK ;
-
 	} /* end if (non-null) */
 	return rs ;
 }
 /* end subroutine (sortlist_ctor) */
 
-static int sortlist_dtor(sortlist *op) noex {
+local int sortlist_dtor(sortlist *op) noex {
 	int		rs = SR_FAULT ;
 	if (op) {
 	    rs = SR_OK ;
@@ -87,7 +86,7 @@ static int sortlist_dtor(sortlist *op) noex {
 /* end subroutine (sortlist_dtor) */
 
 template<typename ... Args>
-static inline int sortlist_magic(sortlist *op,Args ... args) noex {
+local inline int sortlist_magic(sortlist *op,Args ... args) noex {
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) {
 	    rs = (op->magic == SORTLIST_MAGIC) ? SR_OK : SR_NOTOPEN ;
@@ -100,7 +99,7 @@ static inline int sortlist_magic(sortlist *op,Args ... args) noex {
 /* local variables */
 
 struct subclass {
-	int
+	int		here ;
 } ;
 
 
