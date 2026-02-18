@@ -38,7 +38,8 @@
 #include	<sys/timeb.h>
 #include	<unistd.h>
 #include	<ctime>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
 #include	<clanguage.h>
 #include	<usysbase.h>
