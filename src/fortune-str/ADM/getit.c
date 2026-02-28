@@ -40,7 +40,7 @@
 #include	<unistd.h>
 #include	<stdlib.h>
 
-#include	<bio.h>
+#include	<bfile.h>
 #include	<bitops.h>
 
 #include	"misc.h"
