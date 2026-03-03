@@ -1,4 +1,4 @@
-/* cmail */
+/* cmail SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -22,15 +22,15 @@
 
 /**************************************************************************
 
-	Synopsis:
+  	Description:
 
+	Synopsis:
 	$ cmail [-f from_address]
 		[-i input] address [address ...] < input
 
 **************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -41,10 +41,14 @@
 #include	<grp.h>
 #include	<strings.h>		/* for |strcasecmp(3c)| */
 #include	<ctime>
-
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<logfile.h>
 #include	<strx.h>
+#include	<prognamevar.hh>
 #include	<localmisc.h>
 
 #include	"config.h"
@@ -85,13 +89,10 @@ static cchar	*argopts[] = {
 
 /* external subroutines */
 
-extern int	mktmpfile(char *,mode_t,const char *) ;
+extern int	mktmpfile(char *,mode_t,cchar *) ;
 extern int	isdigitlatin(int) ;
 
 extern char	*putheap() ;
-extern char	*strshrink() ;
-extern char	*strbasename() ;
-extern char	*ns_mailname() ;
 
 
 /* forward subroutines */
@@ -108,19 +109,19 @@ static void	dump() ;
 
 /* external variables */
 
-extern int	errno ;
-
 
 /* local variables */
 
 struct global	g ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,mainv argv,mainv envv) {
+    	prognamevar	progname(argv[0]) ;
 	ustat	sb ;
 	struct tm	*timep ;
 	struct passwd	*pp ;
@@ -160,39 +161,37 @@ int main(int argc,cchar **argv,cchar **envv)
 	int	jfd, rfd, efd ;
 	int	childstat ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*progname ;
-	const char	*ifname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*jobfname = NULL ;
-	const char	*jobid ;
-	const char	*address_errors = NULL ;
-	const char	*address_sender = NULL ;
-	const char	*address_from = NULL ;
-	const char	*address_error = NULL ;
-	const char	*address_reply = NULL ;
-	const char	*name_from = NULL ;
-	const char	*name_to = NULL ;
-	const char	*user = NULL ;
-	const char	*kickhost = NULL ;
-	const char	*tmpdir = NULL ;
-	const char	*queuespec = NULL ;
-	const char	*servicename = NULL ;
-	const char	*queue_machine, *queue_path ;
-	const char	*local_path = DEFQUEUEPATH ;
-	const char	*copy_path = NULL ;
-	const char	*cp, *cp1, *cp2 ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*progname ;
+	cchar	*ifname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*jobfname = NULL ;
+	cchar	*jobid ;
+	cchar	*address_errors = NULL ;
+	cchar	*address_sender = NULL ;
+	cchar	*address_from = NULL ;
+	cchar	*address_error = NULL ;
+	cchar	*address_reply = NULL ;
+	cchar	*name_from = NULL ;
+	cchar	*name_to = NULL ;
+	cchar	*user = NULL ;
+	cchar	*kickhost = NULL ;
+	cchar	*tmpdir = NULL ;
+	cchar	*queuespec = NULL ;
+	cchar	*servicename = NULL ;
+	cchar	*queue_machine, *queue_path ;
+	cchar	*local_path = DEFQUEUEPATH ;
+	cchar	*copy_path = NULL ;
+	cchar	*cp, *cp1, *cp2 ;
 	char		nodename[1024], domainname[1024] ;
-	const char	*cmd_uucico ;
+	cchar	*cmd_uucico ;
 	char		buf[BUFLEN + 1] ;
 	char		tmpfname[MAXPATHLEN + 1] ;
 	char		cmdbuf[(2 * MAXPATHLEN) + 1] ;
 	char		ahostname[2048 + 1] ;
 	char		*ahost = ahostname ;
 
-
-	progname = strbasename(argv[0]) ;
-
+	progname = progname ;
 	if (bopen(efp,BIO_STDERR,"wca",0666) < 0) return BAD ;
 
 	bcontrol(efp,BC_LINEBUF,0) ;
@@ -1297,8 +1296,8 @@ badarg:
 	goto badret ;
 
 badinfile:
-	bprintf(efp,"%s: cannot open the input file (errno %d)\n",
-	    progname,errno) ;
+	bprintf(efp,"%s: cannot open the input file\n",
+	    progname) ;
 
 	goto badret ;
 
@@ -1327,8 +1326,8 @@ badjobread:
 	goto badret ;
 
 badstat:
-	bprintf(efp,"%s: could not get status on input file (errno %d)\n",
-	    progname,errno) ;
+	bprintf(efp,"%s: could not get status on input file (rs %d)\n",
+	    progname,rs) ;
 
 	goto badret ;
 
@@ -1413,37 +1412,28 @@ char	jobfname[] ;
 	if ((jobfname == NULL) || (*jobfname == '\0')) return OK ;
 
 	if ((rs = fork()) == 0) {
-
 	    setsid() ;
-
-	    for (i = 0 ; i < 3 ; i += 1) close(i) ;
-
+	    for (i = 0 ; i < 3 ; i += 1) {
+		close(i) ;
+	    }
 	    sleep(30) ;
-
 	    unlink(jobfname) ;
-
 	    exit(0) ;
-
 	}
 
 	if (rs < 0) {
-
-	    err = errno ;
 	    bprintf(g.efp,
-	        "%s: non-fatal error - could not fork (errno %d)\n",
-	        g.progname,err) ;
+	        "%s: non-fatal error - could not fork (rs %d)\n",
+	        g.progname,rs) ;
 
 	    logfile_printf(&g.lh,
-	        "delete_jobfile: non-fatal error - could not fork (errno %d)\n",
-	        err) ;
-
+	        "delete_jobfile: non-fatal error - could not fork (rs %d)\n",
+	        rs) ;
 	    sleep(10) ;		/* less clash protection than usual */
-
 	    rs = unlink(jobfname) ;
-
 	}
 
-	return (rs == -1) ? -err : rs ;
+	return rs ;
 }
 /* end subroutine (delete_jobfile) */
 
@@ -1782,15 +1772,7 @@ struct global	*gp ;
 	dirp = "/var/spool/uucppublic/receive/pcs" ;
 	if (access(dirp,W_OK) < 0) {
 
-	    rs = mkdir(dirp,0777) ;
-
-	    if (rs < 0) {
-
-	        rs = -errno ;
-	        if (srs >= 0) srs = rs ;
-
-	    }
-
+	    rs = u_mkdir(dirp,0777) ;
 		if (rs >= 0)
 	        	chmod(dirp,0777) ;
 
@@ -1808,18 +1790,9 @@ struct global	*gp ;
 	if (access(dirp,
 	    W_OK) < 0) {
 
-	    rs = mkdir(dirp,
-	        0777) ;
-
-	    if (rs < 0) {
-
-	        rs = -errno ;
-	        if (srs >= 0) srs = rs ;
-
-	    }
-
+	    rs = u_mkdir(dirp,0777) ;
 		if (rs >= 0)
-	        	chmod(dirp,0777) ;
+	        	u_chmod(dirp,0777) ;
 
 	    if (gp->debuglevel > 1) bprintf(gp->efp,
 	        "%s: tried to make 'UUCPPUBLIC/receive/pcs/rslow (rs %d)'\n",
