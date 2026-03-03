@@ -1,4 +1,4 @@
-/* main (telnetd) */
+/* telnet_main (sun_telnetd) */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -185,14 +185,6 @@
 
 /* external subroutines */
 
-#if	CF_DEBUGS || CF_DEBUG
-extern int	nprintf(cchar *,cchar *,...) ;
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(cchar *,int,int) ;
-#endif
-
 
 /* external variables */
 
@@ -220,22 +212,22 @@ struct envlist {
 
 /* forward references */
 
-static int	termsecure(cchar *,char *) ;
-static int	telserv_service(cchar *,cchar *) ;
-static int	tcsetdefault(int) ;
-static int	tcspeednonzero(int) ;
-static int	tcnoecho(int) ;
-static int	readstream();
-static int	send_oob(int fd, char *ptr, int count);
-static int	setenv(cchar *name, cchar *value, int rdebugwrite);
-static int	removemod(int f, char *modname);
-static int	issock(int) ;
-static int	blowoff(int) ;
+local int	termsecure(cchar *,char *) ;
+local int	telserv_service(cchar *,cchar *) ;
+local int	tcsetdefault(int) ;
+local int	tcspeednonzero(int) ;
+local int	tcnoecho(int) ;
+local int	readstream();
+local int	send_oob(int fd, char *ptr, int count);
+local int	setenv(cchar *name, cchar *value, int rdebugwrite);
+local int	removemod(int f, char *modname);
+local int	issock(int) ;
+local int	blowoff(int) ;
 
-static void	drainstream();
-static void	unsetenv(cchar *name);
-static void	suboption();
-static void	showbanner() ;
+local void	drainstream();
+local void	unsetenv(cchar *name);
+local void	suboption();
+local void	showbanner() ;
 
 
 /* local (?) variables */
@@ -260,7 +252,7 @@ char	ptyobuf[BUFSIZ], *pfrontp = ptyobuf, *pbackp = ptyobuf;
 
 char	*netibuf, *netip;
 
-static int	netibufsize;
+local int	netibufsize;
 
 #define	NIACCUM(c)	{   *netip++ = c; \
 			    ncc++; \
@@ -408,7 +400,7 @@ static cchar	*domains[] = {
  * linked list structure.
  */
 
-static int
+local int
 new_env(cchar *name, cchar *value)
 {
 	struct envlist *env, *index;
@@ -439,7 +431,7 @@ new_env(cchar *name, cchar *value)
  * anyway before we exec login.
  */
 
-static int
+local int
 del_env(cchar *name)
 {
 	struct envlist *env;
@@ -453,7 +445,7 @@ del_env(cchar *name)
 	return (0);
 }
 
-static int issock(int fd)
+local int issock(int fd)
 {
 	ustat stats;
 
@@ -2152,7 +2144,7 @@ int option;
  *	Terminal type is
  */
 
-static void
+local void
 suboption()
 {
 	int subchar;
@@ -2821,7 +2813,7 @@ rmut()
 #endif /* SYSV */
 
 
-static int
+local int
 readstream(fd, buf, offset)
 	int	fd;
 	char	*buf;
@@ -2880,8 +2872,7 @@ readstream(fd, buf, offset)
 }
 /* end subroutine (readstream) */
 
-static void
-drainstream(size)
+local void drainstream(size)
 	int	size;
 {
 	int	nbytes;
@@ -2910,7 +2901,7 @@ drainstream(size)
  * TPI style replacement for socket send() primitive, so we do not require
  * sockmod to be on the stream.
  */
-static int
+local int
 send_oob(int fd, char *ptr, int count)
 {
 	struct T_exdata_req exd_req;
@@ -2957,7 +2948,7 @@ setenv(name, value, rdebugwrite)
 	int rdebugwrite;
 {
 	extern char **environ;
-	static int alloced;			/* if allocated space before */
+	local int alloced;			/* if allocated space before */
 	register char *c;
 	int l_value, offset;
 
@@ -3224,7 +3215,7 @@ defbanner()
  * Verify that the named module is at the top of the stream
  * and then pop it off.
  */
-static int removemod(int f, char *modname)
+local int removemod(int f, char *modname)
 {
 	char topmodname[BUFSIZ];
 
@@ -3243,7 +3234,7 @@ static int removemod(int f, char *modname)
 
 
 /* check if a terminal-service specification is allowed */
-static int termsecure(terminaltype,svc)
+local int termsecure(terminaltype,svc)
 cchar	terminaltype[] ;
 char		svc[] ;
 {
@@ -3300,7 +3291,7 @@ char		svc[] ;
 
 
 /* see if this service is allowed from the "services" file */
-static int telserv_service(fname,service)
+local int telserv_service(fname,service)
 cchar	fname[] ;
 cchar	service[] ;
 {
@@ -3344,7 +3335,7 @@ cchar	service[] ;
 /* end subroutine (telserv_service) */
 
 
-static int tcsetdefault(fd)
+local int tcsetdefault(fd)
 int	fd ;
 {
 	struct termios	ts ;
@@ -3389,7 +3380,7 @@ int	fd ;
 /* end subroutine (tcsetdefault) */
 
 
-static int tcspeednonzero(fd)
+local int tcspeednonzero(fd)
 int	fd ;
 {
 	struct termios	ts ;
@@ -3432,7 +3423,7 @@ int	fd ;
 /* end subroutine (tcspeednonzero) */
 
 
-static int tcnoecho(fd)
+local int tcnoecho(fd)
 int	fd ;
 {
 	struct termios	ts ;
@@ -3449,8 +3440,7 @@ int	fd ;
 }
 /* end subroutine (tcnoecho) */
 
-
-static int blowoff(int fd)
+local int blowoff(int fd)
 {
 	filer		b ;
 	bfile	src, *sfp = &src ;
