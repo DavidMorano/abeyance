@@ -1,12 +1,12 @@
-/* main */
+/* dnsres_main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* generic front-end */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0		/* compile-time debug print-outs */
 #define	CF_DEBUG	0		/* run-time debug print-outs */
-
 
 /* revision history:
 
@@ -28,28 +28,27 @@
 
 /*******************************************************************************
 
+  	Description:
+
 	Synopsis:
-
 	$ consoletime
-
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/wait.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstdlib>
-#include	<cstring>
 #include	<netdb.h>
 #include	<ctime>
-
-#include	<usystem.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<sighand.h>
 #include	<baops.h>
 #include	<keyopt.h>
@@ -59,6 +58,7 @@
 #include	<kinfo.h>		/* not thread safe! */
 #include	<exitcodes.h>
 #include	<localmisc.h>
+#include	<libdebug.h>
 
 #include	"config.h"
 #include	"defs.h"
@@ -91,39 +91,9 @@
 
 /* external subroutines */
 
-extern int	sncpy1(char *,int,const char *) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matcasestr(const char **,const char *,int) ;
-extern int	matostr(const char **,int,const char *,int) ;
-extern int	matpcasestr(const char **,int,const char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,uint *) ;
-extern int	optbool(cchar *,int) ;
-extern int	optvalue(cchar *,int) ;
-extern int	permid(IDS *,ustat *,int) ;
-extern int	acceptpass(int, struct strrecvfd *,int) ;
-extern int	isdigitlatin(int) ;
-
-extern int	proginfo_setpiv(PROGINFO *,const char *,
+extern int	proginfo_setpiv(PROGINFO *,cchar *,
 			const struct pivars *) ;
-extern int	printhelp(void *,const char *,const char *,const char *) ;
-extern int	ndig(double *,int) ;
-extern int	ndigmax(double *,int,int) ;
-
-#if	CF_DEBUGS || CF_DEBUG
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
-#endif
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strdcpy1(char *,int,const char *) ;
-extern char	*strdcpy1w(char *,int,const char *,int) ;
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_logz(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
+extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 
 
 /* external variables */
@@ -134,22 +104,22 @@ extern char	*timestr_elapsed(time_t,char *) ;
 
 /* forward references */
 
-static int	usage(PROGINFO *) ;
+local int	usage(PROGINFO *) ;
 
-static int	procopts(PROGINFO *,KEYOPT *) ;
-static int	procdaemon(PROGINFO *,const char *) ;
-static int	procserve(PROGINFO *,const char *) ;
-static int	proconce(PROGINFO *,const char *) ;
-static int	procout(PROGINFO *,const char *) ;
-static int	procprint(PROGINFO *,int,gid_t) ;
+local int	procopts(PROGINFO *,KEYOPT *) ;
+local int	procdaemon(PROGINFO *,cchar *) ;
+local int	procserve(PROGINFO *,cchar *) ;
+local int	proconce(PROGINFO *,cchar *) ;
+local int	procout(PROGINFO *,cchar *) ;
+local int	procprint(PROGINFO *,int,gid_t) ;
 
-static int	procinfo_begin(PROGINFO *) ;
-static int	procinfo_nusers(PROGINFO *) ;
-static int	procinfo_nprocs(PROGINFO *) ;
-static int	procinfo_check(PROGINFO *) ;
-static int	procinfo_end(PROGINFO *) ;
+local int	procinfo_begin(PROGINFO *) ;
+local int	procinfo_nusers(PROGINFO *) ;
+local int	procinfo_nprocs(PROGINFO *) ;
+local int	procinfo_check(PROGINFO *) ;
+local int	procinfo_end(PROGINFO *) ;
 
-static int	msglogdev(IDS *,const char *) ;
+local int	msglogdev(IDS *,cchar *) ;
 
 static void	main_sighand(int,siginfo_t *,void *) ;
 
@@ -180,7 +150,7 @@ static const int	sigints[] = {
 	0
 } ;
 
-static const char *argopts[] = {
+static cchar *argopts[] = {
 	"ROOT",
 	"VERSION",
 	"VERBOSE",
@@ -236,7 +206,7 @@ static const struct mapex	mapexs[] = {
 	{ 0, 0 }
 } ;
 
-static const char	*progmodes[] = {
+static cchar	*progmodes[] = {
 	"consoletime",
 	"loginblurb",
 	NULL
@@ -248,7 +218,7 @@ enum progmodes {
 	progmode_overlast
 } ;
 
-static const char	*progopts[] = {
+static cchar	*progopts[] = {
 	"str",
 	"date",
 	"time",
@@ -284,7 +254,7 @@ enum progopts {
 	progopt_overlast
 } ;
 
-static const char	*ansiterms[] = {
+static cchar	*ansiterms[] = {
 	"ansi",
 	"sun",
 	"screen",
@@ -306,7 +276,7 @@ static const char	*ansiterms[] = {
 	NULL
 } ;
 
-static const char	*msglogdevs[] = {
+static cchar	*msglogdevs[] = {
 	MSGLOGDEV,
 	CONSOLEDEV,
 	NULL
@@ -342,19 +312,19 @@ char	*envv[] ;
 	int	f_usage = FALSE ;
 	int	f_help = FALSE ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*argval = NULL ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*argval = NULL ;
 	char	argpresent[MAXARGGROUPS] ;
-	const char	*pr = NULL ;
-	const char	*sn = NULL ;
-	const char	*pmspec = NULL ;
-	const char	*efname = NULL ;
-	const char	*afname = NULL ;
-	const char	*ifname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*termtype = NULL ;
-	const char	*mntfname = NULL ;
-	const char	*cp ;
+	cchar	*pr = NULL ;
+	cchar	*sn = NULL ;
+	cchar	*pmspec = NULL ;
+	cchar	*efname = NULL ;
+	cchar	*afname = NULL ;
+	cchar	*ifname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*termtype = NULL ;
+	cchar	*mntfname = NULL ;
+	cchar	*cp ;
 
 
 	if_int = 0 ;
@@ -958,8 +928,8 @@ char	*envv[] ;
 	pip->daytime = time(NULL) ;
 
 	if ((ofname == NULL) && (! pip->f.daemon)) {
-	    const char	*ccp ;
-	    const char	*backup = NULL ;
+	    cchar	*ccp ;
+	    cchar	*backup = NULL ;
 	    if ((rs = ids_load(&id)) >= 0) {
 	        for (i = 0 ; (msglogdevs[i] != NULL) ; i += 1) {
 		    ccp = msglogdevs[i] ;
@@ -1104,7 +1074,7 @@ static void main_sighand(int sn,siginfo_t *sip,void *vcp)
 /* end subroutine (main_sighand) */
 
 
-static int usage(pip)
+local int usage(pip)
 PROGINFO	*pip ;
 {
 	int	rs ;
@@ -1141,7 +1111,7 @@ PROGINFO	*pip ;
 /* end subroutine (usage) */
 
 
-static int procopts(pip,kop)
+local int procopts(pip,kop)
 PROGINFO	*pip ;
 KEYOPT		*kop ;
 {
@@ -1153,8 +1123,8 @@ KEYOPT		*kop ;
 	int	kl, vl ;
 	int	c = 0 ;
 
-	const char	*kp, *vp ;
-	const char	*cp ;
+	cchar	*kp, *vp ;
+	cchar	*cp ;
 
 
 /* grab options from the environment */
@@ -1294,9 +1264,9 @@ ret0:
 /* end subroutine (procopts) */
 
 
-static int procdaemon(pip,mntfname)
+local int procdaemon(pip,mntfname)
 PROGINFO	*pip ;
-const char	mntfname[] ;
+cchar	mntfname[] ;
 {
 	int	rs = SR_OK ;
 	int	i ;
@@ -1338,9 +1308,9 @@ ret0:
 /* end subroutine (procdaemon) */
 
 
-static int procserve(pip,mntfname)
+local int procserve(pip,mntfname)
 PROGINFO	*pip ;
-const char	mntfname[] ;
+cchar	mntfname[] ;
 {
 	struct pollfd	fds[2] ;
 
@@ -1521,9 +1491,9 @@ ret0:
 /* end subroutine (procserve) */
 
 
-static int proconce(pip,ofname)
+local int proconce(pip,ofname)
 PROGINFO	*pip ;
-const char	ofname[] ;
+cchar	ofname[] ;
 {
 	int	rs = SR_OK ;
 
@@ -1557,9 +1527,9 @@ const char	ofname[] ;
 
 
 /* open the console */
-static int procout(pip,ofname)
+local int procout(pip,ofname)
 PROGINFO	*pip ;
-const char	ofname[] ;
+cchar	ofname[] ;
 {
 	gid_t	gid = getgid() ;
 
@@ -1597,7 +1567,7 @@ ret0:
 
 
 /* print the time to the console */
-static int procprint(pip,fd,gid)
+local int procprint(pip,fd,gid)
 PROGINFO	*pip ;
 int		fd ;
 gid_t		gid ;
@@ -1745,7 +1715,7 @@ gid_t		gid ;
 
 	    double	dla[3] ;
 
-	    const char	*fmt ;
+	    cchar	*fmt ;
 
 
 	    if ((rs1 = uc_getloadavg(dla,3)) >= 0) {
@@ -1786,7 +1756,7 @@ ret0:
 /* end subroutine (procprint) */
 
 
-static int procinfo_begin(pip)
+local int procinfo_begin(pip)
 PROGINFO	*pip ;
 {
 
@@ -1796,7 +1766,7 @@ PROGINFO	*pip ;
 /* end subroutine (procinfo_begin) */
 
 
-static int procinfo_end(pip)
+local int procinfo_end(pip)
 PROGINFO	*pip ;
 {
 	int	rs = SR_OK ;
@@ -1820,7 +1790,7 @@ PROGINFO	*pip ;
 /* end subroutine (procinfo_end) */
 
 
-static int procinfo_nprocs(pip)
+local int procinfo_nprocs(pip)
 PROGINFO	*pip ;
 {
 	int	rs = SR_OK ;
@@ -1845,7 +1815,7 @@ PROGINFO	*pip ;
 /* end subroutine (procinfo_nprocs) */
 
 
-static int procinfo_nusers(pip)
+local int procinfo_nusers(pip)
 PROGINFO	*pip ;
 {
 	int	rs = SR_OK ;
@@ -1869,7 +1839,7 @@ PROGINFO	*pip ;
 /* end subroutine (procinfo_nusers) */
 
 
-static int procinfo_check(pip)
+local int procinfo_check(pip)
 PROGINFO	*pip ;
 {
 	int	rs = SR_OK ;
@@ -1885,9 +1855,7 @@ PROGINFO	*pip ;
 }
 /* end subroutine (procinfo_check) */
 
-
-static int msglogdev(IDS *idp,const char *fname)
-{
+local int msglogdev(IDS *idp,cchar *fname) noex {
 	ustat	sb ;
 
 	int	rs ;
