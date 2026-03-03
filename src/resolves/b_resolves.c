@@ -211,51 +211,9 @@ import libutil ;			/* |lenstr(3u)| */
 
 /* external subroutines */
 
-extern int	snsds(char *,int,const char *,const char *) ;
-extern int	sncpy1(char *,int,const char *) ;
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	mkpath1w(char *,const char *,int) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	sfbasename(const char *,int,const char **) ;
-extern int	sfdirname(const char *,int,const char **) ;
-extern int	matostr(const char **,int,const char *,int) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecti(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,uint *) ;
-extern int	ctdeci(char *,int,int) ;
-extern int	optbool(const char *,int) ;
-extern int	getnodedomain(char *,char *) ;
-extern int	getgroupname(char *,int,gid_t) ;
-extern int	getutmpterm(char *,int,pid_t) ;
-extern int	mkgecosname(char *,int,const char *) ;
-extern int	termwritable(const char *) ;
-extern int	vecstr_adduniq(vecstr *,const char *,int) ;
-extern int	vecstr_envadd(vecstr *,const char *,const char *,int) ;
-extern int	vecstr_envset(vecstr *,const char *,const char *,int) ;
-extern int	perm(const char *,uid_t,gid_t,gid_t *,int) ;
-extern int	permid(IDS *,ustat *,int) ;
-extern int	mkdirs(const char *,mode_t) ;
-extern int	acceptpass(int,struct strrecvfd *,int) ;
-extern int	hasalldig(const char *,int) ;
-extern int	isdigitlatin(int) ;
-
-extern int	proginfo_setpiv(PROGINFO *,const char *,
+extern int	proginfo_setpiv(PROGINFO *,cchar *,
 			const struct pivars *) ;
-extern int	printhelp(void *,const char *,const char *,const char *) ;
-
-#if	CF_DEBUGS || CF_DEBUG
-extern int	debugprintf(const char *,...) ;
-extern int	strlinelen(const char *,int,int) ;
-#endif
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strwcpylc(char *,const char *,int) ;
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_logz(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
+extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 
 
 /* external variables */
@@ -277,10 +235,10 @@ struct locinfo {
 	struct locinfo_flags	have, f, changed, final ;
 	struct locinfo_flags	open ;
 	PROGINFO	*pip ;
-	const char	**envv ;
-	const char	*un ;
-	const char	*pidfname ;
-	const char	*mdname ;
+	cchar	**envv ;
+	cchar	*un ;
+	cchar	*pidfname ;
+	cchar	*mdname ;
 	IDS		id ;
 	PTM		envm ;
 	VECSTR		tmpstr ;
@@ -300,13 +258,13 @@ struct locinfo {
 } ;
 
 struct dargs {
-	const char	*tmpdname ;
+	cchar	*tmpdname ;
 } ;
 
 struct client {
-	const char	**avp ;		/* admins-vector-pointer */
-	const char	*gn ;
-	const char	*un ;
+	cchar	**avp ;		/* admins-vector-pointer */
+	cchar	*gn ;
+	cchar	*un ;
 	uid_t		uid ;
 	gid_t		gid ;
 	int		fd ;
@@ -322,30 +280,30 @@ local int	locinfo_finish(struct locinfo *) ;
 local int	locinfo_mkenvv(struct locinfo *) ;
 #if	CF_ENVIRON
 local int	locinfo_process(struct locinfo *,RESOLVES *,struct client *) ;
-local int	locinfo_addenvdig(struct locinfo *,int,const char *,int) ;
-local int	locinfo_addenvstr(struct locinfo *,int,const char *,
-			const char *,int) ;
+local int	locinfo_addenvdig(struct locinfo *,int,cchar *,int) ;
+local int	locinfo_addenvstr(struct locinfo *,int,cchar *,
+			cchar *,int) ;
 #endif /* CF_ENVIRON */
 local int	locinfo_loadids(struct locinfo *) ;
 local int	locinfo_mdname(struct locinfo *) ;
 local int	locinfo_tmpmaint(struct locinfo *) ;
 local int	locinfo_getgid(struct locinfo *) ;
-local int	locinfo_chgrp(struct locinfo *,const char *) ;
+local int	locinfo_chgrp(struct locinfo *,cchar *) ;
 
 local int	procopts(PROGINFO *,KEYOPT *) ;
-local int	procregular(PROGINFO *,PARAMOPT *,const char *) ;
-local int	procdaemon(PROGINFO *,PARAMOPT *,const char *) ;
+local int	procregular(PROGINFO *,PARAMOPT *,cchar *) ;
+local int	procdaemon(PROGINFO *,PARAMOPT *,cchar *) ;
 local int	procregout(PROGINFO *,PARAMOPT *,SHIO *) ;
-local int	procregouter(PROGINFO *,const char **,SHIO *) ;
-local int	procmotd(PROGINFO *,const char *,const char **,int) ;
+local int	procregouter(PROGINFO *,cchar **,SHIO *) ;
+local int	procmotd(PROGINFO *,cchar *,cchar **,int) ;
 local int	procextras(PROGINFO *) ;
 local int	procpidfile(PROGINFO *) ;
 local int	proclockacquire(PROGINFO *,LFM *,int) ;
 local int	proclockrelease(PROGINFO *,LFM *) ;
 local int	proclockcheck(PROGINFO *,LFM *) ;
 local int	proclockprint(PROGINFO *,LFM_CHECK *) ;
-local int	procdown(PROGINFO *,LFM *,const char *) ;
-local int	procserve(PROGINFO *,LFM *,const char *) ;
+local int	procdown(PROGINFO *,LFM *,cchar *) ;
+local int	procserve(PROGINFO *,LFM *,cchar *) ;
 local int	prochandle(PROGINFO *,GNCACHE *,RESOLVES *,
 			uid_t,gid_t,int) ;
 
@@ -362,7 +320,7 @@ static void	sighand_int(int) ;
 static volatile int	if_exit ;
 static volatile int	if_int ;
 
-static const int	sigblocks[] = {
+static cint	sigblocks[] = {
 	SIGUSR1,
 	SIGUSR2,
 	SIGHUP,
@@ -370,7 +328,7 @@ static const int	sigblocks[] = {
 	0
 } ;
 
-static const int	sigignores[] = {
+static cint	sigignores[] = {
 	SIGPIPE,
 	SIGPOLL,
 #if	defined(SIGXFSZ)
@@ -379,14 +337,14 @@ static const int	sigignores[] = {
 	0
 } ;
 
-static const int	sigints[] = {
+static cint	sigints[] = {
 	SIGINT,
 	SIGTERM,
 	SIGQUIT,
 	0
 } ;
 
-static const char *argopts[] = {
+static cchar *argopts[] = {
 	"ROOT",
 	"VERSION",
 	"VERBOSE",
@@ -443,7 +401,7 @@ static const struct mapex	mapexs[] = {
 	{ 0, 0 }
 } ;
 
-static const char *akonames[] = {
+static cchar *akonames[] = {
 	"quiet",
 	"runint",
 	nullptr
@@ -456,13 +414,13 @@ enum akonames {
 } ;
 
 #if	CF_ENVIRON
-static const char *strvar_motdun = "RESOLVES_USERNAME" ;
-static const char *strvar_motdgn = "RESOLVES_GROUPNAME" ;
-static const char *strvar_motduid = "RESOLVES_UID" ;
-static const char *strvar_motdgid = "RESOLVES_GID" ;
+static cchar *strvar_motdun = "RESOLVES_USERNAME" ;
+static cchar *strvar_motdgn = "RESOLVES_GROUPNAME" ;
+static cchar *strvar_motduid = "RESOLVES_UID" ;
+static cchar *strvar_motdgid = "RESOLVES_GID" ;
 #endif /* CF_ENVIRON */
 
-static const char *badenvs[] = {
+static cchar *badenvs[] = {
 	"_",
 	"TMOUT",
 	nullptr
@@ -506,18 +464,18 @@ void	*contextp ;
 	int	f_child = false ;
 	int	f ;
 
-	const char	*po_admin = PO_ADMIN ;
+	cchar	*po_admin = PO_ADMIN ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*argval = nullptr ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*argval = nullptr ;
 	char	argpresent[MAXARGGROUPS] ;
-	const char	*pr = nullptr ;
-	const char	*sn = nullptr ;
-	const char	*afname = nullptr ;
-	const char	*ofname = nullptr ;
-	const char	*efname = nullptr ;
-	const char	*mntfname = nullptr ;
-	const char	*cp ;
+	cchar	*pr = nullptr ;
+	cchar	*sn = nullptr ;
+	cchar	*afname = nullptr ;
+	cchar	*ofname = nullptr ;
+	cchar	*efname = nullptr ;
+	cchar	*mntfname = nullptr ;
+	cchar	*cp ;
 
 
 	if (contextp != nullptr) lib_initenviron() ;
@@ -595,7 +553,7 @@ void	*contextp ;
 	    f_optminus = (*argp == '-') ;
 	    f_optplus = (*argp == '+') ;
 	    if ((argl > 1) && (f_optminus || f_optplus)) {
-		const int	ach = MKCHAR(argp[1]) ;
+		cint	ach = MKCHAR(argp[1]) ;
 
 	        if (isdigitlatin(ach)) {
 
@@ -1139,7 +1097,7 @@ void	*contextp ;
 	        afname = STDFNIN ;
 
 	    if ((rs = shio_open(afp,afname,"r",0666)) >= 0) {
-		const int	llen = LINEBUFLEN ;
+		cint	llen = LINEBUFLEN ;
 	        int	len ;
 	        char	lbuf[LINEBUFLEN + 1] ;
 
@@ -1415,9 +1373,9 @@ struct locinfo	*lip ;
 	int	envc = 0 ;
 	int	size ;
 
-	const char	**envp ;
-	const char	**envv ;
-	const char	*ep ;
+	cchar	**envp ;
+	cchar	**envv ;
+	cchar	*ep ;
 
 	char	*p ;
 
@@ -1431,8 +1389,8 @@ struct locinfo	*lip ;
 	if (rs < 0)
 	    goto ret0 ;
 
-	lip->envv = (const char **) p ;
-	envv = (const char **) p ;
+	lip->envv = (cchar **) p ;
+	envv = (cchar **) p ;
 	for (i = 0 ; envp[i] != nullptr ; i += 1) {
 	    ep = envp[i] ;
 	    if ((matstr(badenvs,ep,-1) < 0) && (strncmp(ep,"RESOLVES_",5) != 0)) {
@@ -1486,7 +1444,7 @@ struct client	*cip ;
 
 	if ((rs >= 0) && (lip->un != nullptr)) {
 	    if (i++ < EXTRAENVS) {
-		const char	*vp = lip->un ;
+		cchar	*vp = lip->un ;
 	        rs = locinfo_addenvstr(lip,envc,strvar_motdun,vp,-1) ;
 	        envc = rs ;
 	    } else rs = SR_NOANODE ;
@@ -1494,7 +1452,7 @@ struct client	*cip ;
 
 	if ((rs >= 0) && (lip->groupname[0] != '\0')) {
 	    if (i++ < EXTRAENVS) {
-		const char	*vp = lip->groupname ;
+		cchar	*vp = lip->groupname ;
 	        rs = locinfo_addenvstr(lip,envc,strvar_motdgn,vp,-1) ;
 	        envc = rs ;
 	    } else rs = SR_NOANODE ;
@@ -1533,7 +1491,7 @@ ret0:
 local int locinfo_addenvdig(lip,envc,s,iw)
 struct locinfo	*lip ;
 int		envc ;
-const char	*s ;
+cchar	*s ;
 int		iw ;
 {
 	int	rs = SR_OK ;
@@ -1560,8 +1518,8 @@ int		iw ;
 local int locinfo_addenvstr(lip,envc,kn,vp,vl)
 struct locinfo	*lip ;
 int		envc ;
-const char	*kn ;
-const char	*vp ;
+cchar	*kn ;
+cchar	*vp ;
 int		vl ;
 {
 	int	rs ;
@@ -1597,7 +1555,7 @@ struct locinfo	*lip ;
 	int	rs1 ;
 	int	f_created = false ;
 
-	const char	*mdn = nullptr ;
+	cchar	*mdn = nullptr ;
 
 	char	mdname[MAXPATHLEN + 1] ;
 
@@ -1631,7 +1589,7 @@ struct locinfo	*lip ;
 	} /* end if */
 
 	if ((rs >= 0) && (mdn != nullptr)) {
-	    const char	*cp ;
+	    cchar	*cp ;
 	    rs = uc_mallocstrw(mdn,-1,&cp) ;
 	    if (rs >= 0) {
 		lip->mdname = cp ;
@@ -1658,19 +1616,19 @@ struct locinfo	*lip ;
 	PROGINFO	*pip = lip->pip ;
 	int		rs = SR_OK ;
 	int		f_other = false ;
-	const char	*un = lip->un ;
+	cchar	*un = lip->un ;
 
 	if (lip->groupname[0] == '\0') {
 
 	    if ((un == nullptr) || (un[0] == '\0') || (un[0] == '-')) {
-		const int	unlen = USERNAMELEN ;
+		cint	unlen = USERNAMELEN ;
 		rs = getusername(lip->username,unlen,lip->uid) ;
 	    	lip->un = lip->username ;
 	    	lip->uid_motd = lip->uid ;
 	    	lip->gid_motd = lip->gid ;
 	    } else {
 	        struct passwd	pw ;
-	        const int	pwlen = getbufsize(getbufsize_pw) ;
+	        cint	pwlen = getbufsize(getbufsize_pw) ;
 	        char		*pwbuf ;
 	        if ((rs = uc_malloc((pwlen+1),&pwbuf)) >= 0) {
 	    	    rs = GETPW_NAME(&pw,pwbuf,pwlen,lip->un) ;
@@ -1687,7 +1645,7 @@ struct locinfo	*lip ;
 #endif
 
 	    if (rs >= 0) {
-	        const int	gnlen = GROUPNAMELEN ;
+	        cint	gnlen = GROUPNAMELEN ;
 	        rs = getgroupname(lip->groupname,gnlen,lip->gid_motd) ;
 	    }
 
@@ -1713,7 +1671,7 @@ struct locinfo	*lip ;
 
 	time_t	daytime = time(nullptr) ;
 
-	const int	to = TO_TMPFILE ;
+	cint	to = TO_TMPFILE ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
@@ -1802,7 +1760,7 @@ struct locinfo	*lip ;
 
 	if (lip->gid_prog < 0) {
 	    struct passwd	pw ;
-	    const int		pwlen = getbufsize(getbufsize_pw) ;
+	    cint		pwlen = getbufsize(getbufsize_pw) ;
 	    char		*pwbuf ;
 	    if ((rs = uc_malloc((pwlen+1),&pwbuf)) >= 0) {
 
@@ -1839,7 +1797,7 @@ struct locinfo	*lip ;
 
 local int locinfo_chgrp(lip,fname)
 struct locinfo	*lip ;
-const char	fname[] ;
+cchar	fname[] ;
 {
 	ustat	usb ;
 
@@ -1885,8 +1843,8 @@ KEYOPT		*kop ;
 	int	kl, vl ;
 	int	c = 0 ;
 
-	const char	*kp, *vp ;
-	const char	*cp ;
+	cchar	*kp, *vp ;
+	cchar	*cp ;
 
 
 	if ((cp = getenv(VAROPTS)) != nullptr)
@@ -1958,7 +1916,7 @@ ret0:
 local int procregular(pip,app,ofname)
 PROGINFO	*pip ;
 PARAMOPT	*app ;
-const char	ofname[] ;
+cchar	ofname[] ;
 {
 	struct locinfo	*lip = pip->lip ;
 
@@ -2014,7 +1972,7 @@ bad0:
 local int procdaemon(pip,app,mntfname)
 PROGINFO	*pip ;
 PARAMOPT	*app ;
-const char	mntfname[] ;
+cchar	mntfname[] ;
 {
 	struct locinfo	*lip = pip->lip ;
 
@@ -2037,7 +1995,7 @@ const char	mntfname[] ;
 	pip->daytime = time(nullptr) ;
 
 	if (pip->debuglevel > 0) {
-	    const char	*fmt ;
+	    cchar	*fmt ;
 
 	    shio_printf(pip->efp,"%s: mntfile=%s\n",
 	        pip->progname,mntfname) ;
@@ -2149,7 +2107,7 @@ const char	mntfname[] ;
 	    if ((! lip->f.fg) && (lip->pid != lip->sid)) u_setsid() ;
 
 	    if (lip->termfname[0] != '\0') {
-		const char	*tf = lip->termfname ;
+		cchar	*tf = lip->termfname ;
 	        rs1 = shio_open(pip->efp,tf,"w",0666) ;
 		if ((rs1 == SR_ACCESS) && (lip->uid != lip->euid)) {
 		    rs1 = perm(tf,lip->euid,lip->egid,nullptr,X_OK) ;
@@ -2243,8 +2201,8 @@ int		f ;
 	int	rs = SR_OK ;
 	int	cl ;
 
-	const char	*ccp ;
-	const char	*cp ;
+	cchar	*ccp ;
+	cchar	*cp ;
 
 	char	tmpfname[MAXPATHLEN + 1] ;
 
@@ -2310,7 +2268,7 @@ LFM		*plp ;
 local int procdown(pip,plp,mntfname)
 PROGINFO	*pip ;
 LFM		*plp ;
-const char	mntfname[] ;
+cchar	mntfname[] ;
 {
 	int	rs = SR_OK ;
 
@@ -2337,7 +2295,7 @@ ret0:
 local int procserve(pip,plp,mntfname)
 PROGINFO	*pip ;
 LFM		*plp ;
-const char	mntfname[] ;
+cchar	mntfname[] ;
 {
 	struct locinfo	*lip = pip->lip ;
 
@@ -2662,7 +2620,7 @@ PROGINFO	*pip ;
 
 	int	rs = SR_OK ;
 
-	const char	*pf = lip->pidfname ;
+	cchar	*pf = lip->pidfname ;
 
 	char	cname[MAXNAMELEN + 1] ;
 	char	tmpfname[MAXPATHLEN + 1] ;
@@ -2718,7 +2676,7 @@ SHIO		*ofp ;
 	int	rs = SR_OK ;
 	int	wlen = 0 ;
 
-	const char	**av ;
+	cchar	**av ;
 
 
 #if	CF_DEBUG
@@ -2765,7 +2723,7 @@ ret0:
 
 local int procregouter(pip,av,ofp)
 PROGINFO	*pip ;
-const char	**av ;
+cchar	**av ;
 SHIO		*ofp ;
 {
 	struct locinfo	*lip = pip->lip ;
@@ -2881,8 +2839,8 @@ ret0:
 
 local int procmotd(pip,groupname,av,fd)
 PROGINFO	*pip ;
-const char	groupname[] ;
-const char	**av ;
+cchar	groupname[] ;
+cchar	**av ;
 int		fd ;
 {
 	struct locinfo	*lip = pip->lip ;
@@ -2975,7 +2933,7 @@ PROGINFO	*pip ;
 LFM_CHECK	*lcp ;
 {
 	int		rs = SR_OK ;
-	const char	*np ;
+	cchar	*np ;
 	char		timebuf[TIMEBUFLEN + 1] ;
 
 	switch (lcp->stat) {
@@ -3068,8 +3026,8 @@ PARAMOPT	*app ;
 	int	cl ;
 	int	c = 0 ;
 
-	const char	*po = PO_ADMIN ;
-	const char	*cp ;
+	cchar	*po = PO_ADMIN ;
+	cchar	*cp ;
 
 
 	if ((rs = paramopt_curbegin(app,&pcur)) >= 0) {
@@ -3118,28 +3076,21 @@ void		*vap ;
 }
 /* end subroutine (deleter) */
 
-
 local int deleter_all(dap)
 struct dargs	*dap ;
 {
 	ustat	usb ;
-
 	FSDIR		dir ;
-
 	FSDIR_ENT	de ;
-
 	vecstr		files ;
-
 	time_t		daytime = time(nullptr) ;
-
-	const int	to = TO_TMPFILE ;
-
+	cint	to = TO_TMPFILE ;
 	int	rs = SR_OK ;
 	int	rs1 ;
 	int	fl ;
 	int	i ;
 
-	const char	*fp ;
+	cchar	*fp ;
 
 	char	tmpfname[MAXPATHLEN + 1] ;
 
