@@ -18,6 +18,7 @@
 
 /*******************************************************************************
 
+  	Description:
 	Open (within the BFILE framework) something.
 
 *******************************************************************************/
@@ -27,12 +28,16 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<csignal>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
 #include	<ctime>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<prognamevar.hh>
 #include	<mkfile.h>
 #include	<strx.h>
+#include	<hasx.h>		/* |hasbanename(3uc)| */
 #include	<localmisc.h>
 
 #include	"bfile.h"
@@ -54,25 +59,23 @@
 
 /* external subroutines */
 
-extern "C" {
-    extern char	*strbasename(char *) knoex ;
-}
+
+/* external variables */
 
 
 /* forward references */
 
-static int	quotevalue(cchar *,char *,int,cchar **) noex ;
-static int	newbuf(char *,int,int,char **) noex ;
-
-
-/* global data */
+local int	quotevalue(cchar *,char *,int,cchar **) noex ;
+local int	newbuf(char *,int,int,char **) noex ;
 
 
 /* local structures */
 
 
-/* exported subroutines */
+/* exported variables */
 
+
+/* exported subroutines */
 
 int bopenremote(fpa,environ,remotehost,cmd)
 bfile	*fpa[] ;
@@ -80,7 +83,7 @@ char	*environ[] ;
 char	remotehost[] ;
 char	cmd[] ;
 {
-	struct utsname	uts ;
+	UTSNAME		uts ;
 	bfile		jobfile, *jfp = &jobfile ;
 	pid_t		pid ;
 	int		rs = SR_BAD ;
@@ -89,12 +92,12 @@ char	cmd[] ;
 	int		f_cwd = FALSE ;
 	int		f_ksh = FALSE ;
 	cchar	*vp, *nvp ;
-	char		remotecmd[(MAXPATHLEN * 2) + 1] ;
-	char		jobfname[MAXPATHLEN + 1] ;
 	char		*cwd = NULL ;
 	char		**ep ;
 	char		*nodename, *domainname ;
 	char		valuebuf[MAXPATHLEN + 1] ;
+	char		remotecmd[(MAXPATHLEN * 2) + 1] ;
+	char		jobfname[MAXPATHLEN + 1] ;
 	char		displaybuf[DISBUFLEN + 1] ;
 	char		*cp ;
 	char		*cmd_shell = NULL ;
@@ -165,7 +168,6 @@ char	cmd[] ;
 /* get what SHELL we will be using */
 
 	if ((cmd_shell = getenv("SHELL")) == NULL) {
-
 	    f_ksh = TRUE ;
 	    cmd_shell = "/bin/ksh" ;
 	}
@@ -177,8 +179,9 @@ char	cmd[] ;
 
 /* what SHELL to use on the remote side ? */
 
-	if ((! f_ksh) || (strcmp(strbasename(cmd_shell),"ksh") == 0))
+	if ((! f_ksh) || hasbsename(cmd_shell¸-1,"ksh")) {
 	    f_ksh = TRUE ;
+	}
 
 #if	CF_DEBUGS
 	debugprintf("bopenremote: f_ksh=%d\n",f_ksh) ;
@@ -447,7 +450,7 @@ char	host[] ;
 #endif /* COMMENT */
 
 
-static int quotevalue(vs,buf,buflen,nvpp)
+local int quotevalue(vs,buf,buflen,nvpp)
 cchar	vs[] ;
 char		buf[] ;
 int		buflen ;
@@ -557,25 +560,22 @@ badalloc:
 }
 /* end subroutine (quotevalue) */
 
-static int newbuf(char *curbuf,int curbuflen,int f,char **nbpp) noex {
+local int newbuf(char *curbuf,int curbuflen,int f,char **nbpp) noex {
 	int		rs ;
 	int		newbuflen = 0 ;
 	caddr_t		p ;
 
 	if (f) {
-
 	    newbuflen = curbuflen * 2 ;
 	    rs = uc_realloc(curbuf,newbuflen,&p) ;
-
 	} else {
-
 	    newbuflen = curbuflen * 2 ;
 	    rs = uc_malloc(newbuflen,&p) ;
-
 	}
 
-	if (rs >= 0)
+	if (rs >= 0) {
 	    *nbpp = (char *) p ;
+	}
 
 	return (rs >= 0) ? newbuflen : rs ;
 }
