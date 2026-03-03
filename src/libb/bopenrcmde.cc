@@ -36,7 +36,9 @@
 #include	<ctime>
 #include	<usystem.h>
 #include	<getnodename.h>
+#include	<prognamevar.hh>
 #include	<strx.h>
+#include	<hasx.h>		/* |hasbasename(3uc)| */
 #include	<localmisc.h>
 
 #include	"bfile.h"
@@ -52,10 +54,6 @@
 /* external subroutines */
 
 extern int	mkfilejob(const char *,mode_t,char *) ;
-
-extern "C" {
-    extern char	*strbasename(char *) noex ;
-}
 
 
 /* forward references */
@@ -137,7 +135,6 @@ int bopenrcmde(bfile *fpa[],mainv environ,cc *remotehost,cc *cmd) noex {
 /* get what SHELL we will be using */
 
 	if ((cmd_shell = getenv("SHELL")) == NULL) {
-
 	    f_ksh = TRUE ;
 	    cmd_shell = "/bin/ksh" ;
 	}
@@ -149,8 +146,9 @@ int bopenrcmde(bfile *fpa[],mainv environ,cc *remotehost,cc *cmd) noex {
 
 /* what SHELL to use on the remote side? */
 
-	if ((! f_ksh) || (strcmp(strbasename(cmd_shell),"ksh") == 0))
+	if ((! f_ksh) || hasbasename(cmd_shell,-1,"ksh")) {
 	    f_ksh = TRUE ;
+	}
 
 #if	CF_DEBUGS
 	debugprintf("bopenrcmde: f_ksh=%d\n",f_ksh) ;
