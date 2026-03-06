@@ -137,7 +137,7 @@ RM= rm -f
 INCS= config.h defs.h
 
 
-OBJ00= main.o whatinfo.o proginfo.o proginfo_setpiv.o
+OBJ00= locate_main.o whatinfo.o proginfo.o proginfo_setpiv.o
 OBJ01= 
 OBJ02=
 OBJ03=
@@ -255,7 +255,7 @@ control:
 	date >> Control
 
 
-main.o:			main.c $(INCS)
+local_main.o:		locate_main.c $(INCS)
 
 whatinfo.o:		whatinfo.c config.h
 
@@ -264,20 +264,5 @@ proginfo.o:		proginfo.c $(INCS)
 procfile.o:		procfile.c $(INCS)
 
 checkname.o:		checkname.c $(INCS)
-
-
-userinfo.o:		userinfo.c userinfo.h
-
-vecstr_loadfile.o:	vecstr_loadfile.c
-
-vecstr_env.o:		vecstr_env.c
-
-realname.o:		realname.c realname.h
-
-ipasswd.o:		ipasswd.c ipasswd.h
-
-lastlogfile.o:		lastlogfile.c lastlogfile.h
-
-tmpx.o:			tmpx.c tmpx.h
 
 
