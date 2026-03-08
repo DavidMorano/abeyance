@@ -1,8 +1,9 @@
-/* main */
-
+/* main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 #define	CF_DEBUGS	0
-#define	CF_STAND		0
+#define	CF_STAND	0
 
 
 /*	Copyright (c) 1984, 1986, 1987, 1988, 1989 AT&T	*/
@@ -44,8 +45,7 @@
  * no action, then dies.
  */
 
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/param.h>
@@ -53,16 +53,19 @@
 #include <sys/systeminfo.h>
 #include <sys/wait.h>
 #include <netinet/in.h>
+#include <unistd.h>
 #include <netdb.h>
 #include <ctime>
-#include <unistd.h>
-#include <cstdlib>
-#include <cstring>
 #include <cerrno>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include <cstdio>
-
+#include <cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<logfile.h>
 #include	<mallocstuff.h>
+#include	<prognamevar.hh>
 
 #include	"config.h"
 #include	"defs.h"
@@ -71,12 +74,7 @@
 
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
 extern int	listenudp(int,const char *,const char *,int) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strbasename(char *) ;
-extern char	*timestr_log(time_t,char *) ;
 
 extern void print_error(char *string);
 extern void print_response(CTL_RESPONSE *response);
@@ -120,28 +118,21 @@ enum reqtypes {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv)
-int	argc ;
-char	*argv[] ;
-char	*envv[] ;
-{
-    struct sockaddr_in from;
-
+int main(int argc,mainv argv) {
+    	prognamevar	progname(argv[0]) ;
+	struct sockaddr_in from;
 	struct proginfo	pi, *pip = &pi ;
-
-    struct timeval tv;
-
-    socklen_t from_size = (socklen_t)sizeof(from);
-
-    fd_set rfds;
-
-	const int	af = AF_INET ;
-
-    int cc;
-    int name_length = sizeof(hostname);
+	struct timeval tv;
+	socklen_t from_size = (socklen_t)szof(from);
+	fd_set rfds;
+	cint	af = AF_INET ;
+	int cc;
+	int name_length = szof(hostname);
 	int	rs, len, sl ;
 	int	fd_listen ;
 	int	fd_debug = -1 ;
@@ -151,22 +142,20 @@ char	*envv[] ;
 	char	*cp, *cp2 ;
 
 
-	if ((cp = getenv(VARDEBUGFD1)) == NULL)
+	if ((cp = getenv(VARDEBUGFD1)) == NULL) {
 	    cp = getenv(VARDEBUGFD2) ;
-
-	if ((cp != NULL) && (cfdeci(cp,-1,&fd_debug) >= 0))
+	}
+	if ((cp != NULL) && (cfdeci(cp,-1,&fd_debug) >= 0)) {
 	    debugsetfd(fd_debug) ;
+	}
 
 #if	CF_DEBUGS
 	debugprintf("main: entered\n") ;
 #endif
 
-
-	memset(pip,0,sizeof(struct proginfo)) ;
-
+	memclear(pip) ;
 	pip->version = VERSION ;
-	pip->progname = strbasename(argv[0]) ;
-
+	pip->progname = progname ;
 
         (void) sysinfo(SI_HOSTNAME, hostname, name_length);
 
@@ -282,10 +271,10 @@ char	*envv[] ;
 		timestr_log(pip->daytime,timebuf)) ;
 #endif
 
-	cc = recvfrom(0, (char *)&request, sizeof (request), 0, 
+	cc = recvfrom(0, (char *)&request, szof (request), 0, 
 		      (struct sockaddr *)&from, &from_size);
 
-	if (cc != sizeof(request)) {
+	if (cc != szof(request)) {
 
 	    if (cc < 0 && errno != EINTR) {
 		print_error("receive");
@@ -324,9 +313,7 @@ char	*envv[] ;
 	} /* end if */
 
 /* process the message */
-
 	    process_request(pip,&request, &response);
-
 
 	    if (debug) printf("Response sent : \n");
 
@@ -352,7 +339,6 @@ char	*envv[] ;
 	} /* end if */
 
     } /* end for */
-
 
 /* we're done */
 done:
