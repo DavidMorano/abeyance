@@ -28,7 +28,8 @@ fi
 # execution-character-set option
 EOPT=
 if [[ -n "${LANG}" ]] ; then
-  EOPT="-finput-charset=${LANG##*.} -fexec-charset=${LANG##*.}"
+  EOPT+=" -finput-charset=${LANG##*.} "
+  EOPT+=" -fexec-charset=${LANG##*.} "
 fi
 # program
 PROG="print -u2 -- ${PN}: no-program"
