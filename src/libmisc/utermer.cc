@@ -1,4 +1,6 @@
 /* utermer SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 /* UNFINISHED! */
 
 /* "UNIX Terminal" helper routines */
@@ -21,6 +23,10 @@
 
 /*******************************************************************************
 
+  	Name:
+	utermer
+
+	Description:
 	These routines provide a stand-alone TTY environment.
 
 *******************************************************************************/
@@ -35,7 +41,9 @@
 #include	<cstdlib>
 #include	<cstdarg>
 #include	<cstring>
-#include	<usystem.h>
+#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<ascii.h>
 #include	<baops.h>
 #include	<chariq.h>
@@ -45,11 +53,15 @@
 #include	<strn.h>
 #include	<ischarx.h>
 #include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG */
 
 #include	"utermer.h"
 #include	"upt.h"
 #include	"piq.h"
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
@@ -114,23 +126,23 @@ struct utermer_crp { /* "channel request packet"? */
 
 /* forward references */
 
-static int	utermer_writeproc(UTERMER *,cchar *,int) ;
+local int	utermer_writeproc(UTERMER *,cchar *,int) ;
 
-static int	utermer_crpinit(UTERMER *) ;
-static int	utermer_crpfree(UTERMER *) ;
-static int	utermer_crpget(UTERMER *,UTERMER_CRP **) ;
-static int	utermer_crprel(UTERMER *,UTERMER_CRP *) ;
+local int	utermer_crpinit(UTERMER *) ;
+local int	utermer_crpfree(UTERMER *) ;
+local int	utermer_crpget(UTERMER *,UTERMER_CRP **) ;
+local int	utermer_crprel(UTERMER *,UTERMER_CRP *) ;
 
-static int	tty_wait(), tty_echo(), tty_risr() ;
-static int	tty_wps(UTERMER *,cchar *,int) ;
-static int	tty_loadchar(UTERMER *,cchar *,int) ;
+local int	tty_wait(), tty_echo(), tty_risr() ;
+local int	tty_wps(UTERMER *,cchar *,int) ;
+local int	tty_loadchar(UTERMER *,cchar *,int) ;
 
-static int	sinotprint(cchar *,int) ;
+local int	sinotprint(cchar *,int) ;
 
 
 /* static variables */
 
-static const uchar	dterms[] = {
+constexpr char		dterms[] = {
 	0xEF, 0xFC, 0xC0, 0xFE,
 	0x00, 0x00, 0x00, 0x00, 
 	0x00, 0x00, 0x00, 0x00, 
@@ -142,35 +154,31 @@ static const uchar	dterms[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
 /* TTY initialization routine */
-int utermer_start(op,fd)
-UTERMER		*op ;
-int		fd ;
-{
-	struct termios	*tp ;
+int utermer_start(utermer *op,int fd) noex {
+	TERMIOS	*tp ;
 	int		rs ;
 
-	if (op == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
 
 	if (fd < 0)
 	    return SR_INVALID ;
 
-	memset(op,0,sizeof(UTERMER)) ;
-
+	memclear(op) ;
 	tp = &op->ts_new ;
 
 	op->fd = fd ;
-
 	op->stat = 0 ;
-	op->f.co = FALSE ;
-	op->f.cc = FALSE ;
-
+	op->f.co = false ;
+	op->f.cc = false ;
 	op->mode = 0 ;
 	op->loopcount = 0 ;
-	op->basetime = time(NULL) ;
+	op->basetime = time(nullptr) ;
 
 /* initialize the UNIX line */
 
@@ -266,7 +274,7 @@ UTERMER		*op ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 
-	if (op == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
 	if (op->magic != UTERMER_MAGIC) return SR_NOTOPEN ;
 
 	rs1 = utermer_crpfree(op) ;
@@ -303,7 +311,7 @@ UTERMER		*op ;
 {
 	int		rs ;
 
-	if (op == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
 	if (op->magic != UTERMER_MAGIC) return SR_NOTOPEN ;
 
 	rs = uc_tcsetattr(op->fd,TCSADRAIN,&op->ts_old) ;
@@ -319,7 +327,7 @@ UTERMER		*op ;
 {
 	int		rs ;
 
-	if (op == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
 	if (op->magic != UTERMER_MAGIC) return SR_NOTOPEN ;
 
 	rs = uc_tcsetattr(op->fd,TCSADRAIN,&op->ts_new) ;
@@ -336,7 +344,7 @@ int utermer_control(UTERMER *op,int cmd,...)
 	int		rs = SR_OK ;
 	int		iw, *iwp ;
 
-	if (op == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
 	if (op->magic != UTERMER_MAGIC) return SR_NOTOPEN ;
 
 #if	CF_DEBUGS
@@ -357,7 +365,7 @@ int utermer_control(UTERMER *op,int cmd,...)
 	case fm_getmode:
 	    iwp = (int *) va_arg(ap,int *) ;
 
-	    if (iwp != NULL)
+	    if (iwp != nullptr)
 	        *iwp = op->mode ;
 
 	    break ;
@@ -390,7 +398,7 @@ ret0:
 int utermer_status(UTERMER *op,int cmd,...)
 {
 
-	if (op == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
 	if (op->magic != UTERMER_MAGIC) return SR_NOTOPEN ;
 
 	return SR_NOTSUP ;
@@ -409,12 +417,12 @@ uchar		*terms ;
 UTERMER_BDESC	*lpp ;
 UTERMER_BDESC	*llp ;
 {
-	UTERMER_CRP	*crp = NULL ;
+	UTERMER_CRP	*crp = nullptr ;
 	int		rs = SR_OK ;
 	int		fc ;
 
-	if (op == NULL) return SR_FAULT ;
-	if (ubuf == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
+	if (ubuf == nullptr) return SR_FAULT ;
 	if (op->magic != UTERMER_MAGIC) return SR_NOTOPEN ;
 
 #if	CF_DEBUGS
@@ -437,13 +445,13 @@ UTERMER_BDESC	*llp ;
 	crp->csp = csp ;
 	crp->data.dbuf = ubuf ;
 	crp->data.dlen = ulen ;
-	if (lpp != NULL)
+	if (lpp != nullptr)
 	    crp->prompt = *lpp ;
-	if (llp != NULL)
+	if (llp != nullptr)
 	    crp->load = *llp ;
 	crp->to = timeout ;
 	crp->fc = fc ;
-	crp->terms = (terms != NULL) ? terms : dterms ;
+	crp->terms = (terms != nullptr) ? terms : dterms ;
 
 	rs = ciq_ins(&op->rq,crp) ;
 	if (rs < 0)
@@ -484,7 +492,7 @@ UTERMER_BDESC	*llp ;
 
 	memset(&csb,0,sizeof(UTERMER_CS)) ;
 
-	rs = utermer_reader(op,&csb,ubuf,ulen,timeout,fc,NULL,kpp,llp) ;
+	rs = utermer_reader(op,&csb,ubuf,ulen,timeout,fc,nullptr,kpp,llp) ;
 
 	if (rs >= 0) {
 	}
@@ -501,7 +509,7 @@ int		rlen ;
 {
 
 
-	return utermer_reade(op,rbuf,rlen,-1,0,NULL,NULL) ;
+	return utermer_reade(op,rbuf,rlen,-1,0,nullptr,nullptr) ;
 }
 /* end subroutine (utermer_read) */
 
@@ -515,7 +523,7 @@ int		wlen ;
 	int		rs = SR_OK ;
 	int		tlen = 0 ;
 
-	if (op == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
 	if (op->magic != UTERMER_MAGIC) return SR_NOTOPEN ;
 
 	tlen = 0 ;
@@ -570,7 +578,7 @@ UTERMER		*op ;
 int		fc, cparam ;
 {
 
-	if (op == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
 	if (op->magic != UTERMER_MAGIC) return SR_NOTOPEN ;
 
 	return SR_OK ;
@@ -584,7 +592,7 @@ UTERMER		*op ;
 {
 	int		rs ;
 
-	if (op == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
 	if (op->magic != UTERMER_MAGIC) return SR_NOTOPEN ;
 
 	rs = tty_wait(op,0) ;
@@ -600,7 +608,7 @@ UTERMER		*op ;
 /* private subroutines */
 
 
-static int utermer_crpinit(op)
+local int utermer_crpinit(op)
 UTERMER		*op ;
 {
 	int	rs ;
@@ -613,7 +621,7 @@ UTERMER		*op ;
 /* end subroutine (utermer_crpinit) */
 
 
-static int utermer_crpfree(op)
+local int utermer_crpfree(op)
 UTERMER		*op ;
 {
 	UTERMER_CRP	*ep ;
@@ -633,7 +641,7 @@ UTERMER		*op ;
 /* end subroutine (utermer_crpfree) */
 
 
-static int utermer_crpget(op,epp)
+local int utermer_crpget(op,epp)
 UTERMER_CRP	**epp ;
 UTERMER		*op ;
 {
@@ -646,13 +654,13 @@ UTERMER		*op ;
 	    rs = uc_malloc(size,&ep) ;
 	}
 
-	*epp = (rs >= 0) ? ep : NULL ;
+	*epp = (rs >= 0) ? ep : nullptr ;
 	return rs ;
 }
 /* end subroutine (utermer_crpget) */
 
 
-static int utermer_crprel(op,ep)
+local int utermer_crprel(op,ep)
 UTERMER		*op ;
 UTERMER_CRP	*ep ;
 {
@@ -669,17 +677,17 @@ UTERMER_CRP	*ep ;
 /* end subroutine (utermer_crprel) */
 
 
-static int utermer_tread(op)
+local int utermer_tread(op)
 UTERMER		*op ;
 {
 	int		rs = SR_OK ;
 	int		c = -1 ;
 	int		count = 0 ;
-	char		*terms = NULL ;
+	char		*terms = nullptr ;
 	uchar		ch ;			/* MUST! be a character */
 
-	if (op == NULL) return SR_FAULT ;
-	if (rbuf == NULL) return SR_FAULT ;
+	if (op == nullptr) return SR_FAULT ;
+	if (rbuf == nullptr) return SR_FAULT ;
 	if (op->magic != UTERMER_MAGIC) return SR_NOTOPEN ;
 
 #if	CF_DEBUGS
@@ -693,20 +701,20 @@ UTERMER		*op ;
 	if (fc & fm_noecho)
 	    fc |= fm_notecho ;
 
-	if (terms == NULL)
+	if (terms == nullptr)
 	    terms = (char *) dterms ;
 
-	op->f.cc = FALSE ;
-	op->f.co = FALSE ;		/* cancel ^O effect */
+	op->f.cc = false ;
+	op->f.co = false ;		/* cancel ^O effect */
 
-	op->f.read = TRUE ;		/* read is in progress */
+	op->f.read = true ;		/* read is in progress */
 
 /* top of further access */
 top:
-	if ((rs >= 0) && (lpp != NULL) && (lpp->plen > 0))
+	if ((rs >= 0) && (lpp != nullptr) && (lpp->plen > 0))
 	    rs = tty_wps(op,lpp->pbuf,lpp->plen) ;
 
-	if ((rs >= 0) && (llp != NULL) && (llp->llen > 0))
+	if ((rs >= 0) && (llp != nullptr) && (llp->llen > 0))
 	    rs = tty_loadchar(op,llp->lbuf,llp->llen) ;
 
 	count = 0 ;
@@ -714,7 +722,7 @@ top:
 /* check TA buffer first */
 next:
 	while ((rs >= 0) && (count < rlen)) {
-	    int	f_eot = FALSE ;
+	    int	f_eot = false ;
 
 	    while (charq_rem(&op->taq,&ch) < 0) {
 
@@ -762,7 +770,7 @@ next:
 
 		case CH_EOT:
 		    if (count == 0)
-		        f_eot = TRUE ;
+		        f_eot = true ;
 
 		    c = -1 ;
 		    break ;
@@ -792,8 +800,8 @@ next:
 
 	                rs = tty_echo(op," ^R\r\n",5) ;
 
-	                if ((rs >= 0) && (lpp != NULL) && 
-				(lpp->pbuf != NULL) && (lpp->plen > 0))
+	                if ((rs >= 0) && (lpp != nullptr) && 
+				(lpp->pbuf != nullptr) && (lpp->plen > 0))
 	                    rs = tty_wps(op,lpp->pbuf,lpp->plen) ;
 
 	                if ((rs >= 0) && (count > 0))
@@ -873,13 +881,13 @@ ret0:
 	debugprintf("utermer_reade: ret rs=%d count=%u\n",rs,count) ;
 #endif
 
-	op->f.read = FALSE ;
+	op->f.read = false ;
 	return (rs >= 0) ? count : rs ;
 }
 /* end subroutine (utermer_tread) */
 
 
-static int utermer_writeproc(op,buf,buflen)
+local int utermer_writeproc(op,buf,buflen)
 UTERMER		*op ;
 cchar	buf[] ;
 int		buflen ;
@@ -891,7 +899,7 @@ int		buflen ;
 	tlen = buflen ;
 	tp = strnchr(buf,buflen,'\n') ;
 
-	if (tp != NULL) {
+	if (tp != nullptr) {
 	    BUFFER	pb ;
 
 	    if ((rs = buffer_start(&pb,(buflen + 10))) >= 0) {
@@ -907,7 +915,7 @@ int		buflen ;
 	        bl -= ((tp + 1) - bp) ;
 	        bp = (tp + 1) ;
 
-	        while ((tp = strnchr(bp,bl,'\n')) != NULL) {
+	        while ((tp = strnchr(bp,bl,'\n')) != nullptr) {
 
 	            buffer_buf(&pb,bp,(tp - bp)) ;
 
@@ -942,7 +950,7 @@ ret0:
 
 
 /* write out a prompt string */
-static int tty_wps(op,buf,buflen)
+local int tty_wps(op,buf,buflen)
 UTERMER		*op ;
 cchar	buf[] ;
 int		buflen ;
@@ -1007,7 +1015,7 @@ ret0:
 /* end subroutine (tty_wps) */
 
 
-static int tty_loadchar(op,pbuf,pbuflen)
+local int tty_loadchar(op,pbuf,pbuflen)
 UTERMER		*op ;
 cchar	pbuf[] ;
 int		pbuflen ;
@@ -1034,7 +1042,7 @@ int		pbuflen ;
 
 
 /* wait for a character to arrive */
-static int tty_wait(op,timeout)
+local int tty_wait(op,timeout)
 UTERMER		*op ;
 int		timeout ;
 {
@@ -1067,7 +1075,7 @@ int		timeout ;
 
 	len = 0 ;
 	op->timeout = timeout ;
-	daytime = time(NULL) ;
+	daytime = time(nullptr) ;
 
 	lasttime = daytime ;
 
@@ -1078,14 +1086,14 @@ int		timeout ;
 	rs = u_read(op->fd,cbuf,TTY_READCHARS) ;
 
 	len = rs ;
-	f_starting = TRUE ;
+	f_starting = true ;
 	goto enter ;
 
 #endif /* CF_FIRSTREAD */
 
 /* loop it */
 loop:
-	f_starting = FALSE ;
+	f_starting = false ;
 
 #if	CF_DEBUGS
 	debugprintf("tty_wait: top loop, timeout=%d\n",op->timeout) ;
@@ -1147,7 +1155,7 @@ enter:
 
 	if (len == 0) {
 
-	    daytime = time(NULL) ;
+	    daytime = time(nullptr) ;
 
 	    if (op->timeout >= 0) {
 
@@ -1219,7 +1227,7 @@ ret0:
 
 
 /* check for receiver got some thing */
-static int tty_risr(op,buf,buflen)
+local int tty_risr(op,buf,buflen)
 UTERMER		*op ;
 cchar	buf[] ;
 int		buflen ;
@@ -1228,7 +1236,7 @@ int		buflen ;
 
 	int	rs = SR_OK ;
 	int	i ;
-	int	f_dle = FALSE ;
+	int	f_dle = false ;
 
 	uchar	ch ;
 
@@ -1239,20 +1247,20 @@ int		buflen ;
 	    switch (c) {
 
 	    case CH_XOFF:
-	        op->f.suspend = TRUE ;
-	        op->f.onint = FALSE ;
+	        op->f.suspend = true ;
+	        op->f.onint = false ;
 	        break ;
 
 	    case CH_XON:
-	        op->f.suspend = FALSE ;
-	        op->f.onint = TRUE ;
+	        op->f.suspend = false ;
+	        op->f.onint = true ;
 	        break ;
 
 	    case CH_SO:
 	        if (op->f.co) {
-	            op->f.co = FALSE ;
+	            op->f.co = false ;
 	        } else {
-	            op->f.co = TRUE ;
+	            op->f.co = true ;
 	            rs = tty_echo(op," ^O\r\n",5) ;
 
 	        }
@@ -1262,19 +1270,19 @@ int		buflen ;
 	    case CH_ETX:
 	        rs = tty_echo(op," ^C\r\n",5) ;
 
-	        op->f.cc = TRUE ;
-	        op->f.rw = TRUE ;
+	        op->f.cc = true ;
+	        op->f.rw = true ;
 	        break ;
 
 	    case CH_CY:
 	        rs = tty_echo(op," ^Y\r\n",5) ;
 
-	        op->f.cc = TRUE ;
-	        op->f.rw = TRUE ;
+	        op->f.cc = true ;
+	        op->f.rw = true ;
 	        break ;
 
 	    case CH_DLE:
-	        f_dle = TRUE ;
+	        f_dle = true ;
 	        break ;
 
 	    default:
@@ -1286,7 +1294,7 @@ int		buflen ;
 
 	            rs = charq_ins(&op->taq,c) ;
 
-	            op->f.rw = TRUE ;
+	            op->f.rw = true ;
 
 	        }
 
@@ -1303,7 +1311,7 @@ int		buflen ;
 
 
 /* echo */
-static int tty_echo(op,buf,buflen)
+local int tty_echo(op,buf,buflen)
 UTERMER		*op ;
 char		buf[] ;
 int		buflen ;
@@ -1334,29 +1342,16 @@ int		buflen ;
 }
 /* end subroutine (tty_echo) */
 
-
-static int sinotprint(buf,buflen)
-cchar	buf[] ;
-int		buflen ;
-{
+local int sinotprint(cchar *buf,int buflen) noex {
 	uint	c ;
-
 	int	i ;
 	int	f ;
-
-
 	for (i = 0 ; i < buflen ; i += 1) {
-
 	    c = buf[i] ;
 	    f = isprintlatin(c) ;
-
 	    f = f || (c == CH_SI) || (c == CH_SO) ;
-
-	    if (! f)
-	        return i ;
-
+	    if (! f) return i ;
 	} /* end for */
-
 	return -1 ;
 }
 /* end subroutine (sinotprint) */
