@@ -174,12 +174,6 @@ import libutil ;			/* |lenstr(3u)| */
 
 /* external subroutines */
 
-#if	CF_DEBUGS || CF_DEBUGN
-extern int	nprintf(cchar *,...) noex ;
-extern int	debugprintf(cchar *,...) noex ;
-extern int	strlinelen(cchar *,int,int) noex ;
-#endif
-
 
 /* external variables */
 
@@ -201,55 +195,55 @@ struct resolves_mapdir {
 int 		resolves_procid(RESOLVES *,RESOLVES_ID *,
 			cchar **,int) ;
 
-static int	resolves_mapfind(RESOLVES *,time_t) ;
-static int	resolves_maplose(RESOLVES *) ;
-static int	resolves_mapfname(RESOLVES *,char *) ;
-static int	resolves_schedload(RESOLVES *,vecstr *) ;
-static int	resolves_checker(RESOLVES *,time_t) ;
-static int	resolves_envbegin(RESOLVES *) ;
-static int	resolves_envend(RESOLVES *) ;
-static int	resolves_envadds(RESOLVES *,STRPACK *,
+local int	resolves_mapfind(RESOLVES *,time_t) ;
+local int	resolves_maplose(RESOLVES *) ;
+local int	resolves_mapfname(RESOLVES *,char *) ;
+local int	resolves_schedload(RESOLVES *,vecstr *) ;
+local int	resolves_checker(RESOLVES *,time_t) ;
+local int	resolves_envbegin(RESOLVES *) ;
+local int	resolves_envend(RESOLVES *) ;
+local int	resolves_envadds(RESOLVES *,STRPACK *,
 			cchar **,RESOLVES_ID *) ;
-static int	resolves_envstore(RESOLVES *,STRPACK *,
+local int	resolves_envstore(RESOLVES *,STRPACK *,
 			cchar **,int, cchar *,int) ;
-static int 	resolves_processor(RESOLVES *,cchar **,
+local int 	resolves_processor(RESOLVES *,cchar **,
 			cchar **, cchar *,int) ;
-static int	resolves_idcheck(RESOLVES *,RESOLVES_ID *,char *) ;
-static int	resolves_ufindstart(RESOLVES *) ;
-static int	resolves_ufindfinish(RESOLVES *) ;
-static int	resolves_ufindlook(RESOLVES *,char *,uid_t) ;
+local int	resolves_idcheck(RESOLVES *,RESOLVES_ID *,char *) ;
+local int	resolves_ufindstart(RESOLVES *) ;
+local int	resolves_ufindfinish(RESOLVES *) ;
+local int	resolves_ufindlook(RESOLVES *,char *,uid_t) ;
 
-static int	mapper_start(RESOLVES_MAPPER *,time_t,cchar *) ;
-static int	mapper_finish(RESOLVES_MAPPER *) ;
-static int	mapper_check(RESOLVES_MAPPER *,time_t) ;
-static int	mapper_process(RESOLVES_MAPPER *,cchar **,
+local int	mapper_start(RESOLVES_MAPPER *,time_t,cchar *) ;
+local int	mapper_finish(RESOLVES_MAPPER *) ;
+local int	mapper_check(RESOLVES_MAPPER *,time_t) ;
+local int	mapper_process(RESOLVES_MAPPER *,cchar **,
 			cchar **, cchar *,int) ;
-static int	mapper_processor(RESOLVES_MAPPER *,cchar **,
+local int	mapper_processor(RESOLVES_MAPPER *,cchar **,
 			cchar **, cchar *,int) ;
-static int	mapper_mapload(RESOLVES_MAPPER *) ;
-static int	mapper_mapadd(RESOLVES_MAPPER *,cchar *,int,
+local int	mapper_mapload(RESOLVES_MAPPER *) ;
+local int	mapper_mapadd(RESOLVES_MAPPER *,cchar *,int,
 			cchar *,int) ;
-static int	mapper_mapfrees(RESOLVES_MAPPER *) ;
+local int	mapper_mapfrees(RESOLVES_MAPPER *) ;
 
 #if	CF_TESTPROC
-static int	mapper_lockcheck(RESOLVES_MAPPER *,cchar *) ;
+local int	mapper_lockcheck(RESOLVES_MAPPER *,cchar *) ;
 #endif
 
-static int	mapdir_start(RESOLVES_MAPDIR *,cchar *,int,
+local int	mapdir_start(RESOLVES_MAPDIR *,cchar *,int,
 			cchar *,int) ;
-static int	mapdir_finish(RESOLVES_MAPDIR *) ;
-static int	mapdir_process(RESOLVES_MAPDIR *,cchar **,
+local int	mapdir_finish(RESOLVES_MAPDIR *) ;
+local int	mapdir_process(RESOLVES_MAPDIR *,cchar **,
 			cchar **, cchar *,int) ;
-static int	mapdir_expand(RESOLVES_MAPDIR *) ;
-static int	mapdir_expander(RESOLVES_MAPDIR *) ;
-static int	mapdir_processor(RESOLVES_MAPDIR *,cchar **,
+local int	mapdir_expand(RESOLVES_MAPDIR *) ;
+local int	mapdir_expander(RESOLVES_MAPDIR *) ;
+local int	mapdir_processor(RESOLVES_MAPDIR *,cchar **,
 			cchar *,int) ;
-static int	mapdir_procout(RESOLVES_MAPDIR *,cchar **,
+local int	mapdir_procout(RESOLVES_MAPDIR *,cchar **,
 			cchar *, cchar *,int) ;
-static int	mapdir_procouter(RESOLVES_MAPDIR *,cchar **,
+local int	mapdir_procouter(RESOLVES_MAPDIR *,cchar **,
 			cchar *,int) ;
 
-static int	writeto(int,cchar *,int,int) ;
+local int	writeto(int,cchar *,int,int) ;
 
 
 /* local variables */
@@ -580,7 +574,7 @@ gid_t		gid ;
 /* private subroutines */
 
 
-static int resolves_mapfind(op,daytime)
+local int resolves_mapfind(op,daytime)
 RESOLVES		*op ;
 time_t		daytime ;
 {
@@ -625,7 +619,7 @@ bad0:
 /* end subroutine (resolves_mapfind) */
 
 
-static int resolves_maplose(op)
+local int resolves_maplose(op)
 RESOLVES	*op ;
 {
 	int		rs = SR_OK ;
@@ -642,7 +636,7 @@ RESOLVES	*op ;
 /* end subroutine (resolves_maplose) */
 
 
-static int resolves_mapfname(op,mapfname)
+local int resolves_mapfname(op,mapfname)
 RESOLVES	*op ;
 char		mapfname[] ;
 {
@@ -691,7 +685,7 @@ ret0:
 /* end subroutine (resolves_mapfname) */
 
 
-static int resolves_schedload(op,slp)
+local int resolves_schedload(op,slp)
 RESOLVES		*op ;
 vecstr		*slp ;
 {
@@ -713,7 +707,7 @@ vecstr		*slp ;
 }
 /* end subroutine (resolves_schedload) */
 
-static int resolves_checker(RESOLVED *op,time_t daytime) noex {
+local int resolves_checker(RESOLVED *op,time_t daytime) noex {
 	ptm		*mxp = &op->pm ;
 	int	rs = SR_OK ;
 	int	nchanged = 0 ;
@@ -760,7 +754,7 @@ ret0:
 /* end subroutine (resolves_checker) */
 
 
-static int resolves_envbegin(op)
+local int resolves_envbegin(op)
 RESOLVES		*op ;
 {
 	const int	es = envpre[0] ;
@@ -803,7 +797,7 @@ RESOLVES		*op ;
 /* end subroutine (resolves_envbegin) */
 
 
-static int resolves_envend(op)
+local int resolves_envend(op)
 RESOLVES		*op ;
 {
 
@@ -818,7 +812,7 @@ RESOLVES		*op ;
 /* end subroutine (resolves_envend) */
 
 
-static int resolves_envadds(op,spp,ev,idp)
+local int resolves_envadds(op,spp,ev,idp)
 RESOLVES		*op ;
 STRPACK		*spp ;
 cchar	**ev ;
@@ -895,7 +889,7 @@ RESOLVES_ID		*idp ;
 /* end subroutine (resolves_envadds) */
 
 
-static int resolves_envstore(op,spp,ev,n,ep,el)
+local int resolves_envstore(op,spp,ev,n,ep,el)
 RESOLVES		*op ;
 STRPACK		*spp ;
 cchar	*ev[] ;
@@ -923,7 +917,7 @@ int		el ;
 /* end subroutine (resolves_envstore) */
 
 
-static int resolves_idcheck(op,idp,ubuf)
+local int resolves_idcheck(op,idp,ubuf)
 RESOLVES	*op ;
 RESOLVES_ID	*idp ;
 char		*ubuf ;
@@ -976,7 +970,7 @@ char		*ubuf ;
 /* end subroutine (resolves_idcheck) */
 
 
-static int resolves_processor(op,ev,admins,groupname,fd)
+local int resolves_processor(op,ev,admins,groupname,fd)
 RESOLVES		*op ;
 cchar	**ev ;
 cchar	*groupname ;
@@ -1027,7 +1021,7 @@ ret0:
 /* end subroutine (resolves_processor) */
 
 
-static int resolves_ufindstart(op)
+local int resolves_ufindstart(op)
 RESOLVES		*op ;
 {
 	const int	maxent = 30 ;
@@ -1046,7 +1040,7 @@ RESOLVES		*op ;
 /* end subroutine (resolves_ufindstart) */
 
 
-static int resolves_ufindfinish(op)
+local int resolves_ufindfinish(op)
 RESOLVES		*op ;
 {
 	int		rs = SR_OK ;
@@ -1062,7 +1056,7 @@ RESOLVES		*op ;
 }
 /* end subroutine (resolves_ufindfinish) */
 
-static int resolves_ufindlook(RESOLVES *op,char *ubuf,uid_t uid) noex {
+local int resolves_ufindlook(RESOLVES *op,char *ubuf,uid_t uid) noex {
 	ptm		*mxp = &op->pm ;
 	int		rs ;
 	int		rs1 ;
@@ -1085,7 +1079,7 @@ static int resolves_ufindlook(RESOLVES *op,char *ubuf,uid_t uid) noex {
 }
 /* end subroutine (resolves_ufindlook) */
 
-static int mapper_start(mmp,daytime,fname)
+local int mapper_start(mmp,daytime,fname)
 RESOLVES_MAPPER	*mmp ;
 time_t		daytime ;
 cchar	fname[] ;
@@ -1175,7 +1169,7 @@ bad0:
 /* end subroutine (mapper_start) */
 
 
-static int mapper_finish(mmp)
+local int mapper_finish(mmp)
 RESOLVES_MAPPER	*mmp ;
 {
 	int	rs = SR_OK ;
@@ -1216,7 +1210,7 @@ RESOLVES_MAPPER	*mmp ;
 /* end subroutine (mapper_finish) */
 
 
-static int mapper_check(mmp,daytime)
+local int mapper_check(mmp,daytime)
 RESOLVES_MAPPER	*mmp ;
 time_t		daytime ;
 {
@@ -1297,7 +1291,7 @@ time_t		daytime ;
 /* end subroutine (mapper_check) */
 
 
-static int mapper_process(mmp,ev,admins,groupname,fd)
+local int mapper_process(mmp,ev,admins,groupname,fd)
 RESOLVES_MAPPER	*mmp ;
 cchar	**ev ;
 cchar	*admins[] ;
@@ -1396,7 +1390,7 @@ int		fd ;
 /* end subroutine (mapper_process) */
 
 
-static int mapper_processor(mmp,ev,admins,groupname,fd)
+local int mapper_processor(mmp,ev,admins,groupname,fd)
 RESOLVES_MAPPER	*mmp ;
 cchar	*ev[] ;
 cchar	*admins[] ;
@@ -1445,7 +1439,7 @@ int		fd ;
 
 #if	CF_PARAMFILE
 
-static int mapper_mapload(mmp)
+local int mapper_mapload(mmp)
 RESOLVES_MAPPER	*mmp ;
 {
 	ustat		sb ;
@@ -1507,7 +1501,7 @@ ret0:
 
 #else /* CF_PARAMFILE */
 
-static int mapper_mapload(mmp)
+local int mapper_mapload(mmp)
 RESOLVES_MAPPER	*mmp ;
 {
 	ustat	sb ;
@@ -1579,7 +1573,7 @@ ret0:
 #endif /* CF_PARAMFILE */
 
 
-static int mapper_mapadd(mmp,kp,kl,vp,vl)
+local int mapper_mapadd(mmp,kp,kl,vp,vl)
 RESOLVES_MAPPER	*mmp ;
 int		kl ;
 int		vl ;
@@ -1613,7 +1607,7 @@ cchar	*vp ;
 /* end subroutine (mapper_mapadd) */
 
 
-static int mapper_mapfrees(mmp)
+local int mapper_mapfrees(mmp)
 RESOLVES_MAPPER	*mmp ;
 {
 	RESOLVES_MAPDIR	*ep ;
@@ -1646,7 +1640,7 @@ RESOLVES_MAPPER	*mmp ;
 
 #if	CF_TESTPROC
 
-static int mapper_lockcheck(mmp,s)
+local int mapper_lockcheck(mmp,s)
 RESOLVES_MAPPER	*mmp ;
 cchar	*s ;
 {
@@ -1688,7 +1682,7 @@ cchar	*s ;
 #endif /* CF_TESTPROC */
 
 
-static int mapdir_start(ep,kp,kl,vp,vl)
+local int mapdir_start(ep,kp,kl,vp,vl)
 RESOLVES_MAPDIR	*ep ;
 cchar	*kp, *vp ;
 int		kl, vl ;
@@ -1740,7 +1734,7 @@ bad0:
 /* end subroutine (mapdir_start) */
 
 
-static int mapdir_finish(ep)
+local int mapdir_finish(ep)
 RESOLVES_MAPDIR	*ep ;
 {
 	int		rs = SR_OK ;
@@ -1770,7 +1764,7 @@ RESOLVES_MAPDIR	*ep ;
 /* end subroutine (mapdir_finish) */
 
 
-static int mapdir_process(ep,ev,admins,groupname,fd)
+local int mapdir_process(ep,ev,admins,groupname,fd)
 RESOLVES_MAPDIR	*ep ;
 cchar	*ev[] ;
 cchar	*admins[] ;
@@ -1872,7 +1866,7 @@ ret0:
 /* end subroutine (mapdir_process) */
 
 
-static int mapdir_expand(ep)
+local int mapdir_expand(ep)
 RESOLVES_MAPDIR	*ep ;
 {
 	const int	to_lock = TO_LOCK ;
@@ -1920,7 +1914,7 @@ ret0:
 /* end subroutine (mapdir_expand) */
 
 
-static int mapdir_expander(ep)
+local int mapdir_expander(ep)
 RESOLVES_MAPDIR	*ep ;
 {
 	const int	hlen = MAXPATHLEN ;
@@ -1997,7 +1991,7 @@ ret0:
 /* end subroutine (mapdir_expander) */
 
 
-static int mapdir_processor(ep,ev,groupname,fd)
+local int mapdir_processor(ep,ev,groupname,fd)
 RESOLVES_MAPDIR	*ep ;
 cchar	*ev[] ;
 cchar	groupname[] ;
@@ -2129,7 +2123,7 @@ ret0:
 
 
 /* we must return SR_NOENT if there was no file */
-static int mapdir_procout(ep,ev,dn,groupname,fd)
+local int mapdir_procout(ep,ev,dn,groupname,fd)
 RESOLVES_MAPDIR	*ep ;
 cchar	*ev[] ;
 cchar	dn[] ;
@@ -2165,7 +2159,7 @@ ret0:
 /* end subroutine (mapdir_procout) */
 
 
-static int mapdir_procouter(ep,ev,fname,ofd)
+local int mapdir_procouter(ep,ev,fname,ofd)
 RESOLVES_MAPDIR	*ep ;
 cchar	*ev[] ;
 cchar	fname[] ;
@@ -2233,7 +2227,7 @@ ret0:
 
 #if	CF_WRITETO
 
-static int writeto(wfd,wbuf,wlen,wto)
+local int writeto(wfd,wbuf,wlen,wto)
 int		wfd ;
 cchar	wbuf[] ;
 int		wlen ;
