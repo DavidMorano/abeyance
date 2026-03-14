@@ -1,4 +1,4 @@
-/* inetdomainname SUPPORT */
+/* inetdomainname SUPPORT (LIBMISC) */
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
@@ -90,8 +90,9 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstrings>		/* |strncasecmp(3c)| */
-#include	<usystem.h>
-#include	<filebuf.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<filer.h>
 #include	<sfx.h>
 #include	<sncpyx.h>
 #include	<strwcpy.h>
@@ -109,7 +110,7 @@
 #define	VARNODE		"NODE"
 #define	VARDOMAIN	"DOMAIN"
 
-#define	filebufLEN	1024
+#define	filerLEN	1024
 #define	TO_READ		30
 
 
@@ -137,7 +138,7 @@ struct guess {
 
 /* forward references */
 
-static char	*findguess(char *) noex ;
+local char	*findguess(char *) noex ;
 
 
 /* local variables */
@@ -151,7 +152,7 @@ constexpr guess		ga[] = {
 	{ "mt", "mt.lucent.com" },
 	{ "cb", "cb.lucent.com" },
 	{ nullptr, nullptr }
-} ;
+} ; /* end array */
 
 
 /* exported variables */
@@ -160,8 +161,8 @@ constexpr guess		ga[] = {
 /* exported subroutines */
 
 int inetdomainname(char *dbuf,int dlen,cchar *un,cchar *nodename) noex {
-	struct utsname	uu ;
-	struct hostent	he, *hep ;
+	UTSNAME		uu ;
+	HOSTENT		he, *hep ;
 
 	int	rs, rs1 ;
 	int	i, len ;
@@ -176,9 +177,9 @@ int inetdomainname(char *dbuf,int dlen,cchar *un,cchar *nodename) noex {
 	char	buf[BUFLEN + 1] ;
 	char	nodenamebuf[NODENAMELEN + 1], *nn = nodenamebuf ;
 
-
-	if (nodename != nullptr)
+	if (nodename) {
 	    nn = nodename ;
+	}
 
 	nn[0] = '\0' ;
 	un.nodename[0] = '\0' ;
@@ -188,11 +189,10 @@ int inetdomainname(char *dbuf,int dlen,cchar *un,cchar *nodename) noex {
 	nn0 = nn1 = getenv(VARNODE) ;
 
 	if ((nn1 == nullptr) || (nn1[0] == '\0')) {
-
 	    nn1 = uu.nodename ;
-	    if (u_uname(&uu) < 0)
+	    if (u_uname(&uu) < 0) {
 	        nn1[0] = '\0' ;
-
+	    }
 	} /* end if */
 
 	if ((nn1 != nullptr) && (nn1[0] != '\0')) {
@@ -220,8 +220,9 @@ int inetdomainname(char *dbuf,int dlen,cchar *un,cchar *nodename) noex {
 
 	    len = sfshrink(cp,-1,&cp1) ;
 
-	    if (len <= MAXHOSTNAMELEN)
+	    if (len <= MAXHOSTNAMELEN) {
 	        strwcpy(dn,cp1,len) ;
+	    }
 
 	} /* end if */
 
@@ -232,16 +233,16 @@ int inetdomainname(char *dbuf,int dlen,cchar *un,cchar *nodename) noex {
 
 /* get the first domain name in the variable (there can be several !) */
 
-	    while (CHAR_ISWHITE(*sp))
+	    while (CHAR_ISWHITE(*sp)) {
 	        sp += 1 ;
-
+	    }
 	    cp = sp ;
-	    while (*cp && (! CHAR_ISWHITE(*cp)) && (*cp != ':'))
+	    while (*cp && (! CHAR_ISWHITE(*cp)) && (*cp != ':')) {
 	        cp += 1 ;
-
-	    if ((cp - sp) <= MAXHOSTNAMELEN)
+	    }
+	    if ((cp - sp) <= MAXHOSTNAMELEN) {
 	        strwcpy(dn,sp,(cp - sp)) ;
-
+	    }
 	} /* end if (localdomain) */
 
 /* use the environment variable NODE, if it exists */
@@ -249,8 +250,9 @@ int inetdomainname(char *dbuf,int dlen,cchar *un,cchar *nodename) noex {
 	if ((dn[0] == '\0') &&
 	    (nn0 != nullptr) && ((cp = strchr(nn0,'.')) != nullptr)) {
 
-	    if (cp[1] != '\0')
+	    if (cp[1] != '\0') {
 	        strcpy(dn,(cp + 1)) ;
+	    }
 
 	} /* end if */
 
@@ -312,13 +314,12 @@ int inetdomainname(char *dbuf,int dlen,cchar *un,cchar *nodename) noex {
 /* resort to searching the RESOLVER configuration file ! */
 
 	if ((dn[0] == '\0') && ((rs = u_open(RESOLVCONF,O_RDONLY,0666)) >= 0)) {
-	    filebuf	b ;
 	    int		fd = rs ;
-
-	    rs = filebuf_start(&b,fd,0L,filebufLEN,0) ;
+	    filer	b ;
+	    rs = filer_start(&b,fd,0L,filerLEN,0) ;
 	    if (rs >= 0) {
 
-	        while ((rs = filebuf_readln(&b,buf,BUFLEN,TO_READ)) > 0) {
+	        while ((rs = filer_readln(&b,buf,BUFLEN,TO_READ)) > 0) {
 
 	            len = rs ;
 		    if (buf[len - 1] == '\n')
@@ -341,40 +342,27 @@ int inetdomainname(char *dbuf,int dlen,cchar *un,cchar *nodename) noex {
 	            if ((cp - cp1) <= 0) continue ;
 
 	            if (strncmp(cp1,"..",2) != 0) {
-
 	                strwcpy(dn,cp1,(cp - cp1)) ;
-
 	                break ;
-
-	            } else
+	            } else {
 	                f_badresolv = TRUE ;
-
+		    }
 	        } /* end while (reading lines) */
-
-	        filebuf_finish(&b) ;
-	    } /* end if (filebuf) */
-
+	        filer_finish(&b) ;
+	    } /* end if (filer) */
 	    u_close(fd) ;
 	} /* end if (opened RESOLV file) */
 
 /* OK, we try even harder (we guess) */
 
 #if	CF_GUESS
-
 	if (dn[0] == '\0') {
-
 	    if ((cp = findguess(nn)) != nullptr) {
-
 	        rs1 = sncpy1(dn,MAXHOSTNAMELEN,cp) ;
-
-		if (rs1 < 0)
-			dn[0] = '\0' ;
-
+		if (rs1 < 0) dn[0] = '\0' ;
 	    }
-
 	} /* end if */
 #endif /* CF_GUESS */
-
 
 /* remove any stupid trailing dots from the domain name if any */
 
@@ -393,7 +381,7 @@ int inetdomainname(char *dbuf,int dlen,cchar *un,cchar *nodename) noex {
 /* local subroutines */
 
 /* try guessing with possible leading string matches on nodename */
-static cchar *findguess(cchar *name) noex {
+local cchar *findguess(cchar *name) noex {
 	int	i ; /* used-afterwards */
 	for (i = 0 ; ga[i].node != nullptr ; i += 1) {
 	    cchar	*sp = name ;
