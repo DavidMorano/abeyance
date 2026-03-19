@@ -192,7 +192,7 @@ int hostsfile_start(HF *op,char *cdir,char *atfname,vecitem *eep) noex {
 
 /* initialize */
 
-	USTAT		sb ;
+	ustat		sb ;
 	custime		dt = getustime ;
 	bool		f_defcache = false ;
 	if ((rs = vecitem_start(op->flp,10,vecitem_PNOHOLES)) < 0)
@@ -635,7 +635,7 @@ int hostsfile_curenum(HF *op,HF_CUR *cp,HF_ENT **sepp) noex {
 
 /* check if the access tables files have changed */
 int hostsfile_check(HF *op,vecitem *eep) noex {
-	USTAT		sb ;
+	ustat		sb ;
 	HF_FI	*fep ;
 	time_t		daytime = time(nullptr) ;
 	int		rs, i ;
@@ -660,7 +660,7 @@ int hostsfile_check(HF *op,vecitem *eep) noex {
 /* private subroutines */
 
 static int hostsfile_checkfiles(HF *op,time_t daytime,vecitem *eep) noex {
-	USTAT		sb ;
+	ustat		sb ;
 	HF_FI	*fep ;
 	int		rs = SR_OK ;
 	int		i ;
@@ -693,12 +693,8 @@ static int hostsfile_checkfiles(HF *op,time_t daytime,vecitem *eep) noex {
 /* end subroutine (hostsfile_check) */
 
 static int hostsfile_parsefile(HF *op,int fi,vecitem *eep) noex {
-	USTAT		sb ;
 	HF_FI	*fep ;
 	HF_ENT	se ;
-	STRTAB		nst ;		/* name string table */
-	FIELD		fsb ;
-	bfile		file, *fp = &file ;
 	int		rs = SR_OK ;
 	int		i ;
 	int		len, line ;
@@ -718,11 +714,14 @@ static int hostsfile_parsefile(HF *op,int fi,vecitem *eep) noex {
 	    goto ret0 ;
 	}
 
+	bfile file, *fp = &file ;
 	rs = bopen(fp,fep->filename,"r",0664) ;
 	if (rs < 0)
 	    goto ret0 ;
 
+	ustat sb ;
 	rs = bcontrol(fp,BC_STAT,&sb) ;
+	csize fsize = size_t(sb.st_size) ;
 	if (rs < 0)
 	    goto done ;
 
@@ -733,9 +732,11 @@ static int hostsfile_parsefile(HF *op,int fi,vecitem *eep) noex {
 
 	fep->mtime = sb.st_mtime ;
 
-/* loop through the lines of the file */
+	/* loop through the lines of the file */
 
-	rs = strtab_start(&nst,(int) (sb.st_size / 2)) ;
+	cint fsz = intconv(fsize) ;
+	strtab nst ;		/* name string table */
+	rs = strtab_start(&nst,(fsz / 2)) ;
 	if (rs < 0)
 		goto bad2 ;
 
@@ -746,7 +747,6 @@ static int hostsfile_parsefile(HF *op,int fi,vecitem *eep) noex {
 	c_added = 0 ;
 	line = 0 ;
 	while ((len = breadln(fp,lbuf,LINELEN)) > 0) {
-		INETADDR	ia ;
 		int		cnamelen, csi, si ;
 		char		*cname ;
 
@@ -772,12 +772,13 @@ static int hostsfile_parsefile(HF *op,int fi,vecitem *eep) noex {
 
 	    if ((*cp == '\0') || (*cp == '#')) continue ;
 
+		field		fsb ;
 		if ((rs = field_start(&fsb,cp,len)) >= 0) {
 
 	    if ((fl = field_get(&fsb,arg_terms,&fp)) > 0) {
-
-		rs = inetaddr_startstr(&ia,fp,fl) ;
-
+		inetaddrs at = inetaddr_str ;
+		inetaddr ia ;
+		rs = inetaddr_start(&ia,at,fp,fl) ;
 		if (rs < 0) {
 			errline(eep,fep->filename,line) ;
 			continue ;
