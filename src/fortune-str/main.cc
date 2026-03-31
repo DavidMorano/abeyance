@@ -1,50 +1,48 @@
-/* main */
+/* main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* main subroutine to the "fortune-info" program */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time */
 #define	CF_DEBUG	0		/* run-time */
 
-
 /* revision history:
 
 	= 1998-08-01, David A­D­ Morano
-
 	This code was originally written.
-
 
 */
 
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /*******************************************************************
 
+  	Description:
 	This program is used to print out information about
 	fortune data files.
 
 	Synopsis:
-
 	fortune-info [input_file [outfile]] [-id] [-Vv]
-
 
 *********************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstdlib>
-#include	<cstring>
-#include	<ctype.h>
 #include	<ctime>
-
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<cstring>
 #include	<bfile.h>
 #include	<baops.h>
+#include	<prognamevar.hh>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
 
@@ -63,16 +61,12 @@
 
 /* external subroutines */
 
-extern int	matstr() ;
-extern int	cfdec() ;
-extern int	isdigitlatin(int) ;
-
 extern int	procfile() ;
 
 
 /* forward references */
 
-static void	helpfile(const char *,bfile *) ;
+local void	helpfile(cchar *,bfile *) ;
 
 
 /* local structures */
@@ -103,19 +97,16 @@ static char *argopts[] = {
 #define	ARGOPT_HELP		4
 
 
+/* exported variables */
 
 
+/* exported subroutines */
 
-
-int main(argc,argv)
-int	argc ;
-char	*argv[] ;
-{
+int main(int argc,mainv argv) {
+    	prognamevar	progname(argv[0]) ;
 	bfile		outfile, *ofp = &outfile ;
 	bfile		errfile, *efp = &errfile ;
-
 	struct global	*gp = &g ;
-
 	int	argr, argl, aol, avl ;
 	int	maxai, pan, npa, kwi, i ;
 	int	argnum ;
@@ -129,17 +120,15 @@ char	*argv[] ;
 	int	len2 ;
 	int	mode ;
 
-	const char	*argp, *aop, *avp ;
+	cchar	*argp, *aop, *avp ;
 	char	argpresent[NARGGROUPS] ;
 	char	linebuf[LINELEN + 1], *lbp ;
 	char	buf[BUFLEN + 1] ;
-	const char	*ifname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*cp ;
+	cchar	*ifname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*cp ;
 
-
-	g.progname = strbasename(argv[0]) ;
-
+	g.progname = progname ;
 	(void) bopen(efp,BFILE_STDERR,"wca",0666) ;
 
 	g.efp = efp ;
@@ -669,37 +658,24 @@ badoutopen:
 
 badret:
 	bclose(ofp) ;
-
 	bclose(efp) ;
-
 	return BAD ;
 }
 /* end subroutine (main) */
 
 
-
 /* LOCAL SUBROUTINES */
 
-
-
-static void helpfile(f,ofp)
-const char	f[] ;
+local void helpfile(f,ofp)
+cchar	f[] ;
 bfile		*ofp ;
 {
 	bfile	file, *ifp = &file ;
-
-
-	if ((f == NULL) || (f[0] == '\0')) 
-	    return ;
-
+	if ((f == NULL) || (f[0] == '\0')) return ;
 	if (bopen(ifp,f,"r",0666) >= 0) {
-
 	    bcopyblock(ifp,ofp,-1) ;
-
 	    bclose(ifp) ;
-
 	}
-
 }
 /* end subroutine (helpfile) */
 
