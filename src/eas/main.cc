@@ -23,10 +23,9 @@
 
 /****************************************************************************
 
-	* said above *
+	Description:
 
 	Synopsis:
-
 	$ eas [sub1 [sub2 [...]]] [-s] 
 		[-o outputfile] [-i inputfile] [-a] [-VD?]
 
@@ -38,21 +37,23 @@
 ******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
-#include	<cstdlib>
-#include	<ctime>
-#include	<strings.h>		/* for |strcasecmp(3c)| */
 #include	<pwd.h>
 #include	<grp.h>
-
+#include	<ctime>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<cstrings>		/* for |strcasecmp(3c)| */
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<baops.h>
 #include	<mallocstuff.h>
 #include	<strx.h>
+#include	<prognamevar.hh>
 #include	<localmisc.h>
 
 #include	"config.h"
@@ -67,11 +68,8 @@
 
 /* external subroutines */
 
-extern int	mkpath2(char *,cchar *,cchar *) ;
-extern int	mktmpfile(char *,mode_t,cchar *) ;
-extern int	matstr(cchar **,cchar *,int) ;
 
-extern char	*strbasename(char *) ;
+/* external variables */
 
 
 /* forward references */
@@ -136,11 +134,13 @@ const cchar	*cirtypes[] = {
 #define	CIR_SUB		2
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,cchar **argv,cchar **argv)
-{
+int main(int argc,mainv argv,mainv argv) {
+    	prognamevar	progname(argv[0]) ;
 	struct global	*gdp = &g ;
 	struct circuit	*e_cirp, *cirp ;
 	struct type	*tp, *headp = NULL ;
@@ -177,11 +177,8 @@ int main(int argc,cchar **argv,cchar **argv)
 	char		tmpfname[MAXPATHLEN + 1] ;
 	char		subfname[MAXPATHLEN + 1] ;
 
-
-	g.progname = strbasename(argv[0]) ;
-
+	g.progname = progname ;
 	(void) bopen(efp,BFILE_STDERR,"dwca",0664) ;
-
 	bcontrol(efp,BC_LINEBUF,0) ;
 
 /* some very initial stuff */
