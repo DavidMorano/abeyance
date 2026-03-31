@@ -113,42 +113,6 @@
 
 /* external subroutines */
 
-extern int	snsds(char *,int,cchar *,cchar *) ;
-extern int	sncpy1(char *,int,cchar *) ;
-extern int	sncpy2(char *,int,cchar *,cchar *) ;
-extern int	sncpy3(char *,int,cchar *,cchar *,cchar *) ;
-extern int	sncpy4(char *,int,cchar *,cchar *,
-			cchar *,cchar *) ;
-extern int	mkpath1(char *,cchar *) ;
-extern int	mkpath2(char *,cchar *,cchar *) ;
-extern int	mkpath3(char *,cchar *,cchar *,cchar *) ;
-extern int	sfbasename(cchar *,int,cchar **) ;
-extern int	sfrootname(cchar *,int,cchar **) ;
-extern int	matstr(cchar **,cchar *,int) ;
-extern int	matostr(cchar **,int,cchar *,int) ;
-extern int	matocasestr(cchar **,int,cchar *,int) ;
-extern int	strnnlen(cchar *,int,int) ;
-extern int	cfdecui(cchar *,int,uint *) ;
-extern int	msleep(uint) ;
-extern int	isOneOf(cint *,int) ;
-extern int	uc_openshmto(cchar *,int,mode_t,int) ;
-extern int	filer_writefill(FILER *,cchar *,int) ;
-extern int	filer_writezero(FILER *,int) ;
-extern int	filer_writealign(FILER *,int) ;
-
-#if	CF_DEBUGS
-extern int	debugprintf(cchar *,...) ;
-extern int	strlinelen(cchar *,int,int) ;
-#endif
-
-extern char	*strwcpy(char *,cchar *,int) ;
-extern char	*strwcpyopaque(char *,cchar *,int) ;
-extern char	*strnchr(cchar *,int,int) ;
-
-#if	CF_DEBUGS
-extern char	*timestr_log(time_t,char *) ;
-#endif
-
 
 /* exported variables */
 
