@@ -37,6 +37,7 @@
 #include	<termios.h>
 #include	<unistd.h>
 #include	<ctime>
+#include	<climits>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstdarg>
