@@ -68,8 +68,13 @@
 #include	<thread.h>
 #include	<cerrno>
 #include	<csignal>
+#include	<climits>
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstring>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<uclibsubs.h>
 #include	<localmisc.h>
 
 #include	"ucsthr.h"
