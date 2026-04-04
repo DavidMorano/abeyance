@@ -40,6 +40,7 @@
 #include	<sys/stat.h>
 #include	<sys/mman.h>
 #include	<tzfile.h>		/* for TM_YEAR_BASE */
+#include	<climits>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
