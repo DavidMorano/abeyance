@@ -24,26 +24,27 @@
 
 /****************************************************************************
 
+  	Description:
 	Create an index of subcircuits on the library file.
 
 ******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-
+#include	<sys/utsname.h>
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
-#include	<sys/utsname.h>
+#include	<strings.h>		/* for |strcasecmp(3c)| */
 #include	<unistd.h>
 #include	<pwd.h>
 #include	<grp.h>
+#include	<ctime>
 #include	<cerrno>
 #include	<csignal>
-#include	<ctime>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
-#include	<strings.h>		/* for |strcasecmp(3c)| */
-
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<baops.h>
 #include	<strx.h>
@@ -57,9 +58,6 @@
 
 
 /* external functions */
-
-extern char	*malloc_str() ;
-extern char	*strbasename() ;
 
 
 /* external variables */
@@ -114,22 +112,19 @@ char	*cirtypes[] = {
 #define	CIR_SUB		2
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int mkindex(int argc,cchar **argv,cchar **envv)
-{
+int mkindex(int argc,mainv argv,mainv envv) noex {
 	bfile	infile, *ifp = &infile ;
 	bfile	tmpfile, *tfp = &tmpfile ;
 	bfile	outfile ;
 	bfile	errfile, *efp = &errfile ;
-
 	struct global	*gdp = &g ;
-
 	struct circuit	*e_cirp, *cirp ;
-
 	struct type	*tp, *headp = NULL ;
-
 	off_t	blockstart, offset ;
 
 	int	argr, argl, aol, akl, avl, kwi ;
