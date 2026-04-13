@@ -81,15 +81,15 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
+#include	<sys/utsname.h>
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<sys/param.h>
-#include	<sys/utsname.h>
+#include	<strings.h>		/* |strncasecmp(3c)| */
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
-#include	<cstrings>		/* |strncasecmp(3c)| */
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<filer.h>
