@@ -52,7 +52,7 @@ int ut_close(int fd) noex {
 	int		to_nomem = TO_NOMEM ;
 
 again:
-	rs = t_close(fd) ;
+	rs = xti_close(fd) ;
 
 	if (rs < 0) {
 	    switch (t_errno) {
