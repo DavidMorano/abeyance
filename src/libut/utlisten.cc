@@ -55,7 +55,7 @@ int ut_listen(int fd,UTCALL *callp) noex {
 	int		to_nosr = TO_NOSR ;
 
 again:
-	if ((rs = t_listen(fd,callp)) < 0) rs = (- errno) ;
+	if ((rs = xti_listen(fd,callp)) < 0) rs = (- errno) ;
 
 	if (rs < 0) {
 	    switch (t_errno) {
