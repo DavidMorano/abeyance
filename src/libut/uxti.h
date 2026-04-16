@@ -33,18 +33,8 @@
 
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<unistd.h>
-#include	<fcntl.h>
 #include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
-
-#if	defined(SYSHAS_XTI) && (SYSHAS_XTI > 0)
-#include	<xti.h>
-#endif
+#include	<usysbase.h>
 
 
 #ifndef	TBADF
