@@ -54,7 +54,7 @@ int ut_bind(int fd,struct t_bind *req,struct t_bind *ret) noex {
 	int		to_nosr = TO_NOSR ;
 
 again:
-	rs = t_bind(fd,req,ret) ;
+	rs = xti_bind(fd,req,ret) ;
 
 	if (rs < 0) {
 	    switch (t_errno) {
