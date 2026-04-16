@@ -100,7 +100,7 @@ int ut_alloc(int fd,int stype,int fields,void **rpp) noex {
 local int std_talloc(int fd,int stype,int fields,void **pp) noex {
     	int		rs = SR_OK ;
 	void *p ;
-	if ((p = t_alloc(fd,stype,fields)) == nullptr) {
+	if ((p = xti_alloc(fd,stype,fields)) == nullptr) {
 	    switch (t_errno) {
 	    case TBADF:
 	        rs = SR_NOTSOCK ;
