@@ -50,7 +50,7 @@ int ut_look(int fd) noex {
 	int		rs ;
 
 again:
-	rs = t_look(fd) ;
+	rs = xti_look(fd) ;
 
 	if (rs < 0) {
 	    switch (t_errno) {
