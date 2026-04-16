@@ -93,9 +93,8 @@ struct connect_flags {
 
 /* forward references */
 
-static int checkconnect(struct connect_flags *,int) noex ;
-static int lconnect(int,UTCALL *,RCALL *) noex ;
-static int	lconnect() ;
+local int checkconnect(struct connect_flags *,int) noex ;
+local int lconnect(int,UTCALL *,RCALL *) noex ;
 
 
 /* exported variables */
@@ -199,7 +198,7 @@ retry:
 
 /* local subroutines */
 
-static int checkconnect(struct connect_flags *fp,int fd) noex {
+local int checkconnect(struct connect_flags *fp,int fd) noex {
 	int		rs = SR_OK ;
 
 	if (! fp->checkblock) {
@@ -217,10 +216,10 @@ static int checkconnect(struct connect_flags *fp,int fd) noex {
 }
 /* end subroutine (checkconnect) */
 
-static int lconnect(int fd,UTCALL *sndcall,RCALL *rcvcall) noex {
+local int lconnect(int fd,UTCALL *sndcall,RCALL *rcvcall) noex {
 	int		rs ;
 
-	rs = t_connect(fd,sndcall,rcvcall) ;
+	rs = xti_connect(fd,sndcall,rcvcall) ;
 
 	if (rs < 0) {
 	    switch (t_errno) {
