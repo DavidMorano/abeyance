@@ -50,7 +50,7 @@ int ut_open(cchar *fname,int f,struct t_info *ip) noex {
 	int		rs ;
 
 again:
-	rs = t_open(fname,f,ip) ;
+	rs = xti_open(fname,f,ip) ;
 
 	if (rs < 0) {
 	    switch (t_errno) {
