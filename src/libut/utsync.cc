@@ -52,7 +52,7 @@ int ut_sync(int fd) noex {
 	int		to_nomem = TO_NOMEM ;
 
 again:
-	rs = t_sync(fd) ;
+	rs = xti_sync(fd) ;
 
 	if (rs < 0) {
 	    switch (t_errno) {
