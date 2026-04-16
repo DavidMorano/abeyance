@@ -52,7 +52,7 @@ int ut_free(void *p,int stype) noex {
 	if (p == NULL) return SR_FAULT ;
 
 again:
-	rs = t_free(p,stype) ;
+	rs = xti_free(p,stype) ;
 
 	if (rs < 0) {
 	    switch (t_errno) {
