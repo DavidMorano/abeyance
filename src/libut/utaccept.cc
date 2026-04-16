@@ -60,7 +60,7 @@ int ut_accept(int fd,int resfd,UTCALL *callp) noex {
 #endif
 
 again:
-	if ((rs = t_accept(fd,resfd,callp)) < 0) rs = (- errno) ;
+	if ((rs = xti_accept(fd,resfd,callp)) < 0) rs = (- errno) ;
 
 	if (rs < 0) {
 	    switch (t_errno) {
