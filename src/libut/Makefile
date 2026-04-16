@@ -54,8 +54,8 @@ OBJB= obj5.o
 OBJ= $(OBJA) $(OBJB)
 
 
-INCDIRS +=
-LIBDIRS += -L$(LIBDIR)
+INCDIRS += -I inc -I /usr/local/include
+LIBDIRS += -L $(LIBDIR)
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
