@@ -1,0 +1,34 @@
+template<typename ... Args>
+local inline int configfile_ctor(configfile *op,Args ... args) noex {
+	int		rs = SR_FAULT ;
+	if (op && (args && ...)) ylikely {
+	    rs = SR_OK ;
+	    op->va = nullptr ;
+	    op->c = 0 ;
+	    op->i = 0 ;
+	    op->n = 0 ;
+	    op->fi = 0 ;
+	    op->fl = {} ;
+	} /* end if (non-null) */
+	return rs ;
+} /* end subroutine (configfile_ctor) */
+
+local int configfile_dtor(configfile *op) noex {
+	int		rs = SR_OK ;
+	if (op->clp) ylikely {
+	    delete op->clp ;
+	    op->clp = nullptr ;
+	}
+	return rs ;
+} /* end subroutine (configfile_dtor) */
+
+template<typename ... Args>
+local inline int configfile_magic(configfile *op,Args ... args) noex {
+	int		rs = SR_FAULT ;
+	if (op && (args && ...)) ylikely {
+	    rs = (op->magval == CONFIGFILE_MAGIC) ? SR_OK : SR_NOTOPEN ;
+	}
+	return rs ;
+} /* end subroutine (configfile_magic) */
+
+
