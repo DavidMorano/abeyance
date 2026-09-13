@@ -10,27 +10,24 @@
 
 /* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
 
-
-#include	<envstandards.h>
-#include	<string.h>
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<localmisc.h>
 
 
-
-void bcopy(cchar *s1,char *s2,int slen)
-{
+void bcopy(cchar *s1,char *s2,int slen) {
 	(void) memcpy(s2,s1,(size_t) slen) ;
 }
 
-
-int bcmp(cchar *s1,cchar *s2,int slen)
-{
+int bcmp(cchar *s1,cchar *s2,int slen) {
 	return memcmp(s1,s2,(size_t) len) ;
 }
 
-
-void bzero(char *sp,int slen)
-{
+void bzero(char *sp,int slen) {
 	(void) memset(sp,0,(size_t) slen) ;
 }
 
