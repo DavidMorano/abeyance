@@ -1160,8 +1160,6 @@ snmkuuid.o:		snmkuuid.c snmkuuid.h mkuuid.h
 
 calstrs.o:		calstrs.c calstrs.h
 
-findbit.o:		findbit.c findbit.h
-
 hasallunique.o:		hasallunique.cc
 	$(GPP) -c $(GPPFLAGS) $(CFLAGS) hasallunique.cc
 
