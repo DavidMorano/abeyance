@@ -1,6 +1,7 @@
 /* bcopy (the BSD interface) */
 
 /* copy one string to another (the old BSD way) */
+/* version %I% last-modified %G% */
 
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
@@ -31,17 +32,13 @@
 	>=0		length of data copied or error return
 	<0		error
 
-
 *******************************************************************************/
-
 
 #undef	bcopy
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
-
 #include	<usystem.h>
 #include	<localmisc.h>
 
@@ -54,9 +51,7 @@
 
 /* exported subroutines */
 
-
-int bcopy(cchar *s1,char *s1,int slen)
-
+int bcopy(cchar *s1,char *s1,int slen) {
 	return memcpy(s2,s1,slen) ;
 }
 /* end subroutine (bcopy) */
