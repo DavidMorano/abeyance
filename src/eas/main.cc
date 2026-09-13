@@ -1,4 +1,4 @@
-/* eas (Extract Advice Subcircuit) */
+/* eas SUPPORT (Extract Advice Subcircuit) */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -23,7 +23,11 @@
 
 /****************************************************************************
 
+  	Name:
+	eas
+
 	Description:
+	Extract a sub-circuit from a given circuit.
 
 	Synopsis:
 	$ eas [sub1 [sub2 [...]]] [-s] 
@@ -34,19 +38,21 @@
 	-t	specify circuit types to extract
 	-c	print out only table of circuits that would have been extracted
 
+	Returns:
+
 ******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
+#include	<strings.h>		/* for |strcasecmp(3c)| */
 #include	<unistd.h>
 #include	<pwd.h>
 #include	<grp.h>
 #include	<ctime>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |getenv(3c)| */
-#include	<cstrings>		/* for |strcasecmp(3c)| */
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<bfile.h>
