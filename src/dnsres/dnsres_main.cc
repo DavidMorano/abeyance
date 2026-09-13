@@ -683,7 +683,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 /* observe MESG flag (group-writeable) on output device */
 	                    case 'm':
-	                        pip->final.mesg = true ;
+	                        pip->finval.mesg = true ;
 	                        pip->f.mesg = true ;
 	                        if (f_optequal) {
 	                            f_optequal = false ;
@@ -719,7 +719,7 @@ int main(int argc,mainv argv,mainv envv) {
 	                        argr -= 1 ;
 	                        argl = strlen(argp) ;
 	                        if (argl) {
-				    pip->final.o_string = true ;
+				    pip->finval.o_string = true ;
 				    pip->f.o_string = true ;
 	                            pip->string = argp ;
 				}
@@ -727,7 +727,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 /* specify if output is a terminal or not */
 	                    case 't':
-				pip->final.term = true ;
+				pip->finval.term = true ;
 				pip->have.term = true ;
 	                        pip->f.term = true ;
 	                        if (f_optequal) {
@@ -878,7 +878,7 @@ int main(int argc,mainv argv,mainv envv) {
 	    if (ofname == nullptr) ofname = "-" ;
 	    break ;
 	case progmode_consoletime:
-	    if ((! pip->final.o_time) && pip->f.daemon)
+	    if ((! pip->finval.o_time) && pip->f.daemon)
 		pip->f.o_time = false ;
 	    break ;
 	} /* end switch */
@@ -901,7 +901,7 @@ int main(int argc,mainv argv,mainv envv) {
 	    pip->f.ansiterm = (n >= 0) ;
 	} /* end if */
 
-	if (pip->f.daemon && (! pip->final.term)) {
+	if (pip->f.daemon && (! pip->finval.term)) {
 	    pip->f.term = false ;
 	}
 
@@ -936,7 +936,7 @@ int main(int argc,mainv argv,mainv envv) {
 	if ((ofname != nullptr) &&
 	    ((ofname[0] == '\0') || (ofname[0] == '-'))) {
 	    ofname = OUTPUTDEV ;
-	    if (! pip->final.mesg)
+	    if (! pip->finval.mesg)
 	        pip->f.mesg = false ;
 	}
 
@@ -1118,7 +1118,7 @@ local int procopts(PI *pip,keyopt *kop) noex {
 
 	if ((rs = keyopt_curbegin(kop,&cur)) >= 0) {
 
-	while ((kl = keyopt_enumkeys(kop,&cur,&kp)) >= 0) {
+	while ((kl = keyopt_curenumkeys(kop,&cur,&kp)) >= 0) {
 
 	    ki = matostr(progopts,2,kp,kl) ;
 
@@ -1130,7 +1130,7 @@ local int procopts(PI *pip,keyopt *kop) noex {
 	    switch (ki) {
 
 	    case progopt_str:
-		if (! pip->final.o_string) {
+		if (! pip->finval.o_string) {
 		    pip->f.o_string = true ;
 		    if (vl > 0) {
 		        strdcpy1w(pip->strbuf,STRBUFLEN,vp,vl) ;
@@ -1199,8 +1199,8 @@ local int procopts(PI *pip,keyopt *kop) noex {
 	        break ;
 
 	    case progopt_term:
-		if (! pip->final.term) {
-	            pip->final.term = true ;
+		if (! pip->finval.term) {
+	            pip->finval.term = true ;
 	            pip->have.term = true ;
 	            pip->f.term = true ;
 	            if (vl > 0) {
@@ -1211,8 +1211,8 @@ local int procopts(PI *pip,keyopt *kop) noex {
 	        break ;
 
 	    case progopt_mesg:
-		if (! pip->final.mesg) {
-	            pip->final.mesg = true ;
+		if (! pip->finval.mesg) {
+	            pip->finval.mesg = true ;
 	            pip->f.mesg = true ;
 	            if (vl > 0) {
 			rs = optbool(vp,vl) ;
@@ -1441,7 +1441,7 @@ cchar	mntfname[] ;
 	} /* end while */
 
 ret4:
-	uc_fdetach(mntfname) ;
+	uc_detach(mntfname) ;
 
 ret3:
 ret2:
@@ -1843,7 +1843,7 @@ local int msglogdev(IDS *idp,cchar *fname) noex {
 
 	rs = u_stat(fname,&sb) ;
 	if (rs >= 0) {
-	    rs = permid(idp,&sb,W_OK) ;
+	    rs = permids(idp,&sb,W_OK) ;
 	    if (rs >= 0) {
 	        f = f || S_ISCHR(sb.st_mode) ;
 	        f = f || S_ISFIFO(sb.st_mode) ;
