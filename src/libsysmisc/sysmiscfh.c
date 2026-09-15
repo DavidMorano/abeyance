@@ -1,10 +1,11 @@
-/* sysmiscfh */
+/* sysmiscfh SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* shared-memory for SYSMISC storage */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS 	0		/* run-time debugging */
-
 
 /* revision history:
 
@@ -42,16 +43,14 @@
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>	/* must be before others */
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include	<limits.h>
 #include	<unistd.h>
-#include	<stdlib.h>
-#include	<string.h>
-
+#include	<climits>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstring>
 #include	<usystem.h>
 #include	<endian.h>
 #include	<localmisc.h>
@@ -64,16 +63,16 @@
 
 /* external subroutines */
 
-extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	cfhexi(const char *,int,uint *) ;
-extern int	cfdecui(const char *,int,uint *) ;
+extern int	sncpy2(char *,int,cchar *,cchar *) ;
+extern int	cfhexi(cchar *,int,uint *) ;
+extern int	cfdecui(cchar *,int,uint *) ;
 
 #if	CF_DEBUGS
-extern int	debugprintf(const char *,...) ;
+extern int	debugprintf(cchar *,...) ;
 #endif
 
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
+extern char	*strnchr(cchar *,int,int) ;
 
 
 /* external variables */
@@ -108,7 +107,7 @@ int		buflen ;
 	int	bl, cl ;
 	int	len = 0 ;
 
-	const char	*magicstr = SYSMISCFH_MAGICSTR ;
+	cchar	*magicstr = SYSMISCFH_MAGICSTR ;
 
 	char	*bp ;
 	char	*tp, *cp ;
@@ -263,7 +262,7 @@ int		buflen ;
 
 static int mkmagic(buf,magicstr,magicsize)
 char		buf[] ;
-const char	*magicstr ;
+cchar	*magicstr ;
 int		magicsize ;
 {
 	char	*cp = buf ;
