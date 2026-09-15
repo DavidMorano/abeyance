@@ -1,4 +1,5 @@
-/* sysmiscers */
+/* sysmiscers SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C20 */
 
 /* return SYSMISC information from the system */
@@ -11,8 +12,10 @@
 #define	SYSMISCERS_INCLUDE
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<localmisc.h>
 
 
@@ -23,7 +26,7 @@
 
 
 struct sysmiscers_obj {
-	const char	*name ;
+	cchar	*name ;
 	uint		objsize ;
 } ;
 
@@ -42,10 +45,10 @@ struct sysmiscers_flags {
 
 struct sysmiscers_head {
 	uint		magic ;
-	const char	*pr ;
-	const char	*nodename ;
-	const char 	*dbname ;		/* DB-name */
-	const char 	*dbfname ;		/* DB file-name */
+	cchar	*pr ;
+	cchar	*nodename ;
+	cchar 	*dbname ;		/* DB-name */
+	cchar 	*dbfname ;		/* DB file-name */
 	struct sysmiscers_flags	f ;
 	MSFILE		ms ;
 	time_t		ti_db ;			/* DB file modification */
@@ -58,7 +61,7 @@ struct sysmiscers_head {
 extern "C" {
 #endif
 
-extern int	sysmiscers_open(SYSMISCERS *,const char *) ;
+extern int	sysmiscers_open(SYSMISCERS *,cchar *) ;
 extern int	sysmiscers_get(SYSMISCERS *,time_t,SYSMISCERS_DATA *) ;
 extern int	sysmiscers_close(SYSMISCERS *) ;
 
