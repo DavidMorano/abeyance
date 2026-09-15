@@ -39,11 +39,10 @@
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/mman.h>
-#include	<tzfile.h>		/* for TM_YEAR_BASE */
-#include	<climits>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstring>
+#include	<climits>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<bufsizeget.h>
@@ -1253,7 +1252,7 @@ cchar	calname[] ;
 	rs1 = u_stat(tmpfname,&sb) ;
 
 	if (rs1 >= 0)
-	    rs1 = permid(&sip->id,&sb,R_OK) ;
+	    rs1 = permids(&sip->id,&sb,R_OK) ;
 
 	if (rs1 < 0)
 	    goto bad0 ;
@@ -2647,7 +2646,7 @@ local int subinfo_year(SI *sip) noex {
 	int		rs = SR_OK ;
 	if (sip->year == 0) {
 	    rs = tmtime_timelocal(&tm,sip->daytime) ;
-	    sip->year = (tm.year + TM_YEAR_BASE) ;
+	    sip->year = (tm.year + TMTIME_YEARBASE) ;
 	    sip->isdst = tm.isdst ;
 	    sip->gmtoff = tm.gmtoff ;
 	}
@@ -2780,7 +2779,7 @@ int		sl ;
 		    tm = {} ;
 		    tm.isdst = sip->isdst ;
 		    tm.gmtoff = sip->gmtoff ;
-		    tm.year = (sip->year - TM_YEAR_BASE) ;
+		    tm.year = (sip->year - TMTIME_YEARBASE) ;
 		    tm.mon = qp->m ;
 		    tm.mday = (qp->d + odays) ;
 		    rs = tmtime_adjtime(&tm,&t) ;
@@ -2825,7 +2824,7 @@ cchar	dname[] ;
 	if (rs >= 0) {
 	    rs = subinfo_ids(sip) ;
 	    if (rs >= 0)
-	        rs = permid(&sip->id,&sb,W_OK) ;
+	        rs = permids(&sip->id,&sb,W_OK) ;
 	}
 
 ret0:
@@ -3797,7 +3796,7 @@ local int config_db(config *csp,cchar *ebuf,int el) noex {
 	    if (rs >= 0) {
 		int	f_skip = (sch == '-') ;
 		if (USTAT sb ; f_skip || (u_stat(d[1],&sb) >= 0)) {
-		    if (f_skip || ((rs = permid(&sip->id,&sb,R_OK)) >= 0)) {
+		    if (f_skip || ((rs = permids(&sip->id,&sb,R_OK)) >= 0)) {
 	                cint	sz = szof(DB) ;
 	                void	*p ;
 	                if ((rs = uc_malloc(sz,&p)) >= 0) {
