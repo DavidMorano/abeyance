@@ -33,6 +33,7 @@
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
+#include	<nulstr.h>		/* LIBU */
 #include	<ucmem.h>		/* LIBUC */
 #include	<ucgetpid.h>		/* LIBUC */
 #include	<ucproc.h>		/* LIBUC */
@@ -47,7 +48,6 @@
 #include	<snx.h>			/* LIBUC */
 #include	<sockaddress.h>		/* LIBUC */
 #include	<fsdir.h>		/* LIBUC */
-#include	<nulstr.h>		/* LIBUC */
 #include	<strdcpyx.h>		/* LIBUC */
 #include	<strwcpy.h>		/* LIBUC */
 #include	<cfdec.h>		/* LIBUC */
