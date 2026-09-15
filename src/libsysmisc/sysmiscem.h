@@ -1,4 +1,6 @@
-/* sysmiscem */
+/* sysmiscem SUPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 
 /* revision history:
@@ -11,17 +13,19 @@
 /* Copyright © 2008 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	SYSMISCEM_INCLUDE
-#define	SYSMISCEM_INCLUDE	1
+#define	SYSMISCEM_INCLUDE
 
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
-
+#include	<cstddef>
+#include	<cstdlib>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<modload.h>
 #include	<localmisc.h>
 
-#include	"modload.h"
 #include	"sysmiscems.h"
 
 
