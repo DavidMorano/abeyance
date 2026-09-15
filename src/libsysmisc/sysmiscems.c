@@ -1,10 +1,11 @@
-/* sysmiscems */
+/* sysmiscems SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* manage the SYSMISC shared-memory region */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
-
 
 /* revision history:
 
@@ -33,7 +34,6 @@
 	left unfinished due to time constraints.  Also, it (naturally)
 	took longer than desired to even do the 'cheaper' solution.
 
-
 */
 
 /* Copyright © 1998,2010 David A­D­ Morano.  All rights reserved. */
@@ -49,23 +49,20 @@
 	(believes) that at least one CPU is available at any time --
 	otherwise how would we be able to execute in the first place!
 
-
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/mman.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<ctime>
 #include	<dlfcn.h>
-#include	<stdlib.h>
-#include	<string.h>
-
+#include	<ctime>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstring>
 #include	<usystem.h>
 #include	<nulstr.h>
 #include	<filer.h>
@@ -821,7 +818,7 @@ ret2:
 
 #ifdef	COMMENT /* not needed for shared memory on single system */
 	if (rs >= 0)
-	    rs = uc_fdatasync(fd) ;
+	    rs = uc_fsyncdata(fd) ;
 #endif
 
 /* we're out of here */
