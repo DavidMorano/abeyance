@@ -1,16 +1,20 @@
-/* sysmiscems */
+/* sysmiscems SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 
 /* Copyright © 2008 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	SYSMISCEMS_INCLUDE
-#define	SYSMISCEMS_INCLUDE	1
+#define	SYSMISCEMS_INCLUDE
 
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-
+#include	<cstddef>
+#include	<cstdlib>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<localmisc.h>
 
 
@@ -21,7 +25,7 @@
 
 
 struct sysmiscems_obj {
-	const char	*name ;
+	cchar	*name ;
 	uint		objsize ;
 } ;
 
@@ -40,9 +44,9 @@ struct sysmiscems_flags {
 
 struct sysmiscems_head {
 	uint		magic ;
-	const char	*pr ;
-	const char	*prbuf ;
-	const char	*shmname ;
+	cchar	*pr ;
+	cchar	*prbuf ;
+	cchar	*shmname ;
 	char		*mapdata ;
 	uint		*shmtable ;
 	struct sysmiscems_flags	f ;
@@ -63,7 +67,7 @@ struct sysmiscems_head {
 extern "C" {
 #endif
 
-extern int	sysmiscems_open(SYSMISCEMS *,const char *) ;
+extern int	sysmiscems_open(SYSMISCEMS *,cchar *) ;
 extern int	sysmiscems_get(SYSMISCEMS *,time_t,int,SYSMISCEMS_DATA *) ;
 extern int	sysmiscems_close(SYSMISCEMS *) ;
 
