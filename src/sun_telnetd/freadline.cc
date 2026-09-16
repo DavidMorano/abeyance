@@ -2,16 +2,12 @@
 
 /* read a coded line from the STDIO stream */
 
-
 #define	CF_FGETS	1		/* faster or not? */
-
 
 /* revision history:
 
 	= 1998-08-17, David A­D­ Morano
-
 	This subroutine was originally written.
-
 
 */
 
@@ -20,29 +16,25 @@
 /******************************************************************************
 
 	This routine will only read at most 'len' number of bytes
-	from the file.
-
-	Note that the sematics of this call are not the same as
-	'fgets(3c)'.  This call will write a NULLCHAR into the user
-	buffer after the supplied length of the buffer is used up.
-	With 'fgets(3c)', it will never write more than the user's
-	supplied length of bytes.
+	from the file.  Note that the sematics of this call are not
+	the same as 'fgets(3c)'.  This call will write a NULLCHAR
+	into the user buffer after the supplied length of the buffer
+	is used up.  With 'fgets(3c)', it will never write more
+	than the user's supplied length of bytes.
 
 	Notes:
-
 	The IRIX operating system is messed up somehow.  An attempt
 	to correct for this is below.
 
-
 ******************************************************************************/
 
-
-#include	<envstandards.h>
-
-#include	<string.h>
-#include	<stdio.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstdio>
+#include	<cstring>
 #include	<usystem.h>
+#include	<localmisc.h>
 
 
 /* local defines */
