@@ -1,3 +1,0 @@
-.ccm.iim:
-	$(CPP) $(CPPFLAGS) $< > $(*).iim
-
