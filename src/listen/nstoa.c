@@ -33,9 +33,9 @@
 	A  NULL is returned on any error(s).
 */
 
-#include	<envstandards.h>
-
-#include <stdlib.h>
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>
+#include	<cstdlib>
 #include <string.h>
 #include <ctype.h>
 #include <stdio.h>
