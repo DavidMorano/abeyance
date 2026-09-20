@@ -8,7 +8,7 @@
 #define	CF_DEBUGS	0		/* compile-time debug print-outs */
 #define	CF_DEBUGN	0		/* extra-special debugging */
 #define	CF_WRITETO	1		/* time out writes */
-#define	CF_PARAMFILE	1		/* use 'paramfile(3dam)' */
+#define	CF_paramfile	1		/* use 'paramfile(3dam)' */
 #define	CF_TESTPROC	0		/* test using 'uc_openfsvc(3uc)' */
 #define	CF_FINDUID	1		/* use 'finduid(3c)' */
 
@@ -89,7 +89,7 @@
 #include	<cstring>
 #include	<clanguage.h>
 #include	<usysbase.h>
-#include	<getbufsize.h>
+#include	<bufsizeget.h>
 #include	<estrings.h>
 #include	<ids.h>
 #include	<getax.h>
@@ -1061,7 +1061,7 @@ local int resolves_ufindlook(RESOLVES *op,char *ubuf,uid_t uid) noex {
 	int		rs ;
 	int		rs1 ;
 	int		ul = 0 ;
-	if ((rs = getbufsize(getbufsize_un)) >= 0) {
+	if ((rs = bufsizeget(bufsizeget_un)) >= 0) {
 	    ulen = rs ;
 	    if ((rs = mxp->lockbegin) >= 0) {
 	        if (! op->open.ufind) {
@@ -1074,7 +1074,7 @@ local int resolves_ufindlook(RESOLVES *op,char *ubuf,uid_t uid) noex {
 	        rs1 = mxp->lockend ;
 		if (rs >= 0) rs = rs1 ;
 	    } /* end if (mutex) */
-	} /* end if (getbufsize) */
+	} /* end if (bufsizeget) */
 	return (rs >= 0) ? ul : rs ;
 }
 /* end subroutine (resolves_ufindlook) */
@@ -1240,7 +1240,7 @@ time_t		daytime ;
 
 	    if ((daytime - mmp->ti_check) >= TO_MAPCHECK) {
 
-#if	CF_PARAMFILE
+#if	CF_paramfile
 	        rs = paramfile_check(&mmp->dirsfile,daytime) ;
 	        if (rs > 0) {
 
@@ -1253,7 +1253,7 @@ time_t		daytime ;
 	            nchanged = rs ;
 
 	        } /* end if */
-#else /* CF_PARAMFILE */
+#else /* CF_paramfile */
 	        {
 	            ustat	sb ;
 
@@ -1274,7 +1274,7 @@ time_t		daytime ;
 
 	            mmp->ti_check = daytime ;
 	        }
-#endif /* CF_PARAMFILE */
+#endif /* CF_paramfile */
 
 	    } /* end if (map-object check) */
 
@@ -1437,16 +1437,16 @@ int		fd ;
 /* end subroutine (mapper_processor) */
 
 
-#if	CF_PARAMFILE
+#if	CF_paramfile
 
 local int mapper_mapload(mmp)
 RESOLVES_MAPPER	*mmp ;
 {
 	ustat		sb ;
 
-	PARAMFILE		*pfp = &mmp->dirsfile ;
-	PARAMFILE_ENT		pe ;
-	PARAMFILE_CUR		cur ;
+	paramfile		*pfp = &mmp->dirsfile ;
+	paramfile_ent		pe ;
+	paramfile_cur		cur ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
@@ -1499,7 +1499,7 @@ ret0:
 }
 /* end subroutine (mapper_mapload) */
 
-#else /* CF_PARAMFILE */
+#else /* CF_paramfile */
 
 local int mapper_mapload(mmp)
 RESOLVES_MAPPER	*mmp ;
@@ -1570,7 +1570,7 @@ ret0:
 }
 /* end subroutine (mapper_mapload) */
 
-#endif /* CF_PARAMFILE */
+#endif /* CF_paramfile */
 
 
 local int mapper_mapadd(mmp,kp,kl,vp,vl)
