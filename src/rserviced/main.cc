@@ -3,15 +3,12 @@
 /* Remote Service Listener (RSL) */
 /* version %I% last-modified %G% */
 
-
 #define	CF_PRINT	1
 #define	CF_FIELD	0
-
 
 /* revision history:
 
 	= 1991-09-10, David A­D­ Morano
-
 
 */
 
@@ -19,28 +16,25 @@
 
 /*****************************************************************************
 
-	This is the Remote Service Listener daemon program.
-	This program listens to a UNIX file system domain
-	directory name for incoming service jobs in the form of
-	files.  When a job file is detected, this daemon looks
-	up the requested service name in the service name database
-	file and forks off the requested service daemon to handle the
-	service request.
-
+	This is the Remote Service Listener daemon program.  This
+	program listens to a UNIX file system domain directory name
+	for incoming service jobs in the form of files.  When a job
+	file is detected, this daemon looks up the requested service
+	name in the service name database file and forks off the
+	requested service daemon to handle the service request.
 
 *****************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<ctime>
-#include	<cstdlib>
 #include	<cerrno>
-
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstdlib>
 #include	<usystem.h>
 #include	<bfile.h>
 #include	<estrings.h>
