@@ -317,7 +317,7 @@ int poller_curend(POLLER *op,POLLER_CUR *curp)
 /* end subroutine (poller_curend) */
 
 
-int poller_enum(POLLER *op,POLLER_CUR *curp,POLLER_SPEC *rp)
+int poller_curenum(POLLER *op,POLLER_CUR *curp,POLLER_SPEC *rp)
 {
 	POLLER_SPEC	*ep ;
 	int		rs ;
@@ -343,7 +343,7 @@ int poller_enum(POLLER *op,POLLER_CUR *curp,POLLER_SPEC *rp)
 
 	return rs ;
 }
-/* end subroutine (poller_enum) */
+/* end subroutine (poller_curenum) */
 
 
 /* private subroutines */
