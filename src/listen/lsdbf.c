@@ -23,17 +23,17 @@
 
 /* system include files	*/
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include <sys/param.h>
 #include <sys/types.h>
 #include <fcntl.h>
 #include <xti.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cerrno>
+#include	<cstddef>
+#include	<cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <ctype.h>
-#include <errno.h>
-#include <stdio.h>
 
 #include	<usystem.h>	/* for system return codes */
 #include	<strx.h>
