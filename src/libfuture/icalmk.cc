@@ -70,17 +70,17 @@
 
 *******************************************************************************/
 
-#include	<envstandards.h>	/* must be before others */
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<climits>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstring>
-#include	<tzfile.h>		/* for TM_YEAR_BASE */
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<endian.h>
 #include	<estrings.h>
 #include	<vecobj.h>
@@ -207,7 +207,7 @@ int		f_tmp ;
 	    tmtime	tm ;
 	    time_t	daytime = time(NULL) ;
 	    rs = tmtime_timelocal(&tm,daytime) ;
-	    year = (tm.year + TM_YEAR_BASE) ;
+	    year = (tm.year + TMTIME_YEARBASE) ;
 	    if (rs < 0)
 		goto ret0 ;
 	} /* end if */
@@ -788,7 +788,7 @@ ret2:
 	    rs = icalhdr(&hf,0,buf,BUFLEN) ;
 	    bl = rs ;
 	    if (rs >= 0)
-	        rs = u_pwrite(op->nfd,buf,bl,0L) ;
+	        rs = u_writep(op->nfd,buf,bl,0L) ;
 
 #if	CF_MINMOD
 	    if (rs >= 0)
