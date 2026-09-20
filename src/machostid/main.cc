@@ -28,13 +28,14 @@
 ***************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<unistd.h>		/* <- for |gethostid(3c)| */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<iostream>		/* |cout(3c++)| */
-#include	<cstring>
-#include	<usystem.h>
-#include	<localmisc.h>		/* |eol(3local)| */
+#include	<unistd.h>		/* POXIX <- for |gethostid(3c)| */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<iostream>		/* C++STD |cout(3c++)| */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU |eol(3u)| */
 
 
 /* local defines */
