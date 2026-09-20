@@ -84,7 +84,7 @@
 
 *******************************************************************************/
 
-#include	<envstandards.h>	/* must be first to configure */
+#include	<envstandards.h>	/* ordered first to configure */
 
 #if	defined(SFIO) && (SFIO > 0)
 #define	CF_SFIO	1
@@ -110,7 +110,7 @@
 #include	<netdb.h>
 
 #include	<usystem.h>
-#include	<getbufsize.h>
+#include	<bufsizeget.h>
 #include	<sigman.h>
 #include	<baops.h>
 #include	<keyopt.h>
@@ -290,10 +290,10 @@ local int	locinfo_tmpmaint(struct locinfo *) ;
 local int	locinfo_getgid(struct locinfo *) ;
 local int	locinfo_chgrp(struct locinfo *,cchar *) ;
 
-local int	procopts(PROGINFO *,KEYOPT *) ;
-local int	procregular(PROGINFO *,PARAMOPT *,cchar *) ;
-local int	procdaemon(PROGINFO *,PARAMOPT *,cchar *) ;
-local int	procregout(PROGINFO *,PARAMOPT *,SHIO *) ;
+local int	procopts(PROGINFO *,keyopt *) ;
+local int	procregular(PROGINFO *,paramopt *,cchar *) ;
+local int	procdaemon(PROGINFO *,paramopt *,cchar *) ;
+local int	procregout(PROGINFO *,paramopt *,SHIO *) ;
 local int	procregouter(PROGINFO *,cchar **,SHIO *) ;
 local int	procmotd(PROGINFO *,cchar *,cchar **,int) ;
 local int	procextras(PROGINFO *) ;
@@ -307,7 +307,7 @@ local int	procserve(PROGINFO *,LFM *,cchar *) ;
 local int	prochandle(PROGINFO *,GNCACHE *,RESOLVES *,
 			uid_t,gid_t,int) ;
 
-local int	vecstr_loadadmins(vecstr *,PARAMOPT *) ;
+local int	vecstr_loadadmins(vecstr *,paramopt *) ;
 
 local int	deleter(void *) ;
 local int	deleter_all(struct dargs *) ;
@@ -440,11 +440,11 @@ void	*contextp ;
 
 	SIGMAN		sm ;
 
-	PARAMOPT	aparams ;
+	paramopt	aparams ;
 
 	SHIO		errfile ;
 
-	KEYOPT		akopts ;
+	keyopt		akopts ;
 
 	uint	mo_start = 0 ;
 
@@ -628,7 +628,7 @@ void	*contextp ;
 
 	                case argopt_pid:
 	                    lip->have.pidfname = true ;
-			    lip->final.pidfname = true ;
+			    lip->finval.pidfname = true ;
 	                    if (f_optequal) {
 	                        f_optequal = false ;
 	                        if (avl)
@@ -746,7 +746,7 @@ void	*contextp ;
 	                    break ;
 
 	                case argopt_fg:
-	                    lip->final.fg = true ;
+	                    lip->finval.fg = true ;
 	                    lip->have.fg = true ;
 	                    lip->f.fg = true ;
 	                    if (f_optequal) {
@@ -786,7 +786,7 @@ void	*contextp ;
 
 			    case 'P':
 	                        lip->have.pidfname = true ;
-				lip->final.pidfname = true ;
+				lip->finval.pidfname = true ;
 	                        if (f_optequal) {
 	                            f_optequal = false ;
 	                            if (avl)
@@ -807,7 +807,7 @@ void	*contextp ;
 /* quiet mode */
 	                    case 'Q':
 	                        pip->have.quiet = true ;
-				pip->final.quiet = true ;
+				pip->finval.quiet = true ;
 	                        pip->f.quiet = true ;
 	                        if (f_optequal) {
 	                            f_optequal = false ;
@@ -857,7 +857,7 @@ void	*contextp ;
 	                        if (f_optequal) {
 	                            f_optequal = false ;
 	                            if (avl) {
-	                                pip->final.intrun = true ;
+	                                pip->finval.intrun = true ;
 	                                pip->have.intrun = true ;
 					pip->intrun = -1 ;
 					if (avp[0] != '-')
@@ -1628,7 +1628,7 @@ struct locinfo	*lip ;
 	    	lip->gid_motd = lip->gid ;
 	    } else {
 	        struct passwd	pw ;
-	        cint	pwlen = getbufsize(getbufsize_pw) ;
+	        cint	pwlen = bufsizeget(bufsizeget_pw) ;
 	        char		*pwbuf ;
 	        if ((rs = uc_malloc((pwlen+1),&pwbuf)) >= 0) {
 	    	    rs = GETPW_NAME(&pw,pwbuf,pwlen,lip->un) ;
@@ -1760,7 +1760,7 @@ struct locinfo	*lip ;
 
 	if (lip->gid_prog < 0) {
 	    struct passwd	pw ;
-	    cint		pwlen = getbufsize(getbufsize_pw) ;
+	    cint		pwlen = bufsizeget(bufsizeget_pw) ;
 	    char		*pwbuf ;
 	    if ((rs = uc_malloc((pwlen+1),&pwbuf)) >= 0) {
 
@@ -1832,11 +1832,11 @@ ret0:
 /* process the program ako-options */
 local int procopts(pip,kop)
 PROGINFO	*pip ;
-KEYOPT		*kop ;
+keyopt		*kop ;
 {
 	struct locinfo	*lip = pip->lip ;
 
-	KEYOPT_CUR	kcur ;
+	keyopt_cur	kcur ;
 
 	int	rs = SR_OK ;
 	int	oi ;
@@ -1857,7 +1857,7 @@ KEYOPT		*kop ;
 
 	if ((rs = keyopt_curbegin(kop,&kcur)) >= 0) {
 
-	while ((kl = keyopt_enumkeys(kop,&kcur,&kp)) >= 0) {
+	while ((kl = keyopt_curenumkeys(kop,&kcur,&kp)) >= 0) {
 
 /* get the first value for this key */
 
@@ -1871,9 +1871,9 @@ KEYOPT		*kop ;
 	        switch (oi) {
 
 	        case akoname_quiet:
-	            if (! pip->final.quiet) {
+	            if (! pip->finval.quiet) {
 	                pip->have.quiet = true ;
-	                pip->final.quiet = true ;
+	                pip->finval.quiet = true ;
 	                pip->f.quiet = true ;
 	                if (vl > 0) {
 			    rs = optbool(vp,vl) ;
@@ -1883,9 +1883,9 @@ KEYOPT		*kop ;
 	            break ;
 
 	        case akoname_intrun:
-	            if (! pip->final.intrun) {
+	            if (! pip->finval.intrun) {
 	                pip->have.intrun = true ;
-	                pip->final.intrun = true ;
+	                pip->finval.intrun = true ;
 	                pip->f.intrun = true ;
 	                if (vl > 0) {
 			    rs = cfdecui(vp,vl,&uv) ;
@@ -1915,7 +1915,7 @@ ret0:
 
 local int procregular(pip,app,ofname)
 PROGINFO	*pip ;
-PARAMOPT	*app ;
+paramopt	*app ;
 cchar	ofname[] ;
 {
 	struct locinfo	*lip = pip->lip ;
@@ -1971,7 +1971,7 @@ bad0:
 
 local int procdaemon(pip,app,mntfname)
 PROGINFO	*pip ;
-PARAMOPT	*app ;
+paramopt	*app ;
 cchar	mntfname[] ;
 {
 	struct locinfo	*lip = pip->lip ;
@@ -2033,7 +2033,7 @@ cchar	mntfname[] ;
 	    rs = SR_BUSY ;
 
 	if (rs >= 0)
-	    rs = permid(&pip->id,&usb,W_OK) ;
+	    rs = permids(&pip->id,&usb,W_OK) ;
 
 	if (rs < 0) {
 	    if (! pip->f.quiet)
@@ -2234,7 +2234,7 @@ int		f ;
 	            pip->nodename,pip->username,pip->banner) ;
 
 	        lip->open.pidlock = (rs >= 0) ;
-	        if ((rs == SR_LOCKLOST) || (rs == SR_AGAIN))
+	        if ((rs == SR_LOCKFAIL) || (rs == SR_AGAIN))
 	            proclockprint(pip,&lc) ;
 
 	    } /* end if */
@@ -2475,7 +2475,7 @@ ret4:
 	gncache_finish(&g) ;
 
 ret3:
-	uc_fdetach(mntfname) ;
+	uc_detach(mntfname) ;
 
 ret2:
 ret1:
@@ -2668,7 +2668,7 @@ ret0:
 
 local int procregout(pip,app,ofp)
 PROGINFO	*pip ;
-PARAMOPT	*app ;
+paramopt	*app ;
 SHIO		*ofp ;
 {
 	vecstr	admins ;
@@ -2919,7 +2919,7 @@ LFM		*plp ;
 
 	rs = lfm_check(plp,&lc,pip->daytime) ;
 
-	if ((rs == SR_LOCKLOST) || (rs == SR_AGAIN))
+	if ((rs == SR_LOCKFAIL) || (rs == SR_AGAIN))
 	    proclockprint(pip,&lc) ;
 
 	return rs ;
@@ -2942,7 +2942,7 @@ LFM_CHECK	*lcp ;
 	    np = "busy" ;
 	    break ;
 
-	case SR_LOCKLOST:
+	case SR_LOCKFAIL:
 	    np = "lost" ;
 	    break ;
 
@@ -3018,9 +3018,9 @@ LFM_CHECK	*lcp ;
 
 local int vecstr_loadadmins(alp,app)
 vecstr		*alp ;
-PARAMOPT	*app ;
+paramopt	*app ;
 {
-	PARAMOPT_CUR	pcur ;
+	paramopt_cur	pcur ;
 
 	int	rs = SR_OK ;
 	int	cl ;
