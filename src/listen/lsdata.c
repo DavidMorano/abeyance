@@ -13,9 +13,10 @@
  *	network listener process global initialized data
  */
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<fcntl.h>
+#include	<cstddef>
+#include	<cstdlib>
 
 #define GLOBAL_DATA
 
