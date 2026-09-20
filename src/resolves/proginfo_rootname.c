@@ -14,19 +14,18 @@
 
 /*******************************************************************************
 
-        Here we simply extract the root-name of the software distribution from
-        our program-root directory.
-
+	Here we simply extract the root-name of the software
+	distribution from our program-root directory.
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<string.h>
-
-#include	<usystem.h>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<sfx.h>
 #include	<localmisc.h>
 
 #include	"defs.h"
@@ -34,18 +33,16 @@
 
 /* external subroutines */
 
-extern int	sfbasename(const char *,int,const char **) ;
-extern int	sfdirname(const char *,int,const char **) ;
-
 
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int proginfo_rootname(PROGINFO *pip)
-{
+int proginfo_rootname(PROGINFO *pip) noex {
 	int		rs = SR_OK ;
 	int		len = 0 ;
 
