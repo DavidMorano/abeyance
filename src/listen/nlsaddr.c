@@ -29,12 +29,12 @@
  *
  */
 
-#include	<envstandards.h>
-
-#include <stdlib.h>
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cerrno>
+#include	<cstddef>
+#include	<cstdlib>
 #include <ctype.h>
 #include <xti.h>
-#include	<errno.h>
 
 
 #ifndef	T_NONE
