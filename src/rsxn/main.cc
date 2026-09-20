@@ -66,7 +66,8 @@
 #include	<srvpe.h>
 #include	<storebuf.h>
 #include	<mallocstuff.h>
-#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
+#include	<vstrcmp.h>		/* |vstrkeycmp(3uc)| */
+#include	<prognamevar.hh>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -179,10 +180,10 @@ struct global		g ;
 /* exported subroutines */
 
 int main(argc argc,mainv argv,mainv envp) {
+    	prognamevar	progname(argv[0]) ;
 	bfile		errfile, *efp = &errfile ;
 	bfile		logfile ;
 	bfile		pidfile ;
-
 	ustat		sb ;
 
 	struct global		*gp = &g ;
@@ -205,17 +206,11 @@ int main(argc argc,mainv argv,mainv envp) {
 
 	vecstr		defines, unsets, exports ;
 	vecstr		schedvars ;
-
 	VARSUB		vsh_e, vsh_d ;
-
 	BUILTIN		bis ;
-
 	SRVTAB		sfile ;
-
 	SRVTAB_ENT	*srvp ;
-
 	SRVPE		spe ;
-
 	time_t	daytime ;
 
 	int	argr, argl, aol, akl, avl ;
@@ -287,7 +282,7 @@ int main(argc argc,mainv argv,mainv envp) {
 	g.efp = efp ;
 #endif
 	g.version = VERSION ;
-	g.progname = strbasename(argv[0]) ;
+	g.progname = progname ;
 
 	g.pid = getpid() ;
 
@@ -2006,36 +2001,27 @@ int main(argc argc,mainv argv,mainv envp) {
 
 #if	CF_DEBUG
 	    if (g.debuglevel > 1) {
-
-	        for (i = 0 ; srvtab_enum(&sfile,i,&srvp) >= 0 ; i += 1) {
-
+	        for (i = 0 ; srvtab_curenum(&sfile,i,&srvp) >= 0 ; i += 1) {
 	            if (srvp == nullptr) continue ;
-
-	            if (srvp->service != nullptr)
+	            if (srvp->service != nullptr) {
 	                debugprintf("main: service=%s\n",srvp->service) ;
-
+		    }
 	        } /* end for */
-
 	    }
 #endif /* CF_DEBUG */
 
 	} /* end if (accessing a 'srvtab' file) */
 
-
-/* open the built-in servers */
-
+	/* open the built-in servers */
 	(void) builtin_init(&bis,&sfile) ;
-
-
-/* set an environment variable for the program run mode */
+	/* set an environment variable for the program run mode */
 
 #ifdef	COMMENT
-	if ((rs = vecstr_finder(&exports,"RUNMODE",vstrkeycmp,&cp)) >= 0)
+	if ((rs = vecstr_finder(&exports,"RUNMODE",vstrkeycmp,&cp)) >= 0) {
 	    vecstr_del(&exports,rs) ;
-
+	}
 	vecstr_add(&exports,"RUNMODE=tcpmux",-1) ;
 #endif /* COMMENT */
-
 
 	if (vecstr_finder(&exports,"HZ",vstrkeycmp,nullptr) < 0) {
 
