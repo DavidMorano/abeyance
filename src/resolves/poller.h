@@ -57,7 +57,7 @@ extern int poller_cancelfd(POLLER *,int) ;
 extern int poller_wait(POLLER *,POLLER_SPEC *,int) ;
 extern int poller_get(POLLER *,POLLER_SPEC *) ;
 extern int poller_curbegin(POLLER *,POLLER_CUR *) ;
-extern int poller_enum(POLLER *,POLLER_CUR *,POLLER_SPEC *) ;
+extern int poller_curenum(POLLER *,POLLER_CUR *,POLLER_SPEC *) ;
 extern int poller_curend(POLLER *,POLLER_CUR *) ;
 extern int poller_finish(POLLER *) ;
 
