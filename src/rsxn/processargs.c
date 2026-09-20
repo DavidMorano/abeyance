@@ -1,4 +1,6 @@
-/* processargs */
+/* processargs SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* process server file program arguments */
 /* version %I% last-modified %G% */
@@ -8,9 +10,7 @@
 /* revision history:
 
 	= 1991-09-01, David A­D­ Morano
-
 	This program was originally written.
-
 
 */
 
@@ -18,10 +18,11 @@
 
 /*****************************************************************************
 
-	These subroutines are used to parse the SERVER program arguments
-	from an expanded (substituted) server file entry.  Basically,
-	we just "field-SHELL" out arguments and put them into the
-	supplied vector string object.
+  	Description:
+	These subroutines are used to parse the SERVER program
+	arguments from an expanded (substituted) server file entry.
+	Basically, we just "field-SHELL" out arguments and put them
+	into the supplied vector string object.
 
 *****************************************************************************/
 
@@ -30,10 +31,12 @@
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<limits.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<usystem.h>
+#include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<baops.h>
 #include	<bfile.h>
 #include	<field.h>
@@ -54,8 +57,6 @@
 
 /* external subroutines */
 
-extern char	*strbasename() ;
-
 
 /* externals variables */
 
@@ -69,23 +70,22 @@ extern char	*strbasename() ;
 /* local structures */
 
 
-/* exported subroutines */
+/* exported variables */
 
+
+/* exported subroutines */
 
 int processargs(pip,args,alp)
 struct proginfo	*pip ;
 char		args[] ;
 vecstr		*alp ;
 {
-	FIELD	fsb ;
-
+	field	fsb ;
 	int	rs = SR_OK ;
 	int	fl ;
 	int	i = 0 ;
-
 	uchar	terms[32] ;
 	char	fbuf[BUFLEN + 1] ;
-
 
 #if	CF_DEBUG
 	if (pip->debuglevel > 1)
