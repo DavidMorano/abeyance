@@ -4,9 +4,13 @@
 
 #define	CF_REAL	1
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<filer.h>
 #include	<localmisc.h>
@@ -22,17 +26,20 @@ import libutil ;			/* |lenstr(3u)| */
 #define	DFNAME	"here"
 
 extern "C" {
-extern int	nprintf(cchar *,cchar *,...) noex ;
-extern int	bufprintf(cchar *,...) noex ;
+    extern int	nprintf(cchar *,cchar *,...) noex ;
+    extern int	bufprintf(cchar *,...) noex ;
 }
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
 	filer	b ;
 	bfile	src, *sfp = &src ;
 	cchar	fd = 1 ;
 	int	rs ;
 	int	wlen = 0 ;
 	cchar	*fn = "/usr/extra/etc/telnetd/blowoff.txt" ;
+	(void) argc ;
+	(void) argv ;
+	(void) envv ;
 
 	{
 	    cchar	*resp = "hello there\r\n" ;
@@ -52,8 +59,8 @@ int main(int argc,mainv argv,mainv envv) {
 #if	CF_REAL
 	if ((rs = bopen(sfp,fn,"r",0666)) >= 0) {
 	    if ((rs = filer_start(&b,fd,0z,512,0)) >= 0) {
-		const int	llen = LINEBUFLEN ;
-		char		lbuf[LINEBUFLEN+3] ;
+		cint	llen = LINEBUFLEN ;
+		char	lbuf[LINEBUFLEN+3] ;
 
 		while ((rs = breadln(sfp,lbuf,llen)) > 0) {
 		    int	len = rs ;
