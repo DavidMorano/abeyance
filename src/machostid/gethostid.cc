@@ -1,4 +1,5 @@
 /* gethostid SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* get the host-ID value (a 32-bit binary number) */
@@ -12,7 +13,7 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
 /*******************************************************************************
@@ -22,14 +23,16 @@
 
 *******************************************************************************/
 
-#include	<envstandards.h>	/* first to configure */
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>		/* required by |sysctl(3)| */
 #include	<sys/sysctl.h>		/* required by |sysctl(3)| */
 #include	<cerrno>
-#include	<cstddef>		/* <- |nullptr_t| ?? */
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstdint>		/* <- |int32_t| */
 #include	<cstdio>
-#include	<utypedefs.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<clanguage.h>
 
 
