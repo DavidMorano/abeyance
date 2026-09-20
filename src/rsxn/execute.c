@@ -1,11 +1,11 @@
-/* execute */
+/* execute SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* execute a server daemon program */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUG	1
-
 
 /* revision history:
 
@@ -22,27 +22,27 @@
 
 /**************************************************************************
 
+  	Description:
 	This subroutine just 'exec(2)'s a daemon server program.
-
 
 ***************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<fcntl.h>
 #include	<unistd.h>
 #include	<stdlib.h>
-#include	<ctime>
 #include	<pwd.h>
 #include	<grp.h>
-#include	<signal.h>
-#include	<string.h>
-
-#include	<usystem.h>
+#include	<ctime>
+#include	<csignal>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<field.h>
 #include	<vecstr.h>
@@ -63,10 +63,6 @@
 extern int	getfiledirs() ;
 extern int	processargs(char *,VECSTR *) ;
 extern int	process() ;
-
-extern char	*strbasename() ;
-extern char	*timestr_log(), *timestr_edate() ;
-extern char	*malloc_str(), *malloc_strn(), *malloc_sbuf(), *malloc_buf() ;
 
 
 /* external variables */
