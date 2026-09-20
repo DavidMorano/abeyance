@@ -11,9 +11,7 @@
 /* revision history:
 
 	= 2000-01-21, David A­D­ Morano
-
 	This subroutine was enhanced for use by LevoSim.
-
 
 */
 
@@ -21,34 +19,27 @@
 
 /******************************************************************************
 
-	This is the old configuration file reader object.  It is cheap,
-	it is ill-conceived, it is a mess, it works well enough to be
-	used for cheap code.  I didn't want to use this junk for the
-	Levo machine simulator but time pressure decided for us !
-
-	Although this whole configuration scheme is messy, it gives
-	us enough of what we need to get some configuration information
-	into the Levo machine simulator and to get a parameter file
-	name.  This is good enough for now.
-
+	This is the old configuration file reader object.  It is
+	cheap, it is ill-conceived, it is a mess, it works well
+	enough to be used for cheap code.  I didn't want to use
+	this junk for the Levo machine simulator but time pressure
+	decided for us!  Although this whole configuration scheme
+	is messy, it gives us enough of what we need to get some
+	configuration information into the Levo machine simulator
+	and to get a parameter file name.  This is good enough for
+	now.
 
 ******************************************************************************/
 
-
-#define	CONFIGFILE_MASTER	1
-
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<ctype.h>
-
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstring>
 #include	<usystem.h>
 #include	<bfile.h>
 #include	<vecstr.h>
