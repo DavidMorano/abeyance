@@ -11,8 +11,9 @@
  * lsparam.h:	listener parameters.  Includes default pathnames.
  */
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>
+#include	<cstdlib>
 #include <stdarg.h>
 
 /* DEBUGMODE causes debug statements to be compiled in. */
