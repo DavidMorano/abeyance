@@ -1,19 +1,20 @@
-/* vs */
+/* vs SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* virtual system */
+/* version %I% last-modified %G% */
 
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	VS_INCLUDE
-#define	VS_INCLUDE	1
+#define	VS_INCLUDE
 
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<pthread.h>
-
 #include	<usystem.h>
 #include	<hdb.h>
 #include	<vecobj.h>
