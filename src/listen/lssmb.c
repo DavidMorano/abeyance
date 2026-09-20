@@ -15,13 +15,13 @@
  */
 
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include <sys/param.h>
-#include <stdlib.h>
-#include <string.h>
+#include	<cstddef>
+#include	<cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <xti.h>
-#include <stdio.h>
 
 #include "lsparam.h"
 #include "lssmbmsg.h"
