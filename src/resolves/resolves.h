@@ -36,7 +36,7 @@ struct resolves_id {
 struct resolves_mapper {
 	uint		magic ;
 	LOCKRW		rwm ;
-	PARAMFILE	dirsfile ;
+	paramfile	dirsfile ;
 	vechand		mapdirs ;
 	const char	*fname ;
 	time_t		ti_mtime ;
