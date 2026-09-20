@@ -1,19 +1,17 @@
-/* srvpe */
+/* srvpe SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* process server file entries */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUG	1
 #define	CF_DEBUG2	0
 
-
 /* revision history:
 
-	= 91/09/10, David A­D­ Morano
-
+	= 1991-09-10, David A­D­ Morano
 	This program was originally written.
-
 
 */
 
@@ -21,39 +19,31 @@
 
 /*****************************************************************************
 
-	These subroutines (object module) are used to expand out and
-	otherwise process the server file entries when we need one of
-	them.
-
-	Expansion is intentionally done as late as possible so that we
-	can take advantage of the latest bindings.  Talk to Professor
-	Dave Cheriton over at Stanford University if you do not agree !! :-)
-
+	These subroutines (object module) are used to expand out
+	and otherwise process the server file entries when we need
+	one of them.  Expansion is intentionally done as late as
+	possible so that we can take advantage of the latest bindings.
+	Talk to Professor Dave Cheriton over at Stanford University
+	if you do not agree!! :-)
 
 *****************************************************************************/
 
-
-#define	SRVPE_MASTER	1
-
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
-#include	<netdb.h>
-#include	<unistd.h>
-#include	<stdlib.h>
-#include	<fcntl.h>
-#include	<ctime>
-#include	<ftw.h>
 #include	<dirent.h>
-#include	<limits.h>
-#include	<string.h>
-#include	<ctype.h>
+#include	<unistd.h>
+#include	<fcntl.h>
+#include	<netdb.h>
+#include	<ftw.h>
 #include	<pwd.h>
 #include	<grp.h>
-
+#include	<ctime>
+#include	<climits>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstring>
 #include	<usystem.h>
 #include	<bfile.h>
 #include	<field.h>
