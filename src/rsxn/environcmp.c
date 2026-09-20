@@ -3,17 +3,13 @@
 /* compare routine for environment variable search */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0
 #define	CF_DEBUG	1
-
 
 /* revision history:
 
 	= 1994-09-03, David A­D­ Morano
-
 	This program was originally written.
-
 
 */
 
@@ -21,21 +17,17 @@
 
 /*****************************************************************************
 
-	This subroutine makes a comparison of the key of a string that 
-	looks like a SHELL variable assignment.
-
+	This subroutine makes a comparison of the key of a string
+	that looks like a SHELL variable assignment.
 
 *****************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<unistd.h>
-#include	<stdlib.h>
-#include	<string.h>
-
+#include	<cstddef>
+#include	<cstdlib>
 #include	<usystem.h>
 #include	<baops.h>
 #include	<bfile.h>
