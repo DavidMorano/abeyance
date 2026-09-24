@@ -1,20 +1,19 @@
 /* main (ripper) */
 
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include <sys/types.h>
 #include <sys/cdio.h>
-#include <cstdlib>
-#include <cerrno>
 #include <unistd.h>
 #include <fcntl.h>
 #include <malloc.h>
 #include <assert.h>
 #include <volmgt.h>
 #include	<strings.h>		/* for |strcasecmp(3c)| */
+#include <cerrno>
+#include	<cstddef>
+#include	<cstdlib>
 #include <cstdio>
-
 #include	<localmisc.h>
 
 #include	"config.h"
