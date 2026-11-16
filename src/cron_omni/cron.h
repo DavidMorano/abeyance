@@ -117,11 +117,11 @@ extern void	cron_sendmsg(char, char *, char *, char);
 extern time_t	 num(char **);
 extern void	*xmalloc(size_t);
 extern void	*xcalloc(size_t, size_t);
-extern char	*xstrdup(const char *);
-extern int	isvalid_shell(const char *shell);
-extern int	isvalid_dir(const char *dir);
+extern char	*xstrdup(cchar *);
+extern int	isvalid_shell(cchar *shell);
+extern int	isvalid_dir(cchar *dir);
 
-extern int	cron_admin(const char *);
+extern int	cron_admin(cchar *);
 extern cferror_t next_field(uint_t, uint_t, char *, int *, char **);
 
 #ifdef	__cplusplus
