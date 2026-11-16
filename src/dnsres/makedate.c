@@ -1,2 +1,2 @@
-const char dnsres_makedate[] =
+cchar dnsres_makedate[] =
 	"@(#)dnsres                  130821_2344:12_EDT Rightcore Network Services" ;
