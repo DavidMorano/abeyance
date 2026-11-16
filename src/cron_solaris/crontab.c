@@ -94,12 +94,12 @@ static		char	login[UNAMESIZE];
 static		char	yeschr;
 static		char	nochr;
 
-static int yes(void);
-static int next_field(int, int);
-static void catch(int);
-static void crabort(char *);
-static void cerror(char *);
-static void copycron(FILE *);
+local int yes(void);
+local int next_field(int, int);
+local void catch(int);
+local void crabort(char *);
+local void cerror(char *);
+local void copycron(FILE *);
 
 int
 main(int argc, char **argv)
@@ -368,7 +368,7 @@ main(int argc, char **argv)
 	return (0);
 }
 
-static void
+local void
 copycron(fp)
 FILE *fp;
 {
@@ -435,7 +435,7 @@ cont:
 	unlink(tnam);
 }
 
-static int
+local int
 next_field(lower, upper)
 int lower, upper;
 {
@@ -494,7 +494,7 @@ int lower, upper;
 	return (0);
 }
 
-static void
+local void
 cerror(msg)
 char *msg;
 {
@@ -504,14 +504,14 @@ char *msg;
 }
 
 
-static void
+local void
 catch(int x)
 {
 	unlink(tnam);
 	exit(1);
 }
 
-static void
+local void
 crabort(msg)
 char *msg;
 {
@@ -531,7 +531,7 @@ char *msg;
 	exit(1);
 }
 
-static int
+local int
 yes(void)
 {
 	int	first_char;
