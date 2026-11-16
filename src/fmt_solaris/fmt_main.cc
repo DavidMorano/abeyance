@@ -651,9 +651,9 @@ local void setopt(char *cp) noex {
 } /* end subroutine (setopt) */
 
 
-static int	_wckind_c_locale();
+local int	_wckind_c_locale();
 
-static int	(*__wckind)() = _wckind_c_locale;
+local int	(*__wckind)() = _wckind_c_locale;
 local void	*dlhandle = nullptr;
 
 local void _wckind_init() noex {
