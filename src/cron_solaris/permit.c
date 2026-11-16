@@ -43,7 +43,7 @@ ustat globstat;
 #define	ROOT	"root"
 
 int per_errno;	/* status info from getuser */
-static int within(char *, char *);
+local int within(char *, char *);
 
 
 char *
@@ -92,7 +92,7 @@ char *user, *allow, *deny;
 	}
 }
 
-static int
+local int
 within(username, filename)
 char *username, *filename;
 {
