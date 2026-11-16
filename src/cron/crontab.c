@@ -105,7 +105,7 @@ extern int	audit_crontab_modify(char *, char *, int);
 extern int	audit_crontab_delete(char *, int);
 extern int	audit_crontab_not_allowed(uid_t, char *);
 
-static int	err;
+local int	err;
 int		cursor;
 char		*cf;
 char		*tnam;
@@ -113,10 +113,10 @@ char		edtemp[5+13+1];
 char		line[CTLINESIZE];
 static		char	login[UNAMESIZE];
 
-static void	catch(int);
-static void	crabort(char *);
-static void	cerror(char *);
-static void	copycron(FILE *);
+local void	catch(int);
+local void	crabort(char *);
+local void	cerror(char *);
+local void	copycron(FILE *);
 
 int
 main(int argc, char **argv)
@@ -423,14 +423,14 @@ main(int argc, char **argv)
 	return (0);
 }
 
-static void
+local void
 copycron(FILE *fp)
 {
 	FILE *tfp;
 	char pid[6], *tnam_end;
 	int t;
 	char buf[LINE_MAX];
-	const char *errstr;
+	cchar *errstr;
 	cferror_t cferr;
 
 	sprintf(pid, "%-5d", getpid());
@@ -585,7 +585,7 @@ cont:
 	unlink(tnam);
 }
 
-static void
+local void
 cerror(char *msg)
 {
 	fprintf(stderr, gettext("%scrontab: error on previous line; %s\n"),
@@ -594,14 +594,14 @@ cerror(char *msg)
 }
 
 
-static void
+local void
 catch(int x)
 {
 	unlink(tnam);
 	exit(1);
 }
 
-static void
+local void
 crabort(char *msg)
 {
 	int sverrno;
