@@ -67,10 +67,10 @@ extern	void *xmalloc(size_t);
 #define	FALSE		0
 
 /* the following parameters are set in init	*/
-static int	DU;		/* number of time intervals	*/
+local int	DU;		/* number of time intervals	*/
 static time_t	LB;		/* lower bound on time	*/
 static time_t	DT;		/* width of interval	*/
-static int	NLIM;		/* max notices per sublist	*/
+local int	NLIM;		/* max notices per sublist	*/
 
 /*
  * a notice points to an event.  a notice has the following fields:
