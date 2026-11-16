@@ -126,7 +126,7 @@ fini_yes(void)
 	regfree(&preg_no);
 }
 
-static int
+local int
 yes_no(int (*func)(char *))
 {
 	int	i, b;
@@ -150,7 +150,7 @@ yes_no(int (*func)(char *))
 	return (func(ans));
 }
 
-static int
+local int
 yes_no_check(char *ans, regex_t *reg1, regex_t *reg2)
 {
 	if (regexec(reg1, ans, 0, NULL, 0) == 0) {
