@@ -58,7 +58,7 @@ num(char **ptr)
 }
 
 
-static int dom[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+local int dom[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 int
 days_btwn(int m1, int d1, int y1, int m2, int d2, int y2)
@@ -136,7 +136,7 @@ xcalloc(size_t nElements, size_t size)
 }
 
 char *
-xstrdup(const char *str)
+xstrdup(cchar *str)
 {
 	int	len;
 	char	*p;
@@ -218,7 +218,7 @@ filewanted(struct dirent *direntry)
 }
 
 int
-isvalid_shell(const char *shell)
+isvalid_shell(cchar *shell)
 {
 	char *t;
 	int ret = 0;
@@ -234,7 +234,7 @@ isvalid_shell(const char *shell)
 }
 
 int
-isvalid_dir(const char *dir)
+isvalid_dir(cchar *dir)
 {
 	char *cwd = getcwd(NULL, 0);
 
