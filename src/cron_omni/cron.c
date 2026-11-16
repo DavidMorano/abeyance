@@ -248,10 +248,10 @@ static struct miscpid {
 
 static pid_t cron_pid;	/* own pid */
 static char didfork = 0; /* flag to see if I'm process group leader */
-static int msgfd;	/* file descriptor for fifo queue */
-static int ecid = 1;	/* event class id for el_remove(); MUST be set to 1 */
-static int delayed;	/* is job being rescheduled or did it run first time */
-static int cwd;		/* current working directory */
+local int msgfd;	/* file descriptor for fifo queue */
+local int ecid = 1;	/* event class id for el_remove(); MUST be set to 1 */
+local int delayed;	/* is job being rescheduled or did it run first time */
+local int cwd;		/* current working directory */
 static struct event *next_event;	/* the next event to execute	*/
 static struct usr *uhead;		/* ptr to the list of users	*/
 
@@ -259,10 +259,10 @@ static struct usr *uhead;		/* ptr to the list of users	*/
 static char cte_intro[] = "Line(s) with errors:\n\n";
 static char cte_trail1[] = "\nMax number of errors encountered.";
 static char cte_trail2[] = " Evaluation of crontab aborted.\n";
-static int cte_free = MAILBINITFREE;	/* Free buffer space */
+local int cte_free = MAILBINITFREE;	/* Free buffer space */
 static char *cte_text = NULL;		/* Text buffer pointer */
 static char *cte_lp;			/* Next free line in cte_text */
-static int cte_nvalid;			/* Valid lines found */
+local int cte_nvalid;			/* Valid lines found */
 
 /* user's default environment for the shell */
 #define	ROOTPATH	"PATH=/usr/sbin:/usr/bin"
@@ -290,71 +290,71 @@ extern char **environ;
 static	int	log = 0;
 static	char	hzname[10];
 
-static void cronend(int);
-static void thaw_handler(int);
-static void child_handler(int);
-static void child_sigreset(void);
+local void cronend(int);
+local void thaw_handler(int);
+local void child_handler(int);
+local void child_sigreset(void);
 
-static void mod_ctab(char *, time_t);
-static void mod_atjob(char *, time_t);
-static void add_atevent(struct usr *, char *, time_t, int);
-static void rm_ctevents(struct usr *);
-static void cleanup(struct runinfo *rn, int r);
-static void crabort(char *, int);
-static void msg(char *fmt, ...);
-static void ignore_msg(char *, char *, struct event *);
-static void logit(int, struct runinfo *, int);
-static void parsqdef(char *);
-static void defaults();
-static void initialize(int);
-static void quedefs(int);
-static int idle(long);
+local void mod_ctab(char *, time_t);
+local void mod_atjob(char *, time_t);
+local void add_atevent(struct usr *, char *, time_t, int);
+local void rm_ctevents(struct usr *);
+local void cleanup(struct runinfo *rn, int r);
+local void crabort(char *, int);
+local void msg(char *fmt, ...);
+local void ignore_msg(char *, char *, struct event *);
+local void logit(int, struct runinfo *, int);
+local void parsqdef(char *);
+local void defaults();
+local void initialize(int);
+local void quedefs(int);
+local int idle(long);
 static struct usr *find_usr(char *);
-static int ex(struct event *e);
-static void read_dirs(int);
-static void mail(char *, char *, int);
-static void readcron(struct usr *, time_t);
-static int next_ge(int, char *);
-static void free_if_unused(struct usr *);
-static void del_atjob(char *, char *);
-static void del_ctab(char *);
-static void resched(int);
-static int msg_wait(long);
+local int ex(struct event *e);
+local void read_dirs(int);
+local void mail(char *, char *, int);
+local void readcron(struct usr *, time_t);
+local int next_ge(int, char *);
+local void free_if_unused(struct usr *);
+local void del_atjob(char *, char *);
+local void del_ctab(char *);
+local void resched(int);
+local int msg_wait(long);
 static struct runinfo *rinfo_get(pid_t);
-static void rinfo_free(struct runinfo *rp);
-static void mail_result(struct usr *p, struct runinfo *pr, size_t filesize);
+local void rinfo_free(struct runinfo *rp);
+local void mail_result(struct usr *p, struct runinfo *pr, size_t filesize);
 static time_t next_time(struct event *, time_t);
 static time_t get_switching_time(int, time_t);
 static time_t xmktime(struct tm *);
-static void process_msg(struct message *, time_t);
-static void reap_child(void);
-static void miscpid_insert(pid_t);
-static int miscpid_delete(pid_t);
-static void contract_set_template(void);
-static void contract_clear_template(void);
-static void contract_abandon_latest(pid_t);
+local void process_msg(struct message *, time_t);
+local void reap_child(void);
+local void miscpid_insert(pid_t);
+local int miscpid_delete(pid_t);
+local void contract_set_template(void);
+local void contract_clear_template(void);
+local void contract_abandon_latest(pid_t);
 
-static void cte_init(void);
-static void cte_add(int, char *);
-static void cte_valid(void);
-static int cte_istoomany(void);
-static void cte_sendmail(char *);
+local void cte_init(void);
+local void cte_add(int, char *);
+local void cte_valid(void);
+local int cte_istoomany(void);
+local void cte_sendmail(char *);
 
-static int set_user_cred(const struct usr *, struct project *);
+local int set_user_cred(const struct usr *, struct project *);
 
 static struct shared *create_shared_str(char *str);
 static struct shared *dup_shared(struct shared *obj);
-static void rel_shared(struct shared *obj);
-static void *get_obj(struct shared *obj);
+local void rel_shared(struct shared *obj);
+local void *get_obj(struct shared *obj);
 /*
  * last_time is set immediately prior to exection of an event (via ex())
  * to indicate the last time an event was executed.  This was (surely)
  * it's original intended use.
  */
 static time_t last_time, init_time, t_old;
-static int reset_needed; /* set to 1 when cron(8) needs to re-initialize */
+local int reset_needed; /* set to 1 when cron(8) needs to re-initialize */
 
-static int		refresh;
+local int		refresh;
 static sigset_t		defmask, sigmask;
 
 /*
@@ -369,7 +369,7 @@ extern int	audit_cron_delete_anc_file(char *, char *);
 extern int	audit_cron_is_anc_name(char *);
 extern int	audit_cron_mode();
 
-static int cron_conv(int, struct pam_message **,
+local int cron_conv(int, struct pam_message **,
 		struct pam_response **, void *);
 
 static struct pam_conv pam_conv = {cron_conv, NULL};
@@ -379,7 +379,7 @@ static pam_handle_t *pamh;	/* Authentication handle */
  * Function to help check a user's credentials.
  */
 
-static int verify_user_cred(struct usr *u);
+local int verify_user_cred(struct usr *u);
 
 /*
  * Values returned by verify_user_cred and set_user_cred:
@@ -400,11 +400,11 @@ static int verify_user_cred(struct usr *u);
 /*
  * Functions to remove a user or job completely from the running database.
  */
-static void clean_out_atjobs(struct usr *u);
-static void clean_out_ctab(struct usr *u);
-static void clean_out_user(struct usr *u);
-static void cron_unlink(char *name);
-static void process_anc_files(int);
+local void clean_out_atjobs(struct usr *u);
+local void clean_out_ctab(struct usr *u);
+local void clean_out_user(struct usr *u);
+local void cron_unlink(char *name);
+local void process_anc_files(int);
 
 /*
  * functions in elm.c
@@ -416,11 +416,11 @@ extern int el_empty(void);
 extern void *el_first(void);
 extern void el_delete(void);
 
-static int valid_entry(char *, int);
+local int valid_entry(char *, int);
 static struct usr *create_ulist(char *, int);
-static void init_cronevent(char *, int);
-static void init_atevent(char *, time_t, int, int);
-static void update_atevent(struct usr *, char *, time_t, int);
+local void init_cronevent(char *, int);
+local void init_atevent(char *, time_t, int, int);
+local void update_atevent(struct usr *, char *, time_t, int);
 
 int
 main(int argc, char *argv[])
@@ -669,7 +669,7 @@ begin:
 	/*NOTREACHED*/
 }
 
-static void
+local void
 initialize(int firstpass)
 {
 #ifdef DEBUG
@@ -747,7 +747,7 @@ initialize(int firstpass)
 	contract_set_template();
 }
 
-static void
+local void
 read_dirs(int first)
 {
 	DIR		*dir;
@@ -797,7 +797,7 @@ read_dirs(int first)
 	(void) closedir(dir);
 }
 
-static int
+local int
 valid_entry(char *name, int type)
 {
 	USTAT	buf;
@@ -889,7 +889,7 @@ init_atevent(char *name, time_t tim, int jobtype, int first)
 	}
 }
 
-static void
+local void
 mod_ctab(char *name, time_t reftime)
 {
 	struct	passwd	*pw;
@@ -984,7 +984,7 @@ mod_ctab(char *name, time_t reftime)
 	}
 }
 
-static void
+local void
 mod_atjob(char *name, time_t reftime __unused)
 {
 	char	*ptr;
@@ -1061,7 +1061,7 @@ mod_atjob(char *name, time_t reftime __unused)
 	}
 }
 
-static void
+local void
 add_atevent(struct usr *u, char *job, time_t tim, int jobtype)
 {
 	struct event *e;
@@ -1112,9 +1112,9 @@ update_atevent(struct usr *u, char *name, time_t tim, int jobtype)
 }
 
 static char line[CTLINESIZE];	/* holds a line from a crontab file */
-static int cursor;		/* cursor for the above line */
+local int cursor;		/* cursor for the above line */
 
-static void
+local void
 readcron(struct usr *u, time_t reftime)
 {
 	/*
@@ -1134,7 +1134,7 @@ readcron(struct usr *u, time_t reftime)
 	struct shared *shell = NULL;
 	uint32_t max_random_delay = 0;
 	int lineno = 0;
-	const char *errstr;
+	cchar *errstr;
 
 	/* read the crontab file */
 	cte_init();		/* Init error handling */
@@ -1318,7 +1318,7 @@ again:
  * of crontab is aborted. Otherwise reading of crontab is continued to the end
  * of the file but no further error logging appears.
  */
-static void
+local void
 cte_init()
 {
 	if (cte_text == NULL)
@@ -1329,7 +1329,7 @@ cte_init()
 	cte_nvalid = 0;
 }
 
-static void
+local void
 cte_add(int lineno, char *ctline)
 {
 	int len;
@@ -1359,13 +1359,13 @@ cte_add(int lineno, char *ctline)
 	}
 }
 
-static void
+local void
 cte_valid()
 {
 	cte_nvalid++;
 }
 
-static int
+local int
 cte_istoomany()
 {
 	/*
@@ -1375,7 +1375,7 @@ cte_istoomany()
 	return (cte_nvalid == 0 && cte_free < LINELIMIT);
 }
 
-static void
+local void
 cte_sendmail(char *username)
 {
 	if (cte_free < MAILBINITFREE)
@@ -1385,7 +1385,7 @@ cte_sendmail(char *username)
 /*
  * Send mail with error message to a user
  */
-static void
+local void
 mail(char *usrname, char *mesg, int format)
 {
 	/* mail mails a user a message.	*/
@@ -1959,7 +1959,7 @@ xmktime(struct tm *tmp)
 
 #define	DUMMY	100
 
-static int
+local int
 next_ge(int current, char *list)
 {
 	/*
@@ -2008,7 +2008,7 @@ next_ge(int current, char *list)
 		return (min);
 }
 
-static void
+local void
 free_if_unused(struct usr *u)
 {
 	struct usr *cur, *prev;
@@ -2042,7 +2042,7 @@ free_if_unused(struct usr *u)
 	}
 }
 
-static void
+local void
 del_atjob(char *name, char *usrname)
 {
 
@@ -2074,7 +2074,7 @@ del_atjob(char *name, char *usrname)
 	free_if_unused(u);
 }
 
-static void
+local void
 del_ctab(char *name)
 {
 
@@ -2090,7 +2090,7 @@ del_ctab(char *name)
 	free_if_unused(u);
 }
 
-static void
+local void
 rm_ctevents(struct usr *u)
 {
 	struct event *e2, *e3;
@@ -2145,7 +2145,7 @@ find_usr(char *uname)
  * If ever a premature return is added to this function pay attention to
  * free at_cmdfile and outfile plus jobname buffers of the runinfo structure.
  */
-static int
+local int
 ex(struct event *e)
 {
 	int r;
@@ -2543,7 +2543,7 @@ ex(struct event *e)
  * When timed out to run the job, return 0.
  * If for some reasons we need to reschedule jobs, return 1.
  */
-static int
+local int
 idle(long t)
 {
 	time_t	now;
@@ -2587,7 +2587,7 @@ idle(long t)
  * child. It includes the situation that cron hit maxrun, and needs
  * to reschedule the job.
  */
-static void
+local void
 reap_child()
 {
 	pid_t	pid;
@@ -2616,7 +2616,7 @@ reap_child()
 	}
 }
 
-static void
+local void
 cleanup(struct runinfo *pr, int rc)
 {
 	int	nextfork = 1;
@@ -2673,7 +2673,7 @@ cleanup(struct runinfo *pr, int rc)
  * that person. We do this so that mail won't come from root since this
  * could be a security hole. If failure, quit - do not send mail as root.
  */
-static void
+local void
 mail_result(struct usr *p, struct runinfo *pr, size_t filesize)
 {
 	struct	passwd	*ruser_ids;
@@ -2736,7 +2736,7 @@ mail_result(struct usr *p, struct runinfo *pr, size_t filesize)
 	exit(0);
 }
 
-static int
+local int
 msg_wait(long tim)
 {
 	struct	message	msg;
@@ -2804,7 +2804,7 @@ msg_wait(long tim)
  * immediately after cron read the message from pipe, or idle time
  * if the message was pending due to the job execution.
  */
-static void
+local void
 process_msg(struct message *pmsg, time_t reftime)
 {
 	if (pmsg->etype == 0)
@@ -2879,7 +2879,7 @@ rinfo_get(pid_t pid)
 /*
  * Free a runinfo structure and its associated memory
  */
-static void
+local void
 rinfo_free(struct runinfo *entry)
 {
 	struct runinfo **rpp;
@@ -2899,26 +2899,26 @@ rinfo_free(struct runinfo *entry)
 	}
 }
 
-static void
+local void
 thaw_handler(int sig __unused)
 {
 	refresh = 1;
 }
 
 
-static void
+local void
 cronend(int sig __unused)
 {
 	crabort("SIGTERM", REMOVE_FIFO);
 }
 
-static void
+local void
 child_handler(int sig __unused)
 {
 	;
 }
 
-static void
+local void
 child_sigreset(void)
 {
 	(void) signal(SIGCLD, SIG_DFL);
@@ -2928,7 +2928,7 @@ child_sigreset(void)
 /*
  * crabort() - handle exits out of cron
  */
-static void
+local void
 crabort(char *mssg, int action)
 {
 	int	c;
@@ -2959,7 +2959,7 @@ crabort(char *mssg, int action)
  * msg() - time-stamped error reporting function
  */
 /*PRINTFLIKE1*/
-static void
+local void
 msg(char *fmt, ...)
 {
 	va_list args;
@@ -2981,7 +2981,7 @@ msg(char *fmt, ...)
 	(void) fflush(stderr);
 }
 
-static void
+local void
 ignore_msg(char *func_name, char *job_type, struct event *event)
 {
 	msg("%s: ignoring %s job (user: %s, cmd: %s, time: %ld)",
@@ -2991,7 +2991,7 @@ ignore_msg(char *func_name, char *job_type, struct event *event)
 	    event->time);
 }
 
-static void
+local void
 logit(int cc, struct runinfo *rp, int rc)
 {
 	time_t t;
@@ -3014,7 +3014,7 @@ logit(int cc, struct runinfo *rp, int rc)
 	(void) fflush(stdout);
 }
 
-static void
+local void
 resched(int delay)
 {
 	time_t	nt;
@@ -3042,7 +3042,7 @@ resched(int delay)
 	msg("rescheduling at job");
 }
 
-static void
+local void
 quedefs(int action)
 {
 	int	i;
@@ -3074,7 +3074,7 @@ quedefs(int action)
 	(void) fclose(fd);
 }
 
-static void
+local void
 parsqdef(char *name)
 {
 	int i;
@@ -3103,7 +3103,7 @@ parsqdef(char *name)
 /*
  * defaults - read defaults from /etc/default/cron
  */
-static void
+local void
 defaults()
 {
 	int  flags;
@@ -3156,7 +3156,7 @@ defaults()
  * the max, and it tolerates the max being 0.
  */
 
-static int
+local int
 verify_user_cred(struct usr *u)
 {
 	struct passwd *pw;
@@ -3249,7 +3249,7 @@ verify_user_cred(struct usr *u)
 	return (retval);
 }
 
-static int
+local int
 set_user_cred(const struct usr *u, struct project *pproj)
 {
 	static char *progname = "cron";
@@ -3298,7 +3298,7 @@ set_eser_cred_exit:
 	return (rval);
 }
 
-static void
+local void
 clean_out_user(struct usr *u)
 {
 	if (next_event->u == u) {
@@ -3310,7 +3310,7 @@ clean_out_user(struct usr *u)
 	free_if_unused(u);
 }
 
-static void
+local void
 clean_out_atjobs(struct usr *u)
 {
 	struct event *ev, *pv;
@@ -3335,7 +3335,7 @@ clean_out_atjobs(struct usr *u)
 	u->atevents = NULL;
 }
 
-static void
+local void
 clean_out_ctab(struct usr *u)
 {
 	rm_ctevents(u);
@@ -3344,7 +3344,7 @@ clean_out_ctab(struct usr *u)
 	u->ctexists = 0;
 }
 
-static void
+local void
 cron_unlink(char *name)
 {
 	int r;
@@ -3355,7 +3355,7 @@ cron_unlink(char *name)
 	}
 }
 
-static void
+local void
 create_anc_ctab(struct event *e)
 {
 	if (audit_cron_create_anc_file(e->u->name,
@@ -3367,14 +3367,14 @@ create_anc_ctab(struct event *e)
 	}
 }
 
-static void
+local void
 delete_anc_ctab(struct event *e)
 {
 	(void) audit_cron_delete_anc_file(e->u->name,
 	    (cwd == CRON) ? NULL:CRONDIR);
 }
 
-static void
+local void
 create_anc_atjob(struct event *e)
 {
 	if (!e->of.at.exists)
@@ -3389,7 +3389,7 @@ create_anc_atjob(struct event *e)
 	}
 }
 
-static void
+local void
 delete_anc_atjob(struct event *e)
 {
 	if (!e->of.at.exists)
@@ -3400,7 +3400,7 @@ delete_anc_atjob(struct event *e)
 }
 
 
-static void
+local void
 process_anc_files(int del)
 {
 	struct usr	*u = uhead;
@@ -3439,7 +3439,7 @@ process_anc_files(int del)
 	}
 }
 
-static int
+local int
 cron_conv(int num_msg, struct pam_message **msgs,
     struct pam_response **response __unused, void *appdata_ptr __unused)
 {
@@ -3468,7 +3468,7 @@ cron_conv(int num_msg, struct pam_message **msgs,
  * track of the pids executed from cron. Otherwise, we will see
  * "unexpected pid returned.." messages appear in the log file.
  */
-static void
+local void
 miscpid_insert(pid_t pid)
 {
 	struct miscpid *mp;
@@ -3479,7 +3479,7 @@ miscpid_insert(pid_t pid)
 	miscpid_head = mp;
 }
 
-static int
+local int
 miscpid_delete(pid_t pid)
 {
 	struct miscpid *mp, *omp;
@@ -3507,7 +3507,7 @@ miscpid_delete(pid_t pid)
  * Establish contract terms such that all children are in abandoned
  * process contracts.
  */
-static void
+local void
 contract_set_template(void)
 {
 	int fd;
@@ -3532,7 +3532,7 @@ contract_set_template(void)
 /*
  * Clear active process contract template.
  */
-static void
+local void
 contract_clear_template(void)
 {
 	int fd;
@@ -3552,7 +3552,7 @@ contract_clear_template(void)
  * Abandon latest process contract unconditionally.  If we have leaked [some
  * critical amount], exit such that the kernel reaps our contracts.
  */
-static void
+local void
 contract_abandon_latest(pid_t pid)
 {
 	int r;
@@ -3612,7 +3612,7 @@ dup_shared(struct shared *obj)
 	return (obj);
 }
 
-static void
+local void
 rel_shared(struct shared *obj)
 {
 	if (obj && (--obj->count) == 0) {
@@ -3621,7 +3621,7 @@ rel_shared(struct shared *obj)
 	}
 }
 
-static void *
+local void *
 get_obj(struct shared *obj)
 {
 	return (obj->obj);
