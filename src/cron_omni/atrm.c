@@ -56,13 +56,13 @@ char login_authchk[UNAMESIZE]; /* used for authorization checks */
 #define	NOTALLOWED	"you are not authorized to use at.  Sorry."
 #define	NAMETOOLONG	"login name too long"
 
-static void usage(void);
-static void atabortperror(char *msg);
-static void atabort(char *msg);
-static void atperror(char *msg);
-static void atperror2(char *msg, char *name);
-static void aterror(char *msg);
-static void powner(char *file);
+local void usage(void);
+local void atabortperror(char *msg);
+local void atabort(char *msg);
+local void atperror(char *msg);
+local void atperror2(char *msg, char *name);
+local void aterror(char *msg);
+local void powner(char *file);
 
 int	getjoblist(struct dirent ***, USTAT ***, int (*)());
 int	removentry(char *, USTAT *, uid_t);
@@ -226,7 +226,7 @@ main(int argc, char **argv)
 /*
  * Print usage info and exit.
  */
-static void
+local void
 usage(void)
 {
 	fprintf(stderr, "usage: atrm [-f] [-i] [-a] [[job #] [user] ...]\n");
@@ -308,7 +308,7 @@ removentry(char *filename, USTAT *statptr, uid_t user)
  * Print the owner of the job. This is the owner of the spoolfile.
  * If we run into trouble getting the name, we'll just print "???".
  */
-static void
+local void
 powner(char *file)
 {
 	USTAT statb;
@@ -384,32 +384,32 @@ getname(uid_t uid)
 	return (pwdinfo->pw_name);
 }
 
-static void
+local void
 aterror(char *msg)
 {
 	fprintf(stderr, "atrm: %s\n", msg);
 }
 
-static void
+local void
 atperror(char *msg)
 {
 	fprintf(stderr, "atrm: %s: %s\n", msg, errmsg(errno));
 }
 
-static void
+local void
 atperror2(char *msg, char *name)
 {
 	fprintf(stderr, "atrm: %s %s: %s\n", msg, name, errmsg(errno));
 }
 
-static void
+local void
 atabort(char *msg)
 {
 	aterror(msg);
 	exit(1);
 }
 
-static void
+local void
 atabortperror(char *msg)
 {
 	atperror(msg);
