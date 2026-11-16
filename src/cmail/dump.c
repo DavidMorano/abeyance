@@ -8,7 +8,7 @@
 
 #define	DUMPLEN	50
 
-static void dump(f1p,f2p)
+local void dump(f1p,f2p)
 bfile	*f1p, *f2p ;
 {
 	int	f_done1, f_done2 ;
