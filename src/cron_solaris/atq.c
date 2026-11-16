@@ -56,15 +56,15 @@ struct dirent **queue;			/* the queue itself */
 #define	INVALIDUSER	"you are not a valid user (no entry in /etc/passwd)"
 #define	NOTALLOWED	"you are not authorized to use at.  Sorry."
 
-static void atabortperror(char *msg);
-static void atabort(char *msg);
-static void aterror(char *msg);
-static void atperror(char *msg);
-static void usage(void);
-static void printjobname(char *file);
-static void printdate(char *filename);
-static void printrank(int n);
-static void printqueue(uid_t *uidlist, int nuids);
+local void atabortperror(char *msg);
+local void atabort(char *msg);
+local void aterror(char *msg);
+local void atperror(char *msg);
+local void usage(void);
+local void printjobname(char *file);
+local void printdate(char *filename);
+local void printrank(int n);
+local void printqueue(uid_t *uidlist, int nuids);
 
 int
 main(int argc, char **argv)
@@ -253,7 +253,7 @@ countfiles(uid_t *uidlist, int nuids)
  * Print the queue. If only jobs belonging to a certain person(s) are requested,
  * only print jobs that belong to that person(s).
  */
-static void
+local void
 printqueue(uid_t *uidlist, int nuids)
 {
 	int i, j;			/* for loop indices */
@@ -349,7 +349,7 @@ getname(uid_t uid)
 /*
  * Print the rank of a job. (I've got to admit it, I stole it from "lpq")
  */
-static void
+local void
 printrank(int n)
 {
 	static char *r[] = {
@@ -366,7 +366,7 @@ printrank(int n)
  * Print the date that a job is to be executed. This takes some manipulation
  * of the file name.
  */
-static void
+local void
 printdate(char *filename)
 {
 	time_t	jobdate;
@@ -400,7 +400,7 @@ printdate(char *filename)
  * the three line header that the new version of "at" puts in the spoolfile.
  * Thus, we just print "???".
  */
-static void
+local void
 printjobname(char *file)
 {
 	char *ptr;				/* scratch pointer */
@@ -530,33 +530,33 @@ execution(struct dirent **d1, struct dirent **d2)
 /*
  * Print usage info and exit.
  */
-static void
+local void
 usage(void)
 {
 	fprintf(stderr, "usage:	atq [-c] [-n] [name ...]\n");
 	exit(1);
 }
 
-static void
+local void
 aterror(char *msg)
 {
 	fprintf(stderr, "atq: %s\n", msg);
 }
 
-static void
+local void
 atperror(char *msg)
 {
 	fprintf(stderr, "atq: %s: %s\n", msg, errmsg(errno));
 }
 
-static void
+local void
 atabort(char *msg)
 {
 	aterror(msg);
 	exit(1);
 }
 
-static void
+local void
 atabortperror(char *msg)
 {
 	atperror(msg);
