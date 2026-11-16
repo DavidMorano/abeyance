@@ -52,13 +52,14 @@
 #include	<sighand.h>
 #include	<baops.h>
 #include	<keyopt.h>
-#include	<bfile.h>
 #include	<sbuf.h>
 #include	<ids.h>
-#include	<kinfo.h>		/* not thread safe! */
-#include	<exitcodes.h>
-#include	<localmisc.h>
-#include	<libdebug.h>
+#include	<strtime.h>		/* LIBUC */
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
+#include	<bfile.h>		/* LIBB */
+#include	<kinfo.h>		/* Solaris® not thread safe! */
 
 #include	"config.h"
 #include	"defs.h"
@@ -75,8 +76,8 @@
 #define	LINEBUFLEN	MAX((MAXPATHLEN + 3),2048)
 #endif
 
-#undef	O_FLAGS
-#define	O_FLAGS		(O_WRONLY | O_NOCTTY)
+#undef	OX_FL
+#define	OX_FL		(O_WRONLY | O_NOCTTY)
 
 
 /* external subroutines */
@@ -110,13 +111,13 @@ local int	procinfo_end(PI *) ;
 
 local int	msglogdev(IDS *,cchar *) ;
 
-static void	main_sighand(int,siginfo_t *,void *) ;
+local void	main_sighand(int,siginfo_t *,void *) ;
 
 
 /* local variables */
 
-static volatile int	if_int ;
-static volatile int	if_exit ;
+local volatile int	if_int ;
+local volatile int	if_exit ;
 
 constexpr int	sigblocks[] = {
 	SIGUSR1,
@@ -1045,7 +1046,7 @@ badarg:
 
 
 /* ARGSUSED */
-static void main_sighand(int sn,siginfo_t *sip,void *vcp)
+local void main_sighand(int sn,siginfo_t *sip,void *vcp)
 {
 	switch (sn) {
 	case SIGINT:
@@ -1514,7 +1515,7 @@ cchar	ofname[] ;
 
 	int	rs ;
 	int	fd ;
-	int	oflags = O_FLAGS ;
+	int	oflags = OX_FL ;
 	int	operms = 0666 ;
 	int	wlen = 0 ;
 
@@ -1596,7 +1597,7 @@ gid_t		gid ;
 	if (pip->f.o_time) {
 	    char	timebuf[TIMEBUFLEN + 1] ;
 
-	    timestr_logz(pip->daytime,timebuf) ;
+	    strtime_logz(pip->daytime,timebuf) ;
 
 	    if (c++ > 0) sbuf_char(&b,' ') ;
 	    sbuf_strw(&b,timebuf,23) ;
