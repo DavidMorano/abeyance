@@ -42,7 +42,7 @@ USTAT globstat;
 #define	ROOT	"root"
 
 int per_errno;	/* status info from getuser */
-static int within(char *, char *);
+local int within(char *, char *);
 
 
 char *
@@ -89,7 +89,7 @@ allowed(char *user, char *allow, char *deny)
 	}
 }
 
-static int
+local int
 within(char *username, char *filename)
 {
 	char line[UNAMESIZE];
@@ -114,7 +114,7 @@ within(char *username, char *filename)
 }
 
 int
-cron_admin(const char *name)
+cron_admin(cchar *name)
 {
 	return (chkauthattr(CRONADMIN_AUTH, name));
 }
