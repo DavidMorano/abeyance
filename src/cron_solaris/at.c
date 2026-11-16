@@ -91,16 +91,16 @@
 #define	AQ(x)		#x
 #define	BUFFMT(p)		AQ(p)
 
-static int leap(int);
-static int atoi_for2(char *);
-static int check_queue(char *, int);
-static int list_jobs(int, char **, int, int);
-static int remove_jobs(int, char **, char *);
-static void usage(void);
-static void catch(int);
-static void copy(char *, FILE *, int);
-static void atime(struct tm *, struct tm *);
-static int not_this_project(char *);
+local int leap(int);
+local int atoi_for2(char *);
+local int check_queue(char *, int);
+local int list_jobs(int, char **, int, int);
+local int remove_jobs(int, char **, char *);
+local void usage(void);
+local void catch(int);
+local void copy(char *, FILE *, int);
+local void atime(struct tm *, struct tm *);
+local int not_this_project(char *);
 static char *mkjobname(time_t);
 static time_t parse_time(char *);
 static time_t gtime(struct tm *);
@@ -132,11 +132,11 @@ int		gmtflag = 0;
 int		mday[12] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 uid_t		user;
 struct	tm	*tp, at, rt;
-static int	cshflag		= 0;
-static int	kshflag		= 0;
-static int	shflag		= 0;
-static int	mflag		= 0;
-static int	pflag		= 0;
+local int	cshflag		= 0;
+local int	kshflag		= 0;
+local int	shflag		= 0;
+local int	mflag		= 0;
+local int	pflag		= 0;
 static char	*Shell;
 static char	*tfname;
 static char	pname[80];
@@ -442,7 +442,7 @@ time_t t;
 }
 
 
-static void
+local void
 catch(int x)
 {
 	unlink(tfname);
@@ -474,7 +474,7 @@ yyerror(void)
 /*
  * add time structures logically
  */
-static void
+local void
 atime(struct tm *a, struct tm *b)
 {
 	if ((a->tm_sec += b->tm_sec) >= 60) {
@@ -506,7 +506,7 @@ atime(struct tm *a, struct tm *b)
 
 }
 
-static int
+local int
 leap(int year)
 {
 	return (isleap(year + TM_YEAR_BASE));
@@ -551,7 +551,7 @@ struct	tm *tptr;
 /*
  * make job file from proto + stdin
  */
-static void
+local void
 copy(char *jobfile, FILE *inputfile, int when)
 {
 	int c;
@@ -743,7 +743,7 @@ out:
 	fflush(NULL);
 }
 
-static int
+local int
 remove_jobs(int argc, char **argv, char *login)
 /* remove jobs that are specified */
 {
@@ -792,7 +792,7 @@ remove_jobs(int argc, char **argv, char *login)
 
 
 
-static int
+local int
 list_jobs(int argc, char **argv, int qflag, int queue)
 {
 	DIR		*dir;
@@ -909,7 +909,7 @@ list_jobs(int argc, char **argv, int qflag, int queue)
  */
 #define	SKIPCOUNT 3	/* lines to skip to get to project line in file */
 
-static int
+local int
 not_this_project(char *filename)
 {
 	FILE *fp;
@@ -928,7 +928,7 @@ not_this_project(char *filename)
 	return (sproj == project ? 0 : 1);
 }
 
-static int
+local int
 check_queue(char *name, int queue)
 {
 	if ((name[strlen(name) - 1] - 'a') == queue)
@@ -995,7 +995,7 @@ parse_time(char *t)
 	return (when);
 }
 
-static int
+local int
 atoi_for2(char *p) {
 	int value;
 
@@ -1005,7 +1005,7 @@ atoi_for2(char *p) {
 	return (value);
 }
 
-static void
+local void
 usage(void)
 {
 	fprintf(stderr, USAGE);
