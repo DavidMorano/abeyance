@@ -48,9 +48,9 @@
 #include	<sbuf.h>
 #include	<six.h>
 #include	<matxstr.h>
-#include	<timestr.h>
 #include	<char.h>
-#include	<ischarx.h>
+#include	<isch.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>		/* |TIMEBUFLEN| */
 
 #include	"mailmsgenv.h"
@@ -401,7 +401,7 @@ int mailmsgenv_mkdatestr(MAILMSGENV *mep,cc *name,char *buf,int buflen) noex {
 	}
 
 	if (mep->f.hastime) {
-	    timestr_edate(mep->daytime,buf) ;
+	    strtime_edate(mep->daytime,buf) ;
 	} else
 	    buf[0] = '\0' ;
 
@@ -436,7 +436,7 @@ int mailmsgenv_mkenv(MAILMSGENV *mep,char *rbuf,int rlen) noex {
 	    {
 	        char	timebuf[TIMEBUFLEN + 1] ;
 	        time_t	d = (mep->f.hastime) ? mep->daytime : time(nullptr) ;
-	        timestr_edate(d,timebuf) ;
+	        strtime_edate(d,timebuf) ;
 	        sbuf_strw(&ub,timebuf,-1) ;
 	    }
 
