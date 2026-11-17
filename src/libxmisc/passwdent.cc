@@ -66,9 +66,9 @@
 
 /* forward references */
 
-static int passwdent_parseone(PASSWD *,SI *,int,cchar *,int) noex ;
-static int passwdent_parsedefs(PASSWD *,SI *,int) noex ;
-static int si_copystr(SI *,char **,cchar *) noex ;
+local int passwdent_parseone(PASSWD *,SI *,int,cchar *,int) noex ;
+local int passwdent_parsedefs(PASSWD *,SI *,int) noex ;
+local int si_copystr(SI *,char **,cchar *) noex ;
 
 
 /* local variables */
@@ -201,7 +201,7 @@ int passwdent_size(CPWE *pp) noex {
 
 /* local subroutines */
 
-static int passwdent_parseone(PWE *pwp,SI *ibp,int fi,cchar *vp,int vl) noex {
+local int passwdent_parseone(PWE *pwp,SI *ibp,int fi,cchar *vp,int vl) noex {
 	int		rs = SR_OK ;
 	int		v ;
 	cchar		**vpp = nullptr ;
@@ -240,7 +240,7 @@ static int passwdent_parseone(PWE *pwp,SI *ibp,int fi,cchar *vp,int vl) noex {
 }
 /* end subroutine (passwdent_parseone) */
 
-static int passwdent_parsedefs(PASSWDENT *pwp,storeitem *ibp,int sfi) noex {
+local int passwdent_parsedefs(PASSWDENT *pwp,storeitem *ibp,int sfi) noex {
 	int		rs = SR_OK ;
 	if (sfi == 6) {
 	    cchar	**vpp = (cchar **) &pwp->pw_shell ;
@@ -254,7 +254,7 @@ static int passwdent_parsedefs(PASSWDENT *pwp,storeitem *ibp,int sfi) noex {
 }
 /* end subroutine (passwdent_parsedefs) */
 
-static int si_copystr(SI *ibp,char **pp,cchar *p1) noex {
+local int si_copystr(SI *ibp,char **pp,cchar *p1) noex {
 	int		rs = SR_OK ;
 	cchar		**cpp = (cchar **) pp ;
 	*cpp = nullptr ;
