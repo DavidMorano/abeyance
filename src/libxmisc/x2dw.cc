@@ -107,7 +107,7 @@ namespace {
 /* forward references */
 
 template<typename ... Args>
-static int dw_ctor(dw *op,Args ... args) noex {
+local int dw_ctor(dw *op,Args ... args) noex {
     	DW		*hop = op ;
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) {
@@ -128,7 +128,7 @@ static int dw_ctor(dw *op,Args ... args) noex {
 }
 /* end subroutine (dw_ctor) */
 
-static int dw_dtor(dw *op) noex {
+local int dw_dtor(dw *op) noex {
 	int		rs = SR_FAULT ;
 	if (op) {
 	    rs = SR_OK ;
@@ -146,7 +146,7 @@ static int dw_dtor(dw *op) noex {
 /* end subroutine (dw_dtor) */
 
 template<typename ... Args>
-static inline int dw_magic(dw *op,Args ... args) noex {
+local inline int dw_magic(dw *op,Args ... args) noex {
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) {
 	    rs = (op->magic == DW_MAGIC) ? SR_OK : SR_NOTOPEN ;
@@ -155,15 +155,15 @@ static inline int dw_magic(dw *op,Args ... args) noex {
 }
 /* end subroutine (dw_magic) */
 
-static int	dw_scanfull(DW *) noex ;
-static int	dw_scansub(DW *,cchar *,time_t) noex ;
-static int	dw_scansuber(DW *,cchar *,int,time_t) noex ;
-static int	dw_findi(DW *,cchar *,IENTRY **) noex ;
+local int	dw_scanfull(DW *) noex ;
+local int	dw_scansub(DW *,cchar *,time_t) noex ;
+local int	dw_scansuber(DW *,cchar *,int,time_t) noex ;
+local int	dw_findi(DW *,cchar *,IENTRY **) noex ;
 
-static int	ientry_start(IENTRY *,DW *,cchar *,USTAT *) noex ;
-static int	ientry_finish(IENTRY *,DW *) noex ;
+local int	ientry_start(IENTRY *,DW *,cchar *,USTAT *) noex ;
+local int	ientry_finish(IENTRY *,DW *) noex ;
 
-static int	entry_load(DW_ENT *,IENTRY *,cchar *) noex ;
+local int	entry_load(DW_ENT *,IENTRY *,cchar *) noex ;
 
 extern "C" {
     static int	vcmpfn(cvoid **,cvoid **) noex ;
@@ -622,7 +622,7 @@ extern int dw_state(DW *op,int i,int state) noex {
 
 /* private subroutines */
 
-static int dw_scanfull(DW *op) noex {
+local int dw_scanfull(DW *op) noex {
 	USTAT		sb ;
 	IENTRY		ie ;
 	IENTRY		*iep ;
@@ -716,7 +716,7 @@ static int dw_scanfull(DW *op) noex {
 }
 /* end subroutine (dw_scanfull) */
 
-static int dw_scansub(DW *op,cchar *subdname,time_t dt) noex {
+local int dw_scansub(DW *op,cchar *subdname,time_t dt) noex {
 	int		rs ;
 	int		n = 0 ;
 	if ((rs = dw_magic(op)) >= 0) {
@@ -746,7 +746,7 @@ static int dw_scansub(DW *op,cchar *subdname,time_t dt) noex {
 /* end subroutine (dw_scansub) */
 
 /* "do" the subdirectory */
-static int dw_scansuber(DW *op,cchar *dbuf,int dl,time_t dt) noex {
+local int dw_scansuber(DW *op,cchar *dbuf,int dl,time_t dt) noex {
     	int		rs ;
 	int		rs1 ;
 	int		n = 0 ;
@@ -807,7 +807,7 @@ static int dw_scansuber(DW *op,cchar *dbuf,int dl,time_t dt) noex {
 
 #ifdef	COMMENT
 
-static int dw_finddelete(DW *op,cchar *name) noex {
+local int dw_finddelete(DW *op,cchar *name) noex {
 	int		rs ;
 	int		i = 0 ;
 	IENTRY		ie ;
@@ -823,7 +823,7 @@ static int dw_finddelete(DW *op,cchar *name) noex {
 
 #endif /* COMMENT */
 
-static int dw_findi(DW *op,cchar *name,IENTRY **iepp) noex {
+local int dw_findi(DW *op,cchar *name,IENTRY **iepp) noex {
 	int		rs ;
 	IENTRY		ie ;
 	ie.name = charp(name) ;
@@ -837,7 +837,7 @@ static int dw_findi(DW *op,cchar *name,IENTRY **iepp) noex {
 /* end subroutine (dw_findi) */
 
 /* initialize an entry */
-static int ientry_start(IENTRY *iep,DW *op,cchar *name,USTAT *sbp) noex {
+local int ientry_start(IENTRY *iep,DW *op,cchar *name,USTAT *sbp) noex {
 	int		rs ;
 	iep->state = DW_SNEW ;
 	if (cchar *cp ; (rs = uc_mallocstrw(name,-1,&cp)) >= 0) {
@@ -859,7 +859,7 @@ static int ientry_start(IENTRY *iep,DW *op,cchar *name,USTAT *sbp) noex {
 }
 /* end subroutine (ientry_start) */
 
-static int ientry_finish(IENTRY *iep,DW *op) noex {
+local int ientry_finish(IENTRY *iep,DW *op) noex {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	if (iep->state == DW_SNEW) {
@@ -876,7 +876,7 @@ static int ientry_finish(IENTRY *iep,DW *op) noex {
 }
 /* end subroutine (ientry_finish) */
 
-static int entry_load(DW_ENT *dep,IENTRY *iep,cchar *rbuf) noex {
+local int entry_load(DW_ENT *dep,IENTRY *iep,cchar *rbuf) noex {
 	int		rs = SR_FAULT ;
 	if (dep && iep) {
 	    rs = SR_OK ;
@@ -902,7 +902,7 @@ vars::operator int () noex {
 }
 /* end method (vars::operator) */
 
-static int vcmpfn(cvoid **v1pp,cvoid **v2pp) noex {
+local int vcmpfn(cvoid **v1pp,cvoid **v2pp) noex {
 	IENTRY		**e1pp = (IENTRY **) v1pp ;
 	IENTRY		**e2pp = (IENTRY **) v2pp ;
 	int		rc = 0 ;
