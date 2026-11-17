@@ -52,7 +52,7 @@
 
 /* forward references */
 
-static int	twochars(char *,cchar *,int) noex ;
+local int	twochars(char *,cchar *,int) noex ;
 
 
 /* external variables */
@@ -78,7 +78,7 @@ bool hasmacro(cchar *lp,int ll) noex {
 
 /* local subroutines */
 
-static int twochars(char *tbuf,cchar *sp,int sl) noex {
+local int twochars(char *tbuf,cchar *sp,int sl) noex {
 	int		c = 0 ;
 	while (sl && (c < 2)) {
 	    if (! CHAR_ISWHITE(*sp)) {
