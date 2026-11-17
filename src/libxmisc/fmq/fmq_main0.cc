@@ -36,20 +36,21 @@
 #include	<fcntl.h>
 #include	<ctime>
 #include	<climits>		/* |INT_MAX| */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstring>		/* |memset(3c)| + |memcpy(3c)| */
 #include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
-#include	<usystem.h>
-#include	<endian.h>
-#include	<absfn.h>
-#include	<stdorder.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<endian.h>		/* LIBU */
+#include	<intceil.h>		/* LIBU */
+#include	<absfn.h>		/* LIBU */
+#include	<stdorder.h>		/* LIBU */
 #include	<lockfile.h>
 #include	<sfx.h>			/* |sfnamecomp(3uc)| */
 #include	<strwcpy.h>
-#include	<intceil.h>
-#include	<isfiledesc.h>
-#include	<localmisc.h>
+#include	<isfd.h>
+#include	<localmisc.h>		/* LIBU */
 
 #include	"fmq.h"
 
@@ -102,7 +103,7 @@ using std::nothrow ;			/* constant */
 /* forward references */
 
 template<typename ... Args>
-static int fmq_ctor(fmq *op,Args ... args) noex {
+local int fmq_ctor(fmq *op,Args ... args) noex {
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) {
 	    rs = memclear(op) ;
@@ -111,7 +112,7 @@ static int fmq_ctor(fmq *op,Args ... args) noex {
 }
 /* end subroutine (fmq_ctor) */
 
-static int fmq_dtor(fmq *op) noex {
+local int fmq_dtor(fmq *op) noex {
 	int		rs = SR_FAULT ;
 	if (op) {
 	    rs = SR_OK ;
@@ -120,39 +121,39 @@ static int fmq_dtor(fmq *op) noex {
 }
 /* end subroutine (fmq_dtor) */
 
-static int	fmq_opener(fmq *,time_t) noex ;
-static int	fmq_fnbegin(fmq *,cchar *) noex ;
-static int	fmq_fnend(fmq *) noex ;
+local int	fmq_opener(fmq *,time_t) noex ;
+local int	fmq_fnbegin(fmq *,cchar *) noex ;
+local int	fmq_fnend(fmq *) noex ;
 
-static int	fmq_isend(fmq *,cvoid *,int,int) noex ;
-static int	fmq_irecv(fmq *,void *,int,int) noex ;
-static int	fmq_filecheck(fmq *,time_t,int,int) noex ;
-static int	fmq_filebegin(fmq *,time_t) noex ;
-static int	fmq_filechanged(fmq *) noex ;
-static int	fmq_lockacquire(fmq *,time_t,int) noex ;
-static int	fmq_lockrelease(fmq *) noex ;
-static int	fmq_fileready(fmq *,time_t) noex ;
-static int	fmq_filecreate(fmq *) noex ;
-static int	fmq_fileopen(fmq *,time_t) noex ;
-static int	fmq_fileclose(fmq *) noex ;
-static int	fmq_bufbegin(fmq *) noex ;
-static int	fmq_bufend(fmq *) noex ;
-static int	fmq_headwrite(fmq *) noex ;
-static int	fmq_di(fmq *,sigset_t *) noex ;
-static int	fmq_ei(fmq *,sigset_t *) noex ;
+local int	fmq_isend(fmq *,cvoid *,int,int) noex ;
+local int	fmq_irecv(fmq *,void *,int,int) noex ;
+local int	fmq_filecheck(fmq *,time_t,int,int) noex ;
+local int	fmq_filebegin(fmq *,time_t) noex ;
+local int	fmq_filechanged(fmq *) noex ;
+local int	fmq_lockacquire(fmq *,time_t,int) noex ;
+local int	fmq_lockrelease(fmq *) noex ;
+local int	fmq_fileready(fmq *,time_t) noex ;
+local int	fmq_filecreate(fmq *) noex ;
+local int	fmq_fileopen(fmq *,time_t) noex ;
+local int	fmq_fileclose(fmq *) noex ;
+local int	fmq_bufbegin(fmq *) noex ;
+local int	fmq_bufend(fmq *) noex ;
+local int	fmq_headwrite(fmq *) noex ;
+local int	fmq_di(fmq *,sigset_t *) noex ;
+local int	fmq_ei(fmq *,sigset_t *) noex ;
 
 #ifdef	COMMENT
-static int	fmq_bufadj(fmq *) noex ;
+local int	fmq_bufadj(fmq *) noex ;
 #endif
 
 #ifdef	COMMENT
-static int	fmq_headread(fmq *) noex ;
+local int	fmq_headread(fmq *) noex ;
 #endif
 
-static int	filemagic(char *,int,fmq_fm *) noex ;
+local int	filemagic(char *,int,fmq_fm *) noex ;
 
-static int filehead_wr(fmq_fh *,cchar *) noex ;
-static int filehead_rd(const fmq_fh *,char *) noex ;
+local int filehead_wr(fmq_fh *,cchar *) noex ;
+local int filehead_rd(const fmq_fh *,char *) noex ;
 
 
 /* local variables */
@@ -357,7 +358,7 @@ int fmq_check(fmq *op,time_t dt) noex {
 
 /* private subroutines */
 
-static int fmq_fnbegin(fmq *op,cchar *fname) noex {
+local int fmq_fnbegin(fmq *op,cchar *fname) noex {
     	int		rs = SR_OK ;
 	int		rs1 ;
 	cchar		*fnp{} ;
@@ -375,7 +376,7 @@ static int fmq_fnbegin(fmq *op,cchar *fname) noex {
 }
 /* end subroutine (fmq_fnbegin) */
 
-static int fmq_fnend(fmq *op) noex {
+local int fmq_fnend(fmq *op) noex {
     	int		rs = SR_OK ;
 	int		rs1 ;
 	if (op->fname) {
@@ -387,7 +388,7 @@ static int fmq_fnend(fmq *op) noex {
 }
 /* end subroutine (fmq_fnend) */
 
-static int fmq_opener(fmq *op,time_t dt) noex {
+local int fmq_opener(fmq *op,time_t dt) noex {
 	int		rs ;
 	op->opentime = dt ;
 	op->accesstime = dt ;
@@ -396,7 +397,7 @@ static int fmq_opener(fmq *op,time_t dt) noex {
 	        op->mtime = sb.st_mtime ;
 	        op->filesize = int(sb.st_size) ;
 	        /* local or remote */
-	        if ((rs = isfsremote(op->fd)) >= 0) {
+	        if ((rs = isfdfsremote(op->fd)) >= 0) {
 	            op->f.remote = (rs > 0) ;
 	            /* setup for disabling signals */
 	            if ((rs = uc_sigsetfill(&op->sigmask)) >= 0) {
@@ -404,7 +405,7 @@ static int fmq_opener(fmq *op,time_t dt) noex {
 			    op->magic = FMQ_MAGIC ;
 		        }
 		    }
-	        } /* end if (isfsremote) */
+	        } /* end if (isfdfsremote) */
 	    } else {
 		rs = SR_TOOBIG ;
 	    }
@@ -413,7 +414,7 @@ static int fmq_opener(fmq *op,time_t dt) noex {
 }
 /* end subroutine (fmq_opener) */
 
-static int fmq_isend(fmq *op,cvoid *buf,int buflen,int opts) noex {
+local int fmq_isend(fmq *op,cvoid *buf,int buflen,int opts) noex {
 	IOVEC		v[3] ;
 	sigset_t	oldsigmask ;
 	off_t		uoff ;
@@ -510,7 +511,7 @@ ret0:
 }
 /* end subroutine (fmq_isend) */
 
-static int fmq_irecv(fmq *op,void *buf,int buflen,int opts) noex {
+local int fmq_irecv(fmq *op,void *buf,int buflen,int opts) noex {
 	IOVEC		v[3] ;
 	USTAT		sb ;
 	sigset_t	oldsigmask ;
@@ -664,7 +665,7 @@ ret0:
 }
 /* end subroutine (fmq_irecv) */
 
-static int fmq_filecheck(fmq *op,time_t dt,int f_read,int opts) noex {
+local int fmq_filecheck(fmq *op,time_t dt,int f_read,int opts) noex {
 	int		rs ;
 	int		f_changed = false ;
 	(void) opts ;
@@ -686,7 +687,7 @@ static int fmq_filecheck(fmq *op,time_t dt,int f_read,int opts) noex {
 
 /* has the file changed at all? */S
 #ifdef	COMMENT
-static int fmq_filechanged(fmq *op) noex {
+local int fmq_filechanged(fmq *op) noex {
 	int		rs ;
 	int		fch = false ;
 	if (USTAT sb ; (rs = u_fstat(op->fd,&sb)) >= 0) {
@@ -705,7 +706,7 @@ static int fmq_filechanged(fmq *op) noex {
 	return (rs >= 0) ? fch : rs ;
 }
 #else /* COMMENT */
-static int fmq_filechanged(fmq *op) noex {
+local int fmq_filechanged(fmq *op) noex {
 	USTAT		sb ;
 	int		rs ;
 	int		fch = false ;
@@ -780,7 +781,7 @@ bad0:
 #endif /* COMMENT */
 /* end subroutine (fmq_filechanged) */
 
-static int fmq_bufbegin(fmq *op) noex {
+local int fmq_bufbegin(fmq *op) noex {
         cint		bsz = op->bufsize ;
 	int		rs ;
 	{
@@ -795,7 +796,7 @@ static int fmq_bufbegin(fmq *op) noex {
 }
 /* end subroutine (fmq_bufbegin) */
 
-static int fmq_bufend(fmq *op) noex {
+local int fmq_bufend(fmq *op) noex {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	if (op->b.buf) {
@@ -811,7 +812,7 @@ static int fmq_bufend(fmq *op) noex {
 /* end subroutine (fmq_bufend) */
 
 /* initialize the file header (either read it only or write it) */
-static int fmq_filebegin(fmq *op,time_t dt) noex {
+local int fmq_filebegin(fmq *op,time_t dt) noex {
 	fmq_fm		fm ;
 	sigset_t	oldsigmask ;
 	int		rs = SR_OK ;
@@ -910,7 +911,7 @@ ret0:
 }
 /* end subroutine (fmq_filebegin) */
 
-static int fmq_lockacquire(fmq *op,time_t dt,int f_read) noex {
+local int fmq_lockacquire(fmq *op,time_t dt,int f_read) noex {
 	int		rs ;
 	int		f_already = false ;
 	if ((rs = fmq_fileready(op,dt)) >= 0) {
@@ -936,7 +937,7 @@ static int fmq_lockacquire(fmq *op,time_t dt,int f_read) noex {
 }
 /* end subroutine (fmq_lockacquire) */
 
-static int fmq_lockrelease(fmq *op) noex {
+local int fmq_lockrelease(fmq *op) noex {
 	int		rs = SR_OK ;
 	if ((op->f.readlocked || op->f.writelocked)) {
 	    if (op->fd >= 0) {
@@ -950,7 +951,7 @@ static int fmq_lockrelease(fmq *op) noex {
 }
 /* end subroutine (fmq_lockrelease) */
 
-static int fmq_fileready(fmq *op,time_t dt) noex {
+local int fmq_fileready(fmq *op,time_t dt) noex {
 	int		rs = SR_OK ;
 	if (op->fd < 0) {
 	    if (dt == 0) dt = getustime ;
@@ -960,7 +961,7 @@ static int fmq_fileready(fmq *op,time_t dt) noex {
 }
 /* end subroutine (fmq_filready) */
 
-static int fmq_filecreate(fmq *op) noex {
+local int fmq_filecreate(fmq *op) noex {
     	cint		rsn = SR_NOTFOUND ;
 	cint		am = int(op->operm & O_ACCMODE) ;
     	int		rs ;
@@ -980,7 +981,7 @@ static int fmq_filecreate(fmq *op) noex {
 }
 /* end subroutine (fmq_filecreate) */
 
-static int fmq_fileopen(fmq *op,time_t dt) noex {
+local int fmq_fileopen(fmq *op,time_t dt) noex {
 	int		rs = SR_OK ;
 	if (op->fd < 0) {
 	    if ((rs = fmq_filecreate(op)) >= 0) {
@@ -997,7 +998,7 @@ static int fmq_fileopen(fmq *op,time_t dt) noex {
 }
 /* end subroutine (fmq_fileopen) */
 
-static int fmq_fileclose(fmq *op) noex {
+local int fmq_fileclose(fmq *op) noex {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	if (op->fd >= 0) {
@@ -1009,7 +1010,7 @@ static int fmq_fileclose(fmq *op) noex {
 }
 /* end subroutine (fmq_fileclose) */
 
-static int fmq_headwrite(fmq *op) noex {
+local int fmq_headwrite(fmq *op) noex {
 	coff		uoff = FMQ_HEADOFF ;
 	int		rs ;
 	char		fbuf[FBUFLEN + 1] ;
@@ -1020,7 +1021,7 @@ static int fmq_headwrite(fmq *op) noex {
 }
 /* end subroutine (fmq_headwrite) */
 
-static int fmq_di(fmq *op,sigset_t *smp) noex {
+local int fmq_di(fmq *op,sigset_t *smp) noex {
 	int		rs = SR_BADFMT ;
 	if (op && smp) {
 	    rs = u_sigmask(SIG_BLOCK,&op->sigmask,smp) ;
@@ -1029,7 +1030,7 @@ static int fmq_di(fmq *op,sigset_t *smp) noex {
 }
 /* end subroutine (fmq_di) */
 
-static int fmq_ei(fmq *op,sigset_t *smp) noex {
+local int fmq_ei(fmq *op,sigset_t *smp) noex {
 	int		rs = SR_BADFMT ;
 	if (op && smp) {
 	    rs = u_sigmask(SIG_SETMASK,smp,nullptr) ;
@@ -1039,7 +1040,7 @@ static int fmq_ei(fmq *op,sigset_t *smp) noex {
 /* end subroutine (fmq_ei) */
 
 #ifdef	COMMENT
-static int fmq_bufadj(fmq *op) noex {
+local int fmq_bufadj(fmq *op) noex {
     	int		rs = SR_OK ;
 	if (cint sz ; (sz = uceil(op->bufsize,szof(int))) != op->bufsize) {
 	    op->bufsize = sz ;
@@ -1049,7 +1050,7 @@ static int fmq_bufadj(fmq *op) noex {
 /* end subroutine (fmq_bufadj) */
 #endif /* COMMENT */
 
-static int filemagic(char *buf,int f_read,fmq_fm *mp) noex {
+local int filemagic(char *buf,int f_read,fmq_fm *mp) noex {
 	int		rs = SR_BADFMT ;
 	if (buf && mp) {
 	    char	*bp = buf ;
@@ -1075,7 +1076,7 @@ static int filemagic(char *buf,int f_read,fmq_fm *mp) noex {
 /* end subroutine (filemagic) */
 
 /* encode or decode the file header */
-static int filehead_wr(fmq_fh *hp,cchar *buf) noex {
+local int filehead_wr(fmq_fh *hp,cchar *buf) noex {
 	const uint	*table = (uint *) buf ;
 	int		rs = SR_BADFMT ;
 	if (buf) {
@@ -1092,7 +1093,7 @@ static int filehead_wr(fmq_fh *hp,cchar *buf) noex {
 	return rs ;
 }
 /* end subroutine (filehead_wr) */
-static int filehead_rd(const fmq_fh *hp,char *buf) noex {
+local int filehead_rd(const fmq_fh *hp,char *buf) noex {
 	uint		*table = (uint *) buf ;
 	int		rs = SR_BADFMT ;
 	if (buf) {
