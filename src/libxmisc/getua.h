@@ -17,7 +17,7 @@ EXTERNC_begin
 extern int getua_begin() ;
 extern int getua_ent(userattr_t *,char *,int) ;
 extern int getua_end() ;
-extern int getua_name(userattr_t *,char *,int,const char *) ;
+extern int getua_name(userattr_t *,char *,int,cchar *) ;
 extern int getua_uid(userattr_t *,char *,int,uid_t) ;
 
 EXTERNC_end
