@@ -75,21 +75,21 @@
 
 /* forward references */
 
-static int	objfile_hash(OF *,Elf32_Ehdr *) noex ;
-static int	objfile_dynsym(OF *,Elf32_Ehdr *) noex ;
+local int	objfile_hash(OF *,Elf32_Ehdr *) noex ;
+local int	objfile_dynsym(OF *,Elf32_Ehdr *) noex ;
 
-static int	objfile_symtabsinit(OF *,Elf32_Ehdr *) noex ;
-static int	objfile_symtabsfree(OF *) noex ;
+local int	objfile_symtabsinit(OF *,Elf32_Ehdr *) noex ;
+local int	objfile_symtabsfree(OF *) noex ;
 
-static int	objfile_symtabmap(OF *,int) noex ;
-static int	objfile_symtabunmap(OF *,int) noex ;
+local int	objfile_symtabmap(OF *,int) noex ;
+local int	objfile_symtabunmap(OF *,int) noex ;
 
-static int	objfile_symbolsinit(OF *) noex ;
-static int	objfile_symbolsfree(OF *) noex ;
+local int	objfile_symbolsinit(OF *) noex ;
+local int	objfile_symbolsfree(OF *) noex ;
 
-static int	checkelf(Elf32_Ehdr *) noex ;
-static int	finds(Elf32_Shdr *,int,cc *,cc *,int) noex ;
-static int	findhs(Elf32_Shdr *,int,cc *,cc *,int) noex ;
+local int	checkelf(Elf32_Ehdr *) noex ;
+local int	finds(Elf32_Shdr *,int,cc *,cc *,int) noex ;
+local int	findhs(Elf32_Shdr *,int,cc *,cc *,int) noex ;
 
 
 /* local variables */
@@ -715,7 +715,7 @@ int objfile_close(OF *op)
 
 /* private subroutines */
 
-static int objfile_hash(OF *op,Elf32_Ehdr *ehp) noex {
+local int objfile_hash(OF *op,Elf32_Ehdr *ehp) noex {
 	int		rs = SR_NOENT ;
 	int		i ; /* used-afterwards */
 	for (i = 0 ; i < ehp->e_shnum ; i += 1) {
@@ -729,7 +729,7 @@ static int objfile_hash(OF *op,Elf32_Ehdr *ehp) noex {
 }
 /* end subroutine (objfile_hash) */
 
-static int objfile_dynsym(OF *op,Elf32_Ehdr *ehp) noex {
+local int objfile_dynsym(OF *op,Elf32_Ehdr *ehp) noex {
 	int		rs = SR_NOENT ;
 	int		i ; /* used-afterwards */
 	for (i = 0 ; i < ehp->e_shnum ; i += 1) {
@@ -744,7 +744,7 @@ static int objfile_dynsym(OF *op,Elf32_Ehdr *ehp) noex {
 /* end subroutine (objfile_dynsym) */
 
 /* map the symbol tables along with their string tables */
-static int objfile_symtabsinit(OF *op,Elf32_Ehdr *ehp) noex {
+local int objfile_symtabsinit(OF *op,Elf32_Ehdr *ehp) noex {
 	OBJFILE_SYMTAB	st ;
 	Elf32_Shdr	*sheads = op->sheads ;
 	int		rs = SR_NOENT ;
@@ -809,7 +809,7 @@ bad3:
 
 
 /* free up the symbol tables */
-static int objfile_symtabsfree(OF *op)
+local int objfile_symtabsfree(OF *op)
 {
 	OBJFILE_SYMTAB	*stp ;
 	int		rs = SR_OK ;
@@ -831,7 +831,7 @@ static int objfile_symtabsfree(OF *op)
 /* end subroutine (objfile_symtabsfree) */
 
 
-static int objfile_symtabmap(op,n)
+local int objfile_symtabmap(op,n)
 OBJFILE		*op ;
 int		n ;
 {
@@ -916,7 +916,7 @@ int		n ;
 }
 /* end subroutine (objfile_symtabmap) */
 
-static int objfile_symtabunmap(OF *op,int n) noex {
+local int objfile_symtabunmap(OF *op,int n) noex {
 	OBJFILE_SYMTAB	*stp ;
 	int		rs ;
 
@@ -936,7 +936,7 @@ static int objfile_symtabunmap(OF *op,int n) noex {
 }
 /* end subroutine (objfile_symtabunmap) */
 
-static int objfile_symbolsinit(OF *op) noex {
+local int objfile_symbolsinit(OF *op) noex {
 	hdb_dat	key, value ;
 	OBJFILE_SYMTAB	*stp ;
 #ifdef	COMMENT
@@ -1010,7 +1010,7 @@ bad9:
 }
 /* end subroutine (objfile_symbolsinit) */
 
-static int objfile_symbolsfree(OF *op) noex {
+local int objfile_symbolsfree(OF *op) noex {
 	int		rs = SR_OK ;
 
 	if (! op->f.symbols)
@@ -1045,7 +1045,7 @@ ret0:
 }
 /* end subroutine (objfile_symbolsfree) */
 
-static int checkelf(Elf32_Ehdr *ehp) noex {
+local int checkelf(Elf32_Ehdr *ehp) noex {
 	int		rs = SR_OK ;
 
 	if ((ehp->e_ident[0] != 0x7f) ||
@@ -1083,7 +1083,7 @@ bad2:
 }
 /* end subroutine (checkelf) */
 
-static int finds(Elf32_shdr *sheads,int n,cc *shstrs,cc *name,int type) noex {
+local int finds(Elf32_shdr *sheads,int n,cc *shstrs,cc *name,int type) noex {
 	for (int i = 0 ; i < n ; i += 1) {
 	    cint	namei = sheads[i].sh_name ;
 	    if (strcmp(shstrs + namei,name) == 0) {
@@ -1096,7 +1096,7 @@ static int finds(Elf32_shdr *sheads,int n,cc *shstrs,cc *name,int type) noex {
 /* end subroutine (finds) */
 
 /* find a section by its name (and type if specified) */
-static int findhs(Elf32_Shdr *sheads,int n,cc *shstrs,cc *name,int type) noex {
+local int findhs(Elf32_Shdr *sheads,int n,cc *shstrs,cc *name,int type) noex {
 	uint		maxaddr = 0 ;
 	int		si = -1 ;
 	int		namei ;
