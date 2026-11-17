@@ -24,7 +24,7 @@ extern "C" {
 extern int getpe_begin(int) ;
 extern int getpe_ent(struct protoent *,char *,int) ;
 extern int getpe_end() ;
-extern int getpe_name(struct protoent *,char *,int,const char *) ;
+extern int getpe_name(struct protoent *,char *,int,cchar *) ;
 extern int getpe_num(struct protoent *,char *,int,int) ;
 
 #ifdef	__cplusplus
