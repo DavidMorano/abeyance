@@ -48,7 +48,7 @@
 #include	<sfx.h>			/* |sfnamecomp(3uc)| */
 #include	<strwcpy.h>
 #include	<intceil.h>
-#include	<isfiledesc.h>
+#include	<isfd.h>
 #include	<localmisc.h>
 
 #include	"fmq.h"
@@ -396,7 +396,7 @@ local int fmq_opener(fmq *op,time_t dt) noex {
 	        op->timod = sb.st_mtime ;
 	        op->filesize = int(sb.st_size) ;
 	        /* local or remote */
-	        if ((rs = isfsremote(op->fd)) >= 0) {
+	        if ((rs = isfdfsremote(op->fd)) >= 0) {
 	            op->f.remote = (rs > 0) ;
 	            /* setup for disabling signals */
 	            if ((rs = uc_sigsetfill(&op->sigmask)) >= 0) {
@@ -404,7 +404,7 @@ local int fmq_opener(fmq *op,time_t dt) noex {
 			    op->magic = FMQ_MAGIC ;
 		        }
 		    }
-	        } /* end if (isfsremote) */
+	        } /* end if (isfdfsremote) */
 	    } else {
 		rs = SR_TOOBIG ;
 	    }
