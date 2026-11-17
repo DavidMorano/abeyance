@@ -81,14 +81,14 @@
 
 /* external subroutines */
 
-extern int	matstr(const char **,const char *,int) ;
+extern int	matstr(cchar **,cchar *,int) ;
 extern int	getnodename(char *,int) ;
-extern int	perm(const char *,uid_t,gid_t,gid_t *,int) ;
-extern int	vecstr_envadd(vecstr *,const char *,const char *,int) ;
-extern int	xfile(IDS *,const char *) ;
+extern int	perm(cchar *,uid_t,gid_t,gid_t *,int) ;
+extern int	vecstr_envadd(vecstr *,cchar *,cchar *,int) ;
+extern int	xfile(IDS *,cchar *) ;
 
 #if	CF_DEBUGS
-extern int	debugprintf(const char *,...) ;
+extern int	debugprintf(cchar *,...) ;
 #endif
 
 
@@ -110,26 +110,26 @@ MODLOAD_MID	sysmiscers = {
 
 /* forward references */
 
-static int	sysmiscers_msopen(SYSMISCERS *) ;
-static int	sysmiscers_msget(SYSMISCERS *,time_t,SYSMISCERS_DATA *) ;
-static int	sysmiscers_msgetone(SYSMISCERS *,time_t,SYSMISCERS_DATA *) ;
-static int	sysmiscers_nodename(SYSMISCERS *) ;
-static int	sysmiscers_msdaemon(SYSMISCERS *) ;
-static int	sysmiscers_msprogdaemon(SYSMISCERS *,char *,const char *) ;
-static int	sysmiscers_envload(SYSMISCERS *,VECSTR *) ;
+local int	sysmiscers_msopen(SYSMISCERS *) ;
+local int	sysmiscers_msget(SYSMISCERS *,time_t,SYSMISCERS_DATA *) ;
+local int	sysmiscers_msgetone(SYSMISCERS *,time_t,SYSMISCERS_DATA *) ;
+local int	sysmiscers_nodename(SYSMISCERS *) ;
+local int	sysmiscers_msdaemon(SYSMISCERS *) ;
+local int	sysmiscers_msprogdaemon(SYSMISCERS *,char *,cchar *) ;
+local int	sysmiscers_envload(SYSMISCERS *,VECSTR *) ;
 
-static int	istermrs(int) ;
+local int	istermrs(int) ;
 
 
 /* local variables */
 
-static const char	*prbins[] = {
+static cchar	*prbins[] = {
 	"bin",
 	"sbin",
 	NULL
 } ;
 
-static const char	*envbads[] = {
+static cchar	*envbads[] = {
 	"_",
 	"_A0",
 	"A__z",
@@ -151,7 +151,7 @@ static const char	*envbads[] = {
 	NULL
 } ;
 
-static const int	termrs[] = {
+static cint	termrs[] = {
 	SR_FAULT,
 	SR_INVALID,
 	SR_NOMEM,
@@ -172,11 +172,11 @@ static const int	termrs[] = {
 
 int sysmiscers_open(op,pr)
 SYSMISCERS	*op ;
-const char	pr[] ;
+cchar	pr[] ;
 {
 	int	rs ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 
 	if (op == NULL) return SR_FAULT ;
@@ -264,7 +264,7 @@ SYSMISCERS_DATA	*dp ;
 /* private subroutines */
 
 
-static int sysmiscers_msget(op,daytime,dp)
+local int sysmiscers_msget(op,daytime,dp)
 SYSMISCERS	*op ;
 time_t		daytime ;
 SYSMISCERS_DATA	*dp ;
@@ -287,12 +287,12 @@ SYSMISCERS_DATA	*dp ;
 /* end subroutine (sysmiscers_msget) */
 
 
-static int sysmiscers_msopen(op)
+local int sysmiscers_msopen(op)
 SYSMISCERS	*op ;
 {
 	const mode_t	operms = 0666 ;
 
-	const int	oflags = O_RDONLY ;
+	cint	oflags = O_RDONLY ;
 	int	rs = SR_OK ;
 	int	rs1 ;
 
@@ -310,7 +310,7 @@ SYSMISCERS	*op ;
 /* end subroutine (sysmiscers_msopen) */
 
 
-static int sysmiscers_msgetone(op,daytime,dp)
+local int sysmiscers_msgetone(op,daytime,dp)
 SYSMISCERS	*op ;
 time_t		daytime ;
 SYSMISCERS_DATA	*dp ;
@@ -321,7 +321,7 @@ SYSMISCERS_DATA	*dp ;
 	if ((rs = sysmiscers_nodename(op)) >= 0) {
 	    MSFILE_ENT	e ;
 	    int		nl = op->nodenamelen ;
-	    const char	*nn = op->nodename ;
+	    cchar	*nn = op->nodename ;
 	    if ((rs1 = msfile_match(&op->ms,0L,nn,nl,&e)) >= 0) {
 	        if (daytime == 0) daytime = time(NULL) ;
 	        op->f.msold = ((daytime - e.utime) >= TO_MSOLD) ;
@@ -336,7 +336,7 @@ SYSMISCERS_DATA	*dp ;
 /* end subroutine (sysmiscers_msgetone) */
 
 
-static int sysmiscers_nodename(op)
+local int sysmiscers_nodename(op)
 SYSMISCERS	*op ;
 {
 	int	rs = SR_OK ;
@@ -345,7 +345,7 @@ SYSMISCERS	*op ;
 	if (op->nodename == NULL) {
 	    char	nbuf[NODENAMELEN + 1] ;
 	    if ((rs = getnodename(nbuf,NODENAMELEN)) >= 0) {
-	        const char	*cp ;
+	        cchar	*cp ;
 	        nlen = rs ;
 	        if ((rs = uc_mallocstrw(nbuf,nlen,&cp)) >= 0) {
 		    op->nodename = cp ;
@@ -360,7 +360,7 @@ SYSMISCERS	*op ;
 /* end subroutine (sysmiscers_nodename) */
 
 
-static int sysmiscers_msdaemon(op)
+local int sysmiscers_msdaemon(op)
 SYSMISCERS	*op ;
 {
 	SPAWNPROC	ps ;
@@ -374,7 +374,7 @@ SYSMISCERS	*op ;
 	int	cstat ;
 	int	cex ;
 
-	const char	*pn = SYSMISCERS_MSPROG ;
+	cchar	*pn = SYSMISCERS_MSPROG ;
 
 	char	progfname[MAXPATHLEN + 1] ;
 
@@ -385,8 +385,8 @@ SYSMISCERS	*op ;
 	if ((rs = vecstr_start(&envs,150,0)) >= 0) {
 
 	    if ((rs = sysmiscers_envload(op,&envs)) >= 0) {
-	const char	*av[5] ;
-	const char	**ev ;
+	cchar	*av[5] ;
+	cchar	**ev ;
 
 	av[0] = pn ;
 	av[1] = "-o" ;
@@ -455,10 +455,10 @@ ret0:
 /* end subroutine (sysmiscers_msdaemon) */
 
 
-static int sysmiscers_msprogdaemon(op,progfname,pn)
+local int sysmiscers_msprogdaemon(op,progfname,pn)
 SYSMISCERS	*op ;
 char		progfname[] ;
-const char	*pn ;
+cchar	*pn ;
 {
 	IDS	id ;
 
@@ -490,7 +490,7 @@ const char	*pn ;
 /* end subroutine (sysmiscers_msprogdaemon) */
 
 
-static int sysmiscers_envload(SYSMISCERS *op,VECSTR *elp) noex 
+local int sysmiscers_envload(SYSMISCERS *op,VECSTR *elp) noex 
 	int	rs = SR_OK ;
 	int	i ;
 	int	c = 0 ;
@@ -505,7 +505,7 @@ static int sysmiscers_envload(SYSMISCERS *op,VECSTR *elp) noex
 	} /* end for */
 
 	if (rs >= 0) {
-	    const char	*varpr = SYSMISCERS_MSPROG ;
+	    cchar	*varpr = SYSMISCERS_MSPROG ;
 	    c += 1 ;
 	    rs = vecstr_envadd(elp,varpr,op->pr,-1) ;
 	}
@@ -515,7 +515,7 @@ static int sysmiscers_envload(SYSMISCERS *op,VECSTR *elp) noex
 /* end subroutine (sysmiscers_envload) */
 
 
-static int istermrs(int rs) noex {
+local int istermrs(int rs) noex {
 	int	f = FALSE ;
 	for (int i = 0 ; termrs[i] != 0 ; i += 1) {
 	    f = (rs == termrs[i]) ;
