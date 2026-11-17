@@ -81,7 +81,7 @@
 constexpr bool	f_remainder = CF_REMAINDER ;
 
 template<stdintx UT>
-static int icta26x(char *rbuf,int rlen,int type,int prec,UT v) noex {
+local int icta26x(char *rbuf,int rlen,int type,int prec,UT v) noex {
 	constexpr uint	base = DIGBASE ;
 	char		*rp = (rbuf + rlen) ;
 	*rp = '\0' ;
