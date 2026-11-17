@@ -61,7 +61,7 @@ extern char	**environ ;
 /* forward references */
 
 #if	CF_SETENV || CF_UNSETENV
-static char	*__findenv(const char *,int *) ;
+static char	*__findenv(cchar *,int *) ;
 #endif
 
 
@@ -78,11 +78,11 @@ static char	*__findenv(const char *,int *) ;
  *	"value".  If rewrite is set, replace any current value.
  *
  * PUBLIC: #ifndef HAVE_SETENV
- * PUBLIC: int setenv __P((const char *, const char *, int));
+ * PUBLIC: int setenv __P((cchar *, cchar *, int));
  * PUBLIC: #endif
  */
 
-int setenv(const char *name,const char *value,int rewrite) {
+int setenv(cchar *name,cchar *value,int rewrite) {
 	static int	alloced ;		/* if allocated space before */
 	char 		*c ;
 	int 		l_value, offset ;
@@ -149,11 +149,11 @@ int setenv(const char *name,const char *value,int rewrite) {
  *	Delete environmental variable "name".
  *
  * PUBLIC: #ifndef HAVE_UNSETENV
- * PUBLIC: void unsetenv __P((const char *));
+ * PUBLIC: void unsetenv __P((cchar *));
  * PUBLIC: #endif
  */
 
-void unsetenv(const char *name) {
+void unsetenv(cchar *name) {
 	char 		**p ;
 	int 		offset ;
 
@@ -184,7 +184,7 @@ void unsetenv(const char *name) {
  *	This routine *should* be a static; do not use it.
  */
 
-static char *__findenv(const char *name,int *offset) {
+static char *__findenv(cchar *name,int *offset) {
 	int 		len ;
 	char 		*np ;
 	char 		**p, *c ;
