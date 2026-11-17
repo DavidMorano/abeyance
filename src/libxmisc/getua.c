@@ -88,7 +88,7 @@ int getua_ent(userattr_t *uap,char *uabuf,int ualen)
 }
 
 
-int getua_name(userattr_t *uap,char *uabuf,int ualen,const char *name)
+int getua_name(userattr_t *uap,char *uabuf,int ualen,cchar *name)
 {
 	userattr_t	*tuap ;
 	int		rs ;
