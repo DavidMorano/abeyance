@@ -127,7 +127,7 @@ namespace {
 /* forward references */
 
 template<typename ... Args>
-static int devpermfile_ctor(devpermfile *op,Args ... args) noex {
+local int devpermfile_ctor(devpermfile *op,Args ... args) noex {
     	DEVPERMFILE	*hop = op ;
 	cnullptr	np{} ;
 	int		rs = SR_FAULT ;
@@ -148,7 +148,7 @@ static int devpermfile_ctor(devpermfile *op,Args ... args) noex {
 }
 /* end subroutine (devpermfile_ctor) */
 
-static int devpermfile_dtor(devpermfile *op) noex {
+local int devpermfile_dtor(devpermfile *op) noex {
 	int		rs = SR_FAULT ;
 	if (op) ylikely {
 	    rs = SR_OK ;
@@ -166,7 +166,7 @@ static int devpermfile_dtor(devpermfile *op) noex {
 /* end subroutine (devpermfile_dtor) */
 
 template<typename ... Args>
-static inline int devpermfile_magic(devpermfile *op,Args ... args) noex {
+local inline int devpermfile_magic(devpermfile *op,Args ... args) noex {
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) ylikely {
 	    rs = (op->magval == DEVPERMFILE_MAGIC) ? SR_OK : SR_NOTOPEN ;
@@ -175,37 +175,37 @@ static inline int devpermfile_magic(devpermfile *op,Args ... args) noex {
 }
 /* end subroutine (devpermfile_magic) */
 
-static int	devpermfile_finkeys(DP *) noex ;
-static int	devpermfile_finents(DP *) noex ;
-static int	devpermfile_parse(DP *,cchar *) noex ;
-static int	devpermfile_parseln(DP *,cchar *,int) noex ;
-static int	devpermfile_keyadd(DP *,cchar *,int) noex ;
-static int	devpermfile_keydel(DP *,int) noex ;
-static int	devpermfile_keyincr(DP *,int) noex ;
-static int	devpermfile_keydecr(DP *,int) noex ;
-static int	devpermfile_entexpand(DP *,int,mode_t,cchar *,int) noex ;
-static int	devpermfile_entins(DP *,int,mode_t,cchar *,int) noex ;
-static int	devpermfile_entdir(DP *,int,mode_t,cchar *,int) noex ;
-static int	devpermfile_entadd(DP *,DP_IE *) noex ;
-static int	devpermfile_keymat(DP *,DP_IE *,cchar *) noex ;
+local int	devpermfile_finkeys(DP *) noex ;
+local int	devpermfile_finents(DP *) noex ;
+local int	devpermfile_parse(DP *,cchar *) noex ;
+local int	devpermfile_parseln(DP *,cchar *,int) noex ;
+local int	devpermfile_keyadd(DP *,cchar *,int) noex ;
+local int	devpermfile_keydel(DP *,int) noex ;
+local int	devpermfile_keyincr(DP *,int) noex ;
+local int	devpermfile_keydecr(DP *,int) noex ;
+local int	devpermfile_entexpand(DP *,int,mode_t,cchar *,int) noex ;
+local int	devpermfile_entins(DP *,int,mode_t,cchar *,int) noex ;
+local int	devpermfile_entdir(DP *,int,mode_t,cchar *,int) noex ;
+local int	devpermfile_entadd(DP *,DP_IE *) noex ;
+local int	devpermfile_keymat(DP *,DP_IE *,cchar *) noex ;
 
-static int	key_start(DP_KEY *,cchar *,int) noex ;
-static int	key_incr(DP_KEY *) noex ;
-static int	key_decr(DP_KEY *) noex ;
-static int	key_count(DP_KEY *) noex ;
-static int	key_mat(DP_KEY *,cchar *,int) noex ;
-static int	key_finish(DP_KEY *) noex ;
-static int	key_fake(DP_KEY *,cchar *,int) noex ;
+local int	key_start(DP_KEY *,cchar *,int) noex ;
+local int	key_incr(DP_KEY *) noex ;
+local int	key_decr(DP_KEY *) noex ;
+local int	key_count(DP_KEY *) noex ;
+local int	key_mat(DP_KEY *,cchar *,int) noex ;
+local int	key_finish(DP_KEY *) noex ;
+local int	key_fake(DP_KEY *,cchar *,int) noex ;
 
-static int	ientry_start(DP_IE *,int,mode_t,cchar *,int) noex ;
-static int	ientry_ci(DP_IE *) noex ;
-static int	ientry_finish(DP_IE *) noex ;
+local int	ientry_start(DP_IE *,int,mode_t,cchar *,int) noex ;
+local int	ientry_ci(DP_IE *) noex ;
+local int	ientry_finish(DP_IE *) noex ;
 
-static int	entry_load(DP_ENT *,char *,int,DP_IE *) noex ;
+local int	entry_load(DP_ENT *,char *,int,DP_IE *) noex ;
 
-static int	mkdirfile(char *,cchar *,int,cchar *,int) noex ;
+local int	mkdirfile(char *,cchar *,int,cchar *,int) noex ;
 
-static int	vkeymat(cvoid **,cvoid **) noex ;
+local int	vkeymat(cvoid **,cvoid **) noex ;
 
 static mode_t	modeparse(cchar *,int) noex ;
 
@@ -244,7 +244,7 @@ constexpr char		aterms[32] = {
 
 /* exported subroutines */
 
-static int devpermfile_opener(DP *) noex ;
+local int devpermfile_opener(DP *) noex ;
 
 int devpermfile_open(DP *op,cc *fname) noex {
 	int		rs ;
@@ -280,7 +280,7 @@ int devpermfile_open(DP *op,cc *fname) noex {
 }
 /* end subroutine (devpermfile_open) */
 
-static int devpermfile_opener(DP *op) noex {
+local int devpermfile_opener(DP *op) noex {
 	int		vsz = szof(DP_KEY) ;
 	cint		vn = 10 ;
 	int		vo = vecobjm.stationary ;
@@ -459,9 +459,9 @@ int devpermfile_check(DP *op,time_t dt) noex {
 
 /* private subroutines */
 
-static int devpermfile_parser(DP *op,cchar *fname) noex ;
+local int devpermfile_parser(DP *op,cchar *fname) noex ;
 
-static int devpermfile_parse(DP *op,cchar *fname) noex {
+local int devpermfile_parse(DP *op,cchar *fname) noex {
 	int		rs = SR_FAULT ;
 	int		c = 0 ; /* return-value */
 	if (fname) ylikely {
@@ -475,7 +475,7 @@ static int devpermfile_parse(DP *op,cchar *fname) noex {
 }
 /* end subroutine (devpermfile_parse) */
 
-static int devpermfile_parser(DP *op,cchar *fname) noex {
+local int devpermfile_parser(DP *op,cchar *fname) noex {
     	cnullptr	np{} ;
     	int		rs ;
 	int		rs1 ;
@@ -509,7 +509,7 @@ static int devpermfile_parser(DP *op,cchar *fname) noex {
 }
 /* end subroutine (devpermfile_parser) */
 
-static int devpermfile_parseln(DP *op,cchar *lp,int ll) noex {
+local int devpermfile_parseln(DP *op,cchar *lp,int ll) noex {
 	int		rs ;
 	int		rs1 ;
 	int		c = 0 ;
@@ -558,14 +558,14 @@ static int devpermfile_parseln(DP *op,cchar *lp,int ll) noex {
 /* end subroutine (devpermfile_parseln) */
 
 /* add an entry to something */
-static int devpermfile_entadd(DP *op,DP_IE *iep) noex {
+local int devpermfile_entadd(DP *op,DP_IE *iep) noex {
 	vecobj		*elp = op->elp ;
 	return elp->add(iep) ;
 }
 /* end subroutine (devpermfile_entadd) */
 
 /* free up ALL of the keys */
-static int devpermfile_finkeys(DP *op) noex {
+local int devpermfile_finkeys(DP *op) noex {
 	vecobj		*klp = op->klp ;
 	int		rs = SR_OK ;
 	void		*vp{} ;
@@ -581,7 +581,7 @@ static int devpermfile_finkeys(DP *op) noex {
 /* end subroutine (devpermfile_finkeys) */
 
 /* free up ALL of the entries in this DP list */
-static int devpermfile_finents(DP *op) noex {
+local int devpermfile_finents(DP *op) noex {
 	vecobj		*elp = op->elp ;
 	int		rs = SR_OK ;
 	void		*vp{} ;
@@ -597,7 +597,7 @@ static int devpermfile_finents(DP *op) noex {
 }
 /* end subroutine (devpermfile_finents) */
 
-static int devpermfile_keyadd(DP *op,cchar *kp,int kl) noex {
+local int devpermfile_keyadd(DP *op,cchar *kp,int kl) noex {
 	vecobj		*klp = op->klp ;
 	cnullptr	np{} ;
 	cint		rsn = SR_NOTFOUND ;
@@ -628,7 +628,7 @@ static int devpermfile_keyadd(DP *op,cchar *kp,int kl) noex {
 }
 /* end subroutine (devpermfile_keyadd) */
 
-static int devpermfile_keydel(DP *op,int ci) noex {
+local int devpermfile_keydel(DP *op,int ci) noex {
 	vecobj		*klp = op->klp ;
 	int		rs ;
 	void		*vp{} ;
@@ -643,7 +643,7 @@ static int devpermfile_keydel(DP *op,int ci) noex {
 }
 /* end subroutine (devpermfile_keydel) */
 
-static int devpermfile_keyincr(DP *op,int ci) noex {
+local int devpermfile_keyincr(DP *op,int ci) noex {
 	vecobj		*klp = op->klp ;
 	int		rs ;
 	void		*vp{} ;
@@ -657,7 +657,7 @@ static int devpermfile_keyincr(DP *op,int ci) noex {
 }
 /* end subroutine (devpermfile_keyincr) */
 
-static int devpermfile_keydecr(DP *op,int ci) noex {
+local int devpermfile_keydecr(DP *op,int ci) noex {
 	vecobj		*klp = op->klp ;
 	int		rs ;
 	void		*vp{} ;
@@ -674,7 +674,7 @@ static int devpermfile_keydecr(DP *op,int ci) noex {
 }
 /* end subroutine (devpermfile_keydecr) */
 
-static int devpermfile_entexpand(DP *op,int ci,mode_t dm,cc *dp,int dl) noex {
+local int devpermfile_entexpand(DP *op,int ci,mode_t dm,cc *dp,int dl) noex {
 	int		rs = SR_FAULT ;
 	int		c = 0 ; /* return-value */
 	if (dp) ylikely {
@@ -695,7 +695,7 @@ static int devpermfile_entexpand(DP *op,int ci,mode_t dm,cc *dp,int dl) noex {
 }
 /* end subroutine (devpermfile_entexpand) */
 
-static int devpermfile_entins(DP *op,int ci,mode_t dmode,cc *dp,int dl) noex {
+local int devpermfile_entins(DP *op,int ci,mode_t dmode,cc *dp,int dl) noex {
 	int		rs ;
 	int		c = 0 ; /* return-value */
 	if (DP_IE ie ; (rs = ientry_start(&ie,ci,dmode,dp,dl)) >= 0) {
@@ -714,9 +714,9 @@ static int devpermfile_entins(DP *op,int ci,mode_t dmode,cc *dp,int dl) noex {
 }
 /* end subroutine (devpermfile_entins) */
 
-static int devpermfile_entdirs(DP *,char *,int,mode_t,cchar *,int) noex ;
+local int devpermfile_entdirs(DP *,char *,int,mode_t,cchar *,int) noex ;
 
-static int devpermfile_entdir(DP *op,int ci,mode_t dm,cc *dp,int dl) noex {
+local int devpermfile_entdir(DP *op,int ci,mode_t dm,cc *dp,int dl) noex {
 	int		rs ;
 	int		rs1 ;
 	int		c = 0 ; /* return-value */
@@ -738,7 +738,7 @@ static int devpermfile_entdir(DP *op,int ci,mode_t dm,cc *dp,int dl) noex {
 }
 /* end subroutine (devpermfile_entdir) */
 
-static int devpermfile_entdirs(DP *op,char *tbuf,int ci,mode_t dm,
+local int devpermfile_entdirs(DP *op,char *tbuf,int ci,mode_t dm,
 		cc *dp,int dl) noex {
 	int		rs ;
 	int		rs1 ;
@@ -767,7 +767,7 @@ static int devpermfile_entdirs(DP *op,char *tbuf,int ci,mode_t dm,
 }
 /* end subroutine (devpermfile_entdir) */
 
-static int devpermfile_keymat(DP *op,DP_IE *iep,cchar *key) noex {
+local int devpermfile_keymat(DP *op,DP_IE *iep,cchar *key) noex {
     	vecobj		*klp = op->klp ;
 	int		rs ;
 	int		f = false ; /* return-value */
@@ -785,7 +785,7 @@ static int devpermfile_keymat(DP *op,DP_IE *iep,cchar *key) noex {
 }
 /* end subroutine (devpermfile_keymat) */
 
-static int key_start(DP_KEY *kep,cchar *conbuf,int conlen) noex {
+local int key_start(DP_KEY *kep,cchar *conbuf,int conlen) noex {
 	int		rs = SR_FAULT ;
 	if (kep && conbuf) ylikely {
 	    rs = SR_INVALID ;
@@ -802,7 +802,7 @@ static int key_start(DP_KEY *kep,cchar *conbuf,int conlen) noex {
 }
 /* end subroutine (key_start) */
 
-static int key_incr(DP_KEY *kep) noex {
+local int key_incr(DP_KEY *kep) noex {
     	int		rs = SR_FAULT ;
 	if (kep) ylikely {
 	    kep->count += 1 ;
@@ -812,7 +812,7 @@ static int key_incr(DP_KEY *kep) noex {
 }
 /* end subroutine (key_incr) */
 
-static int key_decr(DP_KEY *kep) noex {
+local int key_decr(DP_KEY *kep) noex {
     	int		rs = SR_FAULT ;
 	if (kep) ylikely {
 	    if (kep->count > 0) kep->count -= 1 ;
@@ -822,7 +822,7 @@ static int key_decr(DP_KEY *kep) noex {
 }
 /* end subroutine (key_decr) */
 
-static int key_count(DP_KEY *kep) noex {
+local int key_count(DP_KEY *kep) noex {
     	int		rs = SR_FAULT ;
 	if (kep) ylikely {
 	    rs = kep->count ;
@@ -831,7 +831,7 @@ static int key_count(DP_KEY *kep) noex {
 }
 /* end subroutine (key_count) */
 
-static int key_mat(DP_KEY *kep,cchar *keyp,int keyl) noex {
+local int key_mat(DP_KEY *kep,cchar *keyp,int keyl) noex {
     	int		rs = SR_FAULT ;
 	int		f = false ; /* return-value */
 	if (kep && keyp) ylikely {
@@ -846,7 +846,7 @@ static int key_mat(DP_KEY *kep,cchar *keyp,int keyl) noex {
 }
 /* end subroutine (key_mat) */
 
-static int key_finish(DP_KEY *kep) noex {
+local int key_finish(DP_KEY *kep) noex {
 	int		rs = SR_FAULT ;
 	int		rs1 ;
 	if (kep) ylikely {
@@ -862,7 +862,7 @@ static int key_finish(DP_KEY *kep) noex {
 }
 /* end subroutine (key_finish) */
 
-static int key_fake(DP_KEY *kep,cchar *keyp,int keyl) noex {
+local int key_fake(DP_KEY *kep,cchar *keyp,int keyl) noex {
     	int		rs = SR_FAULT ;
 	if (kep && keyp) ylikely {
 	    if (keyl < 0) keyl = lenstr(keyp) ;
@@ -874,7 +874,7 @@ static int key_fake(DP_KEY *kep,cchar *keyp,int keyl) noex {
 }
 /* end subroutine (key_fake) */
 
-static int ientry_start(DP_IE *iep,int ci,mode_t m,cc *dp,int dl) noex {
+local int ientry_start(DP_IE *iep,int ci,mode_t m,cc *dp,int dl) noex {
 	int		rs = SR_FAULT ;
 	if (iep && dp) ylikely {
 	    rs = SR_INVALID ;
@@ -893,7 +893,7 @@ static int ientry_start(DP_IE *iep,int ci,mode_t m,cc *dp,int dl) noex {
 }
 /* end subroutine (ientry_start) */
 
-static int ientry_finish(DP_IE *iep) noex {
+local int ientry_finish(DP_IE *iep) noex {
     	int		rs = SR_FAULT ;
 	int		rs1 ;
 	if (iep) ylikely {
@@ -910,7 +910,7 @@ static int ientry_finish(DP_IE *iep) noex {
 }
 /* end subroutine (ientry_finish) */
 
-static int ientry_ci(DP_IE *iep) noex {
+local int ientry_ci(DP_IE *iep) noex {
     	int		rs = SR_FAULT ;
 	if (iep) {
 	    rs = iep->ci ;
@@ -919,7 +919,7 @@ static int ientry_ci(DP_IE *iep) noex {
 }
 /* end subroutine (ientry_ci) */
 
-static int entry_load(DP_ENT *ep,char *ebuf,int elen,DP_IE *iep) noex {
+local int entry_load(DP_ENT *ep,char *ebuf,int elen,DP_IE *iep) noex {
 	int		rs = SR_FAULT ;
 	int		el = 0 ; /* return-value */
 	if (ep && ebuf && iep) ylikely {
@@ -948,7 +948,7 @@ static int entry_load(DP_ENT *ep,char *ebuf,int elen,DP_IE *iep) noex {
 }
 /* end subroutine (entry_load) */
 
-static int mkdirfile(char *bufp,cc *dp,int dl,cc *dnp,int dnl) noex {
+local int mkdirfile(char *bufp,cc *dp,int dl,cc *dnp,int dnl) noex {
 	cint		bufl = var.maxpathlen ;
 	int		rs = SR_OK ;
 	int		i = 0 ;
@@ -981,7 +981,7 @@ vars::operator int () noex {
 	return rs ;
 } /* end method (vars::operator) */
 
-static int keymat(DP_KEY *e1p,DP_KEY *e2p) noex {
+local int keymat(DP_KEY *e1p,DP_KEY *e2p) noex {
     	int		rc ;
 	if ((rc = (e1p->console[0] - e2p->console[0])) == 0) {
 	    rc = strcmp(e1p->console,e2p->console) ;
@@ -989,7 +989,7 @@ static int keymat(DP_KEY *e1p,DP_KEY *e2p) noex {
 	return rc ;
 }
 
-static int vkeymat(cvoid **v1pp,cvoid **v2pp) noex {
+local int vkeymat(cvoid **v1pp,cvoid **v2pp) noex {
 	DP_KEY		*e1p = (DP_KEY *) *v1pp ;
 	DP_KEY		*e2p = (DP_KEY *) *v2pp ;
 	int		rc = 0 ;
