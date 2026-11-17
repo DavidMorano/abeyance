@@ -322,7 +322,7 @@ case_csi:
 /* end subroutine (editline) */
 
 
-static int csi(gdp,ldp,hp,hi,comline,lenp,cp)
+local int csi(gdp,ldp,hp,hi,comline,lenp,cp)
 struct gdata	*gdp ;
 struct ldata	*ldp ;
 struct history	*hp ;
@@ -483,7 +483,7 @@ int	*cp ;
 /* end subroutine (csi) */
 
 
-static int ss3(gdp,ldp,hp,hi,comline,lenp,cp)
+local int ss3(gdp,ldp,hp,hi,comline,lenp,cp)
 struct gdata	*gdp ;
 struct ldata	*ldp ;
 struct history	*hp ;
