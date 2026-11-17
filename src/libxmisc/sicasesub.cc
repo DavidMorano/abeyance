@@ -60,7 +60,7 @@
 #include	<toxc.h>
 #include	<nleadstr.h>
 #include	<mkchar.h>
-#include	<ischarx.h>
+#include	<isch.h>
 #include	<localmisc.h>
 
 #include	"six.h"
