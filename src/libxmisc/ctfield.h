@@ -43,7 +43,7 @@ typedef	CTFIELD		ctfield_head ;
 
 EXTERNC_begin
 
-extern int ctfield_start(ctfield *,const char *,int) noex ;
+extern int ctfield_start(ctfield *,cchar *,int) noex ;
 extern int ctfield_get(ctfield *,cchar *) noex ;
 extern int ctfield_term(ctfield *,cchar *) noex ;
 extern int ctfield_sharg(ctfield *,cchar *,char *,int) noex ;
