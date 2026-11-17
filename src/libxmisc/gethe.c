@@ -36,7 +36,7 @@
 	struct hostent	*hep ;
 	char		hebuf[] ;
 	int		helen ;
-	const char	name[] ;
+	cchar	name[] ;
 
 	Arguments:
 
@@ -76,14 +76,14 @@
 
 /* external subroutines */
 
-extern int	snsds(char *,int,const char *,const char *) ;
-extern int	snwcpy(char *,int,const char *,int) ;
-extern int	sncpy1(char *,int,const char *) ;
-extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
+extern int	snsds(char *,int,cchar *,cchar *) ;
+extern int	snwcpy(char *,int,cchar *,int) ;
+extern int	sncpy1(char *,int,cchar *) ;
+extern int	sncpy2(char *,int,cchar *,cchar *) ;
+extern int	sncpy3(char *,int,cchar *,cchar *,cchar *) ;
 extern int	getnodename(char *,int) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -127,7 +127,7 @@ int gethe_ent(struct hostent *hep,char *hebuf,int helen)
 
 int gethe_name(struct hostent *hep,char hebuf[],int helen,cchar name[])
 {
-	const int	nlen = NODENAMELEN ;
+	cint	nlen = NODENAMELEN ;
 	int		rs = SR_OK ;
 	char		nbuf[NODENAMELEN+1] ;
 	if ((name == NULL) || (name[0] == '\0')) {
@@ -141,7 +141,7 @@ int gethe_name(struct hostent *hep,char hebuf[],int helen,cchar name[])
 
 
 int gethe_addr(struct hostent *hep,char hebuf[],int helen,int type,
-		const void *ap,int al)
+		cvoid *ap,int al)
 {
 	return uc_gethostbyaddr(ap,al,type,hep,hebuf,helen) ;
 }
