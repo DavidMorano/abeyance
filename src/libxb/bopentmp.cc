@@ -24,8 +24,8 @@
 
 	int bopentmp(fp,tname,ostr,om)
 	bfile		*fp ;
-	const char	tname[] ;
-	const char	ostr[] ;
+	cchar	tname[] ;
+	cchar	ostr[] ;
 	mode_t		om ;
 
 	Arguments:
@@ -74,8 +74,8 @@
 
 /* external subroutines */
 
-extern int	mktmpfile(char *,mode_t,const char *) ;
-extern int	sfdirname(const char *,int,const char **) ;
+extern int	mktmpfile(char *,mode_t,cchar *) ;
+extern int	sfdirname(cchar *,int,cchar **) ;
 
 
 /* external variables */
@@ -86,8 +86,8 @@ extern int	sfdirname(const char *,int,const char **) ;
 
 /* forward references */
 
-static int mkxfn(char *,cchar *) ;
-static int mktmpdirs(const char *,mode_t) ;
+local int mkxfn(char *,cchar *) ;
+local int mktmpdirs(cchar *,mode_t) ;
 
 
 /* local variables */
@@ -134,7 +134,7 @@ int bopentmp(bfile *fp,cchar *tname,cchar *ostr,mode_t om)
 /* local subroutines */
 
 
-static int mkxfn(char *xfname,cchar *tname)
+local int mkxfn(char *xfname,cchar *tname)
 {
 	int		rs ;
 	if (tname[0] != '/') {
@@ -149,7 +149,7 @@ static int mkxfn(char *xfname,cchar *tname)
 /* end subroutine (mkxfn) */
 
 
-static int mktmpdirs(const char *xfname,mode_t om)
+local int mktmpdirs(cchar *xfname,mode_t om)
 {
 	int		rs = SR_OK ;
 	int		cl ;
