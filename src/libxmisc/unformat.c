@@ -136,7 +136,7 @@ va_list		va_alist ;
  * data to the current pattern from the main loop of 'unformat()'.
  ***************************************************************/
 
-static int number(gdp,stow, type, len, size, listp)
+local int number(gdp,stow, type, len, size, listp)
 struct gdata	*gdp ;
 int stow, type, len, size;
 va_list *listp;
@@ -253,7 +253,7 @@ va_list *listp;
 }
 
 
-static int string(gdp,stow, type, len, tab, listp)
+local int string(gdp,stow, type, len, tab, listp)
 struct gdata	*gdp ;
 register int stow, type, len;
 register char *tab;
