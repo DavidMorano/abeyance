@@ -128,31 +128,31 @@
 
 /* external subroutines */
 
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	sncpy4(char *,int,const char *,const char *,cchar *,cchar *) ;
-extern int	snwcpy(char *,int,const char *,int) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath1w(char *,const char *,int) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	mkpath4(char *,const char *,const char *,cchar *,cchar *) ;
-extern int	mkfnamesuf1(char *,const char *,const char *) ;
-extern int	mkfnamesuf2(char *,const char *,const char *,const char *) ;
-extern int	sfbasename(const char *,int,const char **) ;
-extern int	nleadstr(const char *,const char *,int) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	cfdecti(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,uint *) ;
+extern int	sncpy3(char *,int,cchar *,cchar *,cchar *) ;
+extern int	sncpy4(char *,int,cchar *,cchar *,cchar *,cchar *) ;
+extern int	snwcpy(char *,int,cchar *,int) ;
+extern int	mkpath1(char *,cchar *) ;
+extern int	mkpath1w(char *,cchar *,int) ;
+extern int	mkpath2(char *,cchar *,cchar *) ;
+extern int	mkpath3(char *,cchar *,cchar *,cchar *) ;
+extern int	mkpath4(char *,cchar *,cchar *,cchar *,cchar *) ;
+extern int	mkfnamesuf1(char *,cchar *,cchar *) ;
+extern int	mkfnamesuf2(char *,cchar *,cchar *,cchar *) ;
+extern int	sfbasename(cchar *,int,cchar **) ;
+extern int	nleadstr(cchar *,cchar *,int) ;
+extern int	matstr(cchar **,cchar *,int) ;
+extern int	cfdecti(cchar *,int,int *) ;
+extern int	cfdecui(cchar *,int,uint *) ;
 extern int	getnodedomain(char *,char *) ;
 extern int	getuid_name(cchar *,int) ;
-extern int	mkpr(char *,int,const char *,const char *) ;
-extern int	pathclean(char *,const char *,int) ;
+extern int	mkpr(char *,int,cchar *,cchar *) ;
+extern int	pathclean(char *,cchar *,int) ;
 
 #if	CF_DEBUGS
-extern int	debugprintf(const char *,...) ;
+extern int	debugprintf(cchar *,...) ;
 #endif
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -166,11 +166,11 @@ struct loadinfo_flags {
 } ;
 
 struct loadinfo {
-	const char	*pr ;
-	const char	*dbname ;
-	const char	*prbuf ;
-	const char	*username ;
-	const char	*rn ;
+	cchar	*pr ;
+	cchar	*dbname ;
+	cchar	*prbuf ;
+	cchar	*username ;
+	cchar	*rn ;
 	struct loadinfo_flags	f ;
 	EXPCOOK	cooks ;
 	int		operms ;
@@ -179,48 +179,48 @@ struct loadinfo {
 
 /* forward references */
 
-static int	sysmiscems_setbegin(SYSMISCEMS *,const char *) ;
-static int	sysmiscems_setend(SYSMISCEMS *) ;
-static int	sysmiscems_pr(SYSMISCEMS *) ;
+local int	sysmiscems_setbegin(SYSMISCEMS *,cchar *) ;
+local int	sysmiscems_setend(SYSMISCEMS *) ;
+local int	sysmiscems_pr(SYSMISCEMS *) ;
 
-static int	sysmiscems_shmcreate(SYSMISCEMS *,const char *,int) ;
-static int	sysmiscems_shmcreater(SYSMISCEMS *,struct loadinfo *,
-			int,const char *) ;
-static int	sysmiscems_shmdestroy(SYSMISCEMS *) ;
-static int	sysmiscems_shmwr(SYSMISCEMS *,int,int) ;
+local int	sysmiscems_shmcreate(SYSMISCEMS *,cchar *,int) ;
+local int	sysmiscems_shmcreater(SYSMISCEMS *,struct loadinfo *,
+			int,cchar *) ;
+local int	sysmiscems_shmdestroy(SYSMISCEMS *) ;
+local int	sysmiscems_shmwr(SYSMISCEMS *,int,int) ;
 
-static int	sysmiscems_mapcreate(SYSMISCEMS *,int) ;
-static int	sysmiscems_mapdestroy(SYSMISCEMS *) ;
+local int	sysmiscems_mapcreate(SYSMISCEMS *,int) ;
+local int	sysmiscems_mapdestroy(SYSMISCEMS *) ;
 
-static int	sysmiscems_shmproc(SYSMISCEMS *) ;
-static int	sysmiscems_shmverify(SYSMISCEMS *,SYSMISCFH *) ;
+local int	sysmiscems_shmproc(SYSMISCEMS *) ;
+local int	sysmiscems_shmverify(SYSMISCEMS *,SYSMISCFH *) ;
 
-static int	sysmiscems_shmupdate(SYSMISCEMS *) ;
-static int	sysmiscems_shmchild(SYSMISCEMS *) ;
-static int	sysmiscems_shmopenwait(SYSMISCEMS *,const char *,int) ;
+local int	sysmiscems_shmupdate(SYSMISCEMS *) ;
+local int	sysmiscems_shmchild(SYSMISCEMS *) ;
+local int	sysmiscems_shmopenwait(SYSMISCEMS *,cchar *,int) ;
 
-static int	loadinfo_start(LOADINFO *,const char *,const char *,int) ;
-static int	loadinfo_finish(LOADINFO *) ;
-static int	loadinfo_expand(LOADINFO *,char *,const char *) ;
-static int	loadinfo_cookcheck(LOADINFO *,const char *) ;
-static int	loadinfo_rn(LOADINFO *) ;
-static int	loadinfo_username(LOADINFO *) ;
-static int	loadinfo_chown(LOADINFO *,int,int) ;
+local int	loadinfo_start(LOADINFO *,cchar *,cchar *,int) ;
+local int	loadinfo_finish(LOADINFO *) ;
+local int	loadinfo_expand(LOADINFO *,char *,cchar *) ;
+local int	loadinfo_cookcheck(LOADINFO *,cchar *) ;
+local int	loadinfo_rn(LOADINFO *) ;
+local int	loadinfo_username(LOADINFO *) ;
+local int	loadinfo_chown(LOADINFO *,int,int) ;
 
-static int	filer_writefill(FILER *,const char *,int) ;
+local int	filer_writefill(FILER *,cchar *,int) ;
 
 #ifdef	COMMENT
-static int	filer_writezero(FILER *,int) ;
+local int	filer_writezero(FILER *,int) ;
 #endif
 
-static int	getcookname(const char *,const char **) ;
+local int	getcookname(cchar *,cchar **) ;
 
-static int	istermrs(int) ;
+local int	istermrs(int) ;
 
 
 /* local variables */
 
-static const char	*shmnames[] = {
+static cchar	*shmnames[] = {
 	"/sys$%n",
 	"/%{RN}$%n",
 	"/%U¥%n",
@@ -235,7 +235,7 @@ enum shmnames {
 	shmname_overlast
 } ;
 
-static const char	*cookies[] = {
+static cchar	*cookies[] = {
 	"n",
 	"RN",
 	"U",
@@ -250,7 +250,7 @@ enum cookies {
 	cookie_overlast
 } ;
 
-static const int	termrs[] = {
+static cint	termrs[] = {
 	SR_FAULT,
 	SR_INVALID,
 	SR_NOMEM,
@@ -265,7 +265,7 @@ static const int	termrs[] = {
 	0
 } ;
 
-static const char	zerobuf[4] = {
+static cchar	zerobuf[4] = {
 	0, 0, 0, 0 
 } ;
 
@@ -283,12 +283,12 @@ SYSMISCEMS_OBJ	sysmiscems = {
 
 int sysmiscems_open(op,pr)
 SYSMISCEMS	*op ;
-const char	*pr ;
+cchar	*pr ;
 {
 	int	rs ;
 	int	operms = SHMPERMS ;
 
-	const char	*dbname = SYSMISCEMS_SHMDBNAME ;
+	cchar	*dbname = SYSMISCEMS_SHMDBNAME ;
 
 
 	if (op == NULL)
@@ -432,9 +432,9 @@ SYSMISCEMS_DATA	*dp ;
 /* local subroutines */
 
 
-static int sysmiscems_setbegin(op,pr)
+local int sysmiscems_setbegin(op,pr)
 SYSMISCEMS	*op ;
-const char	*pr ;
+cchar	*pr ;
 {
 
 
@@ -445,7 +445,7 @@ const char	*pr ;
 /* end subroutine (sysmiscems_setbegin) */
 
 
-static int sysmiscems_setend(op)
+local int sysmiscems_setend(op)
 SYSMISCEMS	*op ;
 {
 	int	rs = SR_OK ;
@@ -470,7 +470,7 @@ SYSMISCEMS	*op ;
 /* end subroutine (sysmiscems_setend) */
 
 
-static int sysmiscems_pr(op)
+local int sysmiscems_pr(op)
 SYSMISCEMS	*op ;
 {
 	int	rs = SR_OK ;
@@ -482,7 +482,7 @@ SYSMISCEMS	*op ;
 	    char	prbuf[MAXPATHLEN + 1] ;
 	    if ((rs = getnodedomain(NULL,dn)) >= 0) {
 	        if ((rs = mkpr(prbuf,MAXPATHLEN,VARPR,dn)) >= 0) {
-		    const char	*cp ;
+		    cchar	*cp ;
 		    prl = rs ;
 		    if ((rs = uc_mallocstrw(prbuf,prl,&cp)) >= 0) {
 		        op->prbuf = cp ;
@@ -502,9 +502,9 @@ SYSMISCEMS	*op ;
 /* end subroutine (sysmiscems_pr) */
 
 
-static int sysmiscems_shmcreate(op,dbname,operms)
+local int sysmiscems_shmcreate(op,dbname,operms)
 SYSMISCEMS	*op ;
-const char	dbname[] ;
+cchar	dbname[] ;
 int		operms ;
 {
 	struct loadinfo	li ;
@@ -564,11 +564,11 @@ int		operms ;
 /* end subroutine (sysmiscems_shmcreate) */
 
 
-static int sysmiscems_shmcreater(op,lip,shmi,shmname)
+local int sysmiscems_shmcreater(op,lip,shmi,shmname)
 SYSMISCEMS	*op ;
 struct loadinfo	*lip ;
 int		shmi ;
-const char	shmname[] ;
+cchar	shmname[] ;
 {
 	ustat	sb ;
 
@@ -715,7 +715,7 @@ ret0:
 /* end subroutine (sysmiscems_shmcreater) */
 
 
-static int sysmiscems_shmdestroy(op)
+local int sysmiscems_shmdestroy(op)
 SYSMISCEMS	*op ;
 {
 	int	rs = SR_OK ;
@@ -739,7 +739,7 @@ SYSMISCEMS	*op ;
 /* end subroutine (sysmiscems_shmdestroy) */
 
 
-static int sysmiscems_shmwr(op,fd,operms)
+local int sysmiscems_shmwr(op,fd,operms)
 SYSMISCEMS	*op ;
 int		fd ;
 int		operms ;
@@ -829,9 +829,9 @@ ret0:
 /* end subroutine (sysmiscems_shmwr) */
 
 
-static int sysmiscems_shmopenwait(op,shmname,operms)
+local int sysmiscems_shmopenwait(op,shmname,operms)
 SYSMISCEMS	*op ;
-const char	shmname[] ;
+cchar	shmname[] ;
 int		operms ;
 {
 	int		rs = SR_OK ;
@@ -858,7 +858,7 @@ int		operms ;
 /* end subroutine (sysmiscems_shmopenwait) */
 
 
-static int sysmiscems_mapcreate(op,fd)
+local int sysmiscems_mapcreate(op,fd)
 SYSMISCEMS	*op ;
 int		fd ;
 {
@@ -891,7 +891,7 @@ int		fd ;
 /* end subroutine (sysmiscems_mapcreate) */
 
 
-static int sysmiscems_mapdestroy(op)
+local int sysmiscems_mapdestroy(op)
 SYSMISCEMS	*op ;
 {
 	int	rs = SR_OK ;
@@ -915,7 +915,7 @@ SYSMISCEMS	*op ;
 /* end subroutine (sysmiscems_mapdestroy) */
 
 
-static int sysmiscems_shmproc(op)
+local int sysmiscems_shmproc(op)
 SYSMISCEMS	*op ;
 {
 	SYSMISCFH	hdr ;
@@ -976,7 +976,7 @@ ret0:
 /* end subroutine (sysmiscems_shmproc) */
 
 
-static int sysmiscems_shmverify(op,hp)
+local int sysmiscems_shmverify(op,hp)
 SYSMISCEMS	*op ;
 SYSMISCFH	*hp ;
 {
@@ -997,7 +997,7 @@ ret0:
 /* end subroutine (sysmiscems_shmverify) */
 
 
-static int sysmiscems_shmupdate(op)
+local int sysmiscems_shmupdate(op)
 SYSMISCEMS	*op ;
 {
 	pid_t	pid ;
@@ -1040,7 +1040,7 @@ ret0:
 /* end subroutine (sysmiscems_shmupdate) */
 
 
-static int sysmiscems_shmchild(op)
+local int sysmiscems_shmchild(op)
 SYSMISCEMS	*op ;
 {
 	GETSYSMISC	kd ;
@@ -1074,15 +1074,15 @@ ret0:
 /* end subroutine (sysmiscems_shmchild) */
 
 
-static int loadinfo_start(lip,pr,dbname,operms)
+local int loadinfo_start(lip,pr,dbname,operms)
 struct loadinfo	*lip ;
-const char	pr[] ;
-const char	dbname[] ;
+cchar	pr[] ;
+cchar	dbname[] ;
 int		operms ;
 {
 	int	rs = SR_OK ;
 
-	const char	*cn ;
+	cchar	*cn ;
 
 
 	memset(lip,0,sizeof(struct loadinfo)) ;
@@ -1111,7 +1111,7 @@ bad0:
 /* end subroutine (loadinfo_start) */
 
 
-static int loadinfo_finish(lip)
+local int loadinfo_finish(lip)
 struct loadinfo	*lip ;
 {
 	int	rs = SR_OK ;
@@ -1141,10 +1141,10 @@ struct loadinfo	*lip ;
 /* end subroutine (loadinfo_finish) */
 
 
-static int loadinfo_expand(lip,shmname,template)
+local int loadinfo_expand(lip,shmname,template)
 struct loadinfo	*lip ;
 char		shmname[] ;
-const char	template[] ;
+cchar	template[] ;
 {
 	int	rs ;
 
@@ -1160,9 +1160,9 @@ const char	template[] ;
 /* end subroutine (loadinfo_expand) */
 
 
-static int loadinfo_cookcheck(lip,template)
+local int loadinfo_cookcheck(lip,template)
 struct loadinfo	*lip ;
-const char	template[] ;
+cchar	template[] ;
 {
 	EXPCOOK	*ecp = &lip->cooks ;
 
@@ -1172,10 +1172,10 @@ const char	template[] ;
 	int	cnl ;
 	int	vl ;
 
-	const char	*sp ;
-	const char	*tp ;
-	const char	*cnp ;
-	const char	*vp ;
+	cchar	*sp ;
+	cchar	*tp ;
+	cchar	*cnp ;
+	cchar	*vp ;
 
 	char	cnbuf[CNBUFLEN + 1] ;
 
@@ -1240,13 +1240,13 @@ const char	template[] ;
 /* end subroutine (loadinfo_cookcheck) */
 
 
-static int loadinfo_rn(lip)
+local int loadinfo_rn(lip)
 struct loadinfo	*lip ;
 {
 	int	rs = SR_OK ;
 	int	bl ;
 
-	const char	*bp ;
+	cchar	*bp ;
 
 
 	if (lip->rn != NULL) {
@@ -1257,7 +1257,7 @@ struct loadinfo	*lip ;
 	bl = sfbasename(lip->pr,-1,&bp) ;
 
 	if (bl >= 0) {
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if (bl > SHMPREFIXLEN) bl = SHMPREFIXLEN ;
 	    rs = uc_mallocstrw(bp,bl,&cp) ;
 	    if (rs >= 0) lip->rn = cp ;
@@ -1270,7 +1270,7 @@ ret0:
 /* end subroutine (loadinfo_rn) */
 
 
-static int loadinfo_username(lip)
+local int loadinfo_username(lip)
 struct loadinfo	*lip ;
 {
 	int		rs = SR_OK ;
@@ -1295,7 +1295,7 @@ struct loadinfo	*lip ;
 /* end subroutine (loadinfo_username) */
 
 
-static int loadinfo_chown(lip,fd,shmi)
+local int loadinfo_chown(lip,fd,shmi)
 struct loadinfo	*lip ;
 int		fd ;
 int		shmi ;
@@ -1320,7 +1320,7 @@ int		shmi ;
 
 #ifdef	COMMENT
 
-static int filer_writezero(fp,size)
+local int filer_writezero(fp,size)
 FILER		*fp ;
 int		size ;
 {
@@ -1346,9 +1346,9 @@ int		size ;
 #endif /* COMMENT */
 
 
-static int filer_writefill(bp,buf,buflen)
+local int filer_writefill(bp,buf,buflen)
 FILER		*bp ;
-const char	buf[] ;
+cchar	buf[] ;
 int		buflen ;
 {
 	int	rs ;
@@ -1377,14 +1377,14 @@ int		buflen ;
 /* end subroutine (filer_writefill) */
 
 
-static int getcookname(sp,rpp)
-const char	*sp ;
-const char	**rpp ;
+local int getcookname(sp,rpp)
+cchar	*sp ;
+cchar	**rpp ;
 {
 	int	cnl = 1 ;
 
-	const char	*cnp ;
-	const char	*tp ;
+	cchar	*cnp ;
+	cchar	*tp ;
 
 
 	if (sp[0] == CH_LBRACK) {
@@ -1404,7 +1404,7 @@ const char	**rpp ;
 /* end subroutine (getcookname) */
 
 
-static int istermrs(rs)
+local int istermrs(rs)
 int	rs ;
 {
 	int	i ;
