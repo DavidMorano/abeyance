@@ -70,7 +70,7 @@
  */
 
 int ifaddrlist_get(struct ifaddrlist **ipaddrp, int family, char *errbuf) noex {
-	const char	errbufsize = IFADDRLIST_ERRBUFSIZE ;
+	cchar	errbufsize = IFADDRLIST_ERRBUFSIZE ;
 
 	struct ifaddrlist *al;
 	struct ifaddrlist *ifaddrlist;
