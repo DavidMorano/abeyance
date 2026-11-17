@@ -113,7 +113,7 @@ OURMSGINFO	*op ;
 int ourmsginfo_addhead(op,w,s,slen)
 OURMSGINFO	*op ;
 int		w ;
-const char	s[] ;
+cchar	s[] ;
 int		slen ;
 {
 	int		rs = SR_OK ;
@@ -156,7 +156,7 @@ int ourmsginfo_gethead(op,w,i,rpp)
 OURMSGINFO	*op ;
 int		w ;
 int		i ;
-const char	**rpp ;
+cchar	**rpp ;
 {
 	int		rs ;
 
