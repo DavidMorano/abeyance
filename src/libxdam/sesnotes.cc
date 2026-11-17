@@ -130,7 +130,7 @@ local int sesnotes_dtor(SN *op) noex {
 } /* end subroutine (sesnotes_dtor) */
 
 template<typename ... Args>
-static inline int sesnotes_magic(SN *op,Args ... args) noex {
+local inline int sesnotes_magic(SN *op,Args ... args) noex {
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) ylikely {
 	    rs = (op->magval == SESNOTES_MAGIC) ? SR_OK : SR_NOTOPEN ;
