@@ -65,7 +65,7 @@
 #include	<strwcpy.h>
 #include	<intceil.h>
 #include	<randlc.h>
-#include	<isfiledesc.h>
+#include	<isfd.h>
 #include	<localmisc.h>		/* |TIMEBUFLEN| */
 
 #include	"postfile.h"
@@ -102,7 +102,7 @@
 /* forward references */
 
 template<typename ... Args>
-static int postfile_ctor(dw *op,Args ... args) noex {
+local int postfile_ctor(dw *op,Args ... args) noex {
     	POSTFIE		*hop = op ;
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) {
@@ -112,7 +112,7 @@ static int postfile_ctor(dw *op,Args ... args) noex {
 }
 /* end subroutine (postfile_ctor) */
 
-static int postfile_dtor(dw *op) noex {
+local int postfile_dtor(dw *op) noex {
 	int		rs = SR_FAULT ;
 	if (op) {
 	    rs = SR_OK ;
@@ -122,7 +122,7 @@ static int postfile_dtor(dw *op) noex {
 /* end subroutine (postfile_dtor) */
 
 template<typename ... Args>
-static inline int postfile_magic(dw *op,Args ... args) noex {
+local inline int postfile_magic(dw *op,Args ... args) noex {
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) {
 	    rs = (op->magic == POSTFILE_MAGIC) ? SR_OK : SR_NOTOPEN ;
@@ -131,19 +131,19 @@ static inline int postfile_magic(dw *op,Args ... args) noex {
 }
 /* end subroutine (postfile_magic) */
 
-static int	postfile_fileheader(PF *) noex ;
-static int	postfile_holdget(PF *,time_t) noex ;
-static int	postfile_holdrelease(PF *,time_t) noex ;
+local int	postfile_fileheader(PF *) noex ;
+local int	postfile_holdget(PF *,time_t) noex ;
+local int	postfile_holdrelease(PF *,time_t) noex ;
 
 #if	CF_LOCKING
-static int	postfile_lockget(PF *,int) noex ;
-static int	postfile_lockrelease(PF *) noex ;
+local int	postfile_lockget(PF *,int) noex ;
+local int	postfile_lockrelease(PF *) noex ;
 #endif
 
-static int	postfile_fileopen(PF *,time_t) noex ;
-static int	postfile_fileclose(PF *) noex ;
-static int	postfile_keymatchlast(PF *,int,int,char *,int) noex ;
-static int	postfile_keymatchall(PF *,int,int,realname *) noex ;
+local int	postfile_fileopen(PF *,time_t) noex ;
+local int	postfile_fileclose(PF *) noex ;
+local int	postfile_keymatchlast(PF *,int,int,char *,int) noex ;
+local int	postfile_keymatchall(PF *,int,int,realname *) noex ;
 
 static uint	ceiling(uint,uint) noex ;
 
@@ -215,7 +215,7 @@ int postfile_open(PF *,cchar *fname) noex {
 
 /* local or remote */
 
-	rs = isfsremote(op->fd) ;
+	rs = isfdfsremote(op->fd) ;
 	op->f.remote = (i > 0) ;
 	if (rs < 0)
 	    goto bad1 ;
@@ -488,7 +488,7 @@ char		*up ;
 
 	uint		rhash ;
 
-	const int	ns = NSHIFT ;
+	cint	ns = NSHIFT ;
 
 	int	rs = SR_OK, i, wi, si, ui, hi, ri ;
 	int	hl, ul, c, n ;
@@ -757,7 +757,7 @@ closeit:
 
 /* private subroutines */
 
-static int postfile_fileheader(op)
+local int postfile_fileheader(op)
 POSTFILE	*op ;
 {
 	uint		*table ;
@@ -816,7 +816,7 @@ bad3:
 
 
 /* acquire access to the file (mapped memory) */
-static int postfile_holdget(op,daytime)
+local int postfile_holdget(op,daytime)
 POSTFILE	*op ;
 time_t		daytime ;
 {
@@ -928,7 +928,7 @@ bad0:
 
 
 /* release our hold on the filemap */
-static int postfile_holdrelease(op,daytime)
+local int postfile_holdrelease(op,daytime)
 POSTFILE	*op ;
 time_t		daytime ;
 {
@@ -949,7 +949,7 @@ time_t		daytime ;
 #if	CF_LOCKING
 
 /* acquire access to the file (mapped memory) */
-static int postfile_lockget(op,daytime,f_read)
+local int postfile_lockget(op,daytime,f_read)
 POSTFILE	*op ;
 time_t		daytime ;
 int		f_read ;
@@ -1052,7 +1052,7 @@ bad0:
 /* end subroutine (postfile_lockget) */
 
 
-static int postfile_lockrelease(op)
+local int postfile_lockrelease(op)
 POSTFILE	*op ;
 {
 	int	rs = SR_OK ;
@@ -1074,7 +1074,7 @@ POSTFILE	*op ;
 #endif /* CF_LOCKING */
 
 
-static int postfile_fileopen(op,daytime)
+local int postfile_fileopen(op,daytime)
 POSTFILE	*op ;
 time_t		daytime ;
 {
@@ -1099,7 +1099,7 @@ bad0:
 /* end subroutine (postfile_fileopen) */
 
 
-static int postfile_fileclose(op)
+local int postfile_fileclose(op)
 POSTFILE	*op ;
 {
 	int	rs = SR_OK ;
@@ -1118,7 +1118,7 @@ POSTFILE	*op ;
 /* end subroutine (postfile_fileclose) */
 
 
-static int postfile_keymatchlast(op,opts,ri,sp,hl)
+local int postfile_keymatchlast(op,opts,ri,sp,hl)
 POSTFILE	*op ;
 int		opts ;
 int		ri ;
@@ -1136,7 +1136,7 @@ int		hl ;
 }
 /* end subroutine (postfile_keymatchlast) */
 
-static int postfile_keymatchall(op,opts,ri,np)
+local int postfile_keymatchall(op,opts,ri,np)
 POSTFILE	*op ;
 int		opts ;
 int		ri ;
