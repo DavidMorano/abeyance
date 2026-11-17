@@ -48,7 +48,7 @@
 char *strfill3(s,slen,s1,s2,s3)
 char		s[] ;
 int		slen ;
-const char	s1[], s2[], s3[] ;
+cchar	s1[], s2[], s3[] ;
 {
 	int	rlen ;
 	int	ml ;
