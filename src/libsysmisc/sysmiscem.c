@@ -67,25 +67,25 @@
 
 /* external subroutines */
 
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	snwcpy(char *,int,const char *,int) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath1w(char *,const char *,int) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	mkpath4(char *,const char *,const char *,const char *,
-			const char *) ;
-extern int	mkfnamesuf1(char *,const char *,const char *) ;
-extern int	nleadstr(const char *,const char *,int) ;
+extern int	sncpy3(char *,int,cchar *,cchar *,cchar *) ;
+extern int	snwcpy(char *,int,cchar *,int) ;
+extern int	mkpath1(char *,cchar *) ;
+extern int	mkpath1w(char *,cchar *,int) ;
+extern int	mkpath2(char *,cchar *,cchar *) ;
+extern int	mkpath3(char *,cchar *,cchar *,cchar *) ;
+extern int	mkpath4(char *,cchar *,cchar *,cchar *,
+			cchar *) ;
+extern int	mkfnamesuf1(char *,cchar *,cchar *) ;
+extern int	nleadstr(cchar *,cchar *,int) ;
 extern int	getnodedomain(char *,char *) ;
-extern int	mkpr(char *,int,const char *,const char *) ;
-extern int	pathclean(char *,const char *,int) ;
+extern int	mkpr(char *,int,cchar *,cchar *) ;
+extern int	pathclean(char *,cchar *,int) ;
 
 #if	CF_DEBUGS
-extern int	debugprintf(const char *,...) ;
+extern int	debugprintf(cchar *,...) ;
 #endif
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* local structures */
@@ -93,14 +93,14 @@ extern char	*strwcpy(char *,const char *,int) ;
 
 /* forward references */
 
-static int	sysmiscem_objloadinit(SYSMISCEM *,const char *,const char *) ;
-static int	sysmiscem_objloadfree(SYSMISCEM *) ;
-static int	sysmiscem_loadcalls(SYSMISCEM *,const char *) ;
+local int	sysmiscem_objloadinit(SYSMISCEM *,cchar *,cchar *) ;
+local int	sysmiscem_objloadfree(SYSMISCEM *) ;
+local int	sysmiscem_loadcalls(SYSMISCEM *,cchar *) ;
 
-static int	isrequired(int) ;
+local int	isrequired(int) ;
 
 #ifdef	COMMENT
-static int	istermrs(int) ;
+local int	istermrs(int) ;
 #endif /* COMMENT */
 
 
@@ -109,7 +109,7 @@ static int	istermrs(int) ;
 
 /* local variables */
 
-static const char	*subs[] = {
+static cchar	*subs[] = {
 	"open",
 	"get",
 	"audit",
@@ -127,7 +127,7 @@ enum subs {
 
 #ifdef	COMMENT
 
-static const int	termrs[] = {
+static cint	termrs[] = {
 	SR_FAULT,
 	SR_INVALID,
 	SR_NOMEM,
@@ -150,11 +150,11 @@ static const int	termrs[] = {
 
 int sysmiscem_open(op,pr)
 SYSMISCEM	*op ;
-const char	pr[] ;
+cchar	pr[] ;
 {
 	int	rs ;
 
-	const char	*objname = SYSMISCEM_OBJNAME ;
+	cchar	*objname = SYSMISCEM_OBJNAME ;
 
 
 	if (op == NULL)
@@ -302,10 +302,10 @@ SYSMISCEM	*op ;
 
 
 /* find and load the DB-access object */
-static int sysmiscem_objloadinit(op,pr,objname)
+local int sysmiscem_objloadinit(op,pr,objname)
 SYSMISCEM	*op ;
-const char	*pr ;
-const char	*objname ;
+cchar	*pr ;
+cchar	*objname ;
 {
 	MODLOAD	*lp = &op->loader ;
 
@@ -317,8 +317,8 @@ const char	*objname ;
 	int	objsize ;
 	int	n, i ;
 
-	const char	*modbname ;
-	const char	**sv ;
+	cchar	*modbname ;
+	cchar	**sv ;
 
 	char	symname[SYMNAMELEN + 1] ;
 
@@ -404,7 +404,7 @@ bad0:
 /* end subroutine (sysmiscem_objloadinit) */
 
 
-static int sysmiscem_objloadfree(op)
+local int sysmiscem_objloadfree(op)
 SYSMISCEM	*op ;
 {
 	int	rs ;
@@ -422,9 +422,9 @@ SYSMISCEM	*op ;
 /* end subroutine (sysmiscem_objloadfree) */
 
 
-static int sysmiscem_loadcalls(op,objname)
+local int sysmiscem_loadcalls(op,objname)
 SYSMISCEM	*op ;
-const char	objname[] ;
+cchar	objname[] ;
 {
 	MODLOAD	*lp = &op->loader ;
 
@@ -435,7 +435,7 @@ const char	objname[] ;
 
 	char	symname[SYMNAMELEN + 1] ;
 
-	const void	*snp ;
+	cvoid	*snp ;
 
 
 	for (i = 0 ; subs[i] != NULL ; i += 1) {
@@ -468,7 +468,7 @@ const char	objname[] ;
 
 		case sub_open:
 		    op->call.open = 
-			(int (*)(void *,const char *)) snp ;
+			(int (*)(void *,cchar *)) snp ;
 		    break ;
 
 		case sub_get:
@@ -498,7 +498,7 @@ const char	objname[] ;
 /* end subroutine (sysmiscem_loadcalls) */
 
 
-static int isrequired(i)
+local int isrequired(i)
 int	i ;
 {
 	int	f = FALSE ;
@@ -521,7 +521,7 @@ int	i ;
 
 #ifdef	COMMENT
 
-static int istermrs(rs)
+local int istermrs(rs)
 int	rs ;
 {
 	int	i ;
