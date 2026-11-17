@@ -42,7 +42,7 @@
 #include	<intsat.h>
 #include	<intceil.h>
 #include	<mkchar.h>
-#include	<ischarx.h>
+#include	<isch.h>
 #include	<localmisc.h>
 
 #include	"bfile.h"
