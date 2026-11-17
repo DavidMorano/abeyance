@@ -260,7 +260,7 @@ int		buflen ;
 /* local subroutines */
 
 
-static int mkmagic(buf,magicstr,magicsize)
+local int mkmagic(buf,magicstr,magicsize)
 char		buf[] ;
 cchar	*magicstr ;
 int		magicsize ;
