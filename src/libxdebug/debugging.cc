@@ -24,20 +24,20 @@
 #include	<unistd.h>
 #include	<pwd.h>
 #include	<grp.h>
-#include	<ctime>
-#include	<cerrno>
-#include	<csignal>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstdio>
-#include	<cstring>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<baops.h>
+#include	<ctime>			/* CSTD */
+#include	<cerrno>		/* CSTD */
+#include	<csignal>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<baops.h>		/* LIBU */
 #include	<logfile.h>
-#include	<bfile.h>
-#include	<timestr.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>
+#include	<bfile.h>
 
 #include	"config.h"
 #include	"defs.h"
@@ -86,8 +86,8 @@ void fileinfo(cchar *fname,cchar *w) noex {
 	        logfile_printf(&g.eh,
 	            "fileinfo: len=%ld atime=%s mtime=%s\n",
 	            sb.st_size,
-	            timestr_log(sb.st_atime,buf1),
-	            timestr_log(sb.st_mtime,buf2)) ;
+	            strtime_log(sb.st_atime,buf1),
+	            strtime_log(sb.st_mtime,buf2)) ;
 
 	    }
 
