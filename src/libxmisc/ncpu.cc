@@ -135,28 +135,28 @@
 
 /* external subroutines */
 
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	sncpy4(char *,int,const char *,const char *,const char *,
-			const char *) ;
-extern int	snwcpy(char *,int,const char *,int) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath1w(char *,const char *,int) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	mkpath4(char *,const char *,const char *,const char *,
-			const char *) ;
-extern int	mkfnamesuf1(char *,const char *,const char *) ;
-extern int	mkfnamesuf2(char *,const char *,const char *,const char *) ;
-extern int	sfbasename(const char *,int,const char **) ;
-extern int	nleadstr(const char *,const char *,int) ;
-extern int	cfdecti(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,uint *) ;
+extern int	sncpy3(char *,int,cchar *,cchar *,cchar *) ;
+extern int	sncpy4(char *,int,cchar *,cchar *,cchar *,
+			cchar *) ;
+extern int	snwcpy(char *,int,cchar *,int) ;
+extern int	mkpath1(char *,cchar *) ;
+extern int	mkpath1w(char *,cchar *,int) ;
+extern int	mkpath2(char *,cchar *,cchar *) ;
+extern int	mkpath3(char *,cchar *,cchar *,cchar *) ;
+extern int	mkpath4(char *,cchar *,cchar *,cchar *,
+			cchar *) ;
+extern int	mkfnamesuf1(char *,cchar *,cchar *) ;
+extern int	mkfnamesuf2(char *,cchar *,cchar *,cchar *) ;
+extern int	sfbasename(cchar *,int,cchar **) ;
+extern int	nleadstr(cchar *,cchar *,int) ;
+extern int	cfdecti(cchar *,int,int *) ;
+extern int	cfdecui(cchar *,int,uint *) ;
 extern int	getnodedomain(char *,char *) ;
-extern int	mkpr(char *,int,const char *,const char *) ;
-extern int	pathclean(char *,const char *,int) ;
+extern int	mkpr(char *,int,cchar *,cchar *) ;
+extern int	pathclean(char *,cchar *,int) ;
 extern int	getsysmisc(GETSYSMISC *,time_t) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -169,9 +169,9 @@ struct subinfo_flags {
 } ;
 
 struct subinfo {
-	const char	*pr ;
-	const char	*prbuf ;
-	const char	*shmname ;
+	cchar	*pr ;
+	cchar	*prbuf ;
+	cchar	*shmname ;
 	char		*mapdata ;
 	uint		*shmtable ;
 	struct subinfo_flags	f ;
@@ -185,43 +185,43 @@ struct subinfo {
 
 /* forward references */
 
-static int subinfo_start(struct subinfo *,const char *) ;
-static int subinfo_finish(struct subinfo *) ;
-static int subinfo_pr(struct subinfo *) ;
+local int subinfo_start(struct subinfo *,cchar *) ;
+local int subinfo_finish(struct subinfo *) ;
+local int subinfo_pr(struct subinfo *) ;
 
-static int ncpu_env(struct subinfo *) ;
-static int ncpu_nprocessors(struct subinfo *) ;
-static int ncpu_shm(struct subinfo *) ;
-static int ncpu_kinfo(struct subinfo *) ;
-static int ncpu_default(struct subinfo *) ;
+local int ncpu_env(struct subinfo *) ;
+local int ncpu_nprocessors(struct subinfo *) ;
+local int ncpu_shm(struct subinfo *) ;
+local int ncpu_kinfo(struct subinfo *) ;
+local int ncpu_default(struct subinfo *) ;
 
 #if	CF_OTHER
-static int ncpu_other(struct subinfo *) ;
+local int ncpu_other(struct subinfo *) ;
 #endif
 
-static int	ncpu_shmcreate(struct subinfo *,const char *,mode_t) ;
-static int	ncpu_shmdestroy(struct subinfo *) ;
-static int	ncpu_shmwr(struct subinfo *,int,mode_t) ;
+local int	ncpu_shmcreate(struct subinfo *,cchar *,mode_t) ;
+local int	ncpu_shmdestroy(struct subinfo *) ;
+local int	ncpu_shmwr(struct subinfo *,int,mode_t) ;
 
-static int	ncpu_shmmapbegin(struct subinfo *,int) ;
-static int	ncpu_shmmapend(struct subinfo *) ;
+local int	ncpu_shmmapbegin(struct subinfo *,int) ;
+local int	ncpu_shmmapend(struct subinfo *) ;
 
-static int	ncpu_shmproc(struct subinfo *) ;
-static int	ncpu_shmverify(struct subinfo *,SYSMISCFH *) ;
+local int	ncpu_shmproc(struct subinfo *) ;
+local int	ncpu_shmverify(struct subinfo *,SYSMISCFH *) ;
 
-static int	ncpu_shmupdate(struct subinfo *) ;
-static int	ncpu_shmchild(struct subinfo *) ;
-static int	ncpu_shmopenwait(struct subinfo *,mode_t) ;
+local int	ncpu_shmupdate(struct subinfo *) ;
+local int	ncpu_shmchild(struct subinfo *) ;
+local int	ncpu_shmopenwait(struct subinfo *,mode_t) ;
 
-static int	filer_writefill(FILER *,const char *,int) ;
-static int	filer_writezero(FILER *,int) ;
+local int	filer_writefill(FILER *,cchar *,int) ;
+local int	filer_writezero(FILER *,int) ;
 
-static int	istermrs(int) ;
+local int	istermrs(int) ;
 
 
 /* local variables */
 
-static int	(*tries[])(struct subinfo *) = {
+local int	(*tries[])(struct subinfo *) = {
 	ncpu_env,
 	ncpu_nprocessors,
 	ncpu_shm,
@@ -229,7 +229,7 @@ static int	(*tries[])(struct subinfo *) = {
 	NULL
 } ;
 
-static const int	termrs[] = {
+static cint	termrs[] = {
 	SR_FAULT,
 	SR_INVALID,
 	SR_NOMEM,
@@ -244,7 +244,7 @@ static const int	termrs[] = {
 	0
 } ;
 
-static const char	zerobuf[4] = {
+static cchar	zerobuf[4] = {
 	0, 0, 0, 0 
 } ;
 
@@ -289,9 +289,9 @@ int ncpu(cchar *pr) noex {
 
 /* local subroutines */
 
-static int subinfo_start(sip,pr)
+local int subinfo_start(sip,pr)
 struct subinfo	*sip ;
-const char	*pr ;
+cchar	*pr ;
 {
 
 	memset(sip,0,sizeof(struct subinfo)) ;
@@ -302,7 +302,7 @@ const char	*pr ;
 /* end subroutine (subinfo_start) */
 
 
-static int subinfo_finish(sip)
+local int subinfo_finish(sip)
 struct subinfo	*sip ;
 {
 	int		rs = SR_OK ;
@@ -320,14 +320,14 @@ struct subinfo	*sip ;
 /* end subroutine (subinfo_finish) */
 
 
-static int subinfo_pr(sip)
+local int subinfo_pr(sip)
 struct subinfo	*sip ;
 {
 	int	rs = SR_OK ;
 	int	rs1 ;
 	int	prl ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 	char	domainname[MAXHOSTNAMELEN + 1] ;
 	char	prbuf[MAXPATHLEN + 1] ;
@@ -362,15 +362,15 @@ ret0:
 /* end subroutine (subinfo_pr) */
 
 
-static int ncpu_env(sip)
+local int ncpu_env(sip)
 struct subinfo	*sip ;
 {
 	int	rs = SR_NOSYS ;
 	int	rs1 ;
 	int	n = 0 ;
 
-	const char	*vn = VARNCPU ;
-	const char	*cp ;
+	cchar	*vn = VARNCPU ;
+	cchar	*cp ;
 
 
 	if ((cp = getenv(vn)) != NULL) {
@@ -385,7 +385,7 @@ struct subinfo	*sip ;
 /* end subroutine (ncpu_env) */
 
 
-static int ncpu_nprocessors(sip)
+local int ncpu_nprocessors(sip)
 struct subinfo	*sip ;
 {
 	long	rn = 0 ;
@@ -430,7 +430,7 @@ struct subinfo	*sip ;
 
 #if	CF_SHMLOCAL
 
-static int ncpu_shm(sip)
+local int ncpu_shm(sip)
 struct subinfo	*sip ;
 {
 	uint	*shmtable ;
@@ -440,7 +440,7 @@ struct subinfo	*sip ;
 	int	rs = SR_OK ;
 	int	n = 0 ;
 
-	const char	*dbname = SHMDBNAME ;
+	cchar	*dbname = SHMDBNAME ;
 
 
 	if ((rs = ncpu_shmcreate(sip,dbname,operms)) >= 0) {
@@ -462,9 +462,9 @@ struct subinfo	*sip ;
 /* end subroutine (ncpu_shm) */
 
 
-static int ncpu_shmcreate(sip,dbname,operms)
+local int ncpu_shmcreate(sip,dbname,operms)
 struct subinfo	*sip ;
-const char	dbname[] ;
+cchar	dbname[] ;
 mode_t		operms ;
 {
 	ustat	sb ;
@@ -477,7 +477,7 @@ mode_t		operms ;
 	int	f_needupdate = FALSE ;
 	int	f_needchmod = FALSE ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 	char	shmname[MAXNAMELEN + 1] ;
 	char	prefix[NCPU_PREFIXLEN + 1] ;
@@ -607,7 +607,7 @@ ret0:
 /* end subroutine (ncpu_shmcreate) */
 
 
-static int ncpu_shmdestroy(sip)
+local int ncpu_shmdestroy(sip)
 struct subinfo	*sip ;
 {
 	int	rs = SR_OK ;
@@ -623,7 +623,7 @@ struct subinfo	*sip ;
 /* end subroutine (ncpu_shmdestroy) */
 
 
-static int ncpu_shmwr(sip,fd,operms)
+local int ncpu_shmwr(sip,fd,operms)
 struct subinfo	*sip ;
 int		fd ;
 mode_t		operms ;
@@ -712,15 +712,15 @@ ret0:
 /* end subroutine (ncpu_shmwr) */
 
 
-static int ncpu_shmopenwait(sip,operms)
+local int ncpu_shmopenwait(sip,operms)
 struct subinfo	*sip ;
 mode_t		operms ;
 {
-	const int	to = TO_SHMWAIT ;
+	cint	to = TO_SHMWAIT ;
 	int		rs = SR_OK ;
 	int		oflags = O_RDWR ;
 	int		fd = -1 ;
-	const char	*shmname = sip->shmname ;
+	cchar	*shmname = sip->shmname ;
 
 	while (to-- > 0) {
 
@@ -742,7 +742,7 @@ mode_t		operms ;
 /* end subroutine (ncpu_shmopenwait) */
 
 
-static int ncpu_shmmapbegin(sip,fd)
+local int ncpu_shmmapbegin(sip,fd)
 struct subinfo	*sip ;
 int		fd ;
 {
@@ -792,7 +792,7 @@ bad0:
 /* end subroutine (ncpu_shmmapbegin) */
 
 
-static int ncpu_shmmapend(sip)
+local int ncpu_shmmapend(sip)
 struct subinfo	*sip ;
 {
 	int	rs = SR_OK ;
@@ -814,7 +814,7 @@ struct subinfo	*sip ;
 /* end subroutine (ncpu_shmmapend) */
 
 
-static int ncpu_shmproc(sip)
+local int ncpu_shmproc(sip)
 struct subinfo	*sip ;
 {
 	SYSMISCFH	hdr ;
@@ -865,7 +865,7 @@ ret0:
 /* end subroutine (ncpu_shmproc) */
 
 
-static int ncpu_shmverify(sip,hp)
+local int ncpu_shmverify(sip,hp)
 struct subinfo	*sip ;
 SYSMISCFH	*hp ;
 {
@@ -884,7 +884,7 @@ SYSMISCFH	*hp ;
 /* end subroutine (ncpu_shmverify) */
 
 
-static int ncpu_shmupdate(sip)
+local int ncpu_shmupdate(sip)
 struct subinfo	*sip ;
 {
 	pid_t	pid ;
@@ -928,7 +928,7 @@ ret0:
 /* end subroutine (ncpu_shmupdate) */
 
 
-static int ncpu_shmchild(sip)
+local int ncpu_shmchild(sip)
 struct subinfo	*sip ;
 {
 	GETSYSMISC	kd ;
@@ -962,13 +962,13 @@ ret0:
 #else /* CF_SHMLOCAL */
 
 
-static int ncpu_shm(sip)
+local int ncpu_shm(sip)
 struct subinfo	*sip ;
 {
 	SYSMISCEM	sm ;
 	SYSMISCEM_DATA	sd ;
 
-	const int	to = TO_UPDATE ;
+	cint	to = TO_UPDATE ;
 
 	int	rs ;
 	int	n = 0 ;
@@ -1019,7 +1019,7 @@ ret0:
 
 #if	CF_OTHER
 
-static int ncpu_other(sip)
+local int ncpu_other(sip)
 struct subinfo	*sip ;
 {
 	MODLOAD	loader, *lp = &loader ;
@@ -1029,12 +1029,12 @@ struct subinfo	*sip ;
 	int	opts ;
 	int	n = 0 ;
 
-	const void	*cvp ;
+	cvoid	*cvp ;
 
-	const char	*syms[2] = { "ncpu", NULL } ;
-	const char	*modbname ;
-	const char	*modname ;
-	const char	*modsymname ;
+	cchar	*syms[2] = { "ncpu", NULL } ;
+	cchar	*modbname ;
+	cchar	*modname ;
+	cchar	*modsymname ;
 
 
 	rs = subinfo_pr(sip) ;
@@ -1051,7 +1051,7 @@ struct subinfo	*sip ;
 	    rs1 = modload_getsym(lp,modsymname,&cvp) ;
 
 	    if ((rs1 >= 0) && (cvp != NULL) && (sip->pr != NULL)) {
-	        int (*callp)(const char *) = (int (*)(const char *)) cvp ;
+	        int (*callp)(cchar *) = (int (*)(cchar *)) cvp ;
 	        rs = (*callp)(sip->pr) ;
 	        if (rs >= 0)
 	            n = rs ;
@@ -1068,7 +1068,7 @@ ret0:
 #endif /* CF_OTHER */
 
 
-static int ncpu_default(sip)
+local int ncpu_default(sip)
 struct subinfo	*sip ;
 {
 	int	rs = SR_OK ;
@@ -1080,7 +1080,7 @@ struct subinfo	*sip ;
 /* end subroutine (ncpu_default) */
 
 
-static int filer_writezero(fp,size)
+local int filer_writezero(fp,size)
 FILER		*fp ;
 int		size ;
 {
@@ -1103,9 +1103,9 @@ int		size ;
 /* end subroutine (filer_writezero) */
 
 
-static int filer_writefill(bp,buf,buflen)
+local int filer_writefill(bp,buf,buflen)
 FILER		*bp ;
-const char	buf[] ;
+cchar	buf[] ;
 int		buflen ;
 {
 	int		rs ;
@@ -1133,7 +1133,7 @@ int		buflen ;
 /* end subroutine (filer_writefill) */
 
 
-static int istermrs(int rs)
+local int istermrs(int rs)
 {
 	int		i ;
 	int		f = FALSE ;
