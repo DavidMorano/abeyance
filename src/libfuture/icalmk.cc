@@ -143,23 +143,23 @@ struct blentry {
 
 /* forward references */
 
-static int	icalmk_filesbegin(icalmk *) noex ;
-static int	icalmk_filesend(icalmk *,int) noex ;
-static int	icalmk_listbegin(icalmk *,int) noex ;
-static int	icalmk_listend(icalmk *) noex ;
-static int	icalmk_nfcreate(icalmk *,cchar *) noex ;
-static int	icalmk_nfcreatecheck(icalmk *,cchar *,char *) noex ;
-static int	icalmk_nfstore(icalmk *,cchar *) noex ;
-static int	icalmk_nfdestroy(icalmk *) noex ;
-static int	icalmk_nfexists(icalmk *) noex ;
-static int	icalmk_mkcyi(icalmk *) noex ;
-static int	icalmk_renamefiles(icalmk *) noex ;
+local int	icalmk_filesbegin(icalmk *) noex ;
+local int	icalmk_filesend(icalmk *,int) noex ;
+local int	icalmk_listbegin(icalmk *,int) noex ;
+local int	icalmk_listend(icalmk *) noex ;
+local int	icalmk_nfcreate(icalmk *,cchar *) noex ;
+local int	icalmk_nfcreatecheck(icalmk *,cchar *,char *) noex ;
+local int	icalmk_nfstore(icalmk *,cchar *) noex ;
+local int	icalmk_nfdestroy(icalmk *) noex ;
+local int	icalmk_nfexists(icalmk *) noex ;
+local int	icalmk_mkcyi(icalmk *) noex ;
+local int	icalmk_renamefiles(icalmk *) noex ;
 
-static int	filer_writefill(filer *,cchar *,int) noex ;
+local int	filer_writefill(filer *,cchar *,int) noex ;
 
-static int	mkcitation(uint *,ICALMK_ENT *) noex ;
+local int	mkcitation(uint *,ICALMK_ENT *) noex ;
 
-static int	vvecmp(void *,void *) noex ;
+local int	vvecmp(void *,void *) noex ;
 
 
 /* local variables */
@@ -416,7 +416,7 @@ bad0:
 /* private subroutines */
 
 
-static int icalmk_filesbegin(op)
+local int icalmk_filesbegin(op)
 ICALMK		*op ;
 {
 	int	rs = SR_OK ;
@@ -532,7 +532,7 @@ bad0:
 /* end subroutine (icalmk_filesbegin) */
 
 
-static int icalmk_filesend(op,f)
+local int icalmk_filesend(op,f)
 ICALMK		*op ;
 {
 	int	rs = SR_OK ;
@@ -594,7 +594,7 @@ ICALMK		*op ;
 /* end subroutine (icalmk_filesend) */
 
 
-static int icalmk_listbegin(op,n)
+local int icalmk_listbegin(op,n)
 ICALMK		*op ;
 int		n ;
 {
@@ -629,7 +629,7 @@ bad0:
 }
 /* end subroutine (icalmk_listbegin) */
 
-static int icalmk_listend(icalmk *op) noex {
+local int icalmk_listend(icalmk *op) noex {
 	int	rs = SR_OK ;
 	int	rs1 ;
 	{
@@ -644,7 +644,7 @@ static int icalmk_listend(icalmk *op) noex {
 }
 /* end subroutine (icalmk_listend) */
 
-static int icalmk_mkcyi(icalmk *op) noex {
+local int icalmk_mkcyi(icalmk *op) noex {
 	struct bventry	*bvep ;
 	struct blentry	*blep ;
 	ICALHDR	hf{} ;
@@ -820,7 +820,7 @@ ret0:
 /* end subroutine (icalmk_mkcyi) */
 
 
-static int icalmk_renamefiles(op)
+local int icalmk_renamefiles(op)
 ICALMK	*op ;
 {
 	int	rs ;
@@ -860,7 +860,7 @@ ret0:
 }
 /* end subroutine (icalmk_renamefiles) */
 
-static int filer_writefill(filer *bp,cchar *fbuf,int flen) noex {
+local int filer_writefill(filer *bp,cchar *fbuf,int flen) noex {
 	int	rs ;
 	int	r, nzero ;
 	int	asize = szof(uint) ;
@@ -887,7 +887,7 @@ static int filer_writefill(filer *bp,cchar *fbuf,int flen) noex {
 /* end subroutine (filer_writefill) */
 
 
-static int mkcitation(cip,bvp)
+local int mkcitation(cip,bvp)
 uint		*cip ;
 ICALMK_ENT	*bvp ;
 {
@@ -910,7 +910,7 @@ ICALMK_ENT	*bvp ;
 
 
 /* "exclusive create" of file */
-static int icalmk_nfcreate(op,fsuf)
+local int icalmk_nfcreate(op,fsuf)
 ICALMK		*op ;
 cchar	fsuf[] ;
 {
@@ -982,7 +982,7 @@ bad0:
 /* end subroutine (icalmk_nfcreate) */
 
 
-static int icalmk_nfcreatecheck(op,fpre,fsuf)
+local int icalmk_nfcreatecheck(op,fpre,fsuf)
 ICALMK		*op ;
 cchar	fpre[] ;
 cchar	fsuf[] ;
@@ -1037,7 +1037,7 @@ cchar	fsuf[] ;
 /* end subroutine (icalmk_nfcreatecheck) */
 
 
-static int icalmk_nfdestroy(op)
+local int icalmk_nfdestroy(op)
 ICALMK		*op ;
 {
 	int	rs = SR_OK ;
@@ -1069,7 +1069,7 @@ ICALMK		*op ;
 /* end subroutine (icalmk_nfdestroy) */
 
 
-static int icalmk_nfstore(op,outfname)
+local int icalmk_nfstore(op,outfname)
 ICALMK		*op ;
 cchar	outfname[] ;
 {
@@ -1091,7 +1091,7 @@ cchar	outfname[] ;
 /* end subroutine (icalmk_nfstore) */
 
 
-static int icalmk_nfexists(op)
+local int icalmk_nfexists(op)
 ICALMK		*op ;
 {
 	ustat	sb ;
@@ -1116,7 +1116,7 @@ ret0:
 /* end subroutine (icalmk_exits) */
 
 
-static int vvecmp(v1p,v2p)
+local int vvecmp(v1p,v2p)
 void	*v1p, *v2p ;
 {
 	struct bventry	**e1pp = (struct bventry **) v1p ;
