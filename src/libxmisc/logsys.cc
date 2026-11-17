@@ -56,7 +56,7 @@
 #include	<ncol.h>		/* |charcols(3uc)| */
 #include	<ctdec.h>
 #include	<mkchar.h>		/* |mkchar(3uc)| */
-#include	<ischarx.h>
+#include	<isch.h>
 #include	<localmisc.h>		/* |TIMEBUFLEN| + |NTABCOLS| */
 
 #include	"logsys.h"
@@ -132,7 +132,7 @@ struct colstate {
 /* forward references */
 
 template<typename ... Args>
-static int logsys_ctor(logsys *op,Args ... args) noex {
+local int logsys_ctor(logsys *op,Args ... args) noex {
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) {
 	    rs = SR_OK ;
@@ -141,7 +141,7 @@ static int logsys_ctor(logsys *op,Args ... args) noex {
 }
 /* end subroutine (logsys_ctor) */
 
-static int logsys_dtor(logsys *op) noex {
+local int logsys_dtor(logsys *op) noex {
 	int		rs = SR_FAULT ;
 	if (op) {
 	    rs = SR_OK ;
@@ -151,7 +151,7 @@ static int logsys_dtor(logsys *op) noex {
 /* end subroutine (logsys_dtor) */
 
 template<typename ... Args>
-static inline int logsys_magic(logsys *op,Args ... args) noex {
+local inline int logsys_magic(logsys *op,Args ... args) noex {
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) {
 	    rs = (op->magic == LOGSYS_MAGIC) ? SR_OK : SR_NOTOPEN ;
@@ -160,18 +160,18 @@ static inline int logsys_magic(logsys *op,Args ... args) noex {
 }
 /* end subroutine (logsys_magic) */
 
-static int	logsys_mklogid(logsys *) noex ;
-static int	logsys_fixlogid(logsys *,int) noex ;
-static int	logsys_fileopen(logsys *) noex ;
-static int	logsys_fileclose(logsys *) noex ;
-static int	logsys_iflush(logsys *) noex ;
-static int	logsys_logdevice(logsys *,int,cchar *,int) noex ;
+local int	logsys_mklogid(logsys *) noex ;
+local int	logsys_fixlogid(logsys *,int) noex ;
+local int	logsys_fileopen(logsys *) noex ;
+local int	logsys_fileclose(logsys *) noex ;
+local int	logsys_iflush(logsys *) noex ;
+local int	logsys_logdevice(logsys *,int,cchar *,int) noex ;
 
-static int	colstate_load(colstate *,int,int) noex ;
-static int	colstate_linecols(colstate *,cchar *,int) noex ;
+local int	colstate_load(colstate *,int,int) noex ;
+local int	colstate_linecols(colstate *,cchar *,int) noex ;
 
-static int	loadlogid(char *,int,cchar *) noex ;
-static int	mkclean(char *,int,cchar *,int) noex ;
+local int	loadlogid(char *,int,cchar *) noex ;
+local int	mkclean(char *,int,cchar *,int) noex ;
 
 static bool	hasourbad(cchar *,int) noex ;
 static bool	isourbad(int) noex ;
@@ -388,7 +388,7 @@ int logsys_write(logsys *op,int logpri,cchar *wbuf,int wlen) noex {
 
 /* private subroutines */
 
-static int logsys_mklogid(logsys *op) noex {
+local int logsys_mklogid(logsys *op) noex {
 	int		rs ;
 	int		rs1 ;
 	int		ll = 0 ;
@@ -408,7 +408,7 @@ static int logsys_mklogid(logsys *op) noex {
 }
 /* end subroutine (logsys_mklogid) */
 
-static int logsys_fixlogid(logsys *op,int cl) noex {
+local int logsys_fixlogid(logsys *op,int cl) noex {
 	if_constexpr (f_logidtab) {
 	    if (cl < NTABCOLS) {
 	        strwset((op->logid + cl),' ',(NTABCOLS - cl)) ;
@@ -422,7 +422,7 @@ static int logsys_fixlogid(logsys *op,int cl) noex {
 }
 /* end subroutine (logsys_fixlogid) */
 
-static int logsys_fileopen(logsys *op) noex {
+local int logsys_fileopen(logsys *op) noex {
 	int		rs = SR_OK ;
 	if (op->lfd < 0) {
 	    cint	of = O_WRONLY ;
@@ -442,7 +442,7 @@ static int logsys_fileopen(logsys *op) noex {
 }
 /* end subroutine (logsys_fileopen) */
 
-static int logsys_fileclose(logsys *op) noex {
+local int logsys_fileclose(logsys *op) noex {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		len = 0 ;
@@ -460,13 +460,13 @@ static int logsys_fileclose(logsys *op) noex {
 /* end subroutine (logsys_fileclose) */
 
 /* this is a nuller now w/ the system log device */
-static int logsys_iflush(logsys *op) noex {
+local int logsys_iflush(logsys *op) noex {
 	if (op->c >= op->n) op->c = 0 ;
 	return SR_OK ;
 }
 /* end subroutine (logsys_iflush) */
 
-static int logsys_logdevice(logsys *op,int logpri,cchar *wp,int wl) noex {
+local int logsys_logdevice(logsys *op,int logpri,cchar *wp,int wl) noex {
 	STRBUF		cmsg{} ;
 	STRBUF		dmsg{} ;
 	struct log_ctl	lc{} ;
@@ -503,7 +503,7 @@ static int logsys_logdevice(logsys *op,int logpri,cchar *wp,int wl) noex {
 }
 /* end subroutine (logsys_logdevice) */
 
-static int colstate_load(colstate *csp,int ncols,int ncol) noex {
+local int colstate_load(colstate *csp,int ncols,int ncol) noex {
 	csp->ncols = ncols ;
 	csp->ncol = ncol ;
 	return SR_OK ;
@@ -511,7 +511,7 @@ static int colstate_load(colstate *csp,int ncols,int ncol) noex {
 /* end subroutine (colstate_load) */
 
 /* return the number of characters that will fill the current column limit */
-static int colstate_linecols(colstate *csp,cchar *lbuf,int llen) noex {
+local int colstate_linecols(colstate *csp,cchar *lbuf,int llen) noex {
 	int		i ; /* used afterwards */
 	int		rcols = (csp->ncols - csp->ncol) ;
 	int		cols ;
@@ -525,7 +525,7 @@ static int colstate_linecols(colstate *csp,cchar *lbuf,int llen) noex {
 }
 /* end subroutine (colstate_linecols) */
 
-static int loadlogid(char *outbuf,int outlen,cchar *logstr) noex {
+local int loadlogid(char *outbuf,int outlen,cchar *logstr) noex {
 	int		len = 0 ;
 	for (int i = 0 ; (i < outlen) && logstr[i] ; i += 1) {
 	    cint	ch = mkchar(logstr[i]) ;
@@ -537,7 +537,7 @@ static int loadlogid(char *outbuf,int outlen,cchar *logstr) noex {
 }
 /* end subroutine (loadlogid) */
 
-static int mkclean(char *outbuf,int outlen,cchar *sbuf,int slen) noex {
+local int mkclean(char *outbuf,int outlen,cchar *sbuf,int slen) noex {
 	int		i ; /* used afterwards */
 	for (i = 0 ; (i < outlen) && (i < slen) ; i += 1) {
 	    outbuf[i] = sbuf[i] ;
@@ -547,7 +547,7 @@ static int mkclean(char *outbuf,int outlen,cchar *sbuf,int slen) noex {
 }
 /* end subroutine (mkclean) */
 
-static int hasourbad(cchar *sp,int sl) noex {
+local int hasourbad(cchar *sp,int sl) noex {
 	int		f = false ;
 	while (sl && (sp[0] != '\0')) {
 	    cint	ch = (sp[0] & 0xff) ;
@@ -578,7 +578,7 @@ static bool isourbad(int ch) noex {
 }
 /* end subroutine (isourbad) */
 
-static int isLogFac(int fac) noex {
+local int isLogFac(int fac) noex {
 	bool		f = false ;
 	for (int i = 0 ; logfacs[i] >= 0 ; i += 1) {
 	    f = (fac == logfacs[i]) ;
