@@ -50,7 +50,7 @@
 
 /* forward referecens */
 
-static int	defaultcmp() ;
+local int	defaultcmp() ;
 
 
 /* local variables */
@@ -123,7 +123,7 @@ int vstab_audit(vstab *vhp) noex {
 
 	for (i = 0 ; i < vhp->i ; i += 1) {
 	    if (vhp->va[i] != NULL) {
-	        cp = (const char *) vhp->va[i] ;
+	        cp = (cchar *) vhp->va[i] ;
 	        rs = *cp ;		/* access might SEGFAULT */
 	    }
 	} /* end for */
@@ -445,7 +445,7 @@ void	***rppp ;
 
 
 #ifdef	COMMENT
-static int defaultcmp(e1pp,e2pp)
+local int defaultcmp(e1pp,e2pp)
 char	**e1pp, **e2pp ;
 {
 
