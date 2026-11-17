@@ -57,16 +57,16 @@ struct ourmsginfo_head {
 #if	(! defined(OURMSGINFO_MASTER)) || (OURMSGINFO_MASTER == 0)
 
 extern int	ourmsginfo_start(OURMSGINFO *,DATER *) ;
-extern int	ourmsginfo_setefrom(OURMSGINFO *,const char *,int) ;
-extern int	ourmsginfo_setedate(OURMSGINFO *,const char *,int) ;
+extern int	ourmsginfo_setefrom(OURMSGINFO *,cchar *,int) ;
+extern int	ourmsginfo_setedate(OURMSGINFO *,cchar *,int) ;
 extern int	ourmsginfo_setmlen(OURMSGINFO *,uint) ;
 extern int	ourmsginfo_setclen(OURMSGINFO *,int) ;
 extern int	ourmsginfo_setoffset(OURMSGINFO *,uint) ;
 extern int	ourmsginfo_setspam(OURMSGINFO *) ;
-extern int	ourmsginfo_setsubject(OURMSGINFO *,const char *,int) ;
-extern int	ourmsginfo_setreturnpath(OURMSGINFO *,const char *,int) ;
-extern int	ourmsginfo_addhead(OURMSGINFO *,int,const char *,int) ;
-extern int	ourmsginfo_gethead(OURMSGINFO *,int,int,const char **) ;
+extern int	ourmsginfo_setsubject(OURMSGINFO *,cchar *,int) ;
+extern int	ourmsginfo_setreturnpath(OURMSGINFO *,cchar *,int) ;
+extern int	ourmsginfo_addhead(OURMSGINFO *,int,cchar *,int) ;
+extern int	ourmsginfo_gethead(OURMSGINFO *,int,int,cchar **) ;
 extern int	ourmsginfo_finish(OURMSGINFO *) ;
 
 #endif /* OURMSGINFO_MASTER */
