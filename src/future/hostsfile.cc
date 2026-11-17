@@ -95,7 +95,7 @@ typedef hostsfile_ent	ent ;
 /* forward references */
 
 template<typename ... Args>
-static int hostsfile_ctor(hostsfile *op,Args ... args) noex {
+local int hostsfile_ctor(hostsfile *op,Args ... args) noex {
     	HOSTFILE	*hop = op ;
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) {
@@ -116,7 +116,7 @@ static int hostsfile_ctor(hostsfile *op,Args ... args) noex {
 }
 /* end subroutine (hostsfile_ctor) */
 
-static int hostsfile_dtor(hostsfile *op) noex {
+local int hostsfile_dtor(hostsfile *op) noex {
 	int		rs = SR_FAULT ;
 	if (op) {
 	    rs = SR_OK ;
@@ -134,7 +134,7 @@ static int hostsfile_dtor(hostsfile *op) noex {
 /* end subroutine (hostsfile_dtor) */
 
 template<typename ... Args>
-static inline int hostsfile_magic(hostsfile *op,Args ... args) noex {
+local inline int hostsfile_magic(hostsfile *op,Args ... args) noex {
 	int		rs = SR_FAULT ;
 	if (op && (args && ...)) {
 	    rs = (op->magic == HOSTFILE_MAGIC) ? SR_OK : SR_NOTOPEN ;
@@ -143,26 +143,26 @@ static inline int hostsfile_magic(hostsfile *op,Args ... args) noex {
 }
 /* end subroutine (hostsfile_magic) */
 
-static int	hostsfile_finfiles() noex ;
-static int	hostsfile_finents() noex ;
-static int	hostsfile_parsefile(HF *,int,vecitem *) noex ;
-static int	hostsfile_addentry() noex ;
-static int	hostsfile_finents() noex ;
-static int	hostsfile_checkfiles(HF *,time_t,vecitem *) noex ;
+local int	hostsfile_finfiles() noex ;
+local int	hostsfile_finents() noex ;
+local int	hostsfile_parsefile(HF *,int,vecitem *) noex ;
+local int	hostsfile_addentry() noex ;
+local int	hostsfile_finents() noex ;
+local int	hostsfile_checkfiles(HF *,time_t,vecitem *) noex ;
 
-static int	entry_start(HF_ENT *) noex ;
-static int	entry_mat2(HF_ENT *,HF_ENT *) noex ;
-static int	entry_mat3(HF_ENT *,HF_ENT *) noex ;
-static int	entry_finish(HF_ENT *) noex ;
+local int	entry_start(HF_ENT *) noex ;
+local int	entry_mat2(HF_ENT *,HF_ENT *) noex ;
+local int	entry_mat3(HF_ENT *,HF_ENT *) noex ;
+local int	entry_finish(HF_ENT *) noex ;
 
-static int	cmpstdfunc() noex ;
+local int	cmpstdfunc() noex ;
 
 #ifdef	COMMENT
-static int	cmpfunc2(), cmpfunc3() ;
+local int	cmpfunc2(), cmpfunc3() ;
 #endif
 
-static void	errline(vecitem *,char *,int) noex ;
-static void	freeit(cchar **) noex ;
+local void	errline(vecitem *,char *,int) noex ;
+local void	freeit(cchar **) noex ;
 
 
 /* local variables */
@@ -659,7 +659,7 @@ int hostsfile_check(HF *op,vecitem *eep) noex {
 
 /* private subroutines */
 
-static int hostsfile_checkfiles(HF *op,time_t daytime,vecitem *eep) noex {
+local int hostsfile_checkfiles(HF *op,time_t daytime,vecitem *eep) noex {
 	ustat		sb ;
 	HF_FI	*fep ;
 	int		rs = SR_OK ;
@@ -692,7 +692,7 @@ static int hostsfile_checkfiles(HF *op,time_t daytime,vecitem *eep) noex {
 }
 /* end subroutine (hostsfile_check) */
 
-static int hostsfile_parsefile(HF *op,int fi,vecitem *eep) noex {
+local int hostsfile_parsefile(HF *op,int fi,vecitem *eep) noex {
 	HF_FI	*fep ;
 	HF_ENT	se ;
 	int		rs = SR_OK ;
@@ -858,7 +858,7 @@ ret0:
 }
 /* end subroutine (hostsfile_parsefile) */
 
-static int hostsfile_addentry(HF *op,HF_ENT *sep) noex {
+local int hostsfile_addentry(HF *op,HF_ENT *sep) noex {
 	int		rs = SR_OK ;
 	if (parttype(sep->netgroup.std) == 0) {
 	    rs = vecitem_add(&op->aes_std,sep,szof(HF_ENT)) ;
@@ -869,7 +869,7 @@ static int hostsfile_addentry(HF *op,HF_ENT *sep) noex {
 }
 /* end subroutine (hostsfile_addentry) */
 
-static int hostsfile_finents(HF *op) noex {
+local int hostsfile_finents(HF *op) noex {
 	vecitem		*slp ;
 	int		rs = SR_OK ;
 	int		rs1 ;
@@ -888,7 +888,7 @@ static int hostsfile_finents(HF *op) noex {
 /* end subroutine (hostsfile_finents) */
 
 /* free up all of the entries in this HF list associated w/ a file */
-static int hostsfile_finents(HF *op,int fi) noex {
+local int hostsfile_finents(HF *op,int fi) noex {
 	HF_ENT		*sep ;
 	vecitem		*slp ;
 	int		rs = SR_OK ;
@@ -916,7 +916,7 @@ static int hostsfile_finents(HF *op,int fi) noex {
 /* end subroutine (hostsfile_finents) */
 
 /* free up all of the files in this HF list */
-static int hostsfile_finfiles(HF *op) noex {
+local int hostsfile_finfiles(HF *op) noex {
 	HF_FI		*afp ;
 	vecitem		*slp = op->flp ;
 	cint		rsn = SR_NOTFOUND ;
@@ -938,7 +938,7 @@ static int hostsfile_finfiles(HF *op) noex {
 }
 /* end subroutine (hostsfile_finfiles) */
 
-static int entry_start(HF_ENT *sep) noex {
+local int entry_start(HF_ENT *sep) noex {
     	int		rs = SR_FAULT ;
 	if (sep) {
 	    rs = SR_OK ;
@@ -952,7 +952,7 @@ static int entry_start(HF_ENT *sep) noex {
 }
 /* end subroutine (entry_start) */
 
-static int entry_finish(HF_ENT *sep) noex {
+local int entry_finish(HF_ENT *sep) noex {
     	int		rs = SR_FAULT ;
 	if (sep) {
 	    rs = SR_OK ;
@@ -965,7 +965,7 @@ static int entry_finish(HF_ENT *sep) noex {
 }
 /* end subroutine (entry_finish) */
 
-static int entry_mat2(HF_ENT *e1p,HF_ENT *e2p) noex {
+local int entry_mat2(HF_ENT *e1p,HF_ENT *e2p) noex {
 
 #ifdef	OPTIONAL
 	if (! part_match(&e1p->netgroup,e2p->netgroup.std))
@@ -985,7 +985,7 @@ static int entry_mat2(HF_ENT *e1p,HF_ENT *e2p) noex {
 }
 /* end subroutine (entry_mat2) */
 
-static int entry_mat3(HF_ENT *e1p,HF_ENT *e2p) noex {
+local int entry_mat3(HF_ENT *e1p,HF_ENT *e2p) noex {
 	if (! part_match(&e1p->netgroup,e2p->netgroup.std))
 	    return false ;
 
@@ -1002,7 +1002,7 @@ static int entry_mat3(HF_ENT *e1p,HF_ENT *e2p) noex {
 }
 /* end subroutine (entry_mat3) */
 
-static void freeit(cchar *pp) noex {
+local void freeit(cchar *pp) noex {
 	if (*pp) {
 	    uc_free(*pp) ;
 	    *pp = nullptr ;
@@ -1011,7 +1011,7 @@ static void freeit(cchar *pp) noex {
 /* end subroutine (freeit) */
 
 /* compare just the 'netgroup' part of entries (used for sorting) */
-static int cmpstdfunc(HF_ENT **e1pp,HF_ENT **e2pp) noex {
+local int cmpstdfunc(HF_ENT **e1pp,HF_ENT **e2pp) noex {
 	if ((*e1pp == nullptr) && (*e2pp == nullptr))
 	    return 0 ;
 
@@ -1026,7 +1026,7 @@ static int cmpstdfunc(HF_ENT **e1pp,HF_ENT **e2pp) noex {
 /* end subroutine (cmpstdfunc) */
 
 /* record table stuff */
-static void errline(vecitem *eep,cc *filename,inr line) noex {
+local void errline(vecitem *eep,cc *filename,inr line) noex {
 	HF_ERR	el ;
 	if (eep == nullptr) return ;
 	el.filename = filename ;
