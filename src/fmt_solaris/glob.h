@@ -107,7 +107,7 @@ extern int		tflag;		/* Read headers from text */
 extern uid_t		uid;		/* The invoker's user id */
 extern struct utimbuf	*utimep;	/* ???? */
 extern struct var	*variables[];	/* Pointer to active var list */
-extern const char *const version;	/* ???? */
+extern cchar *const version;	/* ???? */
 extern int		receipt_flg;	/* Flag for return receipt */
 
 /*
