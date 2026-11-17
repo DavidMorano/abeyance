@@ -56,7 +56,7 @@
 #include	<strwcpy.h>
 #include	<strn.h>
 #include	<mkchar.h>
-#include	<ischarx.h>
+#include	<isch.h>
 #include	<localmisc.h>
 
 #include	"varsub.h"
@@ -81,8 +81,8 @@ extern "C" {
 
 /* forward references */
 
-static int	cmpkey(cchar *,cchar *,int) noex ;
-static int	cmpvalue(cchar *,cchar *,int) noex ;
+local int	cmpkey(cchar *,cchar *,int) noex ;
+local int	cmpvalue(cchar *,cchar *,int) noex ;
 
 
 /* local variables */
@@ -192,7 +192,7 @@ int varsub_merge(varsub *varp,vecstr *vsp,char *buf,int buflen) noex {
 /* private subroutines */
 
 /* our own key comparison routine (to handle the '=' character) */
-static int cmpkey(cchar *s,cchar *k,int klen) noex {
+local int cmpkey(cchar *s,cchar *k,int klen) noex {
 	int		rc = -1 ;
 	if ((strncmp(s,k,klen) == 0) && (s[klen] == '=')) {
 	    rc = 0 ;
@@ -202,7 +202,7 @@ static int cmpkey(cchar *s,cchar *k,int klen) noex {
 /* end subroutine (cmpkey) */
 
 /* compare a new value with the exiting values of a variable */
-static int cmpvalue(cchar *sp,cchar *vp,int vlen) noex {
+local int cmpvalue(cchar *sp,cchar *vp,int vlen) noex {
 	int		rc = -1 ;
 	char		*cp ;
 	if ((cp = strchr(sp,'=')) != nullptr) {
