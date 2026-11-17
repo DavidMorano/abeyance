@@ -187,7 +187,7 @@ int bopenshell(bfile **fpa,cchar *cmd) noex {
 	if (tmpfname == NULL) tmpdname = TMPDNAME ;
 
 	{
-	    const int	oflags = (0600 | S_IFIFO) ;
+	    cint	oflags = (0600 | S_IFIFO) ;
 	    char	template[MAXPATHLEN+1] ;
 	    rs = mkpath2(template,tmpdname,"shcmdXXXXXXXXX") ;
 	    if (rs >= 0)
