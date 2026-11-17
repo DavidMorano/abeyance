@@ -39,7 +39,7 @@ inline int matostr(mainv bs,int n,cchar *sp,int sl = -1) noex {
 	return matobasestr(bs,n,sp,sl) ;
 }
 #else
-static inline int matostr(mainv bs,int n,cchar *sp,int sl) noex {
+local inline int matostr(mainv bs,int n,cchar *sp,int sl) noex {
 	return matobasestr(bs,n,sp,sl) ;
 }
 #endif /* __cplusplus */
