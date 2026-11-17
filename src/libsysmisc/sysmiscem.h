@@ -43,7 +43,7 @@ struct sysmiscem_d {
 } ;
 
 struct sysmiscem_calls {
-	int	(*open)(void *,const char *) ;
+	int	(*open)(void *,cchar *) ;
 	int	(*get)(void *,time_t,int,SYSMISCEMS_DATA *) ;
 	int	(*audit)(void *) ;
 	int	(*close)(void *) ;
@@ -63,7 +63,7 @@ struct sysmiscem_head {
 extern "C" {
 #endif
 
-extern int	sysmiscem_open(SYSMISCEM *,const char *) ;
+extern int	sysmiscem_open(SYSMISCEM *,cchar *) ;
 extern int	sysmiscem_get(SYSMISCEM *,time_t,int,SYSMISCEM_DATA *) ;
 extern int	sysmiscem_close(SYSMISCEM *) ;
 
