@@ -221,17 +221,17 @@ int usysdarwinttyr::getttyname(char *rbuf,int rlen,int fd) noex {
 }
 /* end method (usysdarwinttyr::getttyname) */
 
-static void usysdarwintty_atforkbefore() noex {
+local void usysdarwintty_atforkbefore() noex {
 	usysdarwintty_data.forkbefore() ;
 }
 /* end subroutine (usysdarwintty_atforkbefore) */
 
-static void usysdarwintty_atforkafter() noex {
+local void usysdarwintty_atforkafter() noex {
 	usysdarwintty_data.forkafter() ;
 }
 /* end subroutine (usysdarwintty_atforkafter) */
 
-static void usysdarwintty_exit() noex {
+local void usysdarwintty_exit() noex {
 	usysdarwintty_data.fini() ;
 }
 /* end subroutine (usysdarwintty_exit) */
