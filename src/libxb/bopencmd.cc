@@ -84,7 +84,7 @@ int bopencmd(bfile *fpa[3],cchar *cmd) noex {
 #if	CF_BFD
 	int		bfd[3] ;
 #endif
-	const char	*sp ;
+	cchar	*sp ;
 
 #if	CF_DEBUGS
 	debugprintf("bopencmd: entered\n") ;
@@ -131,7 +131,7 @@ int bopencmd(bfile *fpa[3],cchar *cmd) noex {
 
 #if	CF_BFD
 	for (i = 0 ; i < 3 ; i += 1) {
-	    const char	*nullfname = NULLFNAME ;
+	    cchar	*nullfname = NULLFNAME ;
 
 	    bfd[i] = -1 ;
 	    if (u_fstat(i,&sb) >= 0)
@@ -227,7 +227,7 @@ int bopencmd(bfile *fpa[3],cchar *cmd) noex {
 /* do we modify the command? */
 
 	    {
-		const char	*cmdp = cmd ;
+		cchar	*cmdp = cmd ;
 
 	    if ((cmdlen < 6) || (strncmp(cmd,"exec",4) != 0) || 
 	        ((cmd[4] != '\0') && (! CHAR_ISWHITE(cmd[4])))) {
