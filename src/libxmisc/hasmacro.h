@@ -28,7 +28,7 @@ EXTERNC_begin
 
 extern bool	hasmacro(cchar *,int) noex ;
 
-static inline bool isMacro(cchar *lp,int ll) noex {
+local inline bool isMacro(cchar *lp,int ll) noex {
 	return hasmacro(lp,ll) ;
 }
 
