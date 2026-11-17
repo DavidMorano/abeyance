@@ -60,7 +60,7 @@
 
 /* external subroutines */
 
-extern int	matcasestr(const char **,const char *,int) ;
+extern int	matcasestr(cchar **,cchar *,int) ;
 
 
 /* external variables */
