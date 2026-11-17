@@ -11,6 +11,7 @@
 #ifndef	CONSLOG_INCLUDE
 #define	CONSLOG_INCLUDE
 
+
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<sys/types.h>		/* POSIX */
 #include	<sys/syslog.h>		/* POSIX */
@@ -31,20 +32,18 @@ struct conslog_head {
 	int		logfac ;
 	int		lfd ;
 	int		c ;
-} ;
+} ; /* end struct (conslog_head) */
 
 typedef CONSLOG		conslog ;
 
 EXTERNC_begin
-
-extern int conslog_open(conslog *,int) noex ;
-extern int conslog_write(conslog *,int,cchar *,int) noex ;
-extern int conslog_printf(conslog *,int,cchar *,...) noex ;
-extern int conslog_vprintf(conslog *,int,cchar *,va_list) noex ;
-extern int conslog_check(conslog *,time_t) noex ;
-extern int conslog_count(conslog *) noex ;
-extern int conslog_close(conslog *) noex ;
-
+extern int conslog_open		(conslog *,int) noex ;
+extern int conslog_write	(conslog *,int,cchar *,int) noex ;
+extern int conslog_printf	(conslog *,int,cchar *,...) noex ;
+extern int conslog_vprintf	(conslog *,int,cchar *,va_list) noex ;
+extern int conslog_check	(conslog *,time_t) noex ;
+extern int conslog_count	(conslog *) noex ;
+extern int conslog_close	(conslog *) noex ;
 EXTERNC_end
 
 
