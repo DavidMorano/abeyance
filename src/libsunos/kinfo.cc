@@ -1,4 +1,5 @@
 /* kinfo SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* kernel information access (for Sun Solaris®) */
@@ -16,8 +17,8 @@
 
 /*******************************************************************************
 
+  	Description:
 	This object provides access to some kernel-related information.
-
 	Extra notes for the observant:
 
 	You might note that the KSTAT(3kstat) stuff is NOT reentrant
@@ -27,19 +28,20 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
-#include	<kstat.h>
-#include	<ctime>
-#include	<cstdlib>
-#include	<cstring>
+#include	<sys/types.h>		/* POSIX® */
+#include	<kstat.h>		/* Solaris® */
+#include	<ctime>			/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
 
 #if	(defined(SYSHAS_LOADAVG) && (SYSHAS_LOADAVG > 0))
 #include	<sys/loadavg.h>
 #endif
 
-#include	<usystem.h>
-#include	<timestr.h>
-#include	<localmisc.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"kinfo.h"
 
@@ -54,10 +56,6 @@
 #define	TO_KUPDATE	(5 * 60)	/* time before a chain update */
 #define	TO_KMAXIDLE	(10 * 60)	/* maximum idle time allowed */
 
-#ifndef	TIMEBUFLEN
-#define	TIMEBUFLEN	80
-#endif
-
 
 /* external subroutines */
 
@@ -70,11 +68,11 @@
 
 /* forward referecens */
 
-static int	kinfo_kopen(KINFO *,time_t) noex ;
-static int	kinfo_kclose(KINFO *) noex ;
-static int	kinfo_kupdate(KINFO *,time_t) noex ;
-static int	kinfo_ksysmisc(KINFO *,time_t) noex ;
-static int	kinfo_kloadave(KINFO *,time_t) noex ;
+local int	kinfo_kopen(KINFO *,time_t) noex ;
+local int	kinfo_kclose(KINFO *) noex ;
+local int	kinfo_kupdate(KINFO *,time_t) noex ;
+local int	kinfo_ksysmisc(KINFO *,time_t) noex ;
+local int	kinfo_kloadave(KINFO *,time_t) noex ;
 
 
 /* local variables */
@@ -279,7 +277,7 @@ int kinfo_close(KINFO *sp) noex {
 
 /* private subroutines */
 
-static int kinfo_kopen(KINFO *sp,time_t ti_daytime) noex {
+local int kinfo_kopen(KINFO *sp,time_t ti_daytime) noex {
 	int		rs = SR_OK ;
 	if (! sp->f.kopen) {
 
@@ -299,7 +297,7 @@ static int kinfo_kopen(KINFO *sp,time_t ti_daytime) noex {
 }
 /* end subroutine (kinfo_kopen) */
 
-static int kinfo_kclose(KINFO *sp) noex {
+local int kinfo_kclose(KINFO *sp) noex {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	if (sp->f.kopen) {
@@ -317,7 +315,7 @@ static int kinfo_kclose(KINFO *sp) noex {
 }
 /* end subroutine (kinfo_kclose) */
 
-static int kinfo_kupdate(KINFO *sp,time_t ti_daytime) noex {
+local int kinfo_kupdate(KINFO *sp,time_t ti_daytime) noex {
 	int		rs = SR_OK ;
 	if (sp->f.kopen) {
 	    if ((ti_daytime - sp->ti_update) >= TO_KUPDATE) {
@@ -329,7 +327,7 @@ static int kinfo_kupdate(KINFO *sp,time_t ti_daytime) noex {
 }
 /* end subroutine (kinfo_kupdate) */
 
-static int kinfo_ksysmisc(KINFO *sp,time_t ti_daytime) noex {
+local int kinfo_ksysmisc(KINFO *sp,time_t ti_daytime) noex {
 	kstat_t		*ksp ;
 	kid_t		kid ;
 	int		rs = SR_OK ;
@@ -385,7 +383,7 @@ static int kinfo_ksysmisc(KINFO *sp,time_t ti_daytime) noex {
 }
 /* end subroutine (kinfo_ksysmisc) */
 
-static int kinfo_kloadave(KINFO *sptime_t ti_daytime) noex {
+local int kinfo_kloadave(KINFO *sptime_t ti_daytime) noex {
 	int	rs = SR_OK ;
 
 #if	(defined(SYSHAS_LOADAVG) && (SYSHAS_LOADAVG > 0))
