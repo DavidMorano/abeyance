@@ -77,12 +77,12 @@ unsigned char *qshs();
 static long nbits;
 static unsigned long *h;
 static unsigned long *w;
-static void shs1();
+local void shs1();
 /*
-static void packl (unsigned long);
-static void pack (unsigned char, unsigned char, unsigned char, unsigned char);
-static void shs1(void);
-static void opack(unsigned char);
+local void packl (unsigned long);
+local void pack (unsigned char, unsigned char, unsigned char, unsigned char);
+local void shs1(void);
+local void opack(unsigned char);
 */
 
 #define MASK        (unsigned long)0xffffffffL        /* in case more than 32 bits per long */
@@ -90,7 +90,7 @@ static void opack(unsigned char);
 /*
  * stick one byte into the current block; process the block when full
  */
-static void opack(c)
+local void opack(c)
   unsigned char c;
 {
 	int n32, nd32, shiftbits;
@@ -117,7 +117,7 @@ static void opack(c)
 }
 
 
-static void pack(c0, c1, c2, c3)
+local void pack(c0, c1, c2, c3)
   unsigned char c0, c1, c2, c3;
 {
 	int nd32;
@@ -137,7 +137,7 @@ static void pack(c0, c1, c2, c3)
 /*
  * stick a 4 byte number into the current block
  */
-static void packl(x)
+local void packl(x)
   unsigned long x;
 {
 
@@ -150,7 +150,7 @@ static void packl(x)
 /*
  * process one block
  */
-static void shs1()
+local void shs1()
 {
 	unsigned long *wp;
 	unsigned long temp;
@@ -213,7 +213,7 @@ static void shs1()
 #define CHARSTOLONG(wp,s,i) {*wp++ = (u_long)((((u_long)(s[i])&0xff)<<24)|(((u_long)(s[i+1])&0xff)<<16)|(((u_long)(s[i+2])&0xff)<<8)|(u_long)(s[i+3]&0xff));}
 
 
-static void shsInit(mdContext)
+local void shsInit(mdContext)
   SHS_CTX *mdContext;
 {
 
@@ -228,7 +228,7 @@ static void shsInit(mdContext)
 }
 
 
-static void shsUpdate(mdContext, s, n)
+local void shsUpdate(mdContext, s, n)
   SHS_CTX *mdContext;
   unsigned char *s;
   unsigned int n;
@@ -282,7 +282,7 @@ static void shsUpdate(mdContext, s, n)
 }
 
 
-static void shsFinal(mdContext)
+local void shsFinal(mdContext)
   SHS_CTX *mdContext;
 {
 	long nn = mdContext->totalLength;
