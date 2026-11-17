@@ -66,16 +66,16 @@ struct arec {
 
 /* forward references */
 
-static int malloclog_access(cchar *,int) noex ;
+local int malloclog_access(cchar *,int) noex ;
 
 
 /* local non-automatic variables */
 
 static hdb	track ;
 
-static int	rs_file = -1 ;
-static int	f_init = FALSE ;
-static int	f_file = FALSE ;
+local int	rs_file = -1 ;
+local int	f_init = FALSE ;
+local int	f_file = FALSE ;
 
 static uint	mark = 0 ;
 static uint	serial = 0 ;
@@ -320,7 +320,7 @@ int malloclog_printf(cchar *fmt,...) noex {
 
 /* local subroutines */
 
-static int malloclog_access(char *fname,int perm) noex {
+local int malloclog_access(char *fname,int perm) noex {
 	if (! f_file) {
 		f_file = TRUE ;
 	        rs_file = u_access(fname,perm) ;
