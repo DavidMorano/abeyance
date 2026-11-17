@@ -116,7 +116,7 @@ int ddb_close(DDB *op) noex {
 
 /* private subroutines */
 
-static int ddb_parse(DDB *op,cchar *fname) noex {
+local int ddb_parse(DDB *op,cchar *fname) noex {
 	bfile	udfile ;
 
 	int	rs ;
