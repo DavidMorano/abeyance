@@ -23,7 +23,7 @@ EXTERNC_begin
 
 extern double	logtwo(double) noex ;
 
-static inline double log2(double v) noex {
+local inline double log2(double v) noex {
     return logtwo(v) ;
 }
 
