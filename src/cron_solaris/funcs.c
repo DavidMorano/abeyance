@@ -61,7 +61,7 @@ num(char **ptr)
 }
 
 
-static int dom[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+local int dom[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 int
 days_btwn(int m1, int d1, int y1, int m2, int d2, int y2)
