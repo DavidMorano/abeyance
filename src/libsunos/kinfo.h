@@ -1,9 +1,17 @@
 /* kinfo HEADER */
+/* charset=ISO8859-1 */
 /* lang=C20 */
 
 /* kernel information access (for Sun Solaris®) */
 /* version %I% last-modified %G% */
 
+
+/* revision history:
+
+	= 1998-12-01, David A­D­ Morano
+	Module was originally written.
+
+*/
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
@@ -12,9 +20,8 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
-#include	<kstat.h>
-#include	<localmisc.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<kstat.h>		/* Solaris® */
 
 
 #define	KINFO		struct kinfo_head
@@ -27,11 +34,11 @@ struct kinfo_data {
 	uint		ncpu ;
 	uint		nproc ;
 	uint		la[3] ;
-} ;
+} ; /* end struct */
 
 struct kinfo_flags {
 	uint		kopen:1 ;
-} ;
+} ; /* end struct */
 
 struct kinfo_head {
 	kstat_ctl_t	*kcp ;
@@ -45,7 +52,7 @@ struct kinfo_head {
 	int		nactive ;		/* number of active requests */
 	int		tosysmisc ;
 	int		toloadave ;
-} ;
+} ; /* end struct */
 
 typedef	KINFO		kinfo ;
 typedef	KINFO_FL	kinfo_fl ;
