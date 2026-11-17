@@ -66,13 +66,13 @@
 /* external subroutines */
 
 #if	CF_DEBUGS
-extern int	nprintf(const char *,const char *,...) ;
+extern int	nprintf(cchar *,cchar *,...) ;
 #endif
 
 
 /* external variables */
 
-extern const char	**environ ;
+extern cchar	**environ ;
 
 
 /* global variables */
@@ -109,16 +109,16 @@ char	Basedir[BUFSIZ] ;
 
 /* forward references */
 
-static int nlps_server(const char *) ;
+local int nlps_server(cchar *) ;
 
 
 /* exported subroutines */
 
 
-int main(int argc,const char *argv[],const char *envv[])
+int main(int argc,cchar *argv[],cchar *envv[])
 {
 	extern int	read_dbf() ;
-	const char	*provider ;
+	cchar	*provider ;
 
 	provider = getenv("PMTAG") ;
 	sprintf(Altbasedir, "%s/%s/", ALTDIR, provider) ;
@@ -154,7 +154,7 @@ int main(int argc,const char *argv[],const char *envv[])
  *  nlps_server: 
  */
 
-int nlps_server(const char *provider)
+int nlps_server(cchar *provider)
 {
 	register size ;
 	char buf[RCVBUFSZ] ;
@@ -462,7 +462,7 @@ static char *nlsunknown =
  * and when >= 0, indicates the version of the NLPS protocol used
  */
 
-static int Nlsversion = -1;	/* protocol version	*/
+local int Nlsversion = -1;	/* protocol version	*/
 
 int nls_service(bp, size)
 int  size ;
@@ -630,7 +630,7 @@ static char *srrpprot = "%d:%d:%s" ;
 
 int nls_reply(code,text)
 int		code ;
-const char	text[] ;
+cchar	text[] ;
 {
 	int	rs = SR_OK ;
 	char scratch[256] ;
