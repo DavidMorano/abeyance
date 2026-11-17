@@ -24,7 +24,7 @@ extern "C" {
 extern int getne_begin(int) ;
 extern int getne_ent(struct netent *,char *,int) ;
 extern int getne_end() ;
-extern int getne_name(struct netent *,char *,int,const char *) ;
+extern int getne_name(struct netent *,char *,int,cchar *) ;
 extern int getne_addr(struct netent *,char *,int,int,int) ;
 
 #ifdef	__cplusplus
