@@ -29,15 +29,18 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include <sys/types.h>
-#include <sys/timeb.h>
-#include <tzfile.h>
-#include <ctime>
-#include	<cstddef>
-#include	<cstdlib>
-#include <cstring>
-
+#include	<sys/types.h>
+#include	<sys/timeb.h>
+#include	<tzfile.h>
+#include	<ctime>			/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<strtime.h>		/* LIBUC */
 #include	<mallocstuff.h>
+#include	<localmisc.h>		/* LIBU */
 
 #include "dateconv.h"
 #include "datetok.h"
@@ -75,8 +78,8 @@ extern int	dtok_numparsed ;
 
 /* forward references */
 
-static int	prsabsdate() ;
-static int	tryabsdate() ;
+local int	prsabsdate() ;
+local int	tryabsdate() ;
 
 
 /* local vaiables */
@@ -179,7 +182,7 @@ struct timeb	*nowp ;
 
 #if	CF_DEBUGS
 	        debugprintf("parsedate: uncorrected result=%s\n",
-	            timestr_log(result,timebuf)) ;
+	            strtime_log(result,timebuf)) ;
 #endif
 
 #if	defined(SYSHAS_LOCALTIMER) && SYSHAS_LOCALTIMER
@@ -211,7 +214,7 @@ struct timeb	*nowp ;
 
 #if	CF_DEBUGS
 	debugprintf("parsedate: exiting result=%s\n",
-	    timestr_log(result,timebuf)) ;
+	    strtime_log(result,timebuf)) ;
 #endif
 
 	if (f_malloc)
@@ -226,7 +229,7 @@ struct timeb	*nowp ;
 
 
 /* just parse the absolute date in timestr and get back a broken-out date */
-static int prsabsdate(timestr, nowp, tm, tzp)
+local int prsabsdate(timestr, nowp, tm, tzp)
 char		timestr[] ;
 struct timeb	*nowp ;
 struct 		tm *tm ;
@@ -296,7 +299,7 @@ int		*tzp ;
 
 
 /* try to parse pre-split timestr as an absolute date */
-static int tryabsdate(fields, nf, nowp, tm, tzp)
+local int tryabsdate(fields, nf, nowp, tm, tzp)
 char			*fields[] ;
 int			nf ;
 struct timeb		*nowp ;
