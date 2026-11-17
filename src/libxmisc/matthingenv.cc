@@ -76,7 +76,7 @@
 #include	<matxstr.h>
 #include	<char.h>
 #include	<mkchar.h>
-#include	<ischarx.h>
+#include	<isch.h>
 #include	<localmisc.h>
 
 #include	"matthingenv.h"
@@ -118,7 +118,7 @@ extern "C" {
     int		matthingenv(cchar *,int) noex ;
 }
 
-static int	nexttoken(cchar *,int,cchar **) noex ;
+local int	nexttoken(cchar *,int,cchar **) noex ;
 
 
 /* local variables */
@@ -280,7 +280,7 @@ int matmsgstart(cchar *buf,int len) noex {
 
 /* local subroutines */
 
-static int nexttoken(cchar *buf,int len,cchar **spp) noex {
+local int nexttoken(cchar *buf,int len,cchar **spp) noex {
 	int		f_len = (len >= 0) ;
 	cchar		*cp = buf ;
 /* skip leading white space */
