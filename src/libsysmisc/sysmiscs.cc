@@ -117,10 +117,10 @@ MODLOAD_MID	sysmiscs_mod = {
 
 /* forward references */
 
-static int	sysmiscs_msopen(sysmiscs *) ;
-static int	sysmiscs_msget(sysmiscs *,time_t) ;
-static int	sysmiscs_msgetone(sysmiscs *,time_t,sysmiscs_d *) ;
-static int	sysmiscs_nodename(sysmiscs *) ;
+local int	sysmiscs_msopen(sysmiscs *) ;
+local int	sysmiscs_msget(sysmiscs *,time_t) ;
+local int	sysmiscs_msgetone(sysmiscs *,time_t,sysmiscs_d *) ;
+local int	sysmiscs_nodename(sysmiscs *) ;
 
 
 /* exported variables */
@@ -218,7 +218,7 @@ SYSMISCS	*op ;
 /* private subroutines */
 
 
-static int sysmiscs_msget(op,daytime,dp)
+local int sysmiscs_msget(op,daytime,dp)
 SYSMISCS	*op ;
 time_t		daytime ;
 sysmiscs_d	*dp ;
@@ -255,7 +255,7 @@ ret0:
 /* end subroutine (sysmiscs_msget) */
 
 
-static int sysmiscs_msopen(op)
+local int sysmiscs_msopen(op)
 SYSMISCS	*op ;
 {
 	int	rs = SR_OK ;
@@ -282,7 +282,7 @@ ret0:
 /* end subroutine (sysmiscs_msopen) */
 
 
-static int sysmiscs_msgetone(op,daytime,dp)
+local int sysmiscs_msgetone(op,daytime,dp)
 SYSMISCS	*op ;
 time_t		daytime ;
 sysmiscs_d	*dp ;
@@ -318,7 +318,7 @@ ret0:
 /* end subroutine (sysmiscs_msgetone) */
 
 
-static int sysmiscs_nodename(op)
+local int sysmiscs_nodename(op)
 SYSMISCS	*op ;
 {
 	int	rs = SR_OK ;
@@ -347,7 +347,7 @@ ret0:
 /* end subroutine (sysmiscs_nodename) */
 
 
-static int sysmiscs_msdaemon(op)
+local int sysmiscs_msdaemon(op)
 SYSMISCS	*op ;
 {
 	SPAWNPROC	ps ;
