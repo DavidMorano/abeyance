@@ -99,7 +99,7 @@ static unsigned buffer;
 
 
 
-static int tick()
+local int tick()
 {
 	struct itimerval it;
 
@@ -111,7 +111,7 @@ static int tick()
 		perror("tick");
 }
 
-static void
+local void
 interrupt()
 {
 
