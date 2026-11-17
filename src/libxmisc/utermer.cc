@@ -52,7 +52,7 @@
 #include	<buffer.h>
 #include	<sbuf.h>
 #include	<strn.h>
-#include	<ischarx.h>
+#include	<isch.h>
 #include	<localmisc.h>
 #include	<libdebug.h>		/* LIBDEBUG */
 
@@ -68,13 +68,8 @@ import libutil ;			/* |lenstr(3u)| */
 
 #define	UTERMER_CRP	struct utermer_crp
 
-#ifndef	LINEBUFLEN
-#define	LINEBUFLEN	2048
-#endif
-
 #define	TTY_MINCHARS	0	/* minimum characters to get */
 #define	TTY_MINTIME	5	/* minimum time (x100 milliseconds) */
-
 #define	TTY_READCHARS	20
 
 #define	WBUFLEN		40	/* maximum output write buffer */
@@ -100,10 +95,6 @@ import libutil ;			/* |lenstr(3u)| */
 #define	CH_FILTER	0x100
 
 #define	FILTER(c)	((c) | CH_FILTER)
-
-#ifndef	HEXBUFLEN
-#define	HEXBUFLEN	100
-#endif
 
 
 /* external subroutines */
@@ -647,8 +638,8 @@ UTERMER_CRP	**epp ;
 UTERMER		*op ;
 {
 	UTERMER_CRP	*ep ;
-	const int	size = sizeof(UTERMER_CRP) ;
-	const int	rse = SR_EMPTY ;
+	cint	size = sizeof(UTERMER_CRP) ;
+	cint	rse = SR_EMPTY ;
 	int		rs = SR_OK ;
 
 	if ((rs = piq_rem(&op->fistore,&ep)) == rse) {
