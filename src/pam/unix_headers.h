@@ -215,19 +215,19 @@ extern void		nisplus_populate_age(struct nis_object *,
 extern int		attr_find(char *, char *[]);
 extern void		setup_attr(char *[], int, char[], char[]);
 extern void		free_setattr(char *[]);
-extern int		__set_authtoken_attr(pam_handle_t *, const char **,
-						int, const char *, int,
-						const char **);
+extern int		__set_authtoken_attr(pam_handle_t *, cchar **,
+						int, cchar *, int,
+						cchar **);
 
 /* from switch_utils.c */
-extern int		str2spwd(const char *, int, void *, char *, int);
-extern struct passwd    *getpwnam_from(const char *, int);
-extern struct spwd	*getspnam_from(const char *, int);
+extern int		str2spwd(cchar *, int, void *, char *, int);
+extern struct passwd    *getpwnam_from(cchar *, int);
+extern struct spwd	*getspnam_from(cchar *, int);
 extern int		get_ns(pam_handle_t *, int, int, int);
 
 /* from unix_update_authtok.c */
 extern int		__update_authtok(pam_handle_t *, int, int,
-					char *, int, const char **);
+					char *, int, cchar **);
 
 /* from update_authtok_<repository> */
 extern int	update_authtok_file(pam_handle_t *, char *, char **,
