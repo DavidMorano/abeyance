@@ -16,14 +16,14 @@
  * and NSS_SWITCH is not used.
  */
 
-static void	pr_config();
+local void	pr_config();
 
 /*
  * The following is similar to getpwnam() except that it specifies
  * where to get the information. This is modeled after getpwnam_r().
  */
 #ifdef PAM_LDAP
-static void
+local void
 nss_ldap_passwd(p)
 	nss_db_params_t	*p;
 {
@@ -32,7 +32,7 @@ nss_ldap_passwd(p)
 	p->default_config = "ldap";
 }
 
-static void
+local void
 nss_ldap_shadow(p)
 	nss_db_params_t	*p;
 {
@@ -44,7 +44,7 @@ nss_ldap_shadow(p)
 #endif /* PAM_LDAP */
 
 #ifdef PAM_NIS
-static void
+local void
 nss_nis_passwd(p)
 	nss_db_params_t	*p;
 {
@@ -53,7 +53,7 @@ nss_nis_passwd(p)
 	p->default_config = "nis";
 }
 
-static void
+local void
 nss_nis_shadow(p)
 	nss_db_params_t	*p;
 {
@@ -65,7 +65,7 @@ nss_nis_shadow(p)
 #endif /* PAM_NIS */
 
 #ifdef PAM_NISPLUS
-static void
+local void
 nss_nisplus_passwd(p)
 	nss_db_params_t	*p;
 {
@@ -74,7 +74,7 @@ nss_nisplus_passwd(p)
 	p->default_config = "nisplus";
 }
 
-static void
+local void
 nss_nisplus_shadow(p)
 	nss_db_params_t	*p;
 {
@@ -116,8 +116,8 @@ gettok(nextpp)
  * wherein the field pointers would be set to areas in the buffer if
  * need be. instring and buffer should be separate areas.
  */
-static int
-str2passwd(const char *instr, int lenstr, void *ent, char *buffer, int buflen)
+local int
+str2passwd(cchar *instr, int lenstr, void *ent, char *buffer, int buflen)
 {
 	struct passwd	*passwd	= (struct passwd *)ent;
 	char		*p, *next;
@@ -263,7 +263,7 @@ str2passwd(const char *instr, int lenstr, void *ent, char *buffer, int buflen)
 	return (NSS_STR_PARSE_PARSE);
 }
 
-typedef const char *constp;
+typedef cchar *constp;
 
 static bool_t	/* 1 means success and more input, 0 means error or no more */
 getfield(nextp, limit, uns, valp)
@@ -335,14 +335,14 @@ getfield(nextp, limit, uns, valp)
  */
 int
 str2spwd(instr, lenstr, ent, buffer, buflen)
-	const char	*instr;
+	cchar	*instr;
 	int		lenstr;
 	void	*ent; /* really (struct spwd *) */
 	char	*buffer;
 	int	buflen;
 {
 	struct spwd	*shadow	= (struct spwd *)ent;
-	const char	*p = instr, *limit;
+	cchar	*p = instr, *limit;
 	char		*bufp;
 	int	lencopy, black_magic;
 
@@ -422,7 +422,7 @@ static DEFINE_NSS_DB_ROOT(db_root);
 
 struct passwd *
 getpwnam_from(name, rep)
-	const char	*name;
+	cchar	*name;
 	int		rep;
 {
 	nss_XbyY_buf_t  *b = GETBUF();
@@ -468,7 +468,7 @@ static DEFINE_NSS_DB_ROOT(spdb_root);
 
 struct spwd *
 getspnam_from(name, rep)
-	const char	*name;
+	cchar	*name;
 	int		rep;
 {
 	nss_XbyY_buf_t  *b = GETSPBUF();
@@ -505,7 +505,7 @@ getspnam_from(name, rep)
 }
 #endif /* (PAM_LDAP || PAM_NIS || PAM_NISPLUS) */
 
-static void
+local void
 pr_config(pamh)
 	pam_handle_t *pamh;
 {
