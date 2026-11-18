@@ -48,8 +48,8 @@
 
 /* forward references */
 
-static int	fdt_get(FDT *,int,UCB **) noex ;
-static int	fdt_free(FDT *,int) noex ;
+local int	fdt_get(FDT *,int,UCB **) noex ;
+local int	fdt_free(FDT *,int) noex ;
 
 
 /* local variables */
@@ -62,7 +62,7 @@ static FDT	fdt ;
 
 /* private subroutines */
 
-static int fdt_ctor(FDT *op) noex {
+local int fdt_ctor(FDT *op) noex {
     	cnullptr	np{} ;
     	int		rs = SR_OK ;
 	if (op->magic != FDT_MAGIC) {
@@ -81,7 +81,7 @@ static int fdt_ctor(FDT *op) noex {
 	} /* end if (initialization) */
 } /* end subroutine (fdt_ctor) */
 
-static int fdt_alloc(FDT *op,int fd,UCB *rpp) noex {
+local int fdt_alloc(FDT *op,int fd,UCB *rpp) noex {
 	int		rs = SR_FAULT ;
 	int		sz ;
 	if (op) {
@@ -103,7 +103,7 @@ static int fdt_alloc(FDT *op,int fd,UCB *rpp) noex {
 }
 /* end subroutine (fdt_alloc) */
 
-static int fdt_getentry(FDT *op,int fd,FDT_ENT **rpp) noex {
+local int fdt_getentry(FDT *op,int fd,FDT_ENT **rpp) noex {
 	FDT_ENT		*ep = nullptr ;
 	vecobj		*flp = &op->entries ;
 	int		rs ;
