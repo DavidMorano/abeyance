@@ -16,7 +16,7 @@ pam_sm_close_session(
 	pam_handle_t	*pamh,
 	int	flags,
 	int	argc,
-	const char	**argv)
+	cchar	**argv)
 {
 	int	i;
 	int	debug = 0;
