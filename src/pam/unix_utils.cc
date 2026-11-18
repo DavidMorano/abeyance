@@ -8,17 +8,17 @@
 #include "unix_headers.h"
 
 static char 	*spskip();
-static int	special_case();
-static int	illegal_input();
-static int	copy_passwd_structs(struct passwd **, struct passwd *,
+local int	special_case();
+local int	illegal_input();
+local int	copy_passwd_structs(struct passwd **, struct passwd *,
 			struct spwd **, struct spwd *);
 
 void		free_passwd_structs(struct passwd *, struct spwd *);
 
-static int base64_2_index(char, int *);
+local int base64_2_index(char, int *);
 
-static int get_and_set_seckey(pam_handle_t *, const char *, keylen_t, algtype_t,
-				const char *, int *, int *, int *, int, int);
+local int get_and_set_seckey(pam_handle_t *, cchar *, keylen_t, algtype_t,
+				cchar *, int *, int *, int *, int, int);
 
 /*
  * Support for old SunOS passwd aging
@@ -36,7 +36,7 @@ char base64table [64] =
  * given a base64-encoded character, return the index (0-63) into
  * the table for that character
  */
-static int
+local int
 base64_2_index(char base64_value, int *index)
 {
 	int i;
@@ -218,7 +218,7 @@ out:
 /*
  * given an integer as the lastchg value, encode it into 2 chars
  */
-static int
+local int
 encode_lastchg(int lastchg, char **base64_lastchg)
 {
 	char tmp_lastchg[3];
@@ -274,13 +274,13 @@ shiftright(unsigned int bytes, int shift_val)
  *
  * Returns 0 on malloc failure, else 1.
  */
-static int
+local int
 get_and_set_seckey(
 	pam_handle_t	*pamh,			/* in */
-	const char	*netname,		/* in */
+	cchar	*netname,		/* in */
 	keylen_t	keylen,			/* in */
 	algtype_t	algtype,		/* in */
-	const char	*pw,			/* in */
+	cchar	*pw,			/* in */
 	int		*get_seckey_cnt,	/* out */
 	int		*good_pw_cnt,		/* out */
 	int		*set_seckey_cnt,	/* out */
@@ -548,7 +548,7 @@ try_auth_des:
 /*
  * Check is we are on a YP master server.  Returns 1 if so, 0 otherwise.
  */
-static int on_nis_master(char *prognamep) {
+local int on_nis_master(char *prognamep) {
 	char *domain;
 	char *master;
 	char thishost[MAXHOSTNAMELEN];
@@ -1333,7 +1333,7 @@ repository_to_string(int repository)
  *
  * Returns '1' if a colon or newline is found or the input line is too long.
  */
-static int
+local int
 illegal_input(pamh, input_str, nowarn)
 	pam_handle_t *pamh;
 	char *input_str;
@@ -1404,7 +1404,7 @@ illegal_input(pamh, input_str, nowarn)
  *  either upper or lower case (or any combination).  'str' is modified
  *  in these two cases.
  */
-static int
+local int
 special_case(str, default_str)
 	char *str, *default_str;
 {
@@ -1449,7 +1449,7 @@ special_case(str, default_str)
 	return (1);
 }
 
-static int
+local int
 copy_passwd_structs(struct passwd **pwd, struct passwd *local_pwd,
 		struct spwd **shpwd, struct spwd *local_shpwd)
 {
