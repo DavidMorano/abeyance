@@ -9,7 +9,7 @@
 #include "unix_headers.h"
 
 /*ARGSUSED*/
-static void
+local void
 unix_cleanup(
 	pam_handle_t *pamh,
 	void *data,
@@ -23,7 +23,7 @@ unix_cleanup(
  *
  */
 
-static int
+local int
 check_for_login_inactivity(
 	struct 	passwd 	*pwd,
 	struct 	spwd 	*shpwd)
@@ -73,7 +73,7 @@ check_for_login_inactivity(
  * check to see if the user needs to change their password
  */
 
-static int
+local int
 new_password_check(pwd, shpwd, flags)
 	struct 	passwd 	*pwd;
 	struct 	spwd 	*shpwd;
@@ -199,7 +199,7 @@ perform_passwd_aging_check(
  *					  expire.
  */
 
-static void
+local void
 warn_user_passwd_will_expire(
 	pam_handle_t *pamh,
 	struct 	spwd shpwd)
@@ -247,7 +247,7 @@ pam_sm_acct_mgmt(
 	pam_handle_t	*pamh,
 	int	flags,
 	int	argc,
-	const char	**argv)
+	cchar	**argv)
 {
 	struct 	spwd shpwd;
 	struct 	passwd pwd;
@@ -344,7 +344,7 @@ out:
 		memset(shpwd_buf, 0, sizeof (shpwd_buf));
 		/* store the password aging status in the pam handle */
 		pam_res = pam_get_data(
-			pamh, UNIX_AUTHTOK_DATA, (const void **)&authtok_data);
+			pamh, UNIX_AUTHTOK_DATA, (cvoid **)&authtok_data);
 
 		if ((status = (unix_authtok_data *)calloc
 			(1, sizeof (unix_authtok_data))) == NULL) {
