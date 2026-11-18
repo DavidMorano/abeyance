@@ -9,7 +9,7 @@
 
 #ifdef PAM_SECURE_RPC
 /*ARGSUSED*/
-static void
+local void
 unix_cleanup(
 	pam_handle_t *pamh,
 	void *data,
@@ -20,7 +20,7 @@ unix_cleanup(
 
 #endif
 
-static int attempt_authentication(pam_handle_t *pamh, char *, char *, char *,
+local int attempt_authentication(pam_handle_t *pamh, char *, char *, char *,
 					uid_t, int, int);
 
 /*
@@ -32,7 +32,7 @@ pam_sm_authenticate(
 	pam_handle_t	*pamh,
 	int 	flags,
 	int	argc,
-	const char	**argv)
+	cchar	**argv)
 {
 	struct 		spwd shpwd; /* Shadow password structure */
 	struct		passwd pwd; /* password structure */
@@ -230,7 +230,7 @@ post_prompt:
 			unix_auth_data *auth_data;
 
 			pam_res = pam_get_data(
-				pamh, UNIX_AUTH_DATA, (const void**)&auth_data);
+				pamh, UNIX_AUTH_DATA, (cvoid**)&auth_data);
 
 			if ((status = (unix_auth_data *)
 				calloc(1, sizeof (unix_auth_data))) == NULL) {
@@ -264,7 +264,7 @@ out:
 	return (err);
 }
 
-static int
+local int
 attempt_authentication(pam_handle_t *pamh, char *user, char *password,
 	char *enc_passwd, uid_t uid, int flags, int debug)
 {
