@@ -21,7 +21,7 @@ pam_sm_chauthtok(
 	pam_handle_t		*pamh,
 	int			flags,
 	int			argc,
-	const char		**argv)
+	cchar		**argv)
 {
 	int i;
 	int debug = 0;			/* debug option from pam.conf */
@@ -55,7 +55,7 @@ pam_sm_chauthtok(
 	if (flags & PAM_CHANGE_EXPIRED_AUTHTOK) {
 		if (pam_get_data(pamh,
 				UNIX_AUTHTOK_DATA,
-				(const void **)&status) == PAM_SUCCESS) {
+				(cvoid **)&status) == PAM_SUCCESS) {
 			switch (status->age_status) {
 			case PAM_NEW_AUTHTOK_REQD:
 				if (debug)
