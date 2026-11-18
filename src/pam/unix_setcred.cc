@@ -20,7 +20,7 @@ pam_sm_setcred(
 	pam_handle_t	*pamh,
 	int	flags,
 	int	argc,
-	const char	**argv)
+	cchar	**argv)
 {
 	int i;
 	int debug = 0;
@@ -132,7 +132,7 @@ pam_sm_setcred(
 		 */
 		if (!(flags & PAM_SILENT)) {
 			if (pam_get_data(pamh, UNIX_AUTH_DATA,
-				(const void**)&status) == PAM_SUCCESS) {
+				(cvoid**)&status) == PAM_SUCCESS) {
 				switch (status->key_status) {
 				case ESTKEY_SUCCESS:
 					if (debug)
