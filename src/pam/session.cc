@@ -3,33 +3,26 @@
 /* PAM module */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0		/* non-switchable debug print-outs */
 #define	CF_DEBUG	0		/* switchable at invocation */
-
 
 /* revision history:
 
 	= 1989-03-01, David A­D­ Morano
-
-	This code was originally written.  This whole program, LOGDIR, is
-	needed for use on the Sun CAD machines because Sun doesn't support
-	LOGDIR or LOGNAME at this time.  There was a previous program but it is
-	lost and not as good as this one anyway.  This one handles NIS+ also.
-	(The previous one didn't.)
-
+	This code was originally written.  This whole program,
+	LOGDIR, is needed for use on the Sun CAD machines because
+	Sun doesn't support LOGDIR or LOGNAME at this time.  There
+	was a previous program but it is lost and not as good as
+	this one anyway.  This one handles NIS+ also.  (The previous
+	one didn't.)
 
 	= 1998-06-01, David A­D­ Morano
-
 	I enhanced the program a little to print out some other user
 	information besides the user's name and login home directory.
 
-
 	= 1999-03-01, David A­D­ Morano
-
-	I enhanced the program to also print out effective UID and effective
-	GID.
-
+	I enhanced the program to also print out effective UID and
+	effective GID.
 
 */
 
@@ -37,14 +30,12 @@
 
 /*******************************************************************************
 
+  	Description:
 	This is a PAM module, it is only used for session management.
-
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* ordered first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -54,21 +45,22 @@
 #include	<climits>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstdlib>
-#include	<cstring>
-#include	<ctype.h>
+#include	<netdb.h>
 #include	<pwd.h>
 #include	<grp.h>
-#include	<netdb.h>
 #include	<ctime>
-
-#include	<usystem.h>
-#include	<bfile.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<baops.h>
 #include	<vecstr.h>
 #include	<logfile.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<exitcodes.h>
 #include	<localmisc.h>
+#include	<bfile.h>
 
 #include	"config.h"
 #include	"defs.h"
@@ -79,10 +71,6 @@
 #define	MAXARGINDEX	100
 #define	MAXARGGROUPS	(MAXARGINDEX/8 + 1)
 
-#ifndef	LOGNAMELEN
-#define	LOGNAMELEN	32
-#endif
-
 #ifndef	DEBUGLEVEL
 #define	DEBUGLEVEL(n)	(mip->debuglevel >= (n))
 #endif
@@ -90,17 +78,15 @@
 
 /* external subroutines */
 
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matostr(const char **,int,const char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
+extern int	sncpy3(char *,int,cchar *,cchar *,cchar *) ;
+extern int	mkpath2(char *,cchar *,cchar *) ;
+extern int	mkpath3(char *,cchar *,cchar *,cchar *) ;
+extern int	matstr(cchar **,cchar *,int) ;
+extern int	matostr(cchar **,int,cchar *,int) ;
+extern int	cfdeci(cchar *,int,int *) ;
 extern int	isdigitlatin(int) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*timestr_logz(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -114,7 +100,7 @@ struct modinfo_flags {
 	uint		tryfirstpass:1 ;
 	uint		usefirstpass:1 ;
 	uint		quiet:1 ;
-} ;
+} ; /* end struct */
 
 struct modinfo_data {
 	char		*service ;
@@ -122,14 +108,14 @@ struct modinfo_data {
 	char		*tty ;
 	char		*rhost ;
 	char		*ruser ;
-} ;
+} ; /* end struct */
 
 struct modinfo {
-	struct modinfo_data	d ;
-	struct modinfo_flags	f ;
-	struct utsname		ui ;
-	LOGFILE			lh ;
-	const char	*pr ;
+	modinfo_data	d ;
+	modinfo_flags	f ;
+	UTSNAME		ui ;
+	logfile		lh ;
+	cchar		*pr ;
 	pid_t		pid ;
 	uid_t		uid ;
 	time_t		daytime ;
@@ -145,15 +131,6 @@ struct modinfo {
 
 /* local variables */
 
-static const char *argopts[] = {
-	"VERSION",
-	"VERBOSE",
-	"DEBUG",
-	"ROOT",
-	"of",
-	NULL
-} ;
-
 enum argopts {
 	argopt_version,
 	argopt_verbose,
@@ -161,16 +138,16 @@ enum argopts {
 	argopt_root,
 	argopt_of,
 	argopt_overlast
-} ;
+} ; /* end enum */
 
-/* define the configuration keywords */
-static const char *qopts[] = {
-	"debug",
-	"nowarn"
-	"try_first_pass",
-	"use_first_pass",
-	NULL
-} ;
+constexpr cpcchar	argopts[] = {
+	"VERSION",
+	"VERBOSE",
+	"DEBUG",
+	"ROOT",
+	"of",
+	nullptr
+} ; /* end array */
 
 enum qopts {
 	qopt_debug,
@@ -178,17 +155,28 @@ enum qopts {
 	qopt_tryfirstpass,
 	qopt_usefirstpass,
 	qopt_overlast
-} ;
+} ; /* end enum */
+
+/* define the configuration keywords */
+constexpr cpcchar	qopts[] = {
+	"debug",
+	"nowarn"
+	"try_first_pass",
+	"use_first_pass",
+	nullptr
+} ; /* end array */
+
+
+/* exported variables */
 
 
 /* exported subroutines */
-
 
 int pam_sm_open_session(pamh,flags,argc,argv)
 pam_handle_t	*pamh ;
 int		flags ;
 int		argc ;
-const char	**argv ;
+cchar	**argv ;
 {
 	struct modinfo	mi, *mip = &mi ;
 	ustat	sb ;
@@ -203,17 +191,17 @@ const char	**argv ;
 	int	f_optplus, f_optminus, f_optequal ;
 	int	f_version = FALSE ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*argval = NULL ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*argval = nullptr ;
 
 	char	argpresent[MAXARGGROUPS] ;
 	char	tmpfname[MAXPATHLEN + 1] ;
 	char	logid[LOGIDLEN + 1] ;
 	char	timebuf[TIMEBUFLEN + 1] ;
-	const char	*pr = NULL ;
-	const char	*sn = NULL ;
-	const char	*outfname = NULL ;
-	const char	*sp, *cp ;
+	cchar	*pr = nullptr ;
+	cchar	*sn = nullptr ;
+	cchar	*outfname = nullptr ;
+	cchar	*sp, *cp ;
 
 
 	memset(mip,0,sizeof(struct modinfo)) ;
@@ -234,7 +222,7 @@ const char	**argv ;
 	    f_optminus = (*argp == '-') ;
 	    f_optplus = (*argp == '+') ;
 	    if ((argl > 0) && (f_optminus || f_optplus)) {
-		const int	ach = MKCHAR(argp[1]) ;
+		cint	ach = MKCHAR(argp[1]) ;
 
 	        if (argl > 1) {
 
@@ -248,7 +236,7 @@ const char	**argv ;
 	                aol = argl - 1 ;
 	                akp = aop ;
 	                f_optequal = FALSE ;
-	                if ((avp = strchr(aop,'=')) != NULL) {
+	                if ((avp = strchr(aop,'=')) != nullptr) {
 
 #if	CF_DEBUGS
 	                    debugprintf("main: option key w/ a value\n") ;
@@ -489,7 +477,7 @@ const char	**argv ;
 
 /* what about a program root? */
 
-	if (pr == NULL)
+	if (pr == nullptr)
 	    pr = PROGRAMROOT ;
 
 	rs = u_stat(pr,&sb) ;
@@ -506,10 +494,10 @@ const char	**argv ;
 
 	mip->pid = getpid() ;
 
-	mip->daytime = time(NULL) ;
+	mip->daytime = time(nullptr) ;
 
 	cl = NODENAMELEN ;
-	if ((cp = strchr(mip->ui.nodename,'.')) != NULL)
+	if ((cp = strchr(mip->ui.nodename,'.')) != nullptr)
 	    cl = MIN((cp - mip->ui.nodename),NODENAMELEN) ;
 
 	strwcpy(mip->nodename,mip->ui.nodename,cl) ;
@@ -530,11 +518,11 @@ const char	**argv ;
 	if ((rs = logfile_open(&mip->lh,tmpfname,0,0664,logid)) >= 0) {
 
 #ifdef	LOGSIZE
-	    logfile_checksize(&mip->lh,LOGSIZE) ;
+	    logfile_cksize(&mip->lh,LOGSIZE) ;
 #endif
 
 	    logfile_printf(&mip->lh,"%s session starting",
-	        timestr_logz(mip->daytime,timebuf)) ;
+	        strtime_logz(mip->daytime,timebuf)) ;
 
 	    if (f_version)
 	        logfile_printf(&mip->lh,"version=%s",VERSION) ;
@@ -548,29 +536,29 @@ const char	**argv ;
 
 	    ex = pam_get_item(pamh, PAM_SERVICE, (void **)&mi.d.service) ;
 
-	    if ((ex == PAM_SUCCESS) && (mip->d.service != NULL))
+	    if ((ex == PAM_SUCCESS) && (mip->d.service != nullptr))
 	        logfile_printf(&mip->lh,"service=%s",mip->d.service) ;
 
 	    ex = pam_get_item(pamh, PAM_USER, (void **)&mi.d.user) ;
 
-	    if ((ex == PAM_SUCCESS) && (mip->d.user != NULL))
+	    if ((ex == PAM_SUCCESS) && (mip->d.user != nullptr))
 	        logfile_printf(&mip->lh,"user=%s",mip->d.user) ;
 
 	    ex = pam_get_item(pamh, PAM_RHOST, (void **)&mi.d.rhost) ;
 
-	    if ((ex == PAM_SUCCESS) && (mip->d.rhost != NULL) &&
+	    if ((ex == PAM_SUCCESS) && (mip->d.rhost != nullptr) &&
 		(mip->d.rhost[0] != '\0'))
 	        logfile_printf(&mip->lh,"rhost=%s",mip->d.rhost) ;
 
 	    ex = pam_get_item(pamh, PAM_RUSER, (void **)&mi.d.ruser) ;
 
-	    if ((ex == PAM_SUCCESS) && (mip->d.ruser != NULL) &&
+	    if ((ex == PAM_SUCCESS) && (mip->d.ruser != nullptr) &&
 		(mip->d.ruser[0] != '\0'))
 	        logfile_printf(&mip->lh,"ruser=%s",mip->d.ruser) ;
 
 	    ex = pam_get_item(pamh, PAM_TTY, (void **)&mi.d.tty) ;
 
-	    if ((ex == PAM_SUCCESS) && (mip->d.tty != NULL)) {
+	    if ((ex == PAM_SUCCESS) && (mip->d.tty != nullptr)) {
 
 		cp = mip->d.tty ;
 		if (strncmp(mip->d.tty,DEVPREFIX,DEVPREFIXLEN) == 0)
@@ -605,7 +593,7 @@ int pam_sm_close_session(pamh,flags,argc,argv)
 pam_handle_t	*pamh ;
 int		flags ;
 int		argc ;
-const char	**argv ;
+cchar	**argv ;
 {
 
 
