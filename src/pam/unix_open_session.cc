@@ -17,7 +17,7 @@ pam_sm_open_session(
 	pam_handle_t	*pamh,
 	int	flags,
 	int	argc,
-	const char	**argv)
+	cchar	**argv)
 {
 	int	error;
 	char	*ttyn, *rhost, *user;
