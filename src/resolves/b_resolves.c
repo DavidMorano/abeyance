@@ -127,6 +127,7 @@
 #include	<ptm.h>
 #include	<opentmp.h>
 #include	<exitcodes.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>
 
 #include	"shio.h"
@@ -146,36 +147,12 @@ import libutil ;			/* |lenstr(3u)| */
 #define	MAXARGINDEX	10000
 #define	MAXARGGROUPS	(MAXARGINDEX/8 + 1)
 
-#ifndef	LOGNAMELEN
-#define	LOGNAMELEN	32
-#endif
-
-#ifndef	USERNAMELEN
-#define	USERNAMELEN	32
-#endif
-
-#ifndef	GNAMELEN
-#define	GNAMELEN	80		/* GECOS name length */
-#endif
-
-#ifndef	REALNAMELEN
-#define	REALNAMELEN	100		/* real name length */
-#endif
-
 #ifndef	BUFLEN
 #define	BUFLEN		8196
 #endif
 
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	40		/* can hold int128_t in decimal */
-#endif
-
 #ifndef	POLLMULT
 #define	POLLMULT	1000
-#endif
-
-#ifndef	NOFILE
-#define	NOFILE		20
 #endif
 
 #define	COLS_USERNAME	8
@@ -312,13 +289,13 @@ local int	vecstr_loadadmins(vecstr *,paramopt *) ;
 local int	deleter(void *) ;
 local int	deleter_all(struct dargs *) ;
 
-static void	sighand_int(int) ;
+local void	sighand_int(int) ;
 
 
 /* local variables */
 
-static volatile int	if_exit ;
-static volatile int	if_int ;
+local volatile int	if_exit ;
+local volatile int	if_int ;
 
 static cint	sigblocks[] = {
 	SIGUSR1,
@@ -1252,7 +1229,7 @@ ret0:
 /* local subroutines */
 
 
-static void sighand_int(sn)
+local void sighand_int(sn)
 int	sn ;
 {
 
@@ -1699,7 +1676,7 @@ struct locinfo	*lip ;
 		    if (rs1 < 0) {
 		        int		tl ;
 		        char	timebuf[TIMEBUFLEN + 3] ;
-		        timestr_log(daytime,timebuf) ;
+		        strtime_log(daytime,timebuf) ;
 		        tl = strlen(timebuf) ;
 		        timebuf[tl++] = '\n' ;
 		        rs = u_write(fd,timebuf,tl) ;
@@ -2957,7 +2934,7 @@ LFM_CHECK	*lcp ;
 
 	    logfile_printf(&pip->lh,
 	        "%s lock %s\n",
-	        timestr_logz(pip->daytime,timebuf),
+	        strtime_logz(pip->daytime,timebuf),
 	        np) ;
 
 	    logfile_printf(&pip->lh,
@@ -2987,7 +2964,7 @@ LFM_CHECK	*lcp ;
 	    shio_printf(pip->efp,
 	        "%s: %s lock %s\n",
 	        pip->progname,
-	        timestr_logz(pip->daytime,timebuf),
+	        strtime_logz(pip->daytime,timebuf),
 	        np) ;
 
 	    shio_printf(pip->efp,
