@@ -71,14 +71,6 @@
 
 /* local defines */
 
-#ifndef	LOGNAMELEN
-#ifdef	LOGNAME_MAX
-#define	LOGNAMELEN	LOGNAME_MAX
-#else
-#define	LOGNAMELEN	32
-#endif
-#endif
-
 #ifndef	TMPX_TEMPTY
 #define	TMPX_TEMPTY		0	/* entry is unused */
 #define	TMPX_TRUNLEVEL		1
@@ -104,7 +96,7 @@
 
 /* external subroutines */
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -129,9 +121,9 @@ enum getutmp {
 
 /* forward references */
 
-static int get_tmpx(char *,int,pid_t,int) ;
-static int get_utmpx(char *,int,pid_t,int) ;
-static int get_utmp(char *,int,pid_t,int) ;
+local int get_tmpx(char *,int,pid_t,int) ;
+local int get_utmpx(char *,int,pid_t,int) ;
+local int get_utmp(char *,int,pid_t,int) ;
 
 
 /* exported subroutines */
@@ -139,7 +131,7 @@ static int get_utmp(char *,int,pid_t,int) ;
 
 int getutmpname(char *rbuf,int rlen,pid_t sid)
 {
-	const int	type = GETUTMP_USER ;
+	cint	type = GETUTMP_USER ;
 	int		rs = SR_OK ;
 
 	if (rbuf == NULL) return SR_FAULT ;
@@ -190,7 +182,7 @@ ret0:
 
 int getutmphost(char *rbuf,int rlen,pid_t sid)
 {
-	const int	type = GETUTMP_HOST ;
+	cint	type = GETUTMP_HOST ;
 	int		rs = SR_OK ;
 
 	if (rbuf == NULL) return SR_FAULT ;
@@ -243,7 +235,7 @@ ret0:
 
 #if	CF_TMPX
 
-static int get_tmpx(char *rbuf,int rlen,pid_t sid,int type)
+local int get_tmpx(char *rbuf,int rlen,pid_t sid,int type)
 {
 	TMPX		db ;
 	TMPX_CUR	cur ;
@@ -303,7 +295,7 @@ static int get_tmpx(char *rbuf,int rlen,pid_t sid,int type)
 
 #if	CF_UTMPX && defined(SYSHAS_UTMPX) && (SYSHAS_UTMPX > 0)
 
-static int get_utmpx(char *rbuf,int rlen,pid_t sid,int type)
+local int get_utmpx(char *rbuf,int rlen,pid_t sid,int type)
 {
 	struct utmpx	*up ;
 	int		rs = SR_NOTFOUND ;
@@ -350,7 +342,7 @@ static int get_utmpx(char *rbuf,int rlen,pid_t sid,int type)
 #endif /* CF_UTMPX */
 
 
-static int get_utmp(char *rbuf,int rlen,pid_t sid,int type)
+local int get_utmp(char *rbuf,int rlen,pid_t sid,int type)
 {
 	struct utmp	*up ;
 	int		rs = SR_NOTFOUND ;
