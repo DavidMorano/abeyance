@@ -371,7 +371,7 @@ extern char *version_string ;
 /* The name this program was run with. */
 char *program_name ;
 
-static void usage (FILE *stream,int status) noex {
+local void usage (FILE *stream,int status) noex {
 	fprintf (stream, "\
 Usage: %s [-d path] [--database=path] [--version] [--help] pattern...\n",
 	    program_name) ;
