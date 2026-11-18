@@ -6,9 +6,9 @@
 
 #include "unix_headers.h"
 
-static int	update_spent(pam_handle_t *, char *, char **,
+local int	update_spent(pam_handle_t *, char *, char **,
 			struct passwd *, struct spwd *, int *, int, int);
-static int	process_passwd(pam_handle_t *, char *, char *,
+local int	process_passwd(pam_handle_t *, char *, char *,
 			struct passwd *, int);
 
 /*
@@ -260,7 +260,7 @@ err:
  *
  */
 
-static int
+local int
 update_spent(pamh, field, data, unix_pwd, unix_sp,
 		passwd_flag, privileged, nowarn)
 	pam_handle_t *pamh;
@@ -533,7 +533,7 @@ update_spent(pamh, field, data, unix_pwd, unix_sp,
  * shell, homedir and gecos are in passwd file. The update is modeled
  * after shadow file.
  */
-static int
+local int
 process_passwd(pamh, prognamep, usrname, unix_pwd, nowarn)
 	pam_handle_t	*pamh;
 	char 		*prognamep;
