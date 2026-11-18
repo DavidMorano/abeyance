@@ -58,14 +58,6 @@
 
 /* local defines */
 
-#ifndef	LOGNAMELEN
-#ifdef	LOGNAME_MAX
-#define	LOGNAMELEN	LOGNAME_MAX
-#else
-#define	LOGNAMELEN	32
-#endif
-#endif
-
 #ifndef	VARUSERNAME
 #define	VARUSERNAME	"USERNAME"
 #endif
@@ -81,7 +73,7 @@
 
 /* external subroutines */
 
-extern int	sncpy1(char *,int,const char *) ;
+extern int	sncpy1(char *,int,cchar *) ;
 
 
 /* external variables */
