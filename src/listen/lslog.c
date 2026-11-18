@@ -90,7 +90,7 @@ int code, exitflag;
 	extern int sys_nerr;
 	extern char *range_err();
 	char	scratch[256+1] ;
-	const char *p;
+	cchar *p;
 
 #ifdef	COMMENT /* David A­D­ Morano */
 	p = ( t_errno < t_nerr ? t_errlist[t_errno] : tlirange );
@@ -241,7 +241,7 @@ int code;
 }
 
 
-static int nlogs;		/* maintains size of logfile	*/
+local int nlogs;		/* maintains size of logfile	*/
 
 logmessage(s)
 char *s;
