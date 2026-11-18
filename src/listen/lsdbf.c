@@ -14,8 +14,7 @@
 
 /* this file has been modified by David A­D­ Morano (DAM) */
 
-#define	CF_DEBUGS	0		/* compile-time debugging */
-
+#define	CF_DEBUG	0		/* compile-time debugging */
 
 /*
  * data base routines for the network listener process
@@ -24,19 +23,22 @@
 /* system include files	*/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include <sys/param.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <xti.h>
-#include <cerrno>
-#include	<cstddef>
-#include	<cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <ctype.h>
-
-#include	<usystem.h>	/* for system return codes */
-#include	<strx.h>
+#include	<sys/param.h>		/* POSIX® */
+#include	<sys/types.h>		/* POSIX® */
+#include	<fcntl.h>		/* POSIX® */
+#include	<xti.h>			/* ?? */
+#include	<cerrno>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<ctype.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<sfx.h>			/* LIBUC |sfshrink(3uc)| */
+#include	<strn.h>		/* LIBUC |strnwcpy(3uc)| */
+#include	<strx.h>		/* LINUC */
+#include	<localmisc.h>		/* LIBU */
 
 /* listener include files */
 
@@ -56,11 +58,8 @@
 
 /* external subroutines */
 
-extern int	sncpy1(char *,int,const char *) ;
-extern int	sfshrink(const char *,int,const char **) ;
 
-extern char	*strnwcpy(char *,int,const char *,int) ;
-extern char	*strdcpy1w(char *,int,const char *,int) ;
+/* external variables */
 
 
 /* static data		*/
@@ -73,7 +72,9 @@ static char *dbfunknown = "Unknown error reading data base file: line %d";
 static char *dbfsvccmsg = "Data base file: Illegal service code: <%s>";
 static char *dbfcorrupt = "Data base file has been corrupted";
 
-static int   Dbflineno;		/* current line number in dbf		*/
+local int   Dbflineno;		/* current line number in dbf		*/
+cint		mlen = MAXNAMELEN ;
+
 static unsigned Dbfentries;	/* number of non-comment lines		*/
 extern char  *Server_cmd_lines; /* contains svc_code, cmd_line, mod_list */
 extern char  *New_cmd_lines; /* svc_code, cmd_line, mod_list (on reread)*/
@@ -93,13 +94,12 @@ extern char  *New_cmd_lines; /* svc_code, cmd_line, mod_list (on reread)*/
  * data base file after the listener's initialization.
  */
 
-read_dbf(re_read)
-int	re_read;	/* zero means first time	*/
-{
-	register unsigned size;
+/* zero means first time	*/
+read_dbf(int re_read) noex {
+	unsigned size;
 	int exit_flag = EXIT | NOCORE;
-	register dbf_t *dbf_p;
-	register char  *cmd_p;
+	dbf_t *dbf_p;
+	char  *cmd_p;
 	unsigned scan_dbf();
 	extern dbf_t *Dbfhead;		/* Dbfentries (when allocated)	*/
 	extern dbf_t *Newdbf;		/* Dbfentries (on re-read)	*/
@@ -132,7 +132,7 @@ int	re_read;	/* zero means first time	*/
 
 	/*
 	 * allocate enough space for Dbfentries of 'size' bytes (total)
-	 * The +1 is to insure a NULL last entry!
+	 * The +1 is to insure a nullptr last entry!
 	 */
 
 	if (!(dbf_p = (dbf_t *)calloc(Dbfentries+1,sizeof(dbf_t)))
@@ -184,22 +184,18 @@ int	re_read;	/* zero means first time	*/
 	}
 
 	return(0);
-}
-
+} /* end subroutine */
 
 /*
  * get_dbf: read the file and fill the structures
  *	    checking for duplicate entries as we go
  */
 
-get_dbf(dbf_p, cmd_p)
-register dbf_t *dbf_p;
-register char *cmd_p;
-{
+int get_dbf(dbf_t *dbf_p,char *cmd_p) noex {
 	dbf_t *dbfhead = dbf_p;
-	register int n, i;
+	int n, i;
 	char buf[DBFLINESZ];
-	register char *p = buf;
+	char *p = buf;
 	char scratch[128];
 	FILE *dbfilep;
 	char *cmd_line_p;
@@ -214,7 +210,7 @@ register char *cmd_p;
 	int prognum;
 	int vernum;
 	char *module_p;
-	register dbf_t *tdbf_p;
+	dbf_t *tdbf_p;
 	extern int atoi();
 	extern int Dbf_entries;
 	extern int NLPS_proc;
@@ -304,7 +300,7 @@ register char *cmd_p;
 			cmd_p += (strlen(private_p) + 1) ; 	
 		}
 		else
-			dbf_p->dbf_prv_adr = NULL;
+			dbf_p->dbf_prv_adr = nullptr;
 		strcpy(cmd_p, module_p);
 		dbf_p->dbf_modules = cmd_p;
 		cmd_p += (strlen(module_p) + 1) ; /* cmd line + null char */
@@ -323,9 +319,8 @@ p_reject:
 	DEBUG((9,"private address <%s> failed validation test", private_p));
 	sprintf(scratch, "Invalid private address ignored: \\x%x", private_p);
 	logmessage(scratch);
-	return(-1);
-}
-
+	return (-1);
+} /* end subroutine */
 
 /*
  * scan_dbf:	Take a quick pass through the data base file to figure out
@@ -338,15 +333,12 @@ p_reject:
  *			Dbfentries set.
  */
 
-unsigned
-scan_dbf(path)
-register char *path;
-{
-	register unsigned int size = 0;
-	register int n;
-	register FILE *dbfilep;
+unsigned scan_dbf(cchar *path) noex {
+	unsigned int size = 0;
+	int n;
+	FILE *dbfilep;
 	char buf[DBFLINESZ];
-	register char *p = buf;
+	char *p = buf;
 	char *svc_code_p;
 	int flags;
 	char *cmd_line_p;
@@ -381,8 +373,7 @@ register char *path;
 
 	fclose(dbfilep);
 	return(size);
-}
-
+} /* end subroutine */
 
 /*
  * rd_dbf_line:	Returns the next non-comment line into the
@@ -407,8 +398,8 @@ register char *path;
 
 int
 rd_dbf_line(fp, bp, svc_code_p, flags_p, id_p, res1_p, res2_p, res3_p, private_p, prognum, vernum, module_p, sflags, cmd_line_p, mflag)
-register FILE *fp;
-register char *bp;
+FILE *fp;
+char *bp;
 char **svc_code_p;
 int *flags_p;
 char **id_p;
@@ -423,8 +414,8 @@ int *sflags;
 char **cmd_line_p;
 int mflag;
 {
-	register int length;
-	register char *p;
+	int length;
+	char *p;
 
 	do {
 		++Dbflineno;
@@ -485,7 +476,7 @@ int mflag;
 
 	DEBUG((5,"rd_dbf_line: line: %d,cmd line len: %d",Dbflineno, length+1));
 
-	return (length+1); /* +1 for the trailing NULL */
+	return (length+1); /* +1 for the trailing nullptr */
 }
 /* end subroutine (rd_dbf_line) */
 
@@ -505,9 +496,9 @@ int mflag;
 
 int
 scan_line(bp, svc_code_p, flags_p, id_p, res1_p, res2_p, res3_p, private_p, prognum, vernum, module_p, sflags, cmd_line_p, mflag)
-register char *bp;
+char *bp;
 char **svc_code_p;
-register int *flags_p;
+int *flags_p;
 char **id_p;
 char **res1_p;
 char **res2_p;
@@ -517,12 +508,12 @@ int *prognum;
 int *vernum;
 char **module_p;
 int *sflags;
-register char **cmd_line_p;
+char **cmd_line_p;
 int mflag;
 {
-	register char *p;
-	register char *nexttok;
-	register char *ptr;
+	char *p;
+	char *nexttok;
+	char *ptr;
 	int sawsep = 0;
 	char scratch[BUFSIZ];
 
@@ -532,7 +523,7 @@ int mflag;
 		DEBUG((9,"scan_line failed svc_code strchr"));
 		return(0);
 	}
-	*p = NULL;
+	*p = nullptr;
 	*svc_code_p = bp;
 	nexttok = ++p;
 
@@ -540,7 +531,7 @@ int mflag;
 		DEBUG((9,"scan_line failed flags strchr"));
 		return(0);
 	}
-	*p = NULL;
+	*p = nullptr;
 
 	while (*nexttok)  {
 		switch (*nexttok)  {
@@ -564,7 +555,7 @@ int mflag;
 		DEBUG((9,"scan_line failed id strchr"));
 		return(0);
 	}
-	*p = NULL;
+	*p = nullptr;
 	*id_p = nexttok;
 	nexttok = ++p;
 
@@ -572,7 +563,7 @@ int mflag;
 		DEBUG((9,"scan_line failed res1 strchr"));
 		return(0);
 	}
-	*p = NULL;
+	*p = nullptr;
 	*res1_p = nexttok;
 	nexttok = ++p;
 
@@ -580,7 +571,7 @@ int mflag;
 		DEBUG((9,"scan_line failed res2 strchr"));
 		return(0);
 	}
-	*p = NULL;
+	*p = nullptr;
 	*res2_p = nexttok;
 	nexttok = ++p;
 
@@ -588,7 +579,7 @@ int mflag;
 		DEBUG((9,"scan_line failed res3 strchr"));
 		return(0);
 	}
-	*p = NULL;
+	*p = nullptr;
 	*res3_p = nexttok;
 	nexttok = ++p;
 
@@ -596,7 +587,7 @@ int mflag;
 		DEBUG((9,"scan_line failed private strchr"));
 		return(0);
 	}
-	*p = NULL;
+	*p = nullptr;
 	*private_p = nexttok;
 	nexttok = ++p;
 
@@ -604,7 +595,7 @@ int mflag;
 		DEBUG((9,"scan_line failed rpc strchr"));
 		return(0);
 	}
-	*p = NULL;
+	*p = nullptr;
 
 	*prognum = -1;
 	*vernum = -1;
@@ -658,7 +649,7 @@ int mflag;
 		DEBUG((9,"scan_line failed sflags strchr"));
 		return(0);
 	}
-	*p = NULL;
+	*p = nullptr;
 
 	*sflags = 0;
 	while (*nexttok)  {
@@ -698,7 +689,7 @@ int mflag;
 		DEBUG((9,"scan_line failed module strchr"));
 		return(0);
 	}
-	*p = NULL;
+	*p = nullptr;
 	*module_p = nexttok;
 	nexttok = ++p;
 
@@ -706,27 +697,24 @@ int mflag;
 
 	DEBUG((9,"scan_line: modules: %s; line: %s; len: %d", *module_p, *cmd_line_p, strlen(*svc_code_p)+strlen(*id_p)+strlen(*res1_p)+strlen(*res2_p)+strlen(*res3_p)+strlen(*private_p)+strlen(*module_p)+strlen(*cmd_line_p)+9));
 	/*
-	 * return the length of the buffer.  Add 9 for the NULLs after each
+	 * return the length of the buffer.  Add 9 for the nullptrs after each
 	 * string
 	 */
 	return(strlen(*svc_code_p)+strlen(*id_p)+strlen(*res1_p)+strlen(*res2_p)+strlen(*res3_p)+strlen(*private_p)+strlen(*module_p)+strlen(*cmd_line_p)+9);
-}
-
-
+} /* end subroutine */
 
 #define VERSIONSTR	"# VERSION="
 
-check_version()
-{
+check_version() noex {
 	FILE *fp;
 	char *line, *p, *tmp;
 	int version;
 
-	if ((fp = fopen(DBFNAME, "r")) == NULL) {
+	if ((fp = fopen(DBFNAME, "r")) == nullptr) {
 		logmessage(dbfopenmsg);
 		error(E_DBF_IO, EXIT | NOCORE | NO_MSG);
 	}
-	if ((line = (char *) malloc(DBFLINESZ)) == NULL)
+	if ((line = (char *) malloc(DBFLINESZ)) == nullptr)
 		error(E_DBF_ALLOC, EXIT | NOCORE);
 	p = line;
 	while (fgets(p, DBFLINESZ, fp)) {
@@ -758,8 +746,7 @@ check_version()
 	logmessage(dbfcorrupt);
 	error(E_DBF_CORRUPT, EXIT | NOCORE);
 	return(1);
-}
-
+} /* end subroutine */
 
 /*
  * mkdbfargv:	Given a pointer to a dbf_t, construct argv
@@ -776,19 +763,16 @@ check_version()
 static char *dbfargv[50];
 static char *delim = " \t'\"";		/* delimiters */
 
-char **
-mkdbfargv(dbp)
-register dbf_t	*dbp;
-{
-	register char **argvp = dbfargv;
-	register char *p = dbp->dbf_cmd_line;
+char ** mkdbfargv(dbf_t *dbp) noex {
+	char **argvp = dbfargv;
+	char *p = dbp->dbf_cmd_line;
 	char delch;
-	register char *savep;
-	register char *tp;
+	char *savep;
+	char *tp;
 	char scratch[BUFSIZ];
 	char *strbrk();
 #ifdef	DEBUGMODE
-	register int i = 0;
+	int i = 0;
 #endif
 
 	*argvp = 0;
@@ -861,38 +845,33 @@ register dbf_t	*dbp;
 	}
 	*argvp = 0;
 	return(dbfargv);
-}
-
+} /* end subroutine */
 
 
 /*
  *
  * getentry: Given a fd, this routine will return a
  *		    dbf entry.  If the entry doesn't exist it will 
- *		    return NULL.
+ *		    return nullptr.
  */
 
-dbf_t *
-getentry(fd)
-int	fd;
-{
+dbf_t * getentry(int fd) noex {
 	extern dbf_t *Dbfhead;		/* Dbfentries (when allocated)	*/
-	register dbf_t 	*dbp = Dbfhead;
+	dbf_t 	*dbp = Dbfhead;
 
 	if (!Dbfhead) {		/* no private address in database file */
 		DEBUG((9, "getdbfentry - nothing in Dbfhead = %s ",Dbfhead));
 		return((dbf_t *)0);
-	}
-	else
-		for (dbp = Dbfhead;  dbp->dbf_prv_adr;   ++dbp)
-			if (fd == dbp->dbf_fd) {
+	} else {
+	    for (dbp = Dbfhead;  dbp->dbf_prv_adr;   ++dbp) {
+		if (fd == dbp->dbf_fd) {
 				return(dbp);
-			}
+		} /* end if */
+	    } /* end for */
+	} /* end if */
 
 	return((dbf_t *)0);	/* requested private address not in list */
-}
-/* end subroutine (getentry) */
-
+} /* end subroutine (getentry) */
 
 /****
  * pushmod:	push modules if defined in the data base entry.
@@ -906,23 +885,18 @@ int	fd;
 *
 ****/
 
-int pushmod(fd,mods)
-int		fd ;
-const char	mods[] ;
-{
+int pushmod(int fd,cchar *mods) noex {
 	int	rs = SR_OK ;
+	cchar	*timod = "timod" ;
 
-	const char	*timod = "timod" ;
-
-
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	nprintf(NDEBUGFNAME,"pushmod: entered fd=%d\n",fd) ;
 	nprintf(NDEBUGFNAME,"pushmod: mods=>%s<\n",mods) ;
 #endif
 
 	DEBUG((9,"in pushmod:"));
-	if ((mods == NULL) || (mods[0] == '\0')) {
-		DEBUG((9,"NULL list: exiting pushmod"));
+	if ((mods == nullptr) || (mods[0] == '\0')) {
+		DEBUG((9,"nullptr list: exiting pushmod"));
 		goto ret0 ;
 	}
 
@@ -933,23 +907,24 @@ const char	mods[] ;
 	    }
 
 	} else { /* pop 'timod' if it is on the stack */
-	    char	mbuf[MAXNAMELEN + 1];
+	    char	mbuf[mlen + 1];
 
 	    if ((rs = u_ioctl(fd,I_LOOK,mbuf)) >= 0) {
 	        if (strcmp(mbuf,timod) == 0) {
 		    rs = u_ioctl(fd,I_POP,0) ;
 	        }
-	    } else if (rs == SR_INVALID)
+	    } else if (rs == SR_INVALID) {
 	        rs = SR_OK ;
+	    }
 
 	    if (rs >= 0) {
 	        int		cl ;
-	        const char	*sp = mods ;
-	        const char	*tp, *cp;
+	        cchar	*sp = mods ;
+	        cchar	*tp, *cp;
 
-	        while ((tp = strchr(sp,',')) != NULL) {
+	        while ((tp = strchr(sp,',')) != nullptr) {
 		    if ((cl = sfshrink(sp,(tp-sp),&cp)) > 0) {
-		        strnwcpy(mbuf,MAXNAMELEN,cp,cl) ;
+		        strnwcpy(mbuf,mlen,cp,cl) ;
 		        rs = u_ioctl(fd,I_PUSH,mbuf) ;
 		    }
 		    sp = (tp + 1) ;
@@ -958,7 +933,7 @@ const char	mods[] ;
 
 	        if ((rs >= 0) && sp[0]) {
 		    if ((cl = sfshrink(sp,-1,&cp)) > 0) {
-		        strnwcpy(mbuf,MAXNAMELEN,cp,cl) ;
+		        strnwcpy(mbuf,mlen,cp,cl) ;
 		        rs = u_ioctl(fd,I_PUSH,mbuf) ;
 		    }
 	        } /* end if */
@@ -970,13 +945,12 @@ const char	mods[] ;
 ret0:
 	DEBUG((9,"exiting pushmod:"));
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	nprintf(NDEBUGFNAME,"pushmod: ret rs=%d\n",rs) ;
 #endif
 
 	return (rs >= 0) ? 0 : rs ;
-}
-/* end subroutine (pushmod) */
+} /* end subroutine (pushmod) */
 
 
 
