@@ -104,6 +104,7 @@ static char damid[] = "@(#)msgs	5.2a (AT&T) 95/07/30" ;
 #include	<char.h>
 #include	<hmatch.h>		/* PCS */
 #include	<pcsconf.h>		/* PCS */
+#include	<strtime.h>		/* LIBUC */
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -486,7 +487,7 @@ int main(int argc,mainv argv,mainv envv) struct proginfo	g ;
 		cchar	*akp = *argv ;
 
 	        while (*akp) {
-		    const int	kc = MKCHAR(*akp) ;
+		    cint	kc = MKCHAR(*akp) ;
 	
 		    switch (kc) {
 
@@ -1058,7 +1059,7 @@ int main(int argc,mainv argv,mainv envv) struct proginfo	g ;
 
 	            f_envfrom = TRUE ;
 	            fprintf(newmsg, "From %s!%s %s\n",
-	                fromnode,u.username,timestr_edate(t,timebuf)) ;
+	                fromnode,u.username,strtime_edate(t,timebuf)) ;
 		}
 
 	        fprintf(newmsg,"x-mailer: %s PCS MSGS version %s/%s\n",
@@ -1075,7 +1076,7 @@ int main(int argc,mainv argv,mainv envv) struct proginfo	g ;
 	                fromname,u.username,fromnode) ;
 
 	        fprintf(newmsg, "Date:           %s\n",
-	        	timestr_hdate(g.daytime,timebuf)) ;
+	        	strtime_hdate(g.daytime,timebuf)) ;
 
 	        fprintf(newmsg, "Subject:        %s",
 	            inbuf) ;
@@ -1137,7 +1138,7 @@ int main(int argc,mainv argv,mainv envv) struct proginfo	g ;
 
 	            f_envfrom = TRUE ;
 	            fprintf(newmsg,"From %s!%s %s\n",
-	                fromnode,u.username,timestr_edate(t,timebuf)) ;
+	                fromnode,u.username,strtime_edate(t,timebuf)) ;
 
 	        } /* end if (adding a UNIX envelope "From " line) */
 
@@ -1177,7 +1178,7 @@ int main(int argc,mainv argv,mainv envv) struct proginfo	g ;
 
 	                if (! f_date)
 	                    fprintf(newmsg, "Date:           %s\n",
-	                        timestr_hdate(g.daytime,timebuf)) ;
+	                        strtime_hdate(g.daytime,timebuf)) ;
 
 	                if (! f_from) {
 				cchar	*fmt ;
