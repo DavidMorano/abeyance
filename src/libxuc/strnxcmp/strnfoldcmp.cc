@@ -41,18 +41,18 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstring>
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<mkchar.h>
-#include	<char.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
+#include	<mkchar.h>		/* LIBU */
+#include	<char.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU */
 
-#include	"strnxcmp.h"
+#include	"cmpxx.h"
 
 
 /* local defines */
@@ -61,6 +61,10 @@
 
 
 /* external subroutines */
+
+extern "C" {
+    extern int strnfoldcmp(cchar *,cchar *,int) noex ;
+} /* end extern (C) */
 
 
 /* external variables */
@@ -91,8 +95,7 @@ int strnfoldcmp(cchar *e1p,cchar *e2p,int n) noex {
 	    } /* end for */
 	} /* end if (non-null) */
 	return rc ;
-}
-/* end subroutine (strnfoldcmp) */
+} /* end subroutine (strnfoldcmp) */
 
 
 /* local subroutines */
