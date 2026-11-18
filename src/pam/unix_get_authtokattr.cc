@@ -8,9 +8,9 @@
 #include	"unix_headers.h"
 
 #ifdef PAM_NISPLUS
-static void _np_nss_initf_shadow(nss_db_params_t *);
-static void _np_setspent();
-static void _np_endspent();
+local void _np_nss_initf_shadow(nss_db_params_t *);
+local void _np_setspent();
+local void _np_endspent();
 static struct spwd * _np_getspent_r(struct spwd *, char *, int);
 static struct spwd * _np_getspent();
 #endif
@@ -39,9 +39,9 @@ __get_authtoken_attr(
 	pam_handle_t		*pamh,
 	char			***ga_getattr,
 	int			repository,
-	const char		*domain,
+	cchar		*domain,
 	int			argc,
-	const char		**argv)
+	cchar		**argv)
 {
 	register int		k;
 	char 			value[PAM_MAX_ATTR_SIZE];
@@ -306,12 +306,12 @@ __get_authtoken_attr(
 
 #define	NSS_NISPLUS_ONLY	"nisplus"
 
-int str2spwd(const char *, int, void *, char *, int);
+int str2spwd(cchar *, int, void *, char *, int);
 
 static DEFINE_NSS_DB_ROOT(db_root);
 static DEFINE_NSS_GETENT(context);
 
-static void
+local void
 _np_nss_initf_shadow(p)
 	nss_db_params_t	*p;
 {
@@ -321,13 +321,13 @@ _np_nss_initf_shadow(p)
 	p->flags = NSS_USE_DEFAULT_CONFIG;
 }
 
-static void
+local void
 _np_setspent()
 {
 	nss_setent(&db_root, _np_nss_initf_shadow, &context);
 }
 
-static void
+local void
 _np_endspent()
 {
 	nss_endent(&db_root, _np_nss_initf_shadow, &context);
