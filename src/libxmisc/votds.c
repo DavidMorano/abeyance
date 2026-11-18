@@ -30,27 +30,27 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<sys/stat.h>
-#include	<sys/mman.h>
-#include	<unistd.h>
-#include	<climit.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstdarg>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<uclibmem.h>
-#include	<intceil.h>
-#include	<estrings.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/param.h>		/* POSIX® */
+#include	<sys/stat.h>		/* POSIX® */
+#include	<sys/mman.h>		/* POSIX® */
+#include	<unistd.h>		/* POSIX® */
+#include	<climits>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdarg>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<ptma.h>		/* LIBU */
+#include	<ptm.h>			/* LIBU */
+#include	<intceil.h>		/* LIBU */
+#include	<uclibmem.h>		/* LIBUC */
+#include	<estrings.h>		/* LIBUC */
 #include	<filer.h>
 #include	<storebuf.h>
-#include	<ptma.h>
-#include	<ptm.h>
 #include	<sigblocker.h>
-#include	<endian.h>
-#include	<localmisc.h>
+#include	<endian.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"votds.h"
 #include	"votdshdr.h"
