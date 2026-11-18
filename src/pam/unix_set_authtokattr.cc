@@ -22,11 +22,11 @@
 int
 __set_authtoken_attr(
 	pam_handle_t	*pamh,
-	const char	**sa_setattr,
+	cchar	**sa_setattr,
 	int		repository,
-	const char	*domain,
+	cchar	*domain,
 	int		argc,
-	const char	**argv)
+	cchar	**argv)
 {
 	register int	i;
 	int		retcode;
