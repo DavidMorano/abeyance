@@ -7,9 +7,9 @@
 
 #include "unix_headers.h"
 
-static int get_auth(Auth_t **, const char *, const char *);
-static int ldap_to_pamerror(int);
-static int update_ldapattr(pam_handle_t *, char *, char **,
+local int get_auth(Auth_t **, cchar *, cchar *);
+local int ldap_to_pamerror(int);
+local int update_ldapattr(pam_handle_t *, char *, char **,
 struct passwd *, Auth_t *, int, int);
 
 /*
@@ -153,11 +153,11 @@ out:
 	return (retcode);
 }
 
-static int
+local int
 get_auth(
 Auth_t 		**authpp,
-const char	*usrname,
-const char	*pwd)
+cchar	*usrname,
+cchar	*pwd)
 {
 	int		*authtypep = NULL;
 	int		*sectypep = NULL;
@@ -231,7 +231,7 @@ out:
 	return (retcode);
 }
 
-static int
+local int
 ldap_to_pamerror(int ldaperror)
 {
 	int pamerror;
@@ -267,7 +267,7 @@ ldap_to_pamerror(int ldaperror)
 
 }
 
-static int
+local int
 update_ldapattr(pam_handle_t *pamh,
 char *field,
 char **data,
