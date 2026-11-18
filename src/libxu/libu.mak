@@ -31,6 +31,8 @@ TOUCH		?= touch
 LINT		?= lint
 
 
+DEPS_FORK=	uproc.o
+
 DEFS +=
 
 INCS += libu.h
@@ -38,9 +40,9 @@ INCS += libu.h
 MODS += valuelims.o digbufsizes.o uconstants.o 
 MODS += libutil.o chrset.o bitgrp.o
 MODS += digtab.o xxtostr.o
-MODS += usigsets.o usigblock.o umisc.o
+MODS += usigsets.o umisc.o
 MODS += constdiv.o
-MODS += usysbasic.o ureserve.cmm vecbool.o
+MODS += usysbasic.o ureserve.cmm vecbool.o vecfnmat.o
 
 LIBS += -lf -liconv -lproc
 
@@ -51,12 +53,12 @@ OBJ02= clanguage.o
 OBJ03= libutil.o usysconf.o umods.o utimezone.o
 
 OBJ04= utimeutil.o
-OBJ05= ulogerror.o ischx.o ulimits.o
+OBJ05= ulogerror.o ulimits.o
 OBJ06= ulibvals.o uconstants.o usupport.o
-OBJ07= umem.o usigsets.o usigblock.o umisc.o
+OBJ07= umem.o usigsets.o umisc.o
 
 OBJ08= usys.o usyscallbase.o usysutility.o 
-OBJ09= uregfork.o uatfork.o uopen.o 
+OBJ09= uregfork.o uopen.o 
 OBJ10= uipc.o 
 OBJ11= ustr.o uobjlock.o ureserve.o
 
@@ -67,7 +69,7 @@ OBJ15= usysop.o uchartype.o
 
 OBJ16= syswords.o varnames.o
 OBJ17= ptx.o sigblocker.o
-OBJ18= stdclib.o
+OBJ18= stdclib.o strbcpy.o
 OBJ19= stdfnames.o stdfiles.o
 
 OBJ20= uinet.o ustream.o
@@ -76,9 +78,9 @@ OBJ22= ugetloadavg.o uiconv.o bitgrp.o
 OBJ23= syscontain.o 
 
 OBJ24= posixdir.o nulstr.o vecbool.o
-OBJ25= fonce.o filerec.o
-OBJ26= ustd.o ugetx.o
-OBJ27= ucomposite.o upt.o ucmpx.o
+OBJ25= fonce.o filerec.o vecfnmat.o
+OBJ26= ustd.o ugetx.o upt.o ucomposite.o 
+OBJ27= ucmpx.o umatx.o ucomx.o
 
 OBJ28= bitmanip.o findbit.o baops.o
 OBJ29= clockids.o filetypes.o funcodes.o 
@@ -86,17 +88,17 @@ OBJ30= binchunk.o conintx.o udiv.o stdintx.o
 OBJ31= ccfile.o readln.o dprint.o
 
 OBJ32= muldigs.o varithmetic.o xxtostr.o
-OBJ33= intext.o cmporders.o localmisc.o
+OBJ33= intext.o localmisc.o
 OBJ34= exitcodes.o stacktypes.o sysconfcmds.o
 OBJ35= utmptypes.o utmpsizes.o usyscalls.o
 
 OBJ36= mapex.o deb.o
 OBJ37= syspredefined.o
 OBJ38= typecodes.o charnames.o
-OBJ39= strtox.o atox.o
+OBJ39= strtox.o atox.o stox.o stringto.o
 
 OBJ40= ascii.o ubufdefs.o vardefs.o
-OBJ41= memord.o
+OBJ41= memord.o fnm.o 
 OBJ42=
 OBJ43=
 
@@ -110,7 +112,7 @@ OBJG= obj24.o obj25.o obj26.o obj27.o
 OBJH= obj28.o obj29.o obj30.o obj31.o
 OBJI= obj32.o obj33.o obj34.o obj35.o
 OBJJ= obj36.o obj37.o obj38.o obj39.o
-OBJK= obj40.o
+OBJK= obj40.o obj41.o
 
 OBJ += obja.o objb.o objc.o objd.o 
 OBJ += obje.o objf.o objg.o objh.o
@@ -196,7 +198,7 @@ again:
 
 clean:
 	makeclean $(ALL)
-	rmsubpat ischx findbit typecodes bitmanip bitgrp chrset
+	rmsubpat findbit typecodes bitmanip bitgrp chrset
 	rmobj
 
 control:
@@ -331,6 +333,19 @@ obj39.o:		$(OBJ39)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
+obj40.o:		$(OBJ40)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj41.o:		$(OBJ41)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj42.o:		$(OBJ42)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj43.o:		$(OBJ43)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
 obja.o:			$(OBJA)
 	$(LD) -r -o $@ $(LDFLAGS) $^
 
@@ -393,12 +408,11 @@ usyscallbase.o:		usyscallbase.cc	usyscallbase.hh		$(INCS)
 usysutility.o:		usysutility.cc	usysutility.hh		$(INCS)
 usysdata.o:		usysdata.cc	usysdata.h		$(INCS)
 ulogerror.o:		ulogerror.cc	ulogerror.h		$(INCS)
+ucodenames.o:		ucodenames.cc	ucodenames.h		$(INCS)
 
 # requires USYSBASIC
-uatfork.o:		umods.o usigblock.o
-uatfork.o:		uatfork.cc uatfork.h umods.o		$(INCS)
-uregfork.o:		umods.o uregfork.cc uregfork.hh		$(INCS)
-uobjlock.o:		umods.o uobjlock.cc uobjlock.cc		$(INCS)
+uregfork.o:		uregfork.cc uregfork.hh umods.o	$(DEPS_FORK)	$(INCS)
+uobjlock.o:		uobjlock.cc uobjlock.cc umods.o			$(INCS)
 
 # UTIMEUTIL
 utimeutil.o:		utimeutil.dir
@@ -406,8 +420,8 @@ utimeutil.dir:
 	makesubdir $@
 
 # UCONSTANTS
-uconstants.o:		uconstants.dir
-uconstants.dir:
+uconstants.o:		uconstants.dir 
+uconstants.dir:		umods.o
 	makesubdir $@
 
 # USYS
@@ -431,12 +445,12 @@ utimezone.dir:
 	makesubdir $@
 
 # UPROC
-uproc.o:		uproc.dir
+uproc.o:		uproc.dir usigsets.o
 uproc.dir:
 	makesubdir $@
 
 # UFDLOCK
-uopen.o:		uopen.dir
+uopen.o:		uopen.dir uproc.o
 uopen.dir:
 	makesubdir $@
 
@@ -461,7 +475,7 @@ usysauxinfo.dir:
 	makesubdir $@
 
 # UPT
-upt.o:		upt.dir
+upt.o:			upt.dir uproc.o
 upt.dir:
 	makesubdir $@
 
@@ -496,7 +510,7 @@ ureserve.dir:
 	makesubdir $@
 
 # USUPPORT
-usupport.o:		usupport.dir ischx.o
+usupport.o:		usupport.dir
 usupport.dir:
 	makesubdir $@
 
@@ -525,10 +539,15 @@ ucmpx.o:		ucmpx.dir
 ucmpx.dir:
 	makesubdir $@
 
-usigblock.o:		usigblock.ccm			$(INCS)
-	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
+# UMATX
+umatx.o:		umatx.dir
+umatx.dir:
+	makesubdir $@
 
-ucodenames.o:		ucodenames.cc	ucodenames.h	$(INCS)
+# UCOMX
+ucomx.o:		ucomx.dir
+ucomx.dir:
+	makesubdir $@
 
 # POSIX® synchronization mechanisms
 ptx.o:			ptx.dir
@@ -558,6 +577,11 @@ deb.dir:
 # VECBOOL
 vecbool.o:		vecbool.dir
 vecbool.dir:
+	makesubdir $@
+
+# VECFNMAT
+vecfnmat.o:		vecfnmat.dir
+vecfnmat.dir:
 	makesubdir $@
 
 # POSIXDIR
@@ -621,6 +645,8 @@ findbit.o:		findbit.ccm					$(INCS)
 strtox.o:		strtox.cc	strtox.h bitmanip.o		$(INCS)
 strnul.o:		strnul.cc	strnul.hh			$(INCS)
 atox.o:			atox.cc		atox.h				$(INCS)
+stox.o:			stox.cc		stox.hh				$(INCS)
+stringto.o:		stringto.cc	stringto.hh			$(INCS)
 
 # MISC
 stdclib.o:		stdclib.cc	stdclib.hh			$(INCS)
@@ -632,14 +658,10 @@ dprint.o:		dprint.cc	dprint.hh			$(INCS)
 muldigs.o:		muldigs.ccm
 loadvals.o:		loadvals.ccm
 
-ischx.o:		ischx0.o ischx1.o
-	$(LD) -r $(LDFLAGS) -o $@ $^
-
-ischx0.o:		ischx.ccm	ischx.hh			$(INCS)
-	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
-
-ischx1.o:		ischx1.cc	ischx0.o			$(INCS)
-	$(COMPILE.cc) $<
+# STRBCPY
+strbcpy.o:		strbcpy.dir
+strbcpy.dir:
+	makesubdir $@
 
 udiv.o:			udiv.ccm	udiv.hh				$(INCS)
 	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
@@ -656,7 +678,6 @@ getbyte.o:		getbyte.ccm		getbyte.hh		$(INCS)
 # various types
 utmptypes.o:		utmptypes.cc		utmptypes.hh		$(INCS)
 utmpsizes.o:		utmpsizes.cc		utmpsizes.hh		$(INCS)
-cmporders.o:		cmporders.cc		cmporders.h		$(INCS)
 localmisc.o:		localmisc.cc		localmisc.h		$(INCS)
 mapex.o:		mapex.cc		mapex.h			$(INCS)
 sysconfcmds.o:		sysconfcmds.cc		sysconfcmds.h		$(INCS)
@@ -667,5 +688,6 @@ ascii.o:		ascii.cc		ascii.h			$(INCS)
 ubufdefs.o:		ubufdefs.cc		ubufdefs.h		$(INCS)
 vardefs.o:		vardefs.cc		vardefs.h		$(INCS)
 memord.o:		memord.cc		memord.hh		$(INCS)
+fnm.o:			fnm.cc			fnm.hh			$(INCS)
 
 
