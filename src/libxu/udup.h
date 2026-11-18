@@ -34,20 +34,18 @@
 
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/mman.h>
-#include	<unistd.h>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usys.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/mman.h>		/* POSIX® */
+#include	<unistd.h>		/* POSIX® */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usys.h>		/* LIBU */
 
 
 EXTERNC_begin
-
 extern int u_dup(int) noex ;
 extern int u_dups(int,int) noex ;
 extern int u_dup2(int,int) noex ;
-
 EXTERNC_end
 
 
