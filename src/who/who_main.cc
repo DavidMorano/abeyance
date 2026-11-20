@@ -144,36 +144,36 @@ static UTMPX	*utmpp;	/* pointer for getutxent()	*/
 
 static char	comment[BUFSIZ]; /* holds inittab comment	*/
 static char	errmsg[BUFSIZ];	/* used in sprintf for errors	*/
-static int	fildes = -1 ;		/* file descriptor for inittab	*/
-static int	Hopt = 0;	/* 1 = who -H			*/
+local int	fildes = -1 ;		/* file descriptor for inittab	*/
+local int	Hopt = 0;	/* 1 = who -H			*/
 static char	*inittab;	/* ptr to inittab contents	*/
 static char	*iinit;		/* index into inittab		*/
-static int	justme = 0;	/* 1 = who am i			*/
+local int	justme = 0;	/* 1 = who am i			*/
 static time_t	*lptr;
 static char	*myname;	/* pointer to invoker's name 	*/
 static char	*mytty;		/* holds device user is on	*/
 static char	nameval[sizeof (utmpp->ut_user) + 1]; /*  invoker's name */
-static int	number = 8;	/* number of users per -q line	*/
-static int	optcnt = 0;	/* keeps count of options	*/
+local int	number = 8;	/* number of users per -q line	*/
+local int	optcnt = 0;	/* keeps count of options	*/
 static char	outbuf[BUFSIZ];	/* buffer for output		*/
 static cchar	*program;	/* holds name of this program	*/
 #ifdef	XPG4
-static int	aopt = 0;	/* 1 = who -a			*/
-static int	lopt = 0;	/* 1 = who -l			*/
-static int	dopt = 0;	/* 1 = who -d			*/
+local int	aopt = 0;	/* 1 = who -a			*/
+local int	lopt = 0;	/* 1 = who -l			*/
+local int	dopt = 0;	/* 1 = who -d			*/
 #endif	/* XPG4 */
-static int	qopt = 0;	/* 1 = who -q			*/
-static int	sopt = 0;	/* 1 = who -s			*/
+local int	qopt = 0;	/* 1 = who -q			*/
+local int	sopt = 0;	/* 1 = who -s			*/
 static struct	stat stbuf;	/* area for stat buffer		*/
 static struct	stat *stbufp;	/* ptr to structure		*/
-static int	terse = 1;	/* 1 = print terse msgs		*/
-static int	Topt = 0;	/* 1 = who -T			*/
+local int	terse = 1;	/* 1 = print terse msgs		*/
+local int	Topt = 0;	/* 1 = who -T			*/
 static time_t	timnow;		/* holds current time		*/
-static int	totlusrs = 0;	/* cntr for users on system	*/
-static int	uopt = 0;	/* 1 = who -u			*/
+local int	totlusrs = 0;	/* cntr for users on system	*/
+local int	uopt = 0;	/* 1 = who -u			*/
 static char	user[sizeof (utmpp->ut_user) + 1]; /* holds user name */
-static int	validtype[UTMPXTYPE+1];	/* holds valid types	*/
-static int	wrap;		/* flag to indicate wrap	*/
+local int	validtype[UTMPXTYPE+1];	/* holds valid types	*/
+local int	wrap;		/* flag to indicate wrap	*/
 static char	time_buf[128];	/* holds date and time string	*/
 
 
