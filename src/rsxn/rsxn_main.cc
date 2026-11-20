@@ -95,7 +95,6 @@
 
 /* external subroutines */
 
-extern int	procfilepaths(char *,char *,vecstr *) noex ;
 extern int	watch(struct global *,
 			SRVPE *,int,vecstr *,SRVTAB *,BUILTIN *) noex ;
 extern int	watchone(struct global *,
@@ -1263,42 +1262,38 @@ int main(argc argc,mainv argv,mainv envp) {
 
 	        procfileenv(g.programroot,cf.envfile,&exports) ;
 
-	    } else
+	    } else {
 	        procfile(procfileenv,g.programroot,&schedvars,
 	            ENVFILE,&exports) ;
-
+	    }
 	    f_procfileenv = TRUE ;
-
 
 /* "do" any 'paths' file before we process the environment variables */
 
-	    if (cf.pathsfile != nullptr)
-	        procfilepaths(g.programroot,cf.pathsfile,&exports) ;
-
-	    else
+	    if (cf.pathsfile != nullptr) {
+	        vecstr_filepaths(&exports,g.programroot,cf.pathsfile) ;
+	    } else {
 	        procfile(procfilepaths,g.programroot,&schedvars,
 	            PATHSFILE,&exports) ;
-
+	    }
 	    f_procfilepaths = TRUE ;
-
 
 #if	CF_DEBUG
 	    if (g.debuglevel > 1)
 	        debugprintf("main: processing CF loglen\n") ;
 #endif
 
-	    if ((cf.loglen >= 0) && (loglen < 0))
+	    if ((cf.loglen >= 0) && (loglen < 0)) {
 	        loglen = cf.loglen ;
+	    }
 
 /* loop through the UNSETs in the configuration file */
 
 	    for (i = 0 ; vecstr_get(&cf.unsets,i,&cp) >= 0 ; i += 1) {
-
 	        rs = vecstr_finder(&exports,cp,vstrkeycmp,nullptr) ;
-
-	        if (rs >= 0)
+	        if (rs >= 0) {
 	            vecstr_del(&exports,rs) ;
-
+		}
 	    } /* end for */
 
 
