@@ -50,7 +50,7 @@
 
 /* forward references */
 
-static int	uunamerec_extend(uunamerec *) noex ;
+local int	uunamerec_extend(uunamerec *) noex ;
 
 
 /* exported variables */
@@ -240,7 +240,7 @@ int uunamerec_finish(uunamerec *op) noex {
 /* private subroutines */
 
 /* extend the => record table <= */
-static int uunamerec_extend(uunamerec *op) noex {
+local int uunamerec_extend(uunamerec *op) noex {
 	int		rs ;
 	int		sz ;
 	int		*nrt ;
