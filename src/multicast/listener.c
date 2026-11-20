@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
      mreq.imr_interface.s_addr=htonl(INADDR_ANY);
 
      if (setsockopt(fd,IPPROTO_IP,IP_ADD_MEMBERSHIP, 
-			(const char *) &mreq,sizeof( struct ip_mreq )) < 0) {
+			(cchar *) &mreq,sizeof( struct ip_mreq )) < 0) {
 
 	  perror("setsockopt");
 	  exit(1);
