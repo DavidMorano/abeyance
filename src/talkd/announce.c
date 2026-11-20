@@ -84,7 +84,7 @@
 
 /* external subroutines */
 
-extern int	getuserterms(const char *,vecstr *) ;
+extern int	getuserterms(cchar *,vecstr *) ;
 
 extern void print_error(char *string) ;
 
@@ -96,9 +96,9 @@ extern char hostname[] ;
 
 /* forward references */
 
-static int announce_proc(struct proginfo *,CTL_MSG *, char *) ;
+local int announce_proc(struct proginfo *,CTL_MSG *, char *) ;
 
-static void print_mesg(FILE *, CTL_MSG *, char *,struct tm *) ;
+local void print_mesg(FILE *, CTL_MSG *, char *,struct tm *) ;
 
 
 /* global variables */
@@ -178,7 +178,7 @@ char		*remote_machine ;
  * a talk is requested.
  */
 
-static int announce_proc(pip,request,remote_machine)
+local int announce_proc(pip,request,remote_machine)
 struct proginfo	*pip ;
 CTL_MSG		*request ;
 char		*remote_machine ;
@@ -342,7 +342,7 @@ char		*remote_machine ;
  * in in vi at the time
  */
 
-static void print_mesg(tf,request,remote_machine,lcp)
+local void print_mesg(tf,request,remote_machine,lcp)
 FILE		*tf ;
 CTL_MSG		*request ;
 char		*remote_machine ;
