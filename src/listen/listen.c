@@ -75,11 +75,11 @@
 
 int	NLPS_proc = 0;	/* set if process is a listener child		*/
 pid_t	Pid;		/* listener's process ID 			*/
-const char	*Progname;	/* listener's basename (from argv[0]) */
+cchar	*Progname;	/* listener's basename (from argv[0]) */
 static	char Provbuf[PATHSIZE];
 char	*Provider = Provbuf;	/* name of transport provider		*/
-const char	*Netspec = NETSPEC;
-const char	*Minor_prefix;	/* prefix for minor device names	*/
+cchar	*Netspec = NETSPEC;
+cchar	*Minor_prefix;	/* prefix for minor device names	*/
 int	Dbf_entries;		/* number of private addresses in dbf file*/
 int	Valid_addrs;		/* number of addresses bound		*/
 struct	pollfd *Pollfds;	/* for polling fds			*/
@@ -160,8 +160,8 @@ extern	void	logexit();
 
 int main(argc,argv,envv)
 int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
+cchar	*argv[] ;
+cchar	*envv[] ;
 {
 	USTAT buf;
 	int ret;
