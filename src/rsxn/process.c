@@ -1,8 +1,11 @@
-/* process */
+/* process SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
+/* test program */
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	1
-
 
 /*
  * Copyright (c) 1983 The Regents of the University of California.
@@ -37,8 +40,7 @@
  * SUCH DAMAGE.
  */
 
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -47,31 +49,32 @@
 #include	<sys/time.h>
 #include	<sys/filio.h>
 #include	<netinet/in.h>
-#include	<signal.h>
-#include	<netdb.h>
-#include	<pwd.h>
-#include	<shadow.h>
-#include	<errno.h>
 #include	<unistd.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<limits.h>
-#include	<crypt.h>
+#include	<netdb.h>
+#include	<shadow.h>
+#include	<pwd.h>
+#include	<cerrno>
+#include	<csignal>
+#include	<climits>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>
 
 #ifdef	COMMENT
 #include	<paths.h>
 #endif
 
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<getchostname.h>
 #include	<logfile.h>
 #include	<vecstr.h>
-#include	<bfile.h>
-#include	<getchostname.h>
+#include	<strtime.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU */
+#include	<bfile.h>		/* LIBB */
 
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
-
 
 
 /* local program defines */
@@ -80,10 +83,7 @@
 #define	_PATH_BSHELL	"/bin/sh"
 
 
-
 /* external subroutines */
-
-extern char	*timestr_log() ;
 
 
 /* external variables */
@@ -97,10 +97,8 @@ int	perform() ;
 
 void	getstr() ;
 
-
 /*VARARGS1*/
 void	ourerror() ;
-
 
 
 /* Protocol Exchange :
@@ -144,7 +142,7 @@ vecstr	*elp ;
 	    (void) time(&daytime) ;
 
 	    debugprintf("rexecd: %s\n",
-	        timestr_log(daytime,timebuf)) ;
+	        strtime_log(daytime,timebuf)) ;
 
 	}
 #endif /* CF_DEBUGS */
