@@ -23,18 +23,18 @@ extern "C" {
 #define	CASCADE			"cascade"
 #define	LPSCHED			"lpsched"
 
-extern	int  adaptor_available(const char *printer);
-extern	int  adaptor_spooler_available(const char *printer);
-extern	int  adaptor_spooler_accepting_jobs(const char *printer);
-extern  int  adaptor_client_access(const char *printer, const char *host);
-extern  int  adaptor_restart_printer(const char *printer);
-extern  char *adaptor_temp_dir(const char *printer, const char *host);
-extern  int  adaptor_submit_job(const char *printer, const char *host,
+extern	int  adaptor_available(cchar *printer);
+extern	int  adaptor_spooler_available(cchar *printer);
+extern	int  adaptor_spooler_accepting_jobs(cchar *printer);
+extern  int  adaptor_client_access(cchar *printer, cchar *host);
+extern  int  adaptor_restart_printer(cchar *printer);
+extern  char *adaptor_temp_dir(cchar *printer, cchar *host);
+extern  int  adaptor_submit_job(cchar *printer, cchar *host,
 				char *cf, char **df_list);
-extern  int  adaptor_show_queue(const char *printer, FILE *ofp,
+extern  int  adaptor_show_queue(cchar *printer, FILE *ofp,
 				const int type, char **list);
-extern  int  adaptor_cancel_job(const char *printer, FILE *ofp,
-				const char *user, const char *host,
+extern  int  adaptor_cancel_job(cchar *printer, FILE *ofp,
+				cchar *user, cchar *host,
 				char **list);
 
 #ifdef __cplusplus
