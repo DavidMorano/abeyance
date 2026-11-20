@@ -117,8 +117,8 @@ VECSTR		*alp ;
 	oldarg0 = alp->va[0] ;
 	alp->va[0] = arg0 ;
 	{
-	    const char	**eav = (const char **) alp->va ;
-	    const char	**eev = (const char **) elp->va ;
+	    cchar	**eav = (cchar **) alp->va ;
+	    cchar	**eev = (cchar **) elp->va ;
 	    rs = u_execve(program,eav,eev) ;
 	}
 
