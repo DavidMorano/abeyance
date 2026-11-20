@@ -137,9 +137,9 @@ char	ptyibuf2[BUFSIZ];
 
 #endif /* ! STREAMPTY */
 
-static void doit (struct sockaddr *);
+local void doit (struct sockaddr *);
 int terminaltypeok (char *);
-static void _gettermname(void);
+local void _gettermname(void);
 
 int	hostinfo = 1;			/* do we print login banner? */
 
@@ -692,7 +692,7 @@ usage()
 	exit(1);
 }
 
-static void encrypt_failure()
+local void encrypt_failure()
 {
     char *lerror_message;
 
@@ -716,7 +716,7 @@ static unsigned char ttytype_sbbuf[] = {
 	IAC, SB, TELOPT_TTYPE, TELQUAL_SEND, IAC, SE
 };
 
-static int
+local int
 getterminaltype(name)
     char *name;
 {
@@ -885,7 +885,7 @@ getterminaltype(name)
 #endif
 }  /* end of getterminaltype */
 
-static void
+local void
 _gettermname()
 {
     /*
@@ -943,7 +943,7 @@ extern void telnet (int, int, char *);
 /*
  * Get a pty, scan input lines.
  */
-static void doit(who)
+local void doit(who)
 	struct sockaddr *who;
 {
 	int level;
