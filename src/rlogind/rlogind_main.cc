@@ -122,7 +122,7 @@ static char sccsid[] = "@(#)rlogind.c	8.2 (Berkeley) 4/28/95";
 
 /* local typedefs */
 
-typedef const char *const *	mainv ;
+typedef cchar *const *	mainv ;
 
 
 /* local variables */
