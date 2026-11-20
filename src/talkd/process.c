@@ -95,9 +95,9 @@ extern void insert_table(CTL_MSG *request, CTL_RESPONSE *response);
 
 /* forward references */
 
-static int find_user(char *, char *) ;
+local int find_user(char *, char *) ;
 
-static void do_announce(struct proginfo *,
+local void do_announce(struct proginfo *,
 		CTL_MSG *request, CTL_RESPONSE *response);
 
 
@@ -163,7 +163,7 @@ CTL_RESPONSE	*response ;
 
 
 
-static void do_announce(pip,request,response)
+local void do_announce(pip,request,response)
 struct proginfo	*pip ;
 CTL_MSG		*request ;
 CTL_RESPONSE	*response ;
@@ -197,7 +197,7 @@ CTL_RESPONSE	*response ;
 	return;
     }
 
-    hp = gethostbyaddr((const char *)&request->ctl_addr.sin_addr,
+    hp = gethostbyaddr((cchar *)&request->ctl_addr.sin_addr,
 			  sizeof(struct in_addr), AF_INET);
 
     if ( hp == (struct hostent *) 0 ) {
@@ -249,7 +249,7 @@ CTL_RESPONSE	*response ;
 
 
 /* * Search utmp for the local user */
-static int find_user(char *name, char *tty)
+local int find_user(char *name, char *tty)
 {
     struct utmpx *ubuf;
 
