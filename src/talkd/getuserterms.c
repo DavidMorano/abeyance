@@ -26,7 +26,7 @@
 
 	int getuserterms(lp,username)
 	VECSTR		*lp ;
-	const char	username[] ;
+	cchar	username[] ;
 
 	Arguments:
 
@@ -69,24 +69,24 @@
 
 /* external subroutines */
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* local structures */
 
 struct termentry {
-	const char	*devpath ;
+	cchar	*devpath ;
 	time_t		atime ;
 } ;
 
 
 /* forward references */
 
-static int	entry_start(struct termentry *,char *,int,time_t) ;
-static int	entry_finish(struct termentry *) ;
+local int	entry_start(struct termentry *,char *,int,time_t) ;
+local int	entry_finish(struct termentry *) ;
 
-static int	getatime(const char *,time_t *) ;
-static int	revsortfunc(struct termentry **,struct termentry **) ;
+local int	getatime(cchar *,time_t *) ;
+local int	revsortfunc(struct termentry **,struct termentry **) ;
 
 
 /* local variables */
@@ -97,7 +97,7 @@ static int	revsortfunc(struct termentry **,struct termentry **) ;
 
 int getuserterms(lp,username)
 VECSTR		*lp ;
-const char	username[] ;
+cchar	username[] ;
 {
 	TMPX		utmp ;
 	TMPX_ENT	ue ;
@@ -232,7 +232,7 @@ ret0:
 /* local subroutines */
 
 
-static int entry_start(ep,name,nlen,t)
+local int entry_start(ep,name,nlen,t)
 struct termentry	*ep ;
 char			name[] ;
 int			nlen ;
@@ -240,7 +240,7 @@ time_t			t ;
 {
 	int	rs ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 
 	ep->atime = t ;
@@ -252,7 +252,7 @@ time_t			t ;
 /* end subroutine (entry_start) */
 
 
-static int entry_finish(ep)
+local int entry_finish(ep)
 struct termentry	*ep ;
 {
 
@@ -270,8 +270,8 @@ struct termentry	*ep ;
 /* end subroutine (entry_finish) */
 
 
-static int getatime(termdev,tp)
-const char	termdev[] ;
+local int getatime(termdev,tp)
+cchar	termdev[] ;
 time_t		*tp ;
 {
 	ustat	sb ;
@@ -293,7 +293,7 @@ time_t		*tp ;
 /* end subroutine (getatime) */
 
 
-static int revsortfunc(f1pp,f2pp)
+local int revsortfunc(f1pp,f2pp)
 struct termentry	**f1pp, **f2pp ;
 {
 
