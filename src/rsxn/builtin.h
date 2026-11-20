@@ -48,8 +48,8 @@ struct builtin {
 
 extern int builtin_start(BUILTIN *,PROGINFO *) ;
 extern int builtin_finish(BUILTIN *) ;
-extern int builtin_match(BUILTIN *,const char *) ;
-extern int builtin_curenum(BUILTIN *,int,const char **) ;
+extern int builtin_match(BUILTIN *,cchar *) ;
+extern int builtin_curenum(BUILTIN *,int,cchar **) ;
 extern int builtin_execute(BUILTIN *,STANDING *,CLIENTINFO *,int,cchar **) ;
 
 #endif /* BUILTIN_MASTER */
