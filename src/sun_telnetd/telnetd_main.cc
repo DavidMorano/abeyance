@@ -133,14 +133,6 @@
 #define	PROGNAME	"telnetd"
 #endif
 
-#ifndef	LOGNAMELEN
-#define	LOGNAMELEN	32
-#endif
-
-#ifndef	LINEBUFLEN
-#define	LINEBUFLEN	2048
-#endif
-
 #ifndef	SVCLEN
 #define	SVCLEN		MAXNAMELEN
 #endif
