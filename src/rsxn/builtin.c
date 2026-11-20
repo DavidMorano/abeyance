@@ -51,7 +51,7 @@
 #include	<serialbuf.h>
 #include	<connection.h>
 #include	<opentmp.h>
-#include	<timestr.h>		/* LIBU */
+#include	<strtime.h>		/* LIBU */
 #include	<localmisc.h>
 
 #include	"nistinfo.h"
@@ -96,19 +96,19 @@
 
 /* external subroutines */
 
-extern int	snsds(char *,int,const char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matcasestr(const char **,const char *,int) ;
-extern int	mkdirs(const char *,mode_t) ;
-extern int	chmods(const char *,mode_t) ;
-extern int	getproviderid(const char *,int) ;
-extern int	bufprintf(char *,int,const char *,...) ;
+extern int	snsds(char *,int,cchar *,cchar *) ;
+extern int	mkpath2(char *,cchar *,cchar *) ;
+extern int	mkpath3(char *,cchar *,cchar *,cchar *) ;
+extern int	matstr(cchar **,cchar *,int) ;
+extern int	matcasestr(cchar **,cchar *,int) ;
+extern int	mkdirs(cchar *,mode_t) ;
+extern int	chmods(cchar *,mode_t) ;
+extern int	getproviderid(cchar *,int) ;
+extern int	bufprintf(char *,int,cchar *,...) ;
 
 extern int	progtmpdir(PROGINFO *,char *) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* local structures */
@@ -134,25 +134,25 @@ struct ipcmsg_testint {
 static uint	mknettime(time_t) ;
 
 local int	builtin_help(BUILTIN *,STANDING *,
-			CLIENTINFO *,const char **) ;
+			CLIENTINFO *,cchar **) ;
 local int	builtin_daytime(BUILTIN *,STANDING *,
-			CLIENTINFO *,const char **) ;
+			CLIENTINFO *,cchar **) ;
 local int	builtin_time(BUILTIN *,STANDING *,
-			CLIENTINFO *,const char **) ;
+			CLIENTINFO *,cchar **) ;
 local int	builtin_sysmisc(BUILTIN *,STANDING *,
-			CLIENTINFO *,const char **) ;
+			CLIENTINFO *,cchar **) ;
 local int	builtin_test1(BUILTIN *,STANDING *,
-			CLIENTINFO *,const char **) ;
+			CLIENTINFO *,cchar **) ;
 local int	builtin_test2(BUILTIN *,STANDING *,
-			CLIENTINFO *,const char **) ;
+			CLIENTINFO *,cchar **) ;
 
 #ifdef	COMMENT
 local int	builtin_test3(BUILTIN *,STANDING *,
-			CLIENTINFO *,const char **) ;
+			CLIENTINFO *,cchar **) ;
 #endif
 
 local int	ipc_open(struct ipc *,PROGINFO *) ;
-local int	ipc_send(struct ipc *,const char *,int) ;
+local int	ipc_send(struct ipc *,cchar *,int) ;
 local int	ipc_recv(struct ipc *,char *,int) ;
 local int	ipc_close(struct ipc *) ;
 
@@ -167,7 +167,7 @@ local int	scall_testint(BUILTIN *,struct ipc *,CLIENTINFO *,
 
 /* local variables */
 
-static const char	*bisvcs[] = {
+static cchar	*bisvcs[] = {
 	"help",
 	"daytime",
 #ifdef	P_TCPMUXD
@@ -244,7 +244,7 @@ BUILTIN		*bip ;
 int builtin_curenum(bip,ei,spp)
 BUILTIN		*bip ;
 int		ei ;
-const char	**spp ;
+cchar	**spp ;
 {
 	int		i ;
 
@@ -268,7 +268,7 @@ const char	**spp ;
 
 int builtin_match(bip,service)
 BUILTIN		*bip ;
-const char	service[] ;
+cchar	service[] ;
 {
 	PROGINFO	*pip = bip->pip ;
 	int		rs = SR_NOTFOUND ;
@@ -294,7 +294,7 @@ BUILTIN		*bip ;
 STANDING	*ourp ;
 CLIENTINFO	*cip ;
 int		si ;			/* service index */
-const char	*sargv[] ;
+cchar	*sargv[] ;
 {
 	PROGINFO	*pip = bip->pip ;
 	int		rs = SR_OK ;
@@ -344,7 +344,7 @@ local int builtin_help(bip,ourp,cip,sargv)
 BUILTIN		*bip ;
 STANDING	*ourp ;
 CLIENTINFO	*cip ;
-const char	*sargv[] ;
+cchar	*sargv[] ;
 {
 	PROGINFO	*pip = bip->pip ;
 	BUFFER		bo ;
@@ -356,7 +356,7 @@ const char	*sargv[] ;
 
 	if ((rs = buffer_start(&bo,200)) >= 0) {
 	    SVCFILE_CUR	cur ;
-	    const int	svclen = SVCNAMELEN ;
+	    cint	svclen = SVCNAMELEN ;
 	    int		i ;
 	    cchar	*bp ;
 	    char	svcbuf[SVCNAMELEN + 1] ;
@@ -412,7 +412,7 @@ local int builtin_daytime(bip,ourp,cip,sargv)
 BUILTIN		*bip ;
 STANDING	*ourp ;
 CLIENTINFO	*cip ;
-const char	*sargv[] ;
+cchar	*sargv[] ;
 {
 	PROGINFO	*pip = bip->pip ;
 	struct nistinfo	ni ;
@@ -426,7 +426,7 @@ const char	*sargv[] ;
 
 	pip->daytime = time(NULL) ;
 
-	timestr_nist(pip->daytime,tbuf,&ni) ;
+	strtime_nist(pip->daytime,tbuf,&ni) ;
 
 	bl = strlen(tbuf) ;
 	tbuf[bl++] = '\n' ;
@@ -442,7 +442,7 @@ local int builtin_time(bip,ourp,cip,sargv)
 BUILTIN		*bip ;
 STANDING	*ourp ;
 CLIENTINFO	*cip ;
-const char	*sargv[] ;
+cchar	*sargv[] ;
 {
 	PROGINFO	*pip = bip->pip ;
 	int		rs = SR_OK ;
@@ -468,7 +468,7 @@ local int builtin_sysmisc(bip,ourp,cip,sargv)
 BUILTIN		*bip ;
 STANDING	*ourp ;
 CLIENTINFO	*cip ;
-const char	*sargv[] ;
+cchar	*sargv[] ;
 {
 	struct sysmisc_request	m0 ;
 	struct sysmisc_loadave	m1 ;
@@ -870,7 +870,7 @@ local int builtin_test1(bip,ourp,cip,sargv)
 BUILTIN		*bip ;
 STANDING	*ourp ;
 CLIENTINFO	*cip ;
-const char	*sargv[] ;
+cchar	*sargv[] ;
 {
 	STANDING_SYSMISC	sdata ;
 	PROGINFO	*pip = bip->pip ;
@@ -916,13 +916,13 @@ const char	*sargv[] ;
 
 #if	CF_DEBUGS
 	    nprintf(BUILTIN_DEBUG,"2 rs=%d boot=%s\n",
-	        rs,timestr_logz(sdata.boottime,timebuf)) ;
+	        rs,strtime_logz(sdata.boottime,timebuf)) ;
 #endif
 
 #if	CF_DEBUG
 	if (DEBUGLEVEL(4))
 	        debugprintf("builtin_test1: standing says rs=%d boot=%s\n",
-	            rs,timestr_logz(sdata.boottime,timebuf)) ;
+	            rs,strtime_logz(sdata.boottime,timebuf)) ;
 #endif
 
 	} /* end if */
@@ -960,13 +960,13 @@ const char	*sargv[] ;
 
 #if	CF_DEBUGS
 	nprintf(BUILTIN_DEBUG,"4 boot=%s\n",
-	    timestr_logz(boottime,timebuf)) ;
+	    strtime_logz(boottime,timebuf)) ;
 #endif
 
 #if	CF_DEBUG
 	if (DEBUGLEVEL(4))
 	    debugprintf("builtin_test1: answer boot=%s\n",
-	        timestr_logz(boottime,timebuf)) ;
+	        strtime_logz(boottime,timebuf)) ;
 #endif
 
 
@@ -976,7 +976,7 @@ const char	*sargv[] ;
 	bi = 0 ;
 
 	bp += bufprintf(bp,(BUFLEN - bi),"%s\n",
-	    timestr_logz(boottime,timebuf)) ;
+	    strtime_logz(boottime,timebuf)) ;
 
 #if	CF_DEBUGS
 	nprintf(BUILTIN_DEBUG,"5 boot=%s\n",bp) ;
@@ -1030,7 +1030,7 @@ local int builtin_test2(bip,ourp,cip,sargv)
 BUILTIN		*bip ;
 STANDING	*ourp ;
 CLIENTINFO	*cip ;
-const char	*sargv[] ;
+cchar	*sargv[] ;
 {
 	STANDING_SYSMISC	sdata ;
 	PROGINFO	*pip = bip->pip ;
@@ -1160,7 +1160,7 @@ local int builtin_test3(bip,ourp,cip,sargv)
 BUILTIN		*bip ;
 STANDING	*ourp ;
 CLIENTINFO	*cip ;
-const char	*sargv[] ;
+cchar	*sargv[] ;
 {
 	STANDING_SYSMISC	sdata ;
 	PROGINFO	*pip = bip->pip ;
@@ -1173,8 +1173,8 @@ const char	*sargv[] ;
 	int		ch ;
 	int		f_ipc = FALSE ;
 	int		f_bad = FALSE ;
-	const char	*sp ;
-	const char	*cp ;
+	cchar	*sp ;
+	cchar	*cp ;
 	char		buf[BUFLEN + 1], *bp ;
 	char		timebuf[TIMEBUFLEN + 1] ;
 
@@ -1475,7 +1475,7 @@ local int ipc_close(struct ipc *ip)
 
 local int ipc_send(ip,buf,buflen)
 struct ipc	*ip ;
-const char	buf[] ;
+cchar	buf[] ;
 int		buflen ;
 {
 	PROGINFO	*pip = ip->pip ;
