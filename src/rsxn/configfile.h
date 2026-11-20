@@ -77,7 +77,7 @@ struct configfile {
 extern "C" {
 #endif
 
-extern int configfile_start(CONFIGFILE *,const char *) ;
+extern int configfile_start(CONFIGFILE *,cchar *) ;
 extern int configfile_finish(CONFIGFILE *) ;
 
 #ifdef	__cplusplus
