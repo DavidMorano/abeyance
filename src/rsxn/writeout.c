@@ -45,12 +45,12 @@
 
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
+extern int	cfdeci(cchar *,int,int *) ;
 
 
 /* forward references */
 
-static int	procline(PROGINFO *,int,const char *,int) ;
+local int	procline(PROGINFO *,int,cchar *,int) ;
 
 
 /* local variables */
@@ -89,7 +89,7 @@ int progdebugout(PROGINFO *pip,cchar *s,cchar *fname)
 	        bfile	ofile, *ofp = &ofile ;
 
 	        if ((rs = bopen(ofp,fname,"r",0666)) >= 0) {
-	            const int	llen = LINEBUFLEN ;
+	            cint	llen = LINEBUFLEN ;
 		    int		f_title = FALSE ;
 	            int		lines = 0 ;
 	            int		len ;
@@ -139,10 +139,10 @@ int progdebugout(PROGINFO *pip,cchar *s,cchar *fname)
 /* local subroutines */
 
 
-static int procline(PROGINFO *pip,int columns,cchar *lp,int ll)
+local int procline(PROGINFO *pip,int columns,cchar *lp,int ll)
 {
 	SHIO		*fp = pip->efp ;
-	const int	indent = 2 ;
+	cint	indent = 2 ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		leadlen ;
