@@ -88,17 +88,17 @@ extern int  _sigprocmask();
 extern int  _fcntl();
 extern int  usingypmap();
 
-static int _validuser(FILE *hostf, char *rhost, const char *luser,
-			const char *ruser, int baselen);
-static int _checkhost(char *rhost, char *lhost, int len);
+local int _validuser(FILE *hostf, char *rhost, cchar *luser,
+			cchar *ruser, int baselen);
+local int _checkhost(char *rhost, char *lhost, int len);
 
 
 #ifdef NIS
 static char *domain;
 #endif
 
-int rcmd(char **ahost, unsigned short rport, const char *locuser,
-    const char *remuser, const char *cmd, int *fd2p)
+int rcmd(char **ahost, unsigned short rport, cchar *locuser,
+    cchar *remuser, cchar *cmd, int *fd2p)
 {
 	int rcmd_ret;
 
@@ -107,8 +107,8 @@ int rcmd(char **ahost, unsigned short rport, const char *locuser,
 	return (rcmd_ret);
 }
 
-int rcmd_af(char **ahost, unsigned short rport, const char *locuser,
-    const char *remuser, const char *cmd, int *fd2p, int af)
+int rcmd_af(char **ahost, unsigned short rport, cchar *locuser,
+    cchar *remuser, cchar *cmd, int *fd2p, int af)
 {
 	int s, timo = 1;
 	ssize_t retval;
@@ -507,11 +507,11 @@ rresvport(int *alport)
 	return (rresvport_af(alport, AF_INET));
 }
 
-ruserok(const char *rhost, int superuser, const char *ruser, const char *luser)
+ruserok(cchar *rhost, int superuser, cchar *ruser, cchar *luser)
 {
 	FILE *hostf;
 	char fhost[MAXHOSTNAMELEN];
-	const char *sp;
+	cchar *sp;
 	char *p;
 	int baselen = -1;
 
@@ -605,9 +605,9 @@ ruserok(const char *rhost, int superuser, const char *ruser, const char *luser)
 	return (-1);
 }
 
-static int
-_validuser(FILE *hostf, char *rhost, const char *luser,
-    const char *ruser, int baselen)
+local int
+_validuser(FILE *hostf, char *rhost, cchar *luser,
+    cchar *ruser, int baselen)
 {
 	char *user;
 	char ahost[BUFSIZ + 1];
@@ -747,7 +747,7 @@ _validuser(FILE *hostf, char *rhost, const char *luser,
 	return (-1);
 }
 
-static int
+local int
 _checkhost(char *rhost, char *lhost, int len)
 {
 	static char *ldomain;
