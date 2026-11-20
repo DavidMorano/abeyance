@@ -3,7 +3,7 @@
 
 /* users who can cleanup (remove files from) the messages spool area */
 
-static const char	*cleanup_users[] = {
+static cchar	*cleanup_users[] = {
 	"root",
 	"special",
 	"daemon",
@@ -19,7 +19,7 @@ static const char	*cleanup_users[] = {
 	NULL
 } ;
 
-static const char	*cleanup_groups[] = {
+static cchar	*cleanup_groups[] = {
 	"pcs",
 	"sys",
 	"staff",
