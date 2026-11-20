@@ -69,14 +69,14 @@
 
 /* external subroutines */
 
-extern int	sncpy1(char *,int,const char *) ;
-extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	matpstr(const char **,int,const char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecmfi(const char *,int,int *) ;
+extern int	sncpy1(char *,int,cchar *) ;
+extern int	sncpy2(char *,int,cchar *,cchar *) ;
+extern int	sncpy3(char *,int,cchar *,cchar *,cchar *) ;
+extern int	matpstr(cchar **,int,cchar *,int) ;
+extern int	cfdeci(cchar *,int,int *) ;
+extern int	cfdecmfi(cchar *,int,int *) ;
 
-extern char	*strncpylc(char *,const char *,int) ;
+extern char	*strncpylc(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -87,10 +87,10 @@ extern char	*strncpylc(char *,const char *,int) ;
 
 /* forward references */
 
-static void	checkfree() ;
+local void	checkfree() ;
 
 #if	CF_DEBUGS
-static int vardump(const char *,int) ;
+local int vardump(cchar *,int) ;
 #endif
 
 
@@ -120,7 +120,7 @@ static const unsigned char 	oterms[32] = {
 	0x00, 0x00, 0x00, 0x00
 } ;
 
-static const char	*configkeys[] = {
+static cchar	*configkeys[] = {
 	"define",
 	"export",
 	"tmpdir",
@@ -222,7 +222,7 @@ enum configkeys {
 
 int configfile_start(csp,configfname)
 CONFIGFILE	*csp ;
-const char	configfname[] ;
+cchar	configfname[] ;
 {
 	BUFFER	options ;
 
@@ -241,7 +241,7 @@ const char	configfname[] ;
 	int	line = 0 ;
 	int	noptions = 0 ;
 
-	const char	*fp ;
+	cchar	*fp ;
 
 	char	linebuf[LINEBUFLEN + 1] ;
 	char	buf[BUFLEN + 1] ;
@@ -872,44 +872,36 @@ const char	configfname[] ;
 	        } /* end switch */
 
 	    } /* end if (valid key) */
-
 	    field_finish(&fsb) ;
-
 	    } /* end if */
-
-	    if (rs < 0)
-	        break ;
-
+	    if (rs < 0) break ;
 	} /* end while (reading lines) */
-
 	bclose(cfp) ;
 
 /* load up the options if we got any */
 
 	if ((rs >= 0) && (noptions > 0)) {
-
 	    cl = buffer_get(&options,&cp) ;
 
 #if	CF_DEBUGS
-	debugprintf("procfilepaths: final options\n") ;
+	debugprintf("final options\n") ;
 	vardump(cp,cl) ;
 #endif /* CF_DEBUGS */
 
-	    if (cl > 0)
+	    if (cl > 0) {
 	        csp->options = mallocstrw(cp,cl) ;
-
+	    }
 	} /* end if (options) */
 
 /* done with configuration file processing */
 
-	if (rs >= 0)
+	if (rs >= 0) {
 	    csp->magic = CONFIGFILE_MAGIC ;
+	}
 
 ret1:
 	buffer_finish(&options) ;
-
-	if (rs < 0)
-		goto bad3 ;
+	if (rs < 0) goto bad3 ;
 
 ret0:
 
@@ -931,21 +923,14 @@ bad1:
 
 bad0:
 	goto ret0 ;
-}
-/* end subroutine (configfile_start) */
-
+} /* end subroutine (configfile_start) */
 
 /* free up this object */
 int configfile_finish(csp)
 CONFIGFILE	*csp ;
 {
-
-
-	if (csp == NULL)
-	    return SR_FAULT ;
-
-	if (csp->magic != CONFIGFILE_MAGIC)
-	    return SR_NOTOPEN ;
+	if (csp == NULL) return SR_FAULT ;
+	if (csp->magic != CONFIGFILE_MAGIC) return SR_NOTOPEN ;
 
 /* free up the complex data types */
 
@@ -1041,7 +1026,7 @@ CONFIGFILE	*csp ;
 
 
 /* free up the resources occupied by a CONFIG_STRUCTURE */
-static void checkfree(vp)
+local void checkfree(vp)
 char	**vp ;
 {
 
@@ -1058,15 +1043,15 @@ char	**vp ;
 
 #if	CF_DEBUGS
 
-static int vardump(pathbuf,pbi)
-const char	pathbuf[] ;
+local int vardump(pathbuf,pbi)
+cchar	pathbuf[] ;
 int		pbi ;
 	{
 	int	rs = SR_OK ;
 		int	mlen, rlen = pbi ;
 	int	wlen = 0 ;
 
-		const char	*pp = pathbuf ;
+		cchar	*pp = pathbuf ;
 
 
 		while (rlen > 0) {
