@@ -1,4 +1,4 @@
-/* rshd_main SUPPORT */
+/* main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
@@ -125,9 +125,9 @@
 
 /* external subroutines */
 
-extern int	proginfo_setpiv(struct proginfo *,const char *,
+extern int	proginfo_setpiv(struct proginfo *,cchar *,
 			const struct pivars *) ;
-extern int	printhelp(void *,const char *,const char *,const char *) ;
+extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 
 
 /* local structures */
@@ -135,12 +135,12 @@ extern int	printhelp(void *,const char *,const char *,const char *) ;
 
 /* forward references */
 
-static int	doit(struct proginfo *,int, struct sockaddr_storage *);
+local int	doit(struct proginfo *,int, struct sockaddr_storage *);
 
-static void error(char *, ...);
-static void getstr(char *, int, char *);
+local void error(char *, ...);
+local void getstr(char *, int, char *);
 
-static int legalenvvar(char *);
+local int legalenvvar(char *);
 
 /* Function decls. for functions not in any header file.  (Grrrr.) */
 extern int audit_rshd_setup(void);
@@ -152,7 +152,7 @@ extern int audit_settid(int);
 /* local variables */
 
 static pam_handle_t *pamh;
-static int retval;
+local int retval;
 
 
 /*ARGSUSED*/
@@ -167,7 +167,7 @@ int main(int argc,mainv argv,mainv envv) {
 	int	fromlen;
 	int	ex = EX_INFO ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 #if	CF_DEBUGS || CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
@@ -221,7 +221,8 @@ badprogstart:
 #endif
 
 	return ex ;
-} /* end subroutine (main) */
+}
+/* end subroutine (main) */
 
 
 #ifdef	COMMENT
@@ -260,7 +261,7 @@ static char	*envinit[] =
 static char cmdbuf[NCARGS+1];
 static char hostname [MAXHOSTNAMELEN + 1];
 
-static int doit(pip,f, fromp)
+local int doit(pip,f, fromp)
 struct proginfo	*pip ;
 int		f;
 struct sockaddr_storage *fromp;
@@ -672,15 +673,15 @@ error("Fork (to start shell) failed on server.  Please try again later.\n");
 	{
 	    int	i ;
 	    int	size = 0 ;
-	    const char	*tp ;
-	    const char	**ev = NULL ;
+	    cchar	*tp ;
+	    cchar	**ev = NULL ;
 	    char	env_debug[EBUFLEN+1] ;
 
 			for (i = 0 ; envinit[i] != NULL ; i += 1) ;
-			size = (i+2) * sizeof(const char *) ;
+			size = (i+2) * sizeof(cchar *) ;
 		rs = uc_malloc(size,&ev) ;
 		if (rs >= 0) {
-		    const char	*vardebugfile = "ENVSET_DEBUGFILE" ;
+		    cchar	*vardebugfile = "ENVSET_DEBUGFILE" ;
 		    for (i = 0 ; envinit[i] != NULL ; i += 1)
 			ev[i] = envinit[i] ;
 		    if ((tp = getenv(vardebugfile)) != NULL) {
@@ -723,9 +724,10 @@ error("Fork (to start shell) failed on server.  Please try again later.\n");
 
 ret0:
 	return rs ;
-} /* end subroutine (doit) */
+}
+/* end subroutine (doit) */
 
-static void
+local void
 getstr(buf, cnt, err)
 	char *buf;
 	int cnt;
@@ -742,10 +744,10 @@ getstr(buf, cnt, err)
 			exit(1);
 		}
 	} while (c != 0);
-} /* end */
+}
 
 /*VARARGS1*/
-static void
+local void
 error(char *fmt, ...)
 {
 	va_list ap;
@@ -777,7 +779,7 @@ static char *illegal[] = {
  * legalenvvar - can PAM modules insert this environmental variable?
  */
 
-static int legalenvvar(char *s)
+local int legalenvvar(char *s)
 {
 	register char **p;
 
