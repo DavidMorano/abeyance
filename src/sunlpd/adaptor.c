@@ -35,13 +35,13 @@
  */
 
 
-static void *paradigm_handle = NULL;
+local void *paradigm_handle = NULL;
 static char *paradigm_name = NULL;
-static int   paradigm_version = -1;
+local int   paradigm_version = -1;
 static ns_printer_t *printer_object = NULL;
 static char *primary_name = NULL;
 
-static int
+local int
 is_localhost(char *name)
 {
 	char buf[BUFSIZ];
@@ -62,8 +62,8 @@ is_localhost(char *name)
  * the most efficient manner.  If found, it will circumvent all future
  * adaptor resolution and load the default lpsched translation module.
  */
-static int
-lpsched_adaptor_available(const char *printer)
+local int
+lpsched_adaptor_available(cchar *printer)
 {
 	char buf[BUFSIZ], buf2[BUFSIZ];
 
@@ -97,7 +97,7 @@ lpsched_adaptor_available(const char *printer)
  * remote, a "cascade" capability is loaded.
  */
 int
-adaptor_available(const char *printer)
+adaptor_available(cchar *printer)
 {
 	char	*path,
 		*dir,
@@ -167,8 +167,8 @@ adaptor_available(const char *printer)
 }
 
 
-static void *
-adaptor_function(const char *paradigm, const char *function)
+local void *
+adaptor_function(cchar *paradigm, cchar *function)
 {
 	char name[128];
 	void *fpt = NULL;
@@ -185,7 +185,7 @@ adaptor_function(const char *paradigm, const char *function)
 
 
 int
-adaptor_spooler_available(const char *printer)
+adaptor_spooler_available(cchar *printer)
 {
 	static int (*fpt)() = NULL;
 
@@ -207,7 +207,7 @@ adaptor_spooler_available(const char *printer)
 
 
 int
-adaptor_spooler_accepting_jobs(const char *printer)
+adaptor_spooler_accepting_jobs(cchar *printer)
 {
 	static int (*fpt)() = NULL;
 
@@ -221,7 +221,7 @@ adaptor_spooler_accepting_jobs(const char *printer)
 
 
 int
-adaptor_client_access(const char *printer, const char *host)
+adaptor_client_access(cchar *printer, cchar *host)
 {
 	static int (*fpt)() = NULL;
 
@@ -236,7 +236,7 @@ adaptor_client_access(const char *printer, const char *host)
 
 
 int
-adaptor_restart_printer(const char *printer)
+adaptor_restart_printer(cchar *printer)
 {
 	static int (*fpt)() = NULL;
 
@@ -251,7 +251,7 @@ adaptor_restart_printer(const char *printer)
 
 
 char *
-adaptor_temp_dir(const char *printer, const char *host)
+adaptor_temp_dir(cchar *printer, cchar *host)
 {
 	static char *(*fpt)() = NULL;
 
@@ -267,7 +267,7 @@ adaptor_temp_dir(const char *printer, const char *host)
 
 
 int
-adaptor_submit_job(const char *printer, const char *host, char *cf,
+adaptor_submit_job(cchar *printer, cchar *host, char *cf,
 		    char **df_list)
 {
 	static int (*fpt)() = NULL;
@@ -284,7 +284,7 @@ adaptor_submit_job(const char *printer, const char *host, char *cf,
 
 
 int
-adaptor_show_queue(const char *printer, FILE *ofp, const int type,
+adaptor_show_queue(cchar *printer, FILE *ofp, cint type,
 			char **list)
 {
 	static int (*fpt)() = NULL;
@@ -301,8 +301,8 @@ adaptor_show_queue(const char *printer, FILE *ofp, const int type,
 
 
 int
-adaptor_cancel_job(const char *printer, FILE *ofp, const char *user,
-			const char *host, char **list)
+adaptor_cancel_job(cchar *printer, FILE *ofp, cchar *user,
+			cchar *host, char **list)
 {
 	static int (*fpt)() = NULL;
 
