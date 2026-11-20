@@ -3,9 +3,7 @@
 /* check if we still own the lock file */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUG	0		/* switchable debug print-outs */
-
 
 /* revision history:
 
@@ -20,15 +18,13 @@
 
 /*****************************************************************************
 
+  	Description:
 	We want to check that we still own the lock file and also
 	update it by writting a current time into it.
 
-
 *****************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -37,13 +33,15 @@
 #include	<fcntl.h>
 #include	<ctime>
 #include	<limits.h>
-#include	<stdlib.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<string.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<strtime.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU */
+#include	<bfile.h>		/* LIBB */
 
-#include	<usystem.h>
-#include	<bfile.h>
-
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
 
@@ -52,12 +50,9 @@
 /* local defines */
 
 
-
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
-
-extern char	*timestr_logz(time_t,char *) ;
+extern int	cfdeci(cchar *,int,int *) ;
 
 
 /* external variables */
@@ -72,10 +67,7 @@ extern char	*timestr_logz(time_t,char *) ;
 /* local variables */
 
 
-
-
-
-
+/* exported variables */
 
 int checklockfile(pip,fp,filename,banner,daytime,pid)
 struct proginfo	*pip ;
@@ -146,7 +138,7 @@ pid_t	pid ;
 
 /* write an updated time at this offset in the file */
 
-	bprintf(fp,"%s", timestr_logz(daytime,timebuf)) ;
+	bprintf(fp,"%s", strtime_logz(daytime,timebuf)) ;
 
 	bflush(fp) ;
 
