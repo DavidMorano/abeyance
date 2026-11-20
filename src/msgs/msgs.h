@@ -1,4 +1,4 @@
-/* defs */
+/* msgs.h HEADER */
 
 
 /* Copyright © 2004 David A­D­ Morano.  All rights reserved. */
@@ -20,14 +20,6 @@
 #include	<localmisc.h>
 
 
-#ifndef	MAXPATHLEN
-#define	MAXPATHLEN	2048
-#endif
-
-#ifndef	MAXNAMELEN
-#define	MAXNAMELEN	256
-#endif
-
 #ifndef	MSGBUFLEN
 #define	MSGBUFLEN	2048
 #endif
@@ -37,91 +29,9 @@
 #define	SVCNAMELEN	32
 #endif
 
-#ifndef	LOGNAMELEN
-#ifndef	LOGNAME_MAX
-#define	LOGNAMELEN	LOGNAME_MAX
-#else
-#define	LOGNAMELEN	32
-#endif
-#endif
-
-#ifndef	PASSWDLEN
-#define	PASSWDLEN	32
-#endif
-
-#ifndef	USERNAMELEN
-#ifndef	LOGNAME_MAX
-#define	USERNAMELEN	LOGNAME_MAX
-#else
-#define	USERNAMELEN	32
-#endif
-#endif
-
-#ifndef	GROUPNAMELEN
-#ifndef	LOGNAME_MAX
-#define	GROUPNAMELEN	LOGNAME_MAX
-#else
-#define	GROUPNAMELEN	32
-#endif
-#endif
-
-/* Solaris project name */
-#ifndef	PROJNAMELEN
-#ifndef	LOGNAME_MAX
-#define	PROJNAMELEN	LOGNAME_MAX
-#else
-#define	PROJNAMELEN	32
-#endif
-#endif
-
-#ifndef	GNAMELEN
-#define	GNAMELEN	80		/* GECOS name length */
-#endif
-
-#ifndef	REALNAMELEN
-#define	REALNAMELEN	100		/* real name length */
-#endif
-
-#ifndef	LINEBUFLEN
-#ifdef	LINE_MAX
-#define	LINEBUFLEN	MAX(LINE_MAX,2048)
-#else
-#define	LINEBUFLEN	2048
-#endif
-#endif
-
-/* timezone (zoneinfo) name */
-#ifndef	TZLEN
-#define	TZLEN		60
-#endif
-
-#ifndef	LOGIDLEN
-#define	LOGIDLEN	15
-#endif
-
 /* mail address */
 #ifndef	MAILADDRLEN
 #define	MAILADDRLEN	(3 * MAXHOSTNAMELEN)
-#endif
-
-#ifndef	ORGLEN
-#define	ORGLEN		80
-#endif
-
-#ifndef	NOFILE
-#define	NOFILE		20
-#endif
-
-#ifndef	NULLDEV
-#define	NULLDEV		"/dev/null"
-#endif
-
-#ifndef	TTYDEV
-#define	TTYDEV		"/dev/tty"
-#endif
-
-#ifndef	TIMEBUFLEN
-#define	TIMEBUFLEN	80
 #endif
 
 #ifndef	DEBUGLEVEL
@@ -138,14 +48,6 @@
 
 #ifndef	EBUFLEN
 #define	EBUFLEN		(6 * MAXPATHLEN)
-#endif
-
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	40		/* can hold int128_t in decimal */
-#endif
-
-#ifndef	EX_OLDER
-#define	EX_OLDER	1
 #endif
 
 
@@ -185,28 +87,28 @@ struct proginfo_flags {
 
 struct proginfo {
 	vecstr		stores ;
-	const char	**envv ;
-	const char	*pwd ;
-	const char	*progename ;		/* execution filename */
-	const char	*progdname ;		/* dirname of arg[0] */
-	const char	*progname ;		/* basename of arg[0] */
-	const char	*pr ;			/* program root */
-	const char	*rootname ;		/* distribution name */
-	const char	*searchname ;
-	const char	*version ;
-	const char	*banner ;
-	const char	*nodename ;
-	const char	*domainname ;
-	const char	*username ;
-	const char	*groupname ;
-	const char	*name ;			/* person name */
-	const char	*logid ;
-	const char	*tmpdname ;
-	const char	*maildname ;
-	const char	*configfname ;
-	const char	*helpfname ;
-	const char	*logfname ;
-	const char	*pidfname ;
+	cchar	**envv ;
+	cchar	*pwd ;
+	cchar	*progename ;		/* execution filename */
+	cchar	*progdname ;		/* dirname of arg[0] */
+	cchar	*progname ;		/* basename of arg[0] */
+	cchar	*pr ;			/* program root */
+	cchar	*rootname ;		/* distribution name */
+	cchar	*searchname ;
+	cchar	*version ;
+	cchar	*banner ;
+	cchar	*nodename ;
+	cchar	*domainname ;
+	cchar	*username ;
+	cchar	*groupname ;
+	cchar	*name ;			/* person name */
+	cchar	*logid ;
+	cchar	*tmpdname ;
+	cchar	*maildname ;
+	cchar	*configfname ;
+	cchar	*helpfname ;
+	cchar	*logfname ;
+	cchar	*pidfname ;
 	void		*efp ;
 	void		*buffer ;		/* general buffer */
 	void		*lip ;			/* local information */
@@ -241,11 +143,11 @@ struct proginfo {
 } ;
 
 struct pivars {
-	const char	*vpr1 ;
-	const char	*vpr2 ;
-	const char	*vpr3 ;
-	const char	*pr ;
-	const char	*vprname ;
+	cchar	*vpr1 ;
+	cchar	*vpr2 ;
+	cchar	*vpr3 ;
+	cchar	*pr ;
+	cchar	*vprname ;
 } ;
 
 
@@ -253,22 +155,22 @@ struct pivars {
 }
 #endif
 
-extern int proginfo_start(struct proginfo *,const char **,const char *,
-			const char *) ;
-extern int proginfo_setentry(struct proginfo *,const char **,const char *,int) ;
-extern int proginfo_setversion(struct proginfo *,const char *) ;
-extern int proginfo_setbanner(struct proginfo *,const char *) ;
-extern int proginfo_setsearchname(struct proginfo *,const char *,const char *) ;
-extern int proginfo_setprogname(struct proginfo *,const char *) ;
-extern int proginfo_setexecname(struct proginfo *,const char *) ;
-extern int proginfo_setprogroot(struct proginfo *,const char *,int) ;
+extern int proginfo_start(struct proginfo *,cchar **,cchar *,
+			cchar *) ;
+extern int proginfo_setentry(struct proginfo *,cchar **,cchar *,int) ;
+extern int proginfo_setversion(struct proginfo *,cchar *) ;
+extern int proginfo_setbanner(struct proginfo *,cchar *) ;
+extern int proginfo_setsearchname(struct proginfo *,cchar *,cchar *) ;
+extern int proginfo_setprogname(struct proginfo *,cchar *) ;
+extern int proginfo_setexecname(struct proginfo *,cchar *) ;
+extern int proginfo_setprogroot(struct proginfo *,cchar *,int) ;
 extern int proginfo_pwd(struct proginfo *) ;
 extern int proginfo_progdname(struct proginfo *) ;
 extern int proginfo_progename(struct proginfo *) ;
 extern int proginfo_nodename(struct proginfo *) ;
 extern int proginfo_getpwd(struct proginfo *,char *,int) ;
 extern int proginfo_getename(struct proginfo *,char *,int) ;
-extern int proginfo_getenv(struct proginfo *,const char *,int,const char **) ;
+extern int proginfo_getenv(struct proginfo *,cchar *,int,cchar **) ;
 extern int proginfo_finish(struct proginfo *) ;
 
 #ifdef	__cplusplus
