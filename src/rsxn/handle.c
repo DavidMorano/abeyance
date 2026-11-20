@@ -3,50 +3,43 @@
 /* handle a connect request for a service */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0		/* compile-time */
 #define	CF_DEBUG	0		/* run-time */
 #define	CF_WHOOPEN	0
 #define	CF_SVCSHELLARG	0		/* parse service as SHELL arg ? */
 #define	CF_PEERNAME	1
 
-
 /* revision history:
 
 	= 1996-07-01, David A­D­ Morano
-
 	This program was originally written.
 
-
 	= 1998-07-01, David A­D­ Morano
-
 	I added the ability to specify the "address_from"
 	for the case when we add an envelope header to the message.
 
-
 */
 
+/* Copyright © 1196,1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /**************************************************************************
 
+  	Description:
 	This subrotuine processes a new connection that just came in.
 	This connection may have been passed to us by our own daemon or
 	it may have been passed to us by executing us with the
 	connection on standard input.
 
 	We:
-
 	1) get the service name, which is terminated by a line feed
 	2) search for the service if we have it
 	3) acknowledge the client, positively or negatively
 	4) call the proper service handler subroutine
 
-
 ***************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -57,29 +50,28 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<ctime>
-#include	<signal.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<ctype.h>
-
-#include	<usystem.h>
-#include	<bfile.h>
+#include	<csignal>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<field.h>
 #include	<vecstr.h>
 #include	<hostent.h>
 #include	<sockaddress.h>
 #include	<inetaddr.h>
+#include	<srvtab.h>
+#include	<strtime.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU */
+#include	<bfile.h>		/* LIBB */
 
-#include	"srvtab.h"
-
-#include	"localmisc.h"
 #include	"srventry.h"
 #include	"builtin.h"
 #include	"standing.h"
 #include	"connection.h"
 #include	"config.h"
 #include	"defs.h"
-
 
 
 /* local defines */
@@ -92,22 +84,17 @@
 #define	INETXADDRLEN	sizeof(struct in_addr)
 #endif
 
-#ifndef	TIMEBUFLEN
-#define	TIMEBUFLEN	80
-#endif
-
-#define	O_FLAGS		(O_CREAT | O_RDWR | O_TRUNC)
+#define	OX_FL		(O_CREAT | O_RDWR | O_TRUNC)
 
 #ifndef	TO_SVC
 #define	TO_SVC		30
 #endif
 
 
-
 /* external subroutines */
 
 extern int	field_svcargs(FIELD *,VECSTR *) ;
-extern int	nlspeername(const char *,const char *,char *) ;
+extern int	nlspeername(cchar *,cchar *,char *) ;
 extern int	processargs(char *,VECSTR *) ;
 extern int	execute(struct proginfo *,int,char *,char *,
 			VECSTR *,VECSTR *) ;
@@ -116,10 +103,8 @@ extern int	handle_srventry(struct proginfo *,
 			struct clientinfo *,CONNECTION *,vecstr *,
 			SRVTAB_ENT *) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strwcpylc(char *,const char *,int) ;
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_logz(time_t,char *) ;
+extern char	*strwcpy(char *,cchar *,int) ;
+extern char	*strwcpylc(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -131,9 +116,7 @@ extern char	*timestr_logz(time_t,char *) ;
 /* local variables */
 
 
-
-
-
+/* exported variables */
 
 int handle(pip,bip,ourp,cip)
 struct proginfo		*pip ;
@@ -142,23 +125,17 @@ STANDING		*ourp ;
 struct clientinfo	*cip ;
 {
 	CONNECTION	conn ;
-
 	SRVTAB_ENT	*sep ;
-
 	FIELD		fsb ;
-
 	vecstr		svcargs ;
-
 	int	ifd = cip->fd_input, ofd = cip->fd_output ;
 	int	rs, len, si ;
 	int	slen, sl, cl ;
-
 	char	svcspec[BUFLEN + 1] ;
 	char	peername[PEERNAMELEN + 1] ;
 	char	timebuf[TIMEBUFLEN + 1] ;
 	char	*service ;
 	char	*sp, *cp ;
-
 
 #if	CF_DEBUG
 	if (pip->debuglevel > 1)
@@ -303,7 +280,7 @@ struct clientinfo	*cip ;
 	fsb.lp[fsb.rlen] = '\0' ;
 
 	logfile_printf(&pip->lh,"%s service=%s ss=%s\n",
-	    timestr_logz(pip->daytime,timebuf),
+	    strtime_logz(pip->daytime,timebuf),
 	    cip->service,cip->subservice) ;
 
 /* put the rest of the arguments into a string list */
