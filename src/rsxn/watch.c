@@ -3,19 +3,18 @@
 /* watch (listen on) the specified socket */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUG	1
-#define	F_STALE		0
-
+#define	CF_STALE		0
 
 /* revision history:
 
-	= 91/09/10, David A­D­ Morano
-
+	= 1991-09-10, David A­D­ Morano
 	This subroutine was adopted from the DWD program.
 
-
 */
+
+/* Copyright © 1996 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /*****************************************************************************
 
@@ -42,34 +41,33 @@
 #include	<sys/time.h>
 #include	<sys/socket.h>
 #include	<netinet/in.h>
-#include	<stdlib.h>
 #include	<unistd.h>
-#include	<fcntl.h>
-#include	<signal.h>
-#include	<ctime>
-#include	<ftw.h>
-#include	<errno.h>
 #include	<dirent.h>
-#include	<limits.h>
-#include	<string.h>
+#include	<fcntl.h>
+#include	<ftw.h>
 #include	<poll.h>
-
-#include	<bfile.h>
+#include	<ctime>
+#include	<cerrno>
+#include	<climits>
+#include	<csignal>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<baops.h>
 #include	<field.h>
 #include	<logfile.h>
 #include	<vecstr.h>
-#include	<baops.h>
-#include	<usystem.h>
+#include	<strtime.h>		/* LIBUC */
+#include	<localmisc.h>
+#include	<bfile.h>
 
-#include	"srvtab.h"
-
-#include	"localmisc.h"
 #include	"jobdb.h"
 #include	"builtin.h"
 #include	"srvpe.h"
 #include	"config.h"
 #include	"defs.h"
-
 
 
 /* local defines */
@@ -86,13 +84,6 @@ extern int	checklockfile() ;
 extern int	handle(struct global *,
 			SRVPE *,int,int,VECSTR *,SRVTAB *,BUILTIN *) ;
 
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
-
-#if	CF_DEBUG
-extern char	*d_reventstr() ;
-#endif
-
 
 /* externals variables */
 
@@ -101,9 +92,9 @@ extern struct global	g ;
 
 /* forward references */
 
-static int	writeout() ;
+local int	writeout() ;
 
-static void	int_all(int) ;
+local void	int_all(int) ;
 
 
 /* external variables */
@@ -115,9 +106,7 @@ static void	int_all(int) ;
 /* local data */
 
 
-
-
-
+/* exported variables */
 
 int watch(gp,pbp,s,elp,sfp,bip)
 struct global	*gp ;
@@ -385,13 +374,13 @@ top:
 	            (void) time(&daytime) ;
 
 	            logfile_printf(&g.lh, "%s server exit, es=%d\n",
-	                timestr_log(daytime,timebuf),
+	                strtime_log(daytime,timebuf),
 	                child_stat & 255) ;
 
 	            writeout(gp,efd,"* standard error *") ;
 
 		    logfile_printf(&gp->lh,"elapsed time %s\n",
-			timestr_elapsed((daytime - jep->atime),timebuf)) ;
+			strtime_elapsed((daytime - jep->atime),timebuf)) ;
 
 	        } else {
 
@@ -425,7 +414,7 @@ top:
 
 	        logfile_printf(&gp->lh,
 	            "%s another program has my lock file, other PID=%d\n",
-	            timestr_log(daytime,timebuf),
+	            strtime_log(daytime,timebuf),
 	            rs) ;
 
 	        goto badlockfile ;
@@ -445,7 +434,7 @@ top:
 
 	        logfile_printf(&gp->lh,
 	            "%s another program has my PID file, other PID=%d\n",
-	            timestr_log(daytime,timebuf),
+	            strtime_log(daytime,timebuf),
 	            rs) ;
 
 	        goto badpidfile ;
@@ -460,7 +449,7 @@ top:
 
 	if ((rs = srvtab_check(sfp,daytime,NULL)) > 0)
 		logfile_printf(&gp->lh,"%s server table file changed\n",
-			timestr_log(daytime,timebuf)) ;
+			strtime_log(daytime,timebuf)) ;
 
 
 #if	CF_DEBUG
@@ -485,7 +474,7 @@ top:
 	(void) time(&daytime) ;
 
 	logfile_printf(&gp->lh,"%s daemon exiting\n",
-	    timestr_log(daytime,timebuf)) ;
+	    strtime_log(daytime,timebuf)) ;
 
 	return OK ;
 
@@ -634,13 +623,13 @@ BUILTIN		*bip ;
 	        (void) time(&daytime) ;
 
 	        logfile_printf(&g.lh, "%s server exit, es=%d\n",
-	            timestr_log(daytime,timebuf),
+	            strtime_log(daytime,timebuf),
 	            child_stat & 255) ;
 
 	        writeout(gp,efd,"* standard error *") ;
 
 		logfile_printf(&gp->lh,"elapsed time %s\n",
-			timestr_elapsed(daytime - jep->atime,timebuf)) ;
+			strtime_elapsed(daytime - jep->atime,timebuf)) ;
 
 	    } else
 	        logfile_printf(&gp->lh,"server did not 'exec'\n") ;
@@ -680,7 +669,7 @@ local void int_all(int sn) noex {
 } /* end subroutine (int_all) */
 
 /* write out the output files from the executed program */
-static int writeout(gp,fd,s)
+local int writeout(gp,fd,s)
 struct global	*gp ;
 int	fd ;
 char	s[] ;
