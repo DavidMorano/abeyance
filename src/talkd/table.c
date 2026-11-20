@@ -85,7 +85,7 @@ struct table_ent {
 TABLE_ENT *table = NIL;
 
 CTL_MSG *find_request(CTL_MSG *request);
-static void delete(TABLE_ENT *ptr);
+local void delete(TABLE_ENT *ptr);
 
 extern void print_error(char *string);
 extern void print_request(CTL_MSG *request);
@@ -283,7 +283,7 @@ delete_invite(int id_num)
 
     /* classic delete from a double-linked list */
 
-static void
+local void
 delete(TABLE_ENT *ptr)
 {
 
