@@ -10,7 +10,7 @@
 
 
 
-int main(int argc,const char **argv,const char **envv)
+int main(int argc,cchar **argv,cchar **envv)
 	return b_pids(argc,argv,NULL) ;
 }
 /* end subroutine (main) */
