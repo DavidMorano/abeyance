@@ -28,7 +28,7 @@
 	int progprinthelp(pip,fp,helpfname)
 	PROGINFO	*pip ;
 	void		*fp ;
-	const char	helpfname[] ;
+	cchar	helpfname[] ;
 
 	Arguments:
 
@@ -95,25 +95,25 @@
 
 /* external subroutines */
 
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	perm(const char *,uid_t,gid_t,gid_t *,int) ;
-extern int	permsched(const char **,vecstr *,char *,int,const char *,int) ;
-extern int	vecstr_envadd(vecstr *,const char *,const char *,int) ;
-extern int	vecstr_envset(vecstr *,const char *,const char *,int) ;
-extern int	vecstr_loadfile(VECSTR *,int,const char *) ;
+extern int	mkpath2(char *,cchar *,cchar *) ;
+extern int	perm(cchar *,uid_t,gid_t,gid_t *,int) ;
+extern int	permsched(cchar **,vecstr *,char *,int,cchar *,int) ;
+extern int	vecstr_envadd(vecstr *,cchar *,cchar *,int) ;
+extern int	vecstr_envset(vecstr *,cchar *,cchar *,int) ;
+extern int	vecstr_loadfile(VECSTR *,int,cchar *) ;
 extern int	isNotPresent(int) ;
 
 
 /* forward references */
 
-static int	findhelpfile(const char *,const char *,char *,const char *) ;
-static int	loadscheds(vecstr *,const char *,const char *) ;
-static int	printout(void *,char *,int,const char *) ;
+local int	findhelpfile(cchar *,cchar *,char *,cchar *) ;
+local int	loadscheds(vecstr *,cchar *,cchar *) ;
+local int	printout(void *,char *,int,cchar *) ;
 
 
 /* local variables */
 
-static const char	*schedule[] = {
+static cchar	*schedule[] = {
 	"%r/%l/%n/%n.%f",
 	"%r/%l/%n/%f",
 	"%r/share/help/%n.%f",
@@ -135,10 +135,10 @@ static const char	*schedule[] = {
 int progprinthelp(pip,fp,helpfname)
 PROGINFO	*pip ;
 void		*fp ;
-const char	helpfname[] ;
+cchar	helpfname[] ;
 {
 	int		rs = SR_OK ;
-	const char	*fname ;
+	cchar	*fname ;
 	char		tmpfname[MAXPATHLEN + 1] ;
 
 #if	CF_DEBUGS
@@ -215,11 +215,11 @@ ret0:
 /* local subroutines */
 
 
-static int findhelpfile(pr,sn,tmpfname,helpfname)
-const char	*pr ;
-const char	*sn ;
+local int findhelpfile(pr,sn,tmpfname,helpfname)
+cchar	*pr ;
+cchar	*sn ;
 char		tmpfname[] ;
-const char	*helpfname ;
+cchar	*helpfname ;
 {
 	vecstr		svars ;
 	vecstr		hs ;
@@ -227,7 +227,7 @@ const char	*helpfname ;
 	int		rs1 ;
 	int		opts ;
 	int		f_hs = FALSE ;
-	const char	**spp ;
+	cchar	**spp ;
 
 #if	CF_DEBUGS
 	debugprintf("progprinthelp: full fname=%s\n",helpfname) ;
@@ -290,7 +290,7 @@ const char	*helpfname ;
 /* end subroutine (findhelpfile) */
 
 
-static int loadscheds(vecstr *slp,const char *pr,const char *sn)
+local int loadscheds(vecstr *slp,cchar *pr,cchar *sn)
 {
 	int		rs = SR_OK ;
 
@@ -306,11 +306,11 @@ static int loadscheds(vecstr *slp,const char *pr,const char *sn)
 /* end subroutine (loadscheds) */
 
 
-static int printout(fp,lbuf,llen,fname)
+local int printout(fp,lbuf,llen,fname)
 void		*fp ;
 char		lbuf[] ;
 int		llen ;
-const char	*fname ;
+cchar	*fname ;
 {
 	bfile		outfile ;
 	bfile		helpfile, *hfp = &helpfile ;
