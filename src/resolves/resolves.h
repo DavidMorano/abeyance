@@ -27,8 +27,8 @@
 
 
 struct resolves_id {
-	const char	*groupname ;
-	const char	*username ;
+	cchar	*groupname ;
+	cchar	*username ;
 	uid_t		uid ;
 	gid_t		gid ;
 } ;
@@ -38,7 +38,7 @@ struct resolves_mapper {
 	LOCKRW		rwm ;
 	paramfile	dirsfile ;
 	vechand		mapdirs ;
-	const char	*fname ;
+	cchar	*fname ;
 	time_t		ti_mtime ;
 	time_t		ti_check ;
 } ;
@@ -59,9 +59,9 @@ struct resolves_head {
 	PTM		m ;		/* this is for all of the data */
 	RESOLVES_MAPPER	mapper ;
 	FINDUID		ufind ;
-	const char	**envv ;
-	const char	*pr ;
-	const char	*fe ;		/* file-ending */
+	cchar	**envv ;
+	cchar	*pr ;
+	cchar	*fe ;		/* file-ending */
 	time_t		ti_lastcheck ;
 	int		nmaps ;
 	int		nenv ;
@@ -74,15 +74,15 @@ struct resolves_head {
 extern "C" {
 #endif
 
-extern int	resolves_open(RESOLVES *,const char *) ;
+extern int	resolves_open(RESOLVES *,cchar *) ;
 extern int	resolves_check(RESOLVES *,time_t) ;
-extern int	resolves_process(RESOLVES *,const char *,
-			const char **,int) ;
+extern int	resolves_process(RESOLVES *,cchar *,
+			cchar **,int) ;
 extern int	resolves_procid(RESOLVES *,RESOLVES_ID *,
-			const char **,int) ;
+			cchar **,int) ;
 extern int	resolves_close(RESOLVES *) ;
 
-extern int	resolvesid_load(RESOLVES_ID *,const char *,const char *,
+extern int	resolvesid_load(RESOLVES_ID *,cchar *,cchar *,
 			uid_t,gid_t) ;
 
 #ifdef	__cplusplus
