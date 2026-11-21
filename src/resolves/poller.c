@@ -44,13 +44,13 @@
 
 /* external subroutines */
 
-extern int	sncpy1(char *,int,const char *) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath1w(char *,const char *,int) ;
-extern int	pathclean(char *,const char *,int) ;
+extern int	sncpy1(char *,int,cchar *) ;
+extern int	mkpath1(char *,cchar *) ;
+extern int	mkpath1w(char *,cchar *,int) ;
+extern int	pathclean(char *,cchar *,int) ;
 
 #if	CF_DEBUGS
-extern int	debugprintf(const char *,...) ;
+extern int	debugprintf(cchar *,...) ;
 #endif
 
 
@@ -61,10 +61,10 @@ extern int	debugprintf(const char *,...) ;
 
 int		poller_get(POLLER *,POLLER_SPEC *) ;
 
-static int	poller_extend(POLLER *,int) ;
-static int	poller_del(POLLER *,POLLER_SPEC *) ;
+local int	poller_extend(POLLER *,int) ;
+local int	poller_del(POLLER *,POLLER_SPEC *) ;
 
-static int	ismatch(POLLER_SPEC *,POLLER_SPEC *) ;
+local int	ismatch(POLLER_SPEC *,POLLER_SPEC *) ;
 
 
 /* local variables */
@@ -75,9 +75,9 @@ static int	ismatch(POLLER_SPEC *,POLLER_SPEC *) ;
 
 int poller_start(POLLER *op)
 {
-	const int	esize = sizeof(POLLER_SPEC) ;
-	const int	n = POLLER_NDEF ;
-	const int	vo = 0 ;
+	cint	esize = sizeof(POLLER_SPEC) ;
+	cint	n = POLLER_NDEF ;
+	cint	vo = 0 ;
 	int		rs ;
 
 	if (op == NULL) return SR_FAULT ;
@@ -349,9 +349,9 @@ int poller_curenum(POLLER *op,POLLER_CUR *curp,POLLER_SPEC *rp)
 /* private subroutines */
 
 
-static int poller_extend(POLLER *op,int n)
+local int poller_extend(POLLER *op,int n)
 {
-	const int	ne = MAX(n,1) ;
+	cint	ne = MAX(n,1) ;
 	int		rs = SR_OK ;
 
 	if ((ne > op->e) || (op->pa == NULL)) {
@@ -375,7 +375,7 @@ static int poller_extend(POLLER *op,int n)
 
 
 /* delete a registration */
-static int poller_del(POLLER *op,POLLER_SPEC *cep)
+local int poller_del(POLLER *op,POLLER_SPEC *cep)
 {
 	POLLER_SPEC	*ep ;
 	int		rs = SR_OK ;
@@ -395,7 +395,7 @@ static int poller_del(POLLER *op,POLLER_SPEC *cep)
 /* end subroutine (poller_del) */
 
 
-static int ismatch(POLLER_SPEC *e1p,POLLER_SPEC *e2p)
+local int ismatch(POLLER_SPEC *e1p,POLLER_SPEC *e2p)
 {
 	int		f = TRUE ;
 	f = f && (e1p->fd == e2p->fd) ;
