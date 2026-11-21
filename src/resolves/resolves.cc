@@ -123,30 +123,14 @@ import libutil ;			/* |lenstr(3u)| */
 
 #define	NDEBFNAME	"resolves.deb"
 
-#ifndef	MAXNAMELEN
-#define	MAXNAMELEN	256
-#endif
-
 #ifndef	MSGBUFLEN
 #define	MSGBUFLEN	2048
-#endif
-
-#ifndef	LINEBUFLEN
-#ifdef	LINE_MAX
-#define	LINEBUFLEN	MAX(LINE_MAX,2048)
-#else
-#define	LINEBUFLEN	2048
-#endif
 #endif
 
 #define	ADMINLEN	USERNAMELEN
 
 #undef	ENVBUFLEN
 #define	ENVBUFLEN	(10 + MAX(ADMINLEN,MAXPATHLEN))
-
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	40		/* can hold int128_t in decimal */
-#endif
 
 #undef	BUFLEN
 #define	BUFLEN		2048		/* enough for one typical read? */
@@ -757,8 +741,8 @@ ret0:
 local int resolves_envbegin(op)
 RESOLVES		*op ;
 {
-	const int	es = envpre[0] ;
-	const int	envprelen = strlen(envpre) ;
+	cint	es = envpre[0] ;
+	cint	envprelen = strlen(envpre) ;
 
 	int	rs = SR_OK ;
 	int	size ;
@@ -818,7 +802,7 @@ STRPACK		*spp ;
 cchar	**ev ;
 RESOLVES_ID		*idp ;
 {
-	const int	envlen = ENVBUFLEN ;
+	cint	envlen = ENVBUFLEN ;
 
 	uint	uv ;
 
@@ -1024,8 +1008,8 @@ ret0:
 local int resolves_ufindstart(op)
 RESOLVES		*op ;
 {
-	const int	maxent = 30 ;
-	const int	ttl = (1*60*60) ;
+	cint	maxent = 30 ;
+	cint	ttl = (1*60*60) ;
 
 	int	rs = SR_OK ;
 
@@ -1214,7 +1198,7 @@ local int mapper_check(mmp,daytime)
 RESOLVES_MAPPER	*mmp ;
 time_t		daytime ;
 {
-	const int	to_lock = TO_LOCK ;
+	cint	to_lock = TO_LOCK ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
@@ -1298,7 +1282,7 @@ cchar	*admins[] ;
 cchar	groupname[] ;
 int		fd ;
 {
-	const int	to_lock = TO_LOCK ;
+	cint	to_lock = TO_LOCK ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
@@ -1337,10 +1321,10 @@ int		fd ;
 	        cchar	*pr = "/home/genserv" ;
 	        cchar	*prn = "genserv" ;
 	        cchar	*svc = "hello" ;
-	        const int	of = O_RDONLY ;
+	        cint	of = O_RDONLY ;
 	        const mode_t	om = 0666 ;
 	        cchar		*argv[2] ;
-	        const int		to = 5 ;
+	        cint		to = 5 ;
 
 	        argv[0] = svc ;
 	        argv[1] = nullptr ;
@@ -1582,7 +1566,7 @@ cchar	*vp ;
 {
 	RESOLVES_MAPDIR	*ep ;
 
-	const int	size = sizeof(RESOLVES_MAPDIR) ;
+	cint	size = sizeof(RESOLVES_MAPDIR) ;
 
 	int	rs ;
 
@@ -1644,7 +1628,7 @@ local int mapper_lockcheck(mmp,s)
 RESOLVES_MAPPER	*mmp ;
 cchar	*s ;
 {
-	const int	to_lock = TO_LOCK ;
+	cint	to_lock = TO_LOCK ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
@@ -1771,7 +1755,7 @@ cchar	*admins[] ;
 cchar	groupname[] ;
 int		fd ;
 {
-	const int	to_lock = TO_LOCK ;
+	cint	to_lock = TO_LOCK ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
@@ -1869,7 +1853,7 @@ ret0:
 local int mapdir_expand(ep)
 RESOLVES_MAPDIR	*ep ;
 {
-	const int	to_lock = TO_LOCK ;
+	cint	to_lock = TO_LOCK ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
@@ -1917,7 +1901,7 @@ ret0:
 local int mapdir_expander(ep)
 RESOLVES_MAPDIR	*ep ;
 {
-	const int	hlen = MAXPATHLEN ;
+	cint	hlen = MAXPATHLEN ;
 	int		rs = SR_OK ;
 	int		rs1 = SR_OK ;
 	int		unl ;
@@ -2021,7 +2005,7 @@ int		fd ;
 	{
 	    cchar	*pre = envpre ;
 	    cchar	*post ;
-	    const int	envlen = ENVBUFLEN ;
+	    cint	envlen = ENVBUFLEN ;
 	    post = envstrs[envstr_admin] ;
 	    strdcpy4(env_admin,envlen,pre,post,"=",ep->admin) ;
 	    post = envstrs[envstr_admindir] ;
@@ -2167,10 +2151,10 @@ int		ofd ;
 {
 	const mode_t	operms = 0664 ;
 
-	const int	oflags = O_RDONLY ;
-	const int	to_open = TO_OPEN ;
-	const int	to_read = TO_READ ;
-	const int	to_write = TO_WRITE ;
+	cint	oflags = O_RDONLY ;
+	cint	to_open = TO_OPEN ;
+	cint	to_read = TO_READ ;
+	cint	to_write = TO_WRITE ;
 
 	int	rs = SR_OK ;
 	int	rlen ;
