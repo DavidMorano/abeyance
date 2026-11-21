@@ -22,7 +22,7 @@
 
 #define FORMAT		"PID=%(pid)d PPID=%(ppid)d PGID=%(pgid)d TID=%(tid)d SID=%(sid)d"
 
-static const char usage[] =
+static cchar usage[] =
 "[-?\n@(#)$Id: pids (AT&T Research) 2008-04-01 $\n]"
 /* USAGE_LICENSE */
 "[+NAME?pids - list calling shell process ids]"
@@ -67,8 +67,8 @@ static const char usage[] =
  * handle==0 for heading
  */
 
-static int
-key(void* handle, Sffmt_t* fp, const char* arg, char** ps, Sflong_t* pn)
+local int
+key(void* handle, Sffmt_t* fp, cchar* arg, char** ps, Sflong_t* pn)
 {
 	register char*	s;
 	int		fd;
