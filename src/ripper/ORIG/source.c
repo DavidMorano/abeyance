@@ -104,7 +104,7 @@ static struct {
 /*----------------------------------------------------------------------
 |    fatal_error
 +---------------------------------------------------------------------*/
-static void
+local void
 fatal_error(char *s)
 {
     perror(s);
@@ -114,7 +114,7 @@ fatal_error(char *s)
 /*----------------------------------------------------------------------
 |    le_convert_short
 +---------------------------------------------------------------------*/
-static void
+local void
 le_convert_short(char *buffer, unsigned short s)
 {
     unsigned char *b = (unsigned char *)buffer;
@@ -125,7 +125,7 @@ le_convert_short(char *buffer, unsigned short s)
 /*----------------------------------------------------------------------
 |    le_convert_long
 +---------------------------------------------------------------------*/
-static void
+local void
 le_convert_long(char *buffer, unsigned long l)
 {
     unsigned char *b = (unsigned char *)buffer;
@@ -138,7 +138,7 @@ le_convert_long(char *buffer, unsigned long l)
 /*----------------------------------------------------------------------
 |    be_convert_short
 +---------------------------------------------------------------------*/
-static void
+local void
 be_convert_short(char *buffer, unsigned short s)
 {
     unsigned char *b = (unsigned char *)buffer;
@@ -149,7 +149,7 @@ be_convert_short(char *buffer, unsigned short s)
 /*----------------------------------------------------------------------
 |    be_convert_long
 +---------------------------------------------------------------------*/
-static void
+local void
 be_convert_long(char *buffer, unsigned long l)
 {
     unsigned char *b = (unsigned char *)buffer;
@@ -162,7 +162,7 @@ be_convert_long(char *buffer, unsigned long l)
 /*----------------------------------------------------------------------
 |    cwrite
 +---------------------------------------------------------------------*/
-static void
+local void
 cwrite(FILE *out, char *buffer, size_t size)
 {
     int result;
@@ -177,7 +177,7 @@ cwrite(FILE *out, char *buffer, size_t size)
 /*----------------------------------------------------------------------
 |    aiff_header
 +---------------------------------------------------------------------*/
-static void
+local void
 aiff_header(Track *this, FILE *out)
 {
     char buffer[4];
@@ -218,7 +218,7 @@ aiff_header(Track *this, FILE *out)
 /*----------------------------------------------------------------------
 |    wav_header
 +---------------------------------------------------------------------*/
-static void
+local void
 wav_header(Track *this, FILE *out)
 {
     char buffer[4];
@@ -262,7 +262,7 @@ wav_header(Track *this, FILE *out)
 /*----------------------------------------------------------------------
 |    sun_header
 +---------------------------------------------------------------------*/
-static void
+local void
 sun_header(Track *this, FILE *out)
 {
     char buffer[4];
@@ -291,7 +291,7 @@ sun_header(Track *this, FILE *out)
 /*----------------------------------------------------------------------
 |    show_progress
 +---------------------------------------------------------------------*/
-static void
+local void
 show_progress(int track,
               unsigned long current, 
               unsigned long start, 
@@ -324,7 +324,7 @@ show_progress(int track,
 /*----------------------------------------------------------------------
 |    dump_track
 +---------------------------------------------------------------------*/
-static void
+local void
 dump_track(CdInfo *cd, int index, FILE *out)
 {
     struct cdrom_cdda   cdda;
@@ -538,7 +538,7 @@ dump_track(CdInfo *cd, int index, FILE *out)
 /*----------------------------------------------------------------------
 |    msf_to_frames
 +---------------------------------------------------------------------*/
-static int
+local int
 msf_to_frames(Msf msf)
 {
     return 
@@ -585,7 +585,7 @@ get_disk_id(CdInfo *cd)
 /*----------------------------------------------------------------------
 |    get_cd_info
 +---------------------------------------------------------------------*/
-static void
+local void
 get_cd_info(CdInfo *cd, char *device)
 {
     int                 io_result;
@@ -777,7 +777,7 @@ get_cd_info(CdInfo *cd, char *device)
 /*----------------------------------------------------------------------
 |    print_usage_and_exit
 +---------------------------------------------------------------------*/
-static void
+local void
 print_usage_and_exit(void)
 {
     fprintf(stderr,"galette [options] [<filename> (default = stdout)]\n"
@@ -803,7 +803,7 @@ print_usage_and_exit(void)
 /*----------------------------------------------------------------------
 |    parse_command_line
 +---------------------------------------------------------------------*/
-static void
+local void
 parse_command_line(char **argv)
 {
     char *arg;
@@ -895,7 +895,7 @@ parse_command_line(char **argv)
 /*----------------------------------------------------------------------
 |    restore_default_config
 +---------------------------------------------------------------------*/
-static void
+local void
 restore_default_config(CdInfo *cd)
 {
     int io_result;
@@ -913,7 +913,7 @@ restore_default_config(CdInfo *cd)
 /*----------------------------------------------------------------------
 |    init
 +---------------------------------------------------------------------*/
-static void
+local void
 init(void)
 {
 
